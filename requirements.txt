@@ -1,0 +1,9 @@
+pandas>=2.2
+pyarrow>=16
+numpy>=1.26
+pymc>=5.16
+arviz>=0.18
+scikit-learn>=1.5
+requests>=2.32
+matplotlib>=3.9
+geopandas>=1.0

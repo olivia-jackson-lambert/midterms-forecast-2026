@@ -1,0 +1,10 @@
+# data stays local; only code, the plan and published forecasts are versioned
+data/
+*.parquet
+*.csv
+!forecasts/*.csv
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
+* 2.*
+.venv/
