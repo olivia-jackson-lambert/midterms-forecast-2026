@@ -30,19 +30,21 @@
 
 Every source is public. Mark each one ✅ once its availability and licence are confirmed.
 
-| Need | Source | Status |
+| Need | Source | Status (checked 28 Sep 2026) |
 |---|---|---|
-| County presidential results, 2000–2024 | MIT Election Data + Science Lab (Harvard Dataverse) | ☐ |
-| County / state Senate and governor results, 2000–2024 | MIT Election Lab; state secretaries of state for gaps | ☐ |
-| County turnout (total ballots cast) | MIT Election Lab plus state certified results | ☐ |
-| Voting-age and citizen voting-age population | Census ACS 5-year, CVAP special tabulation | ☐ |
-| County demographics (age, education, income, density) | Census ACS 5-year | ☐ |
-| National environment (generic ballot) | Public polling averages, e.g. RealClearPolling. FiveThirtyEight closed in 2025, so check whether its archive on GitHub is still usable for backtests | ☐ |
-| 2025–26 special election over- and under-performance | Compiled from public special-election results, e.g. Ballotpedia and The Downballot | ☐ |
-| Race fundamentals: incumbency, open seats | Ballotpedia and Wikipedia race pages | ☐ |
-| Candidate fundraising | FEC API, aggregate totals only | ☐ |
-| Early and mail vote, weekly in October | US Elections Project (Michael McDonald), state early-vote dashboards | ☐ |
-| County shapefiles | Census TIGER/Line | ☐ |
+| County presidential results, 2000–2024 | MIT Election Lab, *County Presidential Election Returns 2000–2024* (doi:10.7910/DVN/VOQCHQ, v20, Feb 2026) | ✅ |
+| Senate results by state, 1976–2024 | MIT Election Lab (doi:10.7910/DVN/PEJ5QU, v8, May 2026) | ✅ |
+| House results by district, 1976–2024 | MIT Election Lab (doi:10.7910/DVN/IG0UN2, v15, Mar 2026) | ✅ |
+| **Midterm county turnout and results, 2018 and 2022** | MIT Election Lab precinct-level returns, aggregated to county: House 2018 (IVIXLK) and 2022 (EOKNGW); Senate 2018 (DGNAFS) and 2022 (IAD3XR); state offices incl. governor 2018 (ZFXEJU) and 2022 (OAARCY); plus *U.S. Senate county-level results 2022* (YB60EJ) | ✅ (large files; county totals need checking against certified results) |
+| Governor results | Only in the state-offices precinct files above; no stand-alone governor dataset found | ⚠️ build from precincts |
+| Voting-age population and demographics | Census ACS 5-year API (2023 vintage responds); CVAP special tabulation to confirm | ✅ ACS / ☐ CVAP |
+| Generic ballot, 2018 and 2022 (backtests) | FiveThirtyEight's polling endpoint now returns an empty page, and its GitHub data repo doesn't cover polls. Alternative: rebuild averages from public poll listings (e.g. Wikipedia's generic-ballot tables) | ❌ need replacement |
+| Generic ballot, 2026 | Public averages (RealClearPolling and others); confirm a scrapable source | ☐ |
+| 2025–26 special elections | Ballotpedia (reachable) and other public trackers | ☐ compile |
+| Race fundamentals: incumbency, open seats | Ballotpedia 2026 Senate and governor pages (reachable) | ☐ compile |
+| Candidate fundraising | FEC API (works with the demo key; register a free key for volume) | ✅ |
+| Early and mail vote, October 2026 | US Elections Project (site reachable); state dashboards | ☐ confirm 2026 page |
+| County shapefiles | Census cartographic boundary files 2023 (20m) | ✅ |
 
 All raw data lives in `data/` and is never committed (see `.gitignore`).
 
