@@ -28,16 +28,21 @@
 
 ## 3. Data
 
-Every source is public. Mark each one ✅ once its availability and licence are confirmed.
+Every source is public. Mark each one ✅ once its availability and licence are confirmed. On 29 September the ingest moved to sources that need **no API key and no download form**; the MIT Election Lab Dataverse copies (behind a guestbook) are now only a fallback.
 
-| Need | Source | Status (checked 28 Sep 2026) |
+| Need | Source | Status (checked 29 Sep 2026) |
 |---|---|---|
-| County presidential results, 2000–2024 | MIT Election Lab, *County Presidential Election Returns 2000–2024* (doi:10.7910/DVN/VOQCHQ, v20, Feb 2026) | ✅ |
-| Senate results by state, 1976–2024 | MIT Election Lab (doi:10.7910/DVN/PEJ5QU, v8, May 2026) | ✅ |
-| House results by district, 1976–2024 | MIT Election Lab (doi:10.7910/DVN/IG0UN2, v15, Mar 2026) | ✅ |
-| **Midterm county turnout and results, 2018 and 2022** | MIT Election Lab precinct-level returns, aggregated to county: House 2018 (IVIXLK) and 2022 (EOKNGW); Senate 2018 (DGNAFS) and 2022 (IAD3XR); state offices incl. governor 2018 (ZFXEJU) and 2022 (OAARCY); plus *U.S. Senate county-level results 2022* (YB60EJ) | ✅ (large files; county totals need checking against certified results) |
-| Governor results | Only in the state-offices precinct files above; no stand-alone governor dataset found | ⚠️ build from precincts |
-| Voting-age population and demographics | Census ACS 5-year API (2023 vintage responds); CVAP special tabulation to confirm | ✅ ACS / ☐ CVAP |
+| County presidential results, 2008–2016 | MIT Election Lab official county returns on GitHub (`MEDSL/county-returns`, `countypres_2000-2016.csv`), no form | ✅ in ingest; national totals within 0.25% of certified. Its `totalvotes` column is wrong in places (Fairfax city VA), so totals are summed from candidate votes |
+| County presidential results, 2020 and 2024 | tonmcg mirror on GitHub (`US_County_Level_Election_Results_08-24`, MIT licence); Alaska replaced with the Division of Elections' certified statewide totals | ✅ in ingest. Don't use the mirror for 2012 or 2016: it undercounts CA, NY and RI by several million votes |
+| Full county presidential file, 2000–2024 | MIT Election Lab Dataverse (doi:10.7910/DVN/VOQCHQ, v20) | ⚠️ guestbook form; not needed now |
+| Senate results by state, 1976–2024 | MIT Election Lab Dataverse (doi:10.7910/DVN/PEJ5QU, v8) | ⚠️ guestbook form |
+| House results by district, 1976–2024 | MIT Election Lab Dataverse (doi:10.7910/DVN/IG0UN2, v15) | ⚠️ guestbook form (stretch goal only) |
+| **Midterm county turnout and results, 2018** | MIT Election Lab precinct returns on GitHub (`MEDSL/2018-elections-official`: `SENATE/`, `HOUSE/`, `STATE/` incl. governor), with county FIPS, no form. The repo is marked deprecated in favour of Dataverse (Senate DGNAFS, House IVIXLK, state offices ZFXEJU), so check totals against certified | ✅ files open (next step: aggregate to county) |
+| **Midterm county turnout and results, 2022** | MIT Election Lab precinct returns on GitHub (`MEDSL/2022-elections-official`, one file per state, all offices incl. governor), with county FIPS, no form. Known gaps: some Indiana counties and Phillips County AR have no precinct data | ✅ files open (next step: aggregate to county) |
+| Governor results, 2018 and 2022 | In the precinct files above | ⚠️ build from precincts |
+| Citizen voting-age population (turnout denominator) | Census CVAP special tabulation, bulk CSVs on www2.census.gov, every 5-year vintage from 2005–2009 to 2020–2024; each election uses the vintage centred on it | ✅ in ingest |
+| County demographics | ACS 5-year table-based summary files (2020–2024) on www2.census.gov: population, median age, income, race and ethnicity, education, age 18–29 and 65+ | ✅ in ingest. The Census API now needs a key, so it isn't used |
+| Land area (for density) | Census Gazetteer counties file, 2024 | ✅ in ingest |
 | Generic ballot, 2018 and 2022 (backtests) | FiveThirtyEight's polling endpoint now returns an empty page, and its GitHub data repo doesn't cover polls. Alternative: rebuild averages from public poll listings (e.g. Wikipedia's generic-ballot tables) | ❌ need replacement |
 | Generic ballot, 2026 | Public averages (RealClearPolling and others); confirm a scrapable source | ☐ |
 | 2025–26 special elections | Ballotpedia (reachable) and other public trackers | ☐ compile |
@@ -45,6 +50,10 @@ Every source is public. Mark each one ✅ once its availability and licence are 
 | Candidate fundraising | FEC API (works with the demo key; register a free key for volume) | ✅ |
 | Early and mail vote, October 2026 | US Elections Project (site reachable); state dashboards | ☐ confirm 2026 page |
 | County shapefiles | Census cartographic boundary files 2023 (20m) | ✅ |
+
+**County units.** Results and Census geographies don't line up everywhere, so the panel uses county units: Alaska, Connecticut and DC are one unit each; Jackson, Clay and Platte counties (Kansas City, which reports separately) are one unit; Kalawao is merged into Maui, Bedford city into Bedford County, and Shannon SD is Oglala Lakota. That gives 3,104 units in every year.
+
+**Known limits.** CVAP is a survey estimate, so a handful of tiny counties show turnout above 100% (under 0.5% of rows, none with 5,000+ eligible citizens); the turnout model should shrink small counties. Chattahoochee GA shows about 20% turnout because Fort Moore's residents are counted there but mostly vote elsewhere.
 
 All raw data lives in `data/` and is never committed (see `.gitignore`).
 
@@ -129,5 +138,7 @@ midterms-2026/
 
 ## 10. Next Actions
 
-1. Confirm each data source in section 3 and tick it off.
-2. Build `src/forecast/ingest.py` for the MIT Election Lab county returns and ACS, then a first county panel for 2000–2024.
+1. ~~Build the county presidential panel, 2008–2024, with CVAP turnout and ACS demographics.~~ Done 29 September (`python -m forecast.ingest`, checks in `tests/`).
+2. Aggregate the 2018 and 2022 precinct files to county midterm turnout and Senate and governor results; check them against certified state totals.
+3. Rebuild the 2018 and 2022 generic-ballot averages from public poll listings.
+4. Compile 2026 races, incumbency and special elections from Ballotpedia.

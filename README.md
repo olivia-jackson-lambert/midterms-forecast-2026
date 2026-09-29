@@ -2,19 +2,25 @@
 
 See `PLAN.md` for the goal, method, timeline and data sources.
 
-## Setup (one time)
+## Setup
 
-1. **Census API key** (free): sign up at https://api.census.gov/data/key_signup.html, then add
-   `export CENSUS_API_KEY=<your key>` to your shell profile. The key is read from the
-   environment and is never written into the repo.
-2. **MIT Election Lab files** need a short download form (guestbook) the first time. Download
-   each file below from its DOI page and save it in `data/raw/` with the same filename:
-   - `countypres_2000-2024.tab`: https://doi.org/10.7910/DVN/VOQCHQ
-   - (later) Senate and House precinct files for 2018 and 2022, and state offices 2018 and 2022; see `PLAN.md`
-3. Install: `pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
+
+No API keys or download forms are needed. The ingest pulls public files from GitHub
+(MIT Election Lab's county returns and a county results mirror) and from www2.census.gov
+(CVAP, ACS summary files, Gazetteer). The first run downloads about 550 MB and caches
+what it needs in `data/raw/`, which is never committed.
 
 ## Run
 
 ```
-cd src && python -m forecast.ingest
+cd src && python -m forecast.ingest     # builds data/processed/county_panel.parquet
+cd .. && python -m pytest               # data checks
 ```
+
+`county_panel.parquet` has one row per county unit and presidential year (2008 to 2024):
+Democratic, Republican and total votes, two-party share, citizen voting-age population,
+turnout as a share of it, and ACS 2020–2024 demographics. `PLAN.md` explains the county
+units and known limits.

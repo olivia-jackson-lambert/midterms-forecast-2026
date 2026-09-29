@@ -7,3 +7,4 @@ scikit-learn>=1.5
 requests>=2.32
 matplotlib>=3.9
 geopandas>=1.0
+pytest>=8

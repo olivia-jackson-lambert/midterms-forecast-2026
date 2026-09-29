@@ -1,4 +1,13 @@
-"""Download and tidy the public inputs into county-level tables.
+"""Download and tidy the public inputs into a county panel.
+
+No API keys and no download forms: every source is a plain public file.
+
+- Presidential results 2008-2016: MIT Election Lab's official county returns on GitHub
+  (MEDSL/county-returns). 2020 and 2024: the tonmcg county mirror on GitHub (its 2012 and
+  2016 files undercount CA, NY and RI, so it is only used for 2020 and 2024).
+- Citizen voting-age population: the Census CVAP special tabulation, one 5-year vintage
+  per election year.
+- Demographics: ACS 5-year table-based summary files. Land area: Census Gazetteer.
 
 Everything is cached under data/raw/ (never committed). Outputs go to data/processed/.
 
@@ -7,8 +16,7 @@ Everything is cached under data/raw/ (never committed). Outputs go to data/proce
 from __future__ import annotations
 
 import io
-import json
-import os
+import zipfile
 from pathlib import Path
 
 import numpy as np
@@ -21,105 +29,230 @@ OUT = ROOT / "data" / "processed"
 RAW.mkdir(parents=True, exist_ok=True)
 OUT.mkdir(parents=True, exist_ok=True)
 
-DATAVERSE = "https://dataverse.harvard.edu/api"
-UA = {"User-Agent": "midterms-2026 research (personal, non-commercial)"}
+UA = {"User-Agent": "turnout-first-2026 research (personal, non-commercial)"}
+YEARS = [2008, 2012, 2016, 2020, 2024]
+
+MEDSL_PRES = "https://raw.githubusercontent.com/MEDSL/county-returns/master/countypres_2000-2016.csv"
+MIRROR_PRES = ("https://raw.githubusercontent.com/tonmcg/US_County_Level_Election_Results_08-24/"
+               "master/{year}_US_County_Level_Presidential_Results.csv")
+CVAP_ZIP = ("https://www2.census.gov/programs-surveys/decennial/rdo/datasets/{v}/{v}-cvap/"
+            "CVAP_{s}-{v}_ACS_csv_files.zip")
+ACS_TABLE = ("https://www2.census.gov/programs-surveys/acs/summary_file/{v}/table-based-SF/"
+             "data/5YRData/acsdt5y{v}-{t}.dat")
+GAZETTEER = ("https://www2.census.gov/geo/docs/maps-data/data/gazetteer/{v}_Gazetteer/"
+             "{v}_Gaz_counties_national.zip")
 
 
 # --------------------------------------------------------------------------- downloads
-def dataverse_file(doi: str, filename: str) -> Path:
-    """Fetch one file from a Harvard Dataverse dataset (original format), with caching."""
-    dest = RAW / filename
+def fetch(url: str, dest: Path) -> Path:
+    """Download url to dest once; later calls use the cached copy."""
     if dest.exists():
         return dest
-    meta = requests.get(f"{DATAVERSE}/datasets/:persistentId/",
-                        params={"persistentId": f"doi:{doi}"}, headers=UA, timeout=60).json()
-    files = {f["dataFile"]["filename"]: f["dataFile"]["id"] for f in meta["data"]["latestVersion"]["files"]}
-    if filename not in files:
-        raise KeyError(f"{filename} not in {doi}: {sorted(files)}")
-    url = f"{DATAVERSE}/access/datafile/{files[filename]}"
-    r = requests.get(url, params={"format": "original"}, headers=UA, timeout=300)
-    if r.status_code == 400:            # not an ingested tabular file: fetch it as stored
-        r = requests.get(url, headers=UA, timeout=300)
-    if r.status_code == 400 and "Guestbook" in r.text:
-        raise SystemExit(
-            f"\n{filename} needs MIT Election Lab's download form (a short guestbook).\n"
-            f"Download it once from https://doi.org/{doi} and save it as:\n  {dest}\n"
-            "then run this script again.")
-    r.raise_for_status()
-    dest.write_bytes(r.content)
+    with requests.get(url, headers=UA, timeout=600, stream=True) as r:
+        r.raise_for_status()
+        tmp = dest.with_suffix(dest.suffix + ".part")
+        with open(tmp, "wb") as f:
+            for chunk in r.iter_content(1 << 20):
+                f.write(chunk)
+    tmp.rename(dest)
     return dest
 
 
+# --------------------------------------------------------------------------- geography
+# Some places report results on geographies that don't match Census counties, so the panel
+# uses "county units": Census counties, with a few merged so results and population line up.
+#   Alaska: results by state house district, Census by borough -> one statewide unit.
+#   Connecticut: old counties until 2020, planning regions from 2022 -> one statewide unit.
+#   Kansas City, MO reports separately and the 2020-24 mirror folds it into Jackson County,
+#     so Jackson, Clay and Platte (the counties it spans) form one unit.
+#   Washington DC: the 2024 mirror reports it by ward -> one unit.
+#   Renamed or merged counties: Shannon SD -> Oglala Lakota, Bedford city VA -> Bedford
+#     County, Kalawao HI (no separate results) -> Maui.
+UNIT_REMAP = {"46113": "46102", "51515": "51019", "15005": "15009",
+              "36000": "29095", "29047": "29095", "29165": "29095"}
+
+
+def to_unit(fips: pd.Series) -> pd.Series:
+    fips = fips.astype(str).str.zfill(5)
+    st = fips.str[:2]
+    fips = fips.replace(UNIT_REMAP)
+    return fips.mask(st == "02", "02000").mask(st == "09", "09000").mask(st == "11", "11001")
+
+
 # --------------------------------------------------------------------------- presidential results
+# Alaska Division of Elections, official Election Summary Reports (20GENR, 24GENR).
+AK_CERTIFIED = {2020: {"dem": 153_778, "rep": 189_951, "total": 359_530},
+                2024: {"dem": 140_026, "rep": 184_458, "total": 338_177}}
+
+
 def county_presidential() -> pd.DataFrame:
-    """One row per county-year: total ballots and two-party Democratic share, 2000-2024.
+    """One row per county unit and year: Democratic, Republican and total presidential votes.
 
-    MIT's file reports some states by voting mode (election day, early, absentee...) and
-    others as a single TOTAL row, and a few do both. Use TOTAL where it exists, otherwise
-    sum the modes, so nothing is double counted.
+    Totals are the sum of candidate votes. MIT's totalvotes column is wrong in places
+    (Fairfax city VA carries Fairfax County's total), and the candidate sums match the
+    certified national totals.
     """
-    path = dataverse_file("10.7910/DVN/VOQCHQ", "countypres_2000-2024.tab")
-    df = pd.read_csv(path, sep="\t", dtype={"county_fips": str}, low_memory=False)
-    df = df[df["county_fips"].notna() & (df["county_fips"] != "NA")].copy()
-    df["county_fips"] = df["county_fips"].str.replace(r"\.0$", "", regex=True).str.zfill(5)
-    df["mode"] = df["mode"].fillna("TOTAL").str.upper()
+    m = pd.read_csv(fetch(MEDSL_PRES, RAW / "countypres_2000-2016.csv"))
+    m = m[m["year"].isin(YEARS) & m["FIPS"].notna()].copy()
+    m["county_fips"] = m["FIPS"].astype(int).astype(str).str.zfill(5)
+    party = m["party"].fillna("").str.lower()
+    m["dem"] = np.where(party == "democrat", m["candidatevotes"], 0)
+    m["rep"] = np.where(party == "republican", m["candidatevotes"], 0)
+    old = m.rename(columns={"candidatevotes": "total"})[["year", "state_po", "county_fips", "dem", "rep", "total"]]
 
-    has_total = df.groupby(["year", "county_fips"])["mode"].transform(lambda m: (m == "TOTAL").any())
-    df = df[(df["mode"] == "TOTAL") | ~has_total]
+    new = []
+    for year in (2020, 2024):
+        d = pd.read_csv(fetch(MIRROR_PRES.format(year=year), RAW / f"pres_mirror_{year}.csv"),
+                        dtype={"county_fips": str})
+        new.append(pd.DataFrame({"year": year, "state_name": d["state_name"], "county_fips": d["county_fips"],
+                                 "dem": d["votes_dem"], "rep": d["votes_gop"], "total": d["total_votes"]}))
+    new = pd.concat(new)
+    # Map by state name, not FIPS prefix: MIT codes Kansas City as "36000", which is New York's prefix.
+    states = m.drop_duplicates("state").set_index("state")["state_po"]
+    new["state_po"] = new.pop("state_name").map(states)
 
-    party = df["party"].str.upper()
-    votes = (df.assign(dem=np.where(party == "DEMOCRAT", df["candidatevotes"], 0),
-                       rep=np.where(party == "REPUBLICAN", df["candidatevotes"], 0))
-               .groupby(["year", "state_po", "county_fips", "county_name"], as_index=False)
-               .agg(dem=("dem", "sum"), rep=("rep", "sum"), total=("candidatevotes", "sum")))
+    # The mirror's Alaska rows are wrong (2020 total about 9% high, 2024 two-party only);
+    # use the certified statewide figures instead.
+    new = new[new["state_po"] != "AK"]
+    ak = pd.DataFrame([{"year": y, "state_po": "AK", "county_fips": "02000", **v} for y, v in AK_CERTIFIED.items()])
+
+    df = pd.concat([old, new, ak], ignore_index=True)
+    df["unit_fips"] = to_unit(df["county_fips"])
+    votes = df.groupby(["year", "state_po", "unit_fips"], as_index=False)[["dem", "rep", "total"]].sum()
     votes["dem_2p"] = votes["dem"] / (votes["dem"] + votes["rep"])
     return votes
 
 
 # --------------------------------------------------------------------------- census
-ACS_VARS = {
-    "B01003_001E": "population",
-    "B29001_001E": "cvap",                  # citizen voting-age population
-    "B01002_001E": "median_age",
-    "B19013_001E": "median_income",
-    "B03002_001E": "race_total",
-    "B03002_003E": "white_nh",
-    "B15003_001E": "edu_total",
-    "B15003_022E": "edu_ba", "B15003_023E": "edu_ma", "B15003_024E": "edu_prof", "B15003_025E": "edu_phd",
+def cvap_vintage(year: int) -> int:
+    """CVAP 5-year vintage used as the denominator for an election year.
+
+    The 5-year window centred on the election (ending two years later), capped at the
+    latest release. For backtests, features must instead use a vintage published before
+    1 October of the election year; that is handled in the feature step, not here.
+    """
+    return min(year + 2, 2024)
+
+
+def cvap_county(vintage: int) -> pd.DataFrame:
+    """Citizen voting-age population by county from the CVAP special tabulation."""
+    cache = RAW / f"cvap_county_{vintage}.csv"
+    if not cache.exists():
+        url = CVAP_ZIP.format(v=vintage, s=vintage - 4)
+        r = requests.get(url, headers=UA, timeout=600)
+        r.raise_for_status()
+        with zipfile.ZipFile(io.BytesIO(r.content)) as z:
+            name = next(n for n in z.namelist() if n.lower().endswith("county.csv"))
+            cache.write_bytes(z.read(name))
+    df = pd.read_csv(cache, encoding="latin-1", dtype=str)
+    df.columns = df.columns.str.lower()
+    df = df[df["lntitle"] == "Total"]
+    return pd.DataFrame({"county_fips": df["geoid"].str[-5:],
+                         "cvap": pd.to_numeric(df["cvap_est"]),
+                         "cvap_moe": pd.to_numeric(df["cvap_moe"], errors="coerce")})
+
+
+ACS_TABLES = {
+    "b01003": {"B01003_E001": "population"},
+    "b01002": {"B01002_E001": "median_age"},
+    "b19013": {"B19013_E001": "median_income"},
+    "b03002": {"B03002_E001": "race_total", "B03002_E003": "white_nh", "B03002_E004": "black_nh",
+               "B03002_E012": "hispanic"},
+    "b15003": {"B15003_E001": "edu_total", "B15003_E022": "edu_ba", "B15003_E023": "edu_ma",
+               "B15003_E024": "edu_prof", "B15003_E025": "edu_phd"},
+    "b01001": {**{f"B01001_E{i:03d}": f"age_18_29_{i}" for i in [*range(7, 12), *range(31, 36)]},
+               **{f"B01001_E{i:03d}": f"age_65p_{i}" for i in [*range(20, 26), *range(44, 50)]}},
 }
 
 
-def acs_county(year: int = 2023) -> pd.DataFrame:
-    """County demographics from the ACS 5-year API (no key needed at this volume)."""
-    cache = RAW / f"acs5_{year}_county.json"
+def acs_table(table: str, vintage: int) -> pd.DataFrame:
+    """County rows of one ACS 5-year summary-file table (cached after the first download)."""
+    cache = RAW / f"acs5_{vintage}_{table}_county.csv"
     if not cache.exists():
-        key = os.environ.get("CENSUS_API_KEY")
-        if not key:
-            raise SystemExit("\nThe Census API needs a free key: sign up at "
-                             "https://api.census.gov/data/key_signup.html, then run\n"
-                             "  export CENSUS_API_KEY=<your key>\nbefore this script.")
-        r = requests.get(f"https://api.census.gov/data/{year}/acs/acs5",
-                         params={"get": "NAME," + ",".join(ACS_VARS), "for": "county:*", "key": key},
-                         headers=UA, timeout=120, allow_redirects=False)
-        if r.status_code in (301, 302):
-            raise SystemExit("The Census API rejected the key (redirected to its key page). Check CENSUS_API_KEY.")
-        r.raise_for_status()
-        cache.write_text(r.text)
-    rows = json.loads(cache.read_text())
-    df = pd.DataFrame(rows[1:], columns=rows[0]).rename(columns=ACS_VARS)
-    for c in ACS_VARS.values():
+        lines = []
+        with requests.get(ACS_TABLE.format(v=vintage, t=table), headers=UA, timeout=600, stream=True) as r:
+            r.raise_for_status()
+            for i, line in enumerate(r.iter_lines()):
+                if i == 0 or line.startswith(b"0500000US"):
+                    lines.append(line.decode("latin-1"))
+        cache.write_text("\n".join(lines))
+    df = pd.read_csv(cache, sep="|", dtype={"GEO_ID": str})
+    cols = ACS_TABLES[table]
+    df = df[["GEO_ID", *cols]].rename(columns=cols)
+    df.insert(0, "county_fips", df.pop("GEO_ID").str[-5:])
+    return df
+
+
+def land_area(vintage: int = 2024) -> pd.DataFrame:
+    path = fetch(GAZETTEER.format(v=vintage), RAW / f"gazetteer_counties_{vintage}.zip")
+    df = pd.read_csv(path, sep="\t", dtype={"GEOID": str}, compression="zip")
+    df.columns = df.columns.str.strip()
+    return pd.DataFrame({"county_fips": df["GEOID"], "land_sqmi": df["ALAND_SQMI"]})
+
+
+def acs_county(vintage: int = 2024) -> pd.DataFrame:
+    """County demographics from the ACS 5-year summary files, with land area."""
+    df = acs_table("b01003", vintage)
+    for t in ACS_TABLES:
+        if t != "b01003":
+            df = df.merge(acs_table(t, vintage), on="county_fips", how="left")
+    df = df.merge(land_area(), on="county_fips", how="left")
+    for c in df.columns[1:]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
-    df["county_fips"] = df["state"] + df["county"]
-    df["share_white_nh"] = df["white_nh"] / df["race_total"]
-    df["share_ba_plus"] = df[["edu_ba", "edu_ma", "edu_prof", "edu_phd"]].sum(axis=1) / df["edu_total"]
     df.loc[df["median_income"] < 0, "median_income"] = np.nan   # Census uses negative sentinels
-    return df[["county_fips", "NAME", "population", "cvap", "median_age", "median_income",
-               "share_white_nh", "share_ba_plus"]]
+    df.loc[df["median_age"] < 0, "median_age"] = np.nan
+    df["age_18_29"] = df.filter(like="age_18_29_").sum(axis=1)
+    df["age_65p"] = df.filter(like="age_65p_").sum(axis=1)
+    df["edu_ba_plus"] = df[["edu_ba", "edu_ma", "edu_prof", "edu_phd"]].sum(axis=1)
+    return df[["county_fips", "population", "median_age", "median_income", "race_total", "white_nh",
+               "black_nh", "hispanic", "edu_total", "edu_ba_plus", "age_18_29", "age_65p", "land_sqmi"]]
+
+
+def acs_units(acs: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate county demographics to county units. Counts are summed; medians of merged
+    units are population-weighted means of the county medians (an approximation)."""
+    acs = acs.assign(unit_fips=to_unit(acs["county_fips"]))
+    counts = ["population", "race_total", "white_nh", "black_nh", "hispanic", "edu_total", "edu_ba_plus",
+              "age_18_29", "age_65p", "land_sqmi"]
+    u = acs.groupby("unit_fips")[counts].sum()
+    for med in ("median_age", "median_income"):
+        ok = acs[med].notna()
+        w = acs[ok].assign(wx=acs[med] * acs["population"])
+        u[med] = w.groupby("unit_fips")["wx"].sum() / w.groupby("unit_fips")["population"].sum()
+    return pd.DataFrame({
+        "unit_fips": u.index,
+        "population": u["population"].values,
+        "median_age": u["median_age"].values,
+        "median_income": u["median_income"].values,
+        "share_white_nh": (u["white_nh"] / u["race_total"]).values,
+        "share_black_nh": (u["black_nh"] / u["race_total"]).values,
+        "share_hispanic": (u["hispanic"] / u["race_total"]).values,
+        "share_ba_plus": (u["edu_ba_plus"] / u["edu_total"]).values,
+        "share_18_29": (u["age_18_29"] / u["population"]).values,
+        "share_65p": (u["age_65p"] / u["population"]).values,
+        "log_density": np.log((u["population"] / u["land_sqmi"]).clip(lower=0.1)).values,
+    })
+
+
+# --------------------------------------------------------------------------- panel
+def county_panel(pres: pd.DataFrame, acs: pd.DataFrame) -> pd.DataFrame:
+    """County unit x presidential year: votes, CVAP, turnout (ballots for president / CVAP)
+    and the latest ACS demographics."""
+    parts = []
+    for year in YEARS:
+        v = cvap_vintage(year)
+        c = cvap_county(v).assign(unit_fips=lambda x: to_unit(x["county_fips"]))
+        c = c.groupby("unit_fips", as_index=False)["cvap"].sum()
+        p = pres[pres["year"] == year].merge(c, on="unit_fips", how="left").assign(cvap_vintage=v)
+        parts.append(p)
+    panel = pd.concat(parts, ignore_index=True)
+    panel["turnout"] = panel["total"] / panel["cvap"]
+    return panel.merge(acs_units(acs), on="unit_fips", how="left")
 
 
 # --------------------------------------------------------------------------- checks
 # Certified national totals (millions of ballots for president) used as a sanity check.
-NATIONAL_TOTAL_M = {2000: 105.4, 2004: 122.3, 2008: 131.5, 2012: 129.1, 2016: 136.7, 2020: 158.4, 2024: 155.2}
+NATIONAL_TOTAL_M = {2008: 131.5, 2012: 129.1, 2016: 136.7, 2020: 158.4, 2024: 155.2}
 
 
 def check_presidential(votes: pd.DataFrame) -> pd.DataFrame:
@@ -130,18 +263,20 @@ def check_presidential(votes: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> None:
-    acs = acs_county(2023)
-    acs.to_parquet(OUT / "acs_county_2023.parquet", index=False)
-    print("ACS counties:", len(acs), "| total CVAP (M):", round(acs["cvap"].sum() / 1e6, 1))
+    acs = acs_county(2024)
+    acs.to_parquet(OUT / "acs_county_2024.parquet", index=False)
+    print("ACS counties:", len(acs), "| population (M):", round(acs["population"].sum() / 1e6, 1))
 
     pres = county_presidential()
-    pres.to_parquet(OUT / "county_presidential.parquet", index=False)
+    panel = county_panel(pres, acs)
+    panel.to_parquet(OUT / "county_panel.parquet", index=False)
 
-    print("presidential rows:", len(pres), "| counties per year:",
-          pres.groupby("year")["county_fips"].nunique().to_dict())
+    print("panel rows:", len(panel), "| units per year:", panel.groupby("year")["unit_fips"].nunique().to_dict())
     print(check_presidential(pres).to_string())
-    unmatched = set(pres.loc[pres.year == 2024, "county_fips"]) - set(acs["county_fips"])
-    print("2024 county FIPS with no ACS match:", len(unmatched), sorted(unmatched)[:12])
+    print(panel.groupby("year").apply(lambda d: d["total"].sum() / d["cvap"].sum(), include_groups=False)
+               .round(3).rename("national turnout (share of CVAP)").to_string())
+    missing = panel[panel["cvap"].isna() | panel["population"].isna()]
+    print("units missing CVAP or ACS:", len(missing), missing[["year", "unit_fips"]].values.tolist()[:12])
 
 
 if __name__ == "__main__":
