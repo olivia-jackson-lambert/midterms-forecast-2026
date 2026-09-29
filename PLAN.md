@@ -24,7 +24,7 @@
 - **Nonpartisan tone.** Present probabilities, not preferences.
 - **Pre-register.** The published forecast is a tagged Git commit with a timestamp, so nobody can claim it was edited after the fact.
 - **Score honestly.** After the election, publish every miss, not only the hits.
-- **Before starting:** confirm with Hockeystick that a public, personal midterm forecast is fine.
+- **Employer:** confirmed on 28 September 2026 that personal projects like this are fine.
 
 ## 3. Data
 
@@ -95,7 +95,7 @@ If the model doesn't beat the baselines in backtest, don't publish it as a forec
 
 | Dates | Work |
 |---|---|
-| 28 Sep – 4 Oct | Confirm data sources; build the historical county dataset (results, turnout, ACS); employer check |
+| 28 Sep – 4 Oct | Confirm data sources; build the historical county dataset (results, turnout, ACS) |
 | 5 – 11 Oct | Turnout model (Stage A) and its 2018 and 2022 backtests |
 | 12 – 18 Oct | Vote-share model (Stage B), correlated simulation, race backtests, calibration |
 | 19 Oct | **Publish forecast v1** as a tagged commit, with the post and visuals |
@@ -127,6 +127,5 @@ midterms-2026/
 
 ## 10. Next Actions
 
-1. Ask Hockeystick whether a public personal forecast is OK.
-2. Confirm each data source in section 3 and tick it off.
-3. Build `src/forecast/ingest.py` for the MIT Election Lab county returns and ACS, then a first county panel for 2000–2024.
+1. Confirm each data source in section 3 and tick it off.
+2. Build `src/forecast/ingest.py` for the MIT Election Lab county returns and ACS, then a first county panel for 2000–2024.
