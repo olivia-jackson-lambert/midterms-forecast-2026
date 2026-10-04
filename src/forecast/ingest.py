@@ -16,6 +16,7 @@ Everything is cached under data/raw/ (never committed). Outputs go to data/proce
 from __future__ import annotations
 
 import io
+import os
 import zipfile
 from pathlib import Path
 
@@ -24,8 +25,11 @@ import pandas as pd
 import requests
 
 ROOT = Path(__file__).resolve().parents[2]
-RAW = ROOT / "data" / "raw"
-OUT = ROOT / "data" / "processed"
+# Data can live outside the repo (set TURNOUT_DATA), e.g. when the repo is in an iCloud folder
+# that evicts large files.
+DATA = Path(os.environ.get("TURNOUT_DATA", ROOT / "data"))
+RAW = DATA / "raw"
+OUT = DATA / "processed"
 RAW.mkdir(parents=True, exist_ok=True)
 OUT.mkdir(parents=True, exist_ok=True)
 

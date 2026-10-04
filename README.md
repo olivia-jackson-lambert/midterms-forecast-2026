@@ -18,10 +18,18 @@ what it needs in `data/raw/`, which is never committed.
 ```
 cd src && python -m forecast.ingest     # presidential panel: data/processed/county_panel.parquet
 python -m forecast.midterms             # midterm turnout 2014-2022 and 2018/2022 results
-cd .. && python -m pytest               # data checks
+python -m forecast.backtest             # turnout backtests, 2018 and 2022
+python -m forecast.turnout_model        # 2026 county turnout forecast
+cd .. && python -m pytest               # data and model checks
 ```
 
 `county_panel.parquet` has one row per county unit and presidential year (2008 to 2024):
 Democratic, Republican and total votes, two-party share, citizen voting-age population,
 turnout as a share of it, and ACS 2020–2024 demographics. `PLAN.md` explains the county
 units and known limits.
+
+### iCloud
+
+If the repo sits in an iCloud-synced folder with "Optimise Mac Storage" on, iCloud can evict
+data files and packages, which makes reads fail or crawl. Point the data somewhere local with
+`export TURNOUT_DATA=/path/outside/icloud` (it defaults to `data/` in the repo).

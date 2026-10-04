@@ -84,6 +84,27 @@ All raw data lives in `data/` and is never committed (see `.gitignore`).
 
 **Kept deliberately simple:** no candidate-quality scores from pundits, and no subjective adjustments. Anything that can't be backtested stays out.
 
+### Stage A As Built (4 October)
+
+Code: `features.py`, `national.py`, `turnout_model.py`, `backtest.py`.
+
+**National level.** Midterm turnout is the last presidential turnout minus a midterm drop, on the logit scale, with the drop and its spread estimated from every midterm since 1986 before the target year (UF Election Lab VEP series). Out of sample since 1998 this beats "same as the last midterm" (logit RMSE 0.19 against 0.23). For 2026: 64.3% in 2024 gives a median of about 47.5% of the eligible population.
+
+**County pattern.** Each county's logit change from the last midterm depends on:
+- how far presidential turnout ran above the last midterm (the strongest predictor, about 0.57);
+- regression towards the mean (about -0.17);
+- a Senate race joining or leaving the ballot (+0.05) and the change in closeness of the top race (governor races are on the same 36 ballots every midterm, so they cancel out);
+- the out-party effect: county partisan lean times the change in which party holds the White House (+0.10);
+- seven demographic slopes (education, age 18-29 and 65+, Hispanic, Black, density, income) that may shift between elections;
+- a state effect (spread 0.14) and Student-t county noise that grows for small counties.
+
+**Simulation.** 20,000 draws. Each draws national turnout, then shifts every county by the same amount so the eligible-population-weighted total matches it.
+
+**Deviations from the protocol, stated openly:**
+- Demographics come from ACS 2020–2024 for every year (the table-based files start with the 2021 vintage). They change slowly and contain no results.
+- There is no public 2010 county turnout, so the 2018 backtest has no earlier county transition to learn from and runs on priors alone. Only the 2022 backtest tests the full county model.
+- The out-party term was added after the first backtest showed a county-size bias that flipped sign between 2018 and 2022. Both versions are reported below; the forecast uses the version with it.
+
 ## 5. Backtest (The Credibility)
 
 For **2018** and **2022**, fit the model using only data available on 1 October of that year, then score it against the actual results:
@@ -92,6 +113,27 @@ For **2018** and **2022**, fit the model using only data available on 1 October 
 - **Baselines to beat:** "same as last midterm" for turnout, and "same as the last presidential lean" for vote share.
 
 If the model doesn't beat the baselines in backtest, don't publish it as a forecast. Publish it as an analysis instead.
+
+### Turnout Results (4 October)
+
+County turnout as a share of eligible citizens, in percentage points, scored on counties whose actual turnout isn't imputed (2,843 in 2018, 3,094 in 2022).
+
+| | 2018 | 2022 |
+|---|---|---|
+| Mean absolute error, model | **6.4** | **4.2** |
+| Mean absolute error, same as last midterm | 10.5 | 4.6 |
+| Weighted by eligible population, model | **8.9** | **4.6** |
+| Weighted, same as last midterm | 14.0 | 5.3 |
+| 80% interval coverage | 96% | 89% |
+| National turnout, 80% band | 38–48% | 44.5–56% |
+| National turnout, actual | 50.9% | 46.5% |
+| With national turnout known: error / coverage | 5.9 / 99% | 3.9 / 81% |
+
+Without the out-party term, 2022 error was 4.0 (weighted 4.9) and coverage with national turnout known was 72%.
+
+**Reading it.** The model beats the baseline in both years. Most of the remaining error is the national level, which every county shares: 2018's surge was outside the national 80% band. With the national level known, the 2022 county intervals are well calibrated (81%). The 2018 intervals are too wide because that backtest has no training data. Two elections can't tell us much about the calibration of the national band itself; it is wide on purpose.
+
+**2026 (first run).** National median 47.9% of eligible citizens (80%: 42.2–53.5%), on the same basis as the backtests.
 
 ## 6. Deliverables
 
@@ -144,5 +186,6 @@ midterms-2026/
 
 1. ~~Build the county presidential panel, 2008–2024, with CVAP turnout and ACS demographics.~~ Done 29 September (`python -m forecast.ingest`, checks in `tests/`).
 2. ~~Aggregate 2018 and 2022 precinct files to county midterm turnout and results, and add 2014 turnout.~~ Done 4 October (`python -m forecast.midterms`).
-3. Rebuild the 2018 and 2022 generic-ballot averages from public poll listings.
-4. Compile 2026 races, incumbency and special elections from Ballotpedia.
+3. ~~Turnout model (Stage A) with 2018 and 2022 backtests.~~ First version done 4 October; refresh with October early vote.
+4. Rebuild the 2018 and 2022 generic-ballot averages from public poll listings.
+5. Compile 2026 races, incumbency and special elections from Ballotpedia; fill the California 2022 Senate and Tennessee 2022 governor results from the states.
