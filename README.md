@@ -30,6 +30,13 @@ units and known limits.
 
 ### iCloud
 
-If the repo sits in an iCloud-synced folder with "Optimise Mac Storage" on, iCloud can evict
-data files and packages, which makes reads fail or crawl. Point the data somewhere local with
-`export TURNOUT_DATA=/path/outside/icloud` (it defaults to `data/` in the repo).
+The repo sits in an iCloud-synced folder, and with "Optimise Mac Storage" on iCloud evicts
+large files, which makes reads fail or crawl. iCloud skips anything ending in `.nosync`, so the
+data lives in `data.nosync/` with `data` as a symlink to it. In a fresh clone:
+
+```
+mkdir -p data.nosync/raw data.nosync/processed && ln -s data.nosync data
+```
+
+The portfolio venv is set up the same way (`.venv` links to `.venv.nosync`). To keep data
+somewhere else entirely, set `TURNOUT_DATA=/path/to/data`.

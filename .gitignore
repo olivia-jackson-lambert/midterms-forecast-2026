@@ -1,5 +1,8 @@
 # data stays local; only code, the plan and published forecasts are versioned
 data/
+# data is a symlink to data.nosync/ so iCloud doesn't evict it (see README)
+data
+*.nosync/
 *.parquet
 *.csv
 !forecasts/*.csv
