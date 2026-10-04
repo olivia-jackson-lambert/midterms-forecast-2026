@@ -37,9 +37,11 @@ Every source is public. Mark each one ✅ once its availability and licence are 
 | Full county presidential file, 2000–2024 | MIT Election Lab Dataverse (doi:10.7910/DVN/VOQCHQ, v20) | ⚠️ guestbook form; not needed now |
 | Senate results by state, 1976–2024 | MIT Election Lab Dataverse (doi:10.7910/DVN/PEJ5QU, v8) | ⚠️ guestbook form |
 | House results by district, 1976–2024 | MIT Election Lab Dataverse (doi:10.7910/DVN/IG0UN2, v15) | ⚠️ guestbook form (stretch goal only) |
-| **Midterm county turnout and results, 2018** | MIT Election Lab precinct returns on GitHub (`MEDSL/2018-elections-official`: `SENATE/`, `HOUSE/`, `STATE/` incl. governor), with county FIPS, no form. The repo is marked deprecated in favour of Dataverse (Senate DGNAFS, House IVIXLK, state offices ZFXEJU), so check totals against certified | ✅ files open (next step: aggregate to county) |
-| **Midterm county turnout and results, 2022** | MIT Election Lab precinct returns on GitHub (`MEDSL/2022-elections-official`, one file per state, all offices incl. governor), with county FIPS, no form. Known gaps: some Indiana counties and Phillips County AR have no precinct data | ✅ files open (next step: aggregate to county) |
-| Governor results, 2018 and 2022 | In the precinct files above | ⚠️ build from precincts |
+| **Midterm ballots cast by county, 2014, 2018, 2022** | EAC Election Administration and Voting Survey (EAVS), question F1a (total who participated), by election jurisdiction, no form | ✅ in `midterms.py`. Problems handled: Alabama 2014 reports registration, Illinois 2014 is blank, Hawaii and Utah 2014 are a third off, Wisconsin 2018 and 2022 have no county codes, Kansas City and Illinois city authorities have their own codes |
+| **Certified state totals and national turnout history** | UF Election Lab (Michael McDonald): total ballots counted and VEP turnout by state, 1980–2022, and 2024 (v0.4), CC BY 4.0 | ✅ every state's county ballots are reconciled to these totals |
+| **Midterm county results, 2018** | MIT Election Lab precinct returns on GitHub (`MEDSL/2018-elections-official`: `SENATE/`, `HOUSE/`, `STATE/` incl. governor; Indiana from its per-state file), no form. The repo is marked deprecated in favour of Dataverse | ✅ in `midterms.py`; all 36 governor and 35 Senate races; spot checks match certified to 0.2% |
+| **Midterm county results, 2022** | MIT Election Lab precinct returns on GitHub (`MEDSL/2022-elections-official`, one file per state), no form | ✅ in `midterms.py`; spot checks match certified. Known gaps: California Senate (regular and special) and Tennessee governor are missing from MIT's files, and New Jersey's House rows are double counted (not used) |
+| Governor results, 2018 and 2022 | In the precinct files above | ✅ (2022 Tennessee to fill from the state) |
 | Citizen voting-age population (turnout denominator) | Census CVAP special tabulation, bulk CSVs on www2.census.gov, every 5-year vintage from 2005–2009 to 2020–2024; each election uses the vintage centred on it | ✅ in ingest |
 | County demographics | ACS 5-year table-based summary files (2020–2024) on www2.census.gov: population, median age, income, race and ethnicity, education, age 18–29 and 65+ | ✅ in ingest. The Census API now needs a key, so it isn't used |
 | Land area (for density) | Census Gazetteer counties file, 2024 | ✅ in ingest |
@@ -52,6 +54,8 @@ Every source is public. Mark each one ✅ once its availability and licence are 
 | County shapefiles | Census cartographic boundary files 2023 (20m) | ✅ |
 
 **County units.** Results and Census geographies don't line up everywhere, so the panel uses county units: Alaska, Connecticut and DC are one unit each; Jackson, Clay and Platte counties (Kansas City, which reports separately) are one unit; Kalawao is merged into Maui, Bedford city into Bedford County, and Shannon SD is Oglala Lakota. That gives 3,104 units in every year.
+
+**Midterm turnout numerator.** EAVS ballots cast where they pass two checks: within a factor of 1.6 of a crude estimate (last presidential vote times the state's certified midterm-to-presidential ratio) and, where MIT results exist, between 97% and 125% of the county's highest-office vote. Otherwise the MIT highest-office vote is scaled up by the state's ballots-to-highest-office ratio; failing that, the crude estimate is used and the row is marked imputed (256 units in 2014, 5 in 2018, 5 in 2022). Imputed rows are used as backtest anchors but never for training. Every state is then scaled to UF's certified total. County turnout correlates 0.80 between 2014 and 2018 and 0.81 between 2018 and 2022 (logit scale).
 
 **Known limits.** CVAP is a survey estimate, so a handful of tiny counties show turnout above 100% (under 0.5% of rows, none with 5,000+ eligible citizens); the turnout model should shrink small counties. Chattahoochee GA shows about 20% turnout because Fort Moore's residents are counted there but mostly vote elsewhere.
 
@@ -139,6 +143,6 @@ midterms-2026/
 ## 10. Next Actions
 
 1. ~~Build the county presidential panel, 2008–2024, with CVAP turnout and ACS demographics.~~ Done 29 September (`python -m forecast.ingest`, checks in `tests/`).
-2. Aggregate the 2018 and 2022 precinct files to county midterm turnout and Senate and governor results; check them against certified state totals.
+2. ~~Aggregate 2018 and 2022 precinct files to county midterm turnout and results, and add 2014 turnout.~~ Done 4 October (`python -m forecast.midterms`).
 3. Rebuild the 2018 and 2022 generic-ballot averages from public poll listings.
 4. Compile 2026 races, incumbency and special elections from Ballotpedia.

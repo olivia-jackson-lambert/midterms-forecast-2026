@@ -8,3 +8,4 @@ requests>=2.32
 matplotlib>=3.9
 geopandas>=1.0
 pytest>=8
+openpyxl>=3.1

@@ -63,13 +63,13 @@ def fetch(url: str, dest: Path) -> Path:
 # uses "county units": Census counties, with a few merged so results and population line up.
 #   Alaska: results by state house district, Census by borough -> one statewide unit.
 #   Connecticut: old counties until 2020, planning regions from 2022 -> one statewide unit.
-#   Kansas City, MO reports separately and the 2020-24 mirror folds it into Jackson County,
-#     so Jackson, Clay and Platte (the counties it spans) form one unit.
+#   Kansas City, MO reports separately (MIT codes it 36000, EAVS 29380) and the 2020-24 mirror
+#     folds it into Jackson County, so Jackson, Clay and Platte (the counties it spans) form one unit.
 #   Washington DC: the 2024 mirror reports it by ward -> one unit.
 #   Renamed or merged counties: Shannon SD -> Oglala Lakota, Bedford city VA -> Bedford
 #     County, Kalawao HI (no separate results) -> Maui.
 UNIT_REMAP = {"46113": "46102", "51515": "51019", "15005": "15009",
-              "36000": "29095", "29047": "29095", "29165": "29095"}
+              "36000": "29095", "29380": "29095", "29047": "29095", "29165": "29095"}
 
 
 def to_unit(fips: pd.Series) -> pd.Series:

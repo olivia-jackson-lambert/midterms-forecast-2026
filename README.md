@@ -10,13 +10,14 @@ pip install -r requirements.txt
 
 No API keys or download forms are needed. The ingest pulls public files from GitHub
 (MIT Election Lab's county returns and a county results mirror) and from www2.census.gov
-(CVAP, ACS summary files, Gazetteer). The first run downloads about 550 MB and caches
+(CVAP, ACS summary files, Gazetteer), the EAC (EAVS) and the UF Election Lab. The first run downloads about 800 MB and caches
 what it needs in `data/raw/`, which is never committed.
 
 ## Run
 
 ```
-cd src && python -m forecast.ingest     # builds data/processed/county_panel.parquet
+cd src && python -m forecast.ingest     # presidential panel: data/processed/county_panel.parquet
+python -m forecast.midterms             # midterm turnout 2014-2022 and 2018/2022 results
 cd .. && python -m pytest               # data checks
 ```
 
