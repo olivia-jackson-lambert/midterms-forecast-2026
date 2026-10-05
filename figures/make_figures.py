@@ -4,11 +4,8 @@ Styling comes from the portfolio site's scripts/figstyle.py (Lora, slate and rus
 Case, no titles inside figures; the captions in the write-up carry the titles). Set
 PORTFOLIO_SITE if the site repo is not at ~/Documents/portfolio/olivia-jackson-lambert.github.io.
 
-Colour rules for this project, on top of figstyle's:
-- Slate and rust are kept for party (Democratic and Republican) in the race figures, because
-  a red and blue county map reads as partisan whatever it shows.
-- Turnout figures use TEAL (lower) and OCHRE (higher), both from figstyle's CATEGORICAL list.
-- Within a turnout figure, rust still marks the one thing to notice when nothing partisan is shown.
+Colours come from figures/palette.py: red and blue only for party; turnout figures use
+charcoal and grey, with green as the accent and green (higher) against purple (lower).
 
     python figures/make_figures.py          # writes figures/out/*.png
 """
@@ -33,16 +30,14 @@ ROOT = HERE.parent
 sys.path.insert(0, str(ROOT / "src"))
 SITE = Path(os.environ.get("PORTFOLIO_SITE", Path.home() / "Documents/portfolio/olivia-jackson-lambert.github.io"))
 sys.path.insert(0, str(SITE / "scripts"))
-from figstyle import (CATEGORICAL, DIM, GRID, INK, LIGHT, MUTED, PAPER, RUST, SLATE,  # noqa: E402
-                      apply, note, tidy)
+from figstyle import DIM, INK, LIGHT, MUTED, PAPER, apply, note, tidy  # noqa: E402
+from palette import ACCENT, BASE, CHANGE, CONTEXT, DENSITY, GREEN, PURPLE  # noqa: E402
 
 from forecast import national  # noqa: E402
 from forecast.features import SENATE  # noqa: E402
 from forecast.ingest import OUT as DATA, RAW  # noqa: E402
 
 OUT = HERE / "out"
-TEAL, OCHRE = CATEGORICAL[8], CATEGORICAL[7]          # "#5f8a8b", "#b08b5a"
-TURNOUT_DIV = LinearSegmentedColormap.from_list("turnout_div", ["#3f6566", TEAL, PAPER, OCHRE, "#7d5f37"])
 
 
 def save(fig, name):
@@ -107,7 +102,7 @@ def hero_map(t: pd.DataFrame) -> None:
     # Certainty: 1 for the tightest intervals, 0 for the widest (5th to 95th percentile).
     w = g["width_county"]
     cert = 1 - np.clip((w - w.quantile(0.05)) / (w.quantile(0.95) - w.quantile(0.05)), 0, 1)
-    base = np.array([TURNOUT_DIV(v)[:3] for v in norm.fillna(0.5)])
+    base = np.array([CHANGE(v)[:3] for v in norm.fillna(0.5)])
     paper = np.array(to_rgb(PAPER))
     colours = paper + (base - paper) * (0.35 + 0.65 * cert.fillna(0).to_numpy()[:, None])
 
@@ -122,7 +117,7 @@ def hero_map(t: pd.DataFrame) -> None:
     xs = np.linspace(-1, 1, 7)
     for j, c in enumerate([1.0, 0.5, 0.0]):
         for i, x in enumerate(xs):
-            rgb = paper + (np.array(TURNOUT_DIV(x / 2 + 0.5)[:3]) - paper) * (0.35 + 0.65 * c)
+            rgb = paper + (np.array(CHANGE(x / 2 + 0.5)[:3]) - paper) * (0.35 + 0.65 * c)
             lg.add_patch(plt.Rectangle((i, -j), 1, 1, color=rgb, linewidth=0))
     lg.set_xlim(0, 7); lg.set_ylim(-2, 1)
     lg.set_xticks([0.5, 3.5, 6.5], [f"−{lim * 100:.0f}", "0", f"+{lim * 100:.0f}"])
@@ -146,13 +141,13 @@ def national_history() -> None:
     midterm = years % 4 == 2
     fig, ax = plt.subplots(figsize=(8.4, 4.4))
     ax.plot(years[~midterm], t[~midterm] * 100, color=LIGHT, lw=1.6, marker="o", ms=4, label="Presidential Years")
-    ax.plot(years[midterm], t[midterm] * 100, color=SLATE, lw=2, marker="o", ms=5, label="Midterms")
-    ax.plot([2022, 2026], [t[2022] * 100, mid * 100], color=RUST, lw=1.4, ls=(0, (2, 2)))
-    ax.fill_between([2025.6, 2026.4], lo * 100, hi * 100, color=RUST, alpha=0.18, lw=0)
-    ax.fill_between([2025.6, 2026.4], lo50 * 100, hi50 * 100, color=RUST, alpha=0.30, lw=0)
-    ax.plot([2025.6, 2026.4], [mid * 100] * 2, color=RUST, lw=2.2)
+    ax.plot(years[midterm], t[midterm] * 100, color=BASE, lw=2, marker="o", ms=5, label="Midterms")
+    ax.plot([2022, 2026], [t[2022] * 100, mid * 100], color=ACCENT, lw=1.4, ls=(0, (2, 2)))
+    ax.fill_between([2025.6, 2026.4], lo * 100, hi * 100, color=ACCENT, alpha=0.18, lw=0)
+    ax.fill_between([2025.6, 2026.4], lo50 * 100, hi50 * 100, color=ACCENT, alpha=0.30, lw=0)
+    ax.plot([2025.6, 2026.4], [mid * 100] * 2, color=ACCENT, lw=2.2)
     ax.annotate(f"2026 Forecast\n{mid * 100:.1f}% (80%: {lo * 100:.0f}–{hi * 100:.0f}%)", (2026.5, mid * 100),
-                xytext=(6, 0), textcoords="offset points", va="center", fontsize=9.5, color=RUST)
+                xytext=(6, 0), textcoords="offset points", va="center", fontsize=9.5, color=ACCENT)
     ax.annotate("2018: 50.0%", (2018, t[2018] * 100), xytext=(-8, 8), textcoords="offset points",
                 ha="right", fontsize=9, color=DIM)
     ax.set_xlim(1979, 2033)
@@ -167,7 +162,7 @@ def national_history() -> None:
 
 def state_change(t: pd.DataFrame) -> None:
     """Every state's forecast against its 2022 turnout. Thin bar: full 80% interval; thick bar: the
-    state's own 80% interval with national turnout held at its median. Senate race added in rust."""
+    state's own 80% interval with national turnout held at its median. Senate race added in green."""
     s = pd.read_parquet(DATA / "turnout_2026_states.parquet").set_index("state_po")
     t22 = (t["t2022"] * t["cvap"]).groupby(t["state_po"]).sum() / t.groupby("state_po")["cvap"].sum()
     s["t2022"] = t22
@@ -175,20 +170,20 @@ def state_change(t: pd.DataFrame) -> None:
     s = s.sort_values("median")
     fig, ax = plt.subplots(figsize=(6.2, 11.0))
     for i, (st, r) in enumerate(s.iterrows()):
-        c = RUST if st in new_senate else SLATE
+        c = ACCENT if st in new_senate else BASE
         ax.plot([r["lo80"] * 100, r["hi80"] * 100], [i, i], color=c, alpha=0.22, lw=1.4, solid_capstyle="round")
         ax.plot([r["lo80_state"] * 100, r["hi80_state"] * 100], [i, i], color=c, alpha=0.35, lw=5.5,
                 solid_capstyle="round")
-        ax.plot(r["t2022"] * 100, i, "o", ms=4.5, mfc="white", mec=DIM, mew=1.1, zorder=4)
+        ax.plot(r["t2022"] * 100, i, "o", ms=4.5, mfc="white", mec=CONTEXT, mew=1.2, zorder=4)
         ax.plot(r["median"] * 100, i, "o", ms=5.5, color=c, zorder=5)
     ax.set_yticks(np.arange(len(s)), s.index)
     ax.set_xlabel("Turnout (% of Citizens of Voting Age)")
     ax.tick_params(axis="y", labelsize=8.5)
     tidy(ax, grid_axis="x")
     ax.set_ylim(-1, len(s))
-    handles = [plt.Line2D([], [], marker="o", ls="", ms=5.5, color=SLATE, label="2026 Forecast"),
-               plt.Line2D([], [], marker="o", ls="", ms=5.5, color=RUST, label="2026, Senate Race Added"),
-               plt.Line2D([], [], marker="o", ls="", ms=4.5, mfc="white", mec=DIM, label="2022 Actual")]
+    handles = [plt.Line2D([], [], marker="o", ls="", ms=5.5, color=BASE, label="2026 Forecast"),
+               plt.Line2D([], [], marker="o", ls="", ms=5.5, color=ACCENT, label="2026, Senate Race Added"),
+               plt.Line2D([], [], marker="o", ls="", ms=4.5, mfc="white", mec=CONTEXT, label="2022 Actual")]
     ax.legend(handles=handles, loc="lower right")
     note(ax, "Thick bars: the state's own 80% interval, national turnout held at its median.\n"
              "Thin bars: 80% interval including national uncertainty.", y=-0.055)
@@ -205,15 +200,15 @@ def backtest_errors() -> None:
     for i, (lab, base, model) in enumerate(rows[::-1]):
         ax.plot([model, base], [i, i], color=LIGHT, lw=2.5, zorder=1)
         ax.plot(base, i, "o", ms=8, color=MUTED, zorder=2)
-        ax.plot(model, i, "o", ms=8, color=RUST, zorder=3)
+        ax.plot(model, i, "o", ms=8, color=ACCENT, zorder=3)
         ax.text(base + 0.25, i, f"{base:.1f}", va="center", fontsize=9, color=MUTED)
-        ax.text(model - 0.25, i, f"{model:.1f}", va="center", ha="right", fontsize=9, color=RUST)
+        ax.text(model - 0.25, i, f"{model:.1f}", va="center", ha="right", fontsize=9, color=ACCENT)
     ax.set_yticks(range(len(rows)), [r[0] for r in rows[::-1]])
     ax.set_xlim(0, 15.5)
     ax.set_ylim(-0.6, len(rows) - 0.4)
     ax.set_xlabel("Mean Absolute Error, County Turnout (Points)")
     tidy(ax, grid_axis="x")
-    handles = [plt.Line2D([], [], marker="o", ls="", ms=8, color=RUST, label="Model"),
+    handles = [plt.Line2D([], [], marker="o", ls="", ms=8, color=ACCENT, label="Model"),
                plt.Line2D([], [], marker="o", ls="", ms=8, color=MUTED, label="Same as Last Midterm")]
     ax.legend(handles=handles, loc="lower right", bbox_to_anchor=(1, 1.0), ncol=2)
     note(ax, "Each backtest uses only data available on 1 October of that year.", y=-0.3)
@@ -228,8 +223,8 @@ def backtest_scatter() -> None:
     fig, axes = plt.subplots(1, 2, figsize=(8.6, 4.4), sharex=True, sharey=True)
     for ax, col, lab in zip(axes, ["last_midterm", "median"], ["Same as Last Midterm", "Model"]):
         ax.hexbin(d["actual"] * 100, d[col] * 100, gridsize=48, extent=(10, 90, 10, 90), mincnt=1,
-                  cmap="site_slate", bins="log", linewidths=0)
-        ax.plot([10, 90], [10, 90], color=RUST, lw=1, ls=(0, (3, 2)))
+                  cmap=DENSITY, bins="log", linewidths=0)
+        ax.plot([10, 90], [10, 90], color=ACCENT, lw=1.2, ls=(0, (3, 2)))
         mae = (d[col] - d["actual"]).abs().mean() * 100
         ax.text(0.04, 0.95, f"{lab}\nError {mae:.1f} Points", transform=ax.transAxes, va="top", fontsize=9.5, color=INK)
         ax.set_xlim(10, 90); ax.set_ylim(10, 90)
@@ -261,7 +256,7 @@ def drivers() -> None:
     e = e.reindex(e["mean"].abs().sort_values().index)
     fig, ax = plt.subplots(figsize=(7.4, 4.8))
     for i, (k, r) in enumerate(e.iterrows()):
-        c = RUST if r["lo"] > 0 or r["hi"] < 0 else SLATE      # rust: interval excludes zero
+        c = GREEN if r["lo"] > 0 else PURPLE if r["hi"] < 0 else CONTEXT   # grey: interval crosses zero
         ax.plot([r["lo"], r["hi"]], [i, i], color=c, lw=2.5, alpha=0.45, solid_capstyle="round")
         ax.plot(r["mean"], i, "o", color=c, ms=6)
         ax.text(max(r["hi"], r["mean"]) + 0.08, i, f"{r['mean']:+.1f}", va="center", fontsize=8.5, color=c)
@@ -269,7 +264,7 @@ def drivers() -> None:
     ax.set_yticks(np.arange(len(e)), [labels[k] for k in e.index])
     ax.set_xlabel("Effect on Turnout Change (Points) for a Typical Difference")
     tidy(ax, grid_axis="x")
-    note(ax, "Posterior means and 89% intervals (rust where the interval excludes zero), fitted on 2014–2018 and\n"
+    note(ax, "Posterior means and 89% intervals; green raises turnout, purple lowers it, grey is unclear. Fitted on 2014–2018 and\n"
              "2018–2022. A typical difference is one standard deviation across counties; for the Senate term, a race\n"
              "joining the ballot.", y=-0.13)
     save(fig, "turnout_drivers.png")
