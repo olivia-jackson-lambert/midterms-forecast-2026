@@ -40,6 +40,15 @@ def _num(s: pd.Series) -> pd.Series:
     return pd.to_numeric(s, errors="coerce")
 
 
+def _max_update(series: pd.Series) -> str:
+    """Latest last_update as ISO date (string max is wrong for M/D/YYYY)."""
+    dt = pd.to_datetime(series, errors="coerce")
+    if dt.notna().any():
+        return dt.max().strftime("%Y-%m-%d")
+    vals = [str(v) for v in series.dropna().astype(str) if str(v).strip()]
+    return max(vals) if vals else ""
+
+
 def fetch_csv(year: int = 2026, force: bool = True) -> Path:
     """Download the UF Election Lab national early-vote CSV (refresh by default)."""
     url = UF_EARLY_VOTE_CSV.get(year)
@@ -91,37 +100,12 @@ def parse_uf_csv(path: Path, year: int = 2026) -> pd.DataFrame:
     return d.sort_values("state_po").reset_index(drop=True)
 
 
-def build(year: int = 2026, force: bool = True) -> pd.DataFrame:
-    """Fetch, tidy, and cache `early_vote_{year}.parquet`."""
-    path = fetch_csv(year, force=force)
-    df = parse_uf_csv(path, year=year)
-    OUT.mkdir(parents=True, exist_ok=True)
-    df.to_parquet(OUT / f"early_vote_{year}.parquet", index=False)
-    return df
-
-
-def load(year: int = 2026) -> pd.DataFrame:
-    """State early-vote shares; empty frame if cache missing."""
-    path = OUT / f"early_vote_{year}.parquet"
-    if path.exists():
-        return pd.read_parquet(path)
-    return pd.DataFrame(columns=[
-        "year", "state_po", "early_share", "mail_share", "request_share",
-        "reporting", "source",
-    ])
-
-
-def state_offsets(year: int = 2026, scale: float = OFFSET_SCALE) -> pd.Series:
-    """Logit turnout offsets from relative early-vote pace (reporting states).
-
-    Non-reporting states get 0. Mean among reporters is ~0 so the national total
-    is little changed; competitive / high-pace states get a positive nudge.
-    """
-    d = load(year)
-    if d.empty or "reporting" not in d.columns:
-        return pd.Series(dtype=float, name="early_vote_offset")
-    rep = d.loc[d["reporting"] & d["early_share"].notna()].copy()
+def offsets_from_frame(d: pd.DataFrame, scale: float = OFFSET_SCALE) -> pd.Series:
+    """Logit turnout offsets from a tidy early-vote frame (reporting states)."""
     out = pd.Series(0.0, index=d["state_po"], name="early_vote_offset")
+    if d.empty or "reporting" not in d.columns:
+        return out
+    rep = d.loc[d["reporting"] & d["early_share"].notna()].copy()
     if len(rep) < 3:
         return out
     pace = rep["early_share"].to_numpy(dtype=float)
@@ -132,6 +116,45 @@ def state_offsets(year: int = 2026, scale: float = OFFSET_SCALE) -> pd.Series:
     adj = np.clip(scale * z, -OFFSET_CLIP, OFFSET_CLIP)
     out.loc[rep["state_po"].values] = adj
     return out
+
+
+def build(year: int = 2026, force: bool = True) -> pd.DataFrame:
+    """Fetch, tidy, and cache `early_vote_{year}.parquet` (+ offsets)."""
+    path = fetch_csv(year, force=force)
+    df = parse_uf_csv(path, year=year)
+    offs = offsets_from_frame(df)
+    df["early_vote_offset"] = df["state_po"].map(offs).fillna(0.0)
+    OUT.mkdir(parents=True, exist_ok=True)
+    df.to_parquet(OUT / f"early_vote_{year}.parquet", index=False)
+    offs.rename("early_vote_offset").to_frame().reset_index().rename(
+        columns={"index": "state_po"}).to_parquet(
+        OUT / f"early_vote_offsets_{year}.parquet", index=False)
+    return df
+
+
+def load(year: int = 2026) -> pd.DataFrame:
+    """State early-vote shares; empty frame if cache missing."""
+    path = OUT / f"early_vote_{year}.parquet"
+    if path.exists():
+        return pd.read_parquet(path)
+    return pd.DataFrame(columns=[
+        "year", "state_po", "early_share", "mail_share", "request_share",
+        "reporting", "source", "early_vote_offset",
+    ])
+
+
+def state_offsets(year: int = 2026, scale: float = OFFSET_SCALE) -> pd.Series:
+    """Logit turnout offsets from relative early-vote pace (reporting states).
+
+    Non-reporting states get 0. Mean among reporters is ~0 so the national total
+    is little changed; competitive / high-pace states get a positive nudge.
+    """
+    d = load(year)
+    if d.empty:
+        return pd.Series(dtype=float, name="early_vote_offset")
+    if "early_vote_offset" in d.columns and scale == OFFSET_SCALE:
+        return d.set_index("state_po")["early_vote_offset"].astype(float)
+    return offsets_from_frame(d, scale=scale)
 
 
 def national_pace(year: int = 2026) -> dict:
@@ -154,7 +177,7 @@ def national_pace(year: int = 2026) -> dict:
         "ballots_returned": returned,
         "turn_2022_reporting": base,
         "early_share": returned / base if base else float("nan"),
-        "last_update_max": str(rep["last_update"].astype(str).max()) if "last_update" in rep else "",
+        "last_update_max": _max_update(rep["last_update"]) if "last_update" in rep else "",
         "source": "uf_election_lab",
         "page": UF_EARLY_VOTE_PAGE,
     }
@@ -187,6 +210,7 @@ def main() -> None:
     print("national pace (returned / 2022 turnout, reporting states):",
           f"{pace['early_share']:.4f}" if np.isfinite(pace["early_share"]) else "n/a",
           f"(n={pace['n_reporting']})")
+    print("latest state update:", pace.get("last_update_max") or "n/a")
     print("source page:", UF_EARLY_VOTE_PAGE)
     offs = state_offsets(2026)
     if len(offs):

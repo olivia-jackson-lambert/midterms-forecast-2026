@@ -39,7 +39,8 @@ def _dataset(group):
     return group.to_dataset() if hasattr(group, "to_dataset") else group
 
 
-def fit(train: list[pd.DataFrame], draws: int = 1000, chains: int = 4) -> dict:
+def fit(train: list[pd.DataFrame], draws: int = 1000, chains: int = 4,
+        tune: int | None = None) -> dict:
     """Posterior draws of the model parameters. With no training frames, draws from the priors."""
     X_cols = DEMOGRAPHICS
     if train:
@@ -73,8 +74,8 @@ def fit(train: list[pd.DataFrame], draws: int = 1000, chains: int = 4) -> dict:
                     + phi * d["out_party_lean"].to_numpy())
             scale = pm.math.sqrt(sigma**2 + kappa**2 * 1000 / d["cvap"].to_numpy())
             pm.StudentT("y", nu=nu, mu=mean, sigma=scale, observed=d["y"].to_numpy())
-            idata = pm.sample(draws, tune=1000, chains=chains, target_accept=0.95, random_seed=SEED,
-                              progressbar=False)
+            idata = pm.sample(draws, tune=1000 if tune is None else tune, chains=chains,
+                              target_accept=0.95, random_seed=SEED, progressbar=False)
             post = _dataset(idata.posterior).stack(s=("chain", "draw"))
             summary = az.summary(idata, var_names=["gamma", "beta", "lam", "rho", "tau", "sigma_state", "sigma",
                                                    "kappa", "nu"] + (["phi"] if OUT_PARTY else []))
@@ -157,7 +158,7 @@ def cvap_vep_ratio(year: int) -> float:
 
 def run(target: int, train_years: list[int], sims: int = SIMS, draws: int = 1000,
         params: dict | None = None, national_fixed: float | None = None,
-        early_vote: bool = True) -> tuple[pd.DataFrame, dict]:
+        early_vote: bool = True, chains: int = 4, tune: int | None = None) -> tuple[pd.DataFrame, dict]:
     """Fit (unless params are given) and simulate target. national_fixed pins national turnout
     (CVAP basis) to one value, to test the county model on its own.
 
@@ -165,7 +166,8 @@ def run(target: int, train_years: list[int], sims: int = SIMS, draws: int = 1000
     offsets from relative October early-vote pace (PLAN §4 / §10 item 7).
     """
     rng = np.random.default_rng(SEED + target)
-    params = params or fit([frame(y) for y in train_years], draws=draws)
+    params = params or fit([frame(y) for y in train_years], draws=draws, chains=chains,
+                           tune=tune)
     f = frame(target)
     ratio = cvap_vep_ratio(target - 4)
     nat = national.draws(target, sims, rng) if national_fixed is None else np.full(sims, national_fixed / ratio)
@@ -201,9 +203,10 @@ def state_summary(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:
 
 
 def main() -> None:
-    out, info = run(2026, [2018, 2022])
+    out, info = run(2026, [2018, 2022], early_vote=True)
     # Each county's own uncertainty: the same model with national turnout fixed at its median.
-    rel, rel_info = run(2026, [2018, 2022], params=info["params"], national_fixed=info["national"][1])
+    rel, rel_info = run(2026, [2018, 2022], params=info["params"],
+                        national_fixed=info["national"][1], early_vote=True)
     out["lo80_county"], out["hi80_county"] = rel["lo80"].values, rel["hi80"].values
     out.to_parquet(OUT / "turnout_2026.parquet", index=False)
     st = info["states"].merge(rel_info["states"][["state_po", "lo80", "hi80"]], on="state_po",
@@ -212,7 +215,11 @@ def main() -> None:
     info["params"]["summary"].to_csv(OUT / "turnout_2026_parameters.csv")
     pd.DataFrame({"quantile": [0.1, 0.5, 0.9], "turnout": info["national"]}).to_csv(
         OUT / "turnout_2026_national.csv", index=False)
+    ev = info.get("early_vote") or {"applied": False}
+    pd.DataFrame([ev]).to_csv(OUT / "turnout_2026_early_vote.csv", index=False)
     print("national 2026 turnout (CVAP basis), 10/50/90%:", np.round(info["national"], 3))
+    print("early_vote applied:", ev.get("applied"),
+          f"| reporting={ev.get('n_reporting', 'n/a')}")
     print(info["params"]["summary"])
 
 

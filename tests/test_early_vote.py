@@ -56,6 +56,13 @@ def test_national_pace(tmp_path: Path, monkeypatch):
     assert pace["n_reporting"] == 4
     assert pace["early_share"] > 0
     assert pace["source"] == "uf_election_lab"
+    # ISO max date — not lexicographic "9/28/2026" over "10/4/2026".
+    assert pace["last_update_max"] == "2026-10-04"
+
+
+def test_max_update_parses_mdy():
+    s = pd.Series(["9/28/2026", "10/4/2026", "8/12/2026"])
+    assert early_vote._max_update(s) == "2026-10-04"
 
 
 def test_load_missing_empty(tmp_path: Path, monkeypatch):

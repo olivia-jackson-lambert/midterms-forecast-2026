@@ -26,8 +26,9 @@ python -m forecast.fundraising          # OpenFEC Senate receipts → fundraisin
 python -m forecast.ensure_race_data     # slim panel + MIT SEN/GOV results for race backtests
 python -m forecast.backtest races       # Stage B Brier / calibration vs lean baseline
 python -m forecast.early_vote           # UF Election Lab 2026 early/mail vote (refresh often)
+python -m forecast.october_refresh      # item 7: EV + GB + specials + Stage B draft (no tag)
 python -m forecast.backtest             # turnout + Stage B race backtests (when data present)
-python -m forecast.turnout_model        # 2026 county turnout forecast (Stage A)
+python -m forecast.turnout_model        # 2026 county turnout forecast (Stage A; uses early vote)
 python -m forecast.vote_model           # Stage B race table (GB + specials swing, incumbency, FEC)
 cd .. && python -m pytest               # data and model checks
 ```

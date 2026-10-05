@@ -6,6 +6,8 @@ data
 *.parquet
 *.csv
 !forecasts/*.csv
+!forecasts/README.md
+forecasts/_draft/
 __pycache__/
 .ipynb_checkpoints/
 .DS_Store
