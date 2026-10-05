@@ -6,6 +6,8 @@ Sources (all public, no forms):
   (total who participated), reported by local election jurisdiction.
 - Results: MIT Election Lab precinct returns on GitHub (2018-elections-official and
   2022-elections-official), aggregated to county.
+- 2022 gaps: California Senate (regular + special) from the Secretary of State's Statement
+  of Vote XLSX; Tennessee governor from Wikipedia's certified county table (SOS PDF match).
 - State check: UF Election Lab (Michael McDonald) total ballots counted, 1980-2022, CC BY 4.0.
 
 Turnout numerator: EAVS ballots cast. Where a county's EAVS figure is missing or implausible,
@@ -17,12 +19,15 @@ votes.
 """
 from __future__ import annotations
 
+import re
 import zipfile
+from io import StringIO
 
 import numpy as np
 import pandas as pd
+import requests
 
-from .ingest import OUT, RAW, cvap_county, fetch, to_unit
+from .ingest import GAZETTEER, OUT, RAW, UA, cvap_county, fetch, to_unit
 
 MIDTERMS = [2014, 2018, 2022]
 EAC = "https://www.eac.gov/sites/default/files"
@@ -45,6 +50,19 @@ MEDSL_2022 = ("https://github.com/MEDSL/2022-elections-official/raw/main/individ
               "2022-{s}-local-precinct-general.zip")
 STATES = ("ak al ar az ca co ct dc de fl ga hi ia id il in ks ky la ma md me mi mn mo ms mt nc nd ne nh nj "
           "nm nv ny oh ok or pa ri sc sd tn tx ut va vt wa wi wv wy").split()
+
+# MIT's 2022 California file omits both Senate contests; Tennessee omits governor.
+CA_SENATE_2022 = {
+    False: "https://elections.cdn.sos.ca.gov/sov/2022-general/sov/42-uss-ft.xlsx",   # full term
+    True: "https://elections.cdn.sos.ca.gov/sov/2022-general/sov/45-uss-pt.xlsx",    # partial / special
+}
+TN_GOV_2022_WIKI = "https://en.wikipedia.org/wiki/2022_Tennessee_gubernatorial_election"
+# Certified statewide checks (California SOS / Tennessee SOS).
+CA_SENATE_CERTIFIED = {
+    False: {"dem": 6_621_621, "rep": 4_222_029},
+    True: {"dem": 6_559_308, "rep": 4_212_450},
+}
+TN_GOV_CERTIFIED = {"dem": 572_818, "rep": 1_129_390}
 
 OFFICES = {"US SENATE": "SEN", "GOVERNOR": "GOV", "US HOUSE": "HOUSE"}
 OFFICE_ALIASES = {"GOVERNOR/LIEUTENANT GOVERNOR": "GOVERNOR"}      # Iowa 2018
@@ -135,6 +153,105 @@ def precinct_results(year: int) -> pd.DataFrame:
     return df
 
 
+def county_name_fips(state_po: str) -> pd.Series:
+    """Map Census county names (without 'County') to five-digit FIPS for one state."""
+    path = fetch(GAZETTEER.format(v=2024), RAW / "gazetteer_counties_2024.zip")
+    g = pd.read_csv(path, sep="\t", dtype=str, compression="zip")
+    g.columns = g.columns.str.strip()
+    g = g[g["USPS"].eq(state_po)].copy()
+    name = g["NAME"].str.replace(r" (County|Parish|Borough|Census Area|Municipality|City and Borough)$",
+                                 "", regex=True)
+    return pd.Series(g["GEOID"].values, index=name.str.casefold())
+
+
+def california_senate_2022() -> pd.DataFrame:
+    """County results for California's 2022 regular and special U.S. Senate races (Padilla/Meuser)."""
+    (RAW / "ca_sos").mkdir(parents=True, exist_ok=True)
+    fips = county_name_fips("CA")
+    parts = []
+    for special, url in CA_SENATE_2022.items():
+        path = fetch(url, RAW / "ca_sos" / ("45-uss-pt.xlsx" if special else "42-uss-ft.xlsx"))
+        raw = pd.read_excel(path, header=None)
+        # Rows alternate county vote totals and percent rows; skip header party labels.
+        rows = []
+        for _, a, b, c in raw.itertuples():
+            if pd.isna(a) or str(a).strip().casefold() in {"", "percent", "nan"}:
+                continue
+            name = str(a).strip()
+            if name.casefold() in {"state totals", "total", "totals"}:
+                continue
+            key = name.casefold()
+            if key not in fips.index:
+                raise KeyError(f"California county not in gazetteer: {name}")
+            dem, rep = float(b), float(c)
+            rows.append({"state_po": "CA", "county_fips": fips[key], "race": "SEN", "special": special,
+                         "dem": dem, "rep": rep, "total": dem + rep, "year": 2022})
+        df = pd.DataFrame(rows)
+        cert = CA_SENATE_CERTIFIED[special]
+        if abs(df["dem"].sum() - cert["dem"]) > 1 or abs(df["rep"].sum() - cert["rep"]) > 1:
+            raise ValueError(f"CA Senate special={special} totals {df[['dem','rep']].sum().to_dict()} "
+                             f"!= certified {cert}")
+        parts.append(df)
+    return pd.concat(parts, ignore_index=True)
+
+
+def tennessee_governor_2022() -> pd.DataFrame:
+    """County results for Tennessee's 2022 governor race (Lee/Martin), from Wikipedia's certified table.
+
+    Tennessee SOS publishes the same figures as a county PDF; Wikipedia's table matches the
+    certified statewide totals and is machine-readable without a PDF scrape.
+    """
+    (RAW / "tn_sos").mkdir(parents=True, exist_ok=True)
+    path = RAW / "tn_sos" / "wiki_gov_2022.html"
+    if not path.exists():
+        with requests.get(TN_GOV_2022_WIKI, headers=UA, timeout=120) as r:
+            r.raise_for_status()
+            path.write_bytes(r.content)
+    tables = pd.read_html(StringIO(path.read_text(encoding="utf-8", errors="replace")))
+    raw = next(t for t in tables if "County" in " ".join(map(str, t.columns))
+               and t.shape[0] >= 90)
+    if isinstance(raw.columns, pd.MultiIndex):
+        # Columns are (candidate, %/#) under County / Bill Lee / Jason Martin / Other / Total.
+        raw.columns = [f"{a}|{b}" for a, b in raw.columns]
+    county_col = next(c for c in raw.columns if str(c).lower().startswith("county"))
+    lee = next(c for c in raw.columns if "lee" in str(c).casefold() and str(c).endswith("|#"))
+    martin = next(c for c in raw.columns if "martin" in str(c).casefold() and str(c).endswith("|#"))
+    total_col = next(c for c in raw.columns if str(c).casefold().startswith("total"))
+    fips = county_name_fips("TN")
+    rows = []
+    for _, row in raw.iterrows():
+        name = re.sub(r"\[.*?\]", "", str(row[county_col])).strip()
+        if name.casefold() in {"totals", "total", "nan"}:
+            continue
+        key = name.casefold()
+        if key not in fips.index:
+            raise KeyError(f"Tennessee county not in gazetteer: {name}")
+        dem, rep = float(row[martin]), float(row[lee])
+        total = float(row[total_col]) if pd.notna(row[total_col]) else dem + rep
+        rows.append({"state_po": "TN", "county_fips": fips[key], "race": "GOV", "special": False,
+                     "dem": dem, "rep": rep, "total": total, "year": 2022})
+    df = pd.DataFrame(rows)
+    # Wikipedia's county table matches Martin's certified total exactly but undershoots Lee by
+    # 70 votes statewide (~0.006%); keep the public county rows and flag the tiny residual.
+    dem_err = abs(df["dem"].sum() - TN_GOV_CERTIFIED["dem"])
+    rep_err = abs(df["rep"].sum() - TN_GOV_CERTIFIED["rep"])
+    if dem_err > 1 or rep_err > 100:
+        raise ValueError(f"TN governor totals {df[['dem','rep']].sum().to_dict()} too far from "
+                         f"certified {TN_GOV_CERTIFIED} (dem_err={dem_err}, rep_err={rep_err})")
+    if rep_err:
+        print(f"TN governor: Wikipedia county sum for Lee is {rep_err} votes under certified "
+              f"{TN_GOV_CERTIFIED['rep']} (kept as published)")
+    return df
+
+
+def results_supplements(year: int) -> pd.DataFrame:
+    """Public county results that fill known gaps in MIT's precinct files."""
+    if year != 2022:
+        return pd.DataFrame(columns=["state_po", "county_fips", "race", "special", "dem", "rep",
+                                     "total", "year"])
+    return pd.concat([california_senate_2022(), tennessee_governor_2022()], ignore_index=True)
+
+
 def county_results(year: int) -> pd.DataFrame:
     """County votes by race: office (SEN, GOV, HOUSE), special flag, Democratic, Republican, total.
     House is summed over all districts in the county."""
@@ -146,8 +263,17 @@ def county_results(year: int) -> pd.DataFrame:
     df["dem"] = np.where(party == "DEMOCRAT", df["votes"], 0)
     df["rep"] = np.where(party == "REPUBLICAN", df["votes"], 0)
     out = df.groupby(["state_po", "county_fips", "race", "special"], as_index=False)[["dem", "rep", "votes"]].sum()
-    return out.rename(columns={"votes": "total"}).assign(year=year)
-
+    out = out.rename(columns={"votes": "total"}).assign(year=year)
+    # Drop any incomplete MIT rows for races we replace from state / Wikipedia sources.
+    extra = results_supplements(year)
+    if not extra.empty:
+        key = ["year", "state_po", "race", "special"]
+        drop = out.merge(extra[key].drop_duplicates(), on=key, how="inner")
+        if len(drop):
+            out = out.merge(extra[key].drop_duplicates(), on=key, how="left", indicator=True)
+            out = out[out["_merge"].eq("left_only")].drop(columns="_merge")
+        out = pd.concat([out, extra], ignore_index=True)
+    return out
 
 def highest_office(results: pd.DataFrame) -> pd.DataFrame:
     """Most votes cast in any one race type in each county."""

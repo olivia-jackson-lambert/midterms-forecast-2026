@@ -18,6 +18,8 @@ what it needs in `data/raw/`, which is never committed.
 ```
 cd src && python -m forecast.ingest     # presidential panel: data/processed/county_panel.parquet
 python -m forecast.midterms             # midterm turnout 2014-2022 and 2018/2022 results
+python -m forecast.generic_ballot       # 2018/2022/2026 generic-ballot aggregates
+python -m forecast.races                # 2026 Senate/governor race list and incumbency
 python -m forecast.backtest             # turnout backtests, 2018 and 2022
 python -m forecast.turnout_model        # 2026 county turnout forecast
 cd .. && python -m pytest               # data and model checks

@@ -40,15 +40,15 @@ Every source is public. Mark each one ✅ once its availability and licence are 
 | **Midterm ballots cast by county, 2014, 2018, 2022** | EAC Election Administration and Voting Survey (EAVS), question F1a (total who participated), by election jurisdiction, no form | ✅ in `midterms.py`. Problems handled: Alabama 2014 reports registration, Illinois 2014 is blank, Hawaii and Utah 2014 are a third off, Wisconsin 2018 and 2022 have no county codes, Kansas City and Illinois city authorities have their own codes |
 | **Certified state totals and national turnout history** | UF Election Lab (Michael McDonald): total ballots counted and VEP turnout by state, 1980–2022, and 2024 (v0.4), CC BY 4.0 | ✅ every state's county ballots are reconciled to these totals |
 | **Midterm county results, 2018** | MIT Election Lab precinct returns on GitHub (`MEDSL/2018-elections-official`: `SENATE/`, `HOUSE/`, `STATE/` incl. governor; Indiana from its per-state file), no form. The repo is marked deprecated in favour of Dataverse | ✅ in `midterms.py`; all 36 governor and 35 Senate races; spot checks match certified to 0.2% |
-| **Midterm county results, 2022** | MIT Election Lab precinct returns on GitHub (`MEDSL/2022-elections-official`, one file per state), no form | ✅ in `midterms.py`; spot checks match certified. Known gaps: California Senate (regular and special) and Tennessee governor are missing from MIT's files, and New Jersey's House rows are double counted (not used) |
-| Governor results, 2018 and 2022 | In the precinct files above | ✅ (2022 Tennessee to fill from the state) |
+| **Midterm county results, 2022** | MIT Election Lab precinct returns on GitHub (`MEDSL/2022-elections-official`, one file per state), no form; California Senate (regular + special) from SOS XLSX; Tennessee governor from Wikipedia's certified county table (SOS PDF is the same figures) | ✅ in `midterms.py`; spot checks match certified. New Jersey's House rows are double counted (not used) |
+| Governor results, 2018 and 2022 | In the precinct files above; 2022 Tennessee filled from Wikipedia / SOS | ✅ |
 | Citizen voting-age population (turnout denominator) | Census CVAP special tabulation, bulk CSVs on www2.census.gov, every 5-year vintage from 2005–2009 to 2020–2024; each election uses the vintage centred on it | ✅ in ingest |
 | County demographics | ACS 5-year table-based summary files (2020–2024) on www2.census.gov: population, median age, income, race and ethnicity, education, age 18–29 and 65+ | ✅ in ingest. The Census API now needs a key, so it isn't used |
 | Land area (for density) | Census Gazetteer counties file, 2024 | ✅ in ingest |
-| Generic ballot, 2018 and 2022 (backtests) | FiveThirtyEight's polling endpoint now returns an empty page, and its GitHub data repo doesn't cover polls. Alternative: rebuild averages from public poll listings (e.g. Wikipedia's generic-ballot tables) | ❌ need replacement |
-| Generic ballot, 2026 | Public averages (RealClearPolling and others); confirm a scrapable source | ☐ |
-| 2025–26 special elections | Ballotpedia (reachable) and other public trackers | ☐ compile |
-| Race fundamentals: incumbency, open seats | Ballotpedia 2026 Senate and governor pages (reachable) | ☐ compile |
+| Generic ballot, 2018 and 2022 (backtests) | Wikipedia House election-ratings aggregate tables (RCP + FiveThirtyEight eve-of-election averages); code in `generic_ballot.py` | ✅ rebuilt from public listings |
+| Generic ballot, 2026 | Wikipedia 2026 House elections aggregate table (DDHQ, FiftyPlusOne, NBC, RCP, Silver Bulletin). FiftyPlusOne site reachable; RealClearPolling returns 403 here; FiveThirtyEight project page has no usable poll JSON | ✅ first snapshot in ingest; refresh before publish |
+| 2025–26 special elections | Ballotpedia (reachable) and other public trackers | ☐ scaffold + TODO in `races.py`; full swing series still open |
+| Race fundamentals: incumbency, open seats | Ballotpedia 2026 Senate and governor pages (curated constants in `races.py`; live HTML often empty from this env) | ✅ race list compiled; re-check before publish |
 | Candidate fundraising | FEC API (works with the demo key; register a free key for volume) | ✅ |
 | Early and mail vote, October 2026 | US Elections Project (site reachable); state dashboards | ☐ confirm 2026 page |
 | County shapefiles | Census cartographic boundary files 2023 (20m) | ✅ |
@@ -187,5 +187,6 @@ midterms-2026/
 1. ~~Build the county presidential panel, 2008–2024, with CVAP turnout and ACS demographics.~~ Done 29 September (`python -m forecast.ingest`, checks in `tests/`).
 2. ~~Aggregate 2018 and 2022 precinct files to county midterm turnout and results, and add 2014 turnout.~~ Done 4 October (`python -m forecast.midterms`).
 3. ~~Turnout model (Stage A) with 2018 and 2022 backtests.~~ First version done 4 October; refresh with October early vote.
-4. Rebuild the 2018 and 2022 generic-ballot averages from public poll listings.
-5. Compile 2026 races, incumbency and special elections from Ballotpedia; fill the California 2022 Senate and Tennessee 2022 governor results from the states.
+4. ~~Rebuild the 2018 and 2022 generic-ballot averages from public poll listings.~~ Done 5 October (`python -m forecast.generic_ballot`); 2026 snapshot included.
+5. ~~Compile 2026 races, incumbency and special elections from Ballotpedia; fill the California 2022 Senate and Tennessee 2022 governor results from the states.~~ Race list + CA/TN gaps done 5 October (`forecast.races`, supplements in `midterms.py`). Special-election over-performance series still TODO.
+6. Vote-share model (Stage B) with correlated simulation and 2018/2022 race backtests.

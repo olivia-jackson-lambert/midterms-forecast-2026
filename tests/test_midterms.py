@@ -59,9 +59,9 @@ def test_races_found(results):
     races = results[results["race"] != "HOUSE"].groupby(["year", "race", "special"])["state_po"].nunique()
     assert races[(2018, "GOV", False)] == 36
     assert races[(2018, "SEN", False)] == 33 and races[(2018, "SEN", True)] == 2
-    # Known gaps in MIT's 2022 files: Tennessee governor, California Senate (regular and special).
-    assert races[(2022, "GOV", False)] == 35
-    assert races[(2022, "SEN", False)] == 33 and races[(2022, "SEN", True)] == 1
+    # 2022 gaps (CA Senate regular+special, TN governor) are filled from state / Wikipedia sources.
+    assert races[(2022, "GOV", False)] == 36
+    assert races[(2022, "SEN", False)] == 34 and races[(2022, "SEN", True)] == 2
 
 
 @pytest.mark.parametrize("year, state, race, dem, rep", [
@@ -70,8 +70,12 @@ def test_races_found(results):
     (2022, "GA", "SEN", 1_946_117, 1_908_442),      # general election (not the runoff): Warnock, Walker
     (2022, "WI", "SEN", 1_310_467, 1_337_185),      # Barnes, Johnson
     (2022, "PA", "SEN", 2_751_012, 2_487_260),      # Fetterman, Oz
+    (2022, "CA", "SEN", 6_621_621, 4_222_029),      # Padilla, Meuser (full term; SOS supplement)
+    (2022, "TN", "GOV", 572_818, 1_129_390),        # Martin, Lee (Wikipedia; Lee ~70 under SOS)
 ])
 def test_statewide_results_match_certified(results, year, state, race, dem, rep):
     r = results[(results["year"] == year) & (results["state_po"] == state) & (results["race"] == race) & ~results["special"]]
-    assert r["dem"].sum() == pytest.approx(dem, rel=0.002)
-    assert r["rep"].sum() == pytest.approx(rep, rel=0.002)
+    # Tennessee governor Wikipedia county sum is ~70 Lee votes under SOS statewide certified.
+    tol = 0.0002 if (year, state, race) == (2022, "TN", "GOV") else 0.002
+    assert r["dem"].sum() == pytest.approx(dem, rel=tol)
+    assert r["rep"].sum() == pytest.approx(rep, rel=tol)
