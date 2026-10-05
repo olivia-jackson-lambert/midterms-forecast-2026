@@ -1,600 +1,246 @@
-"""Stage B: race-level two-party Democratic share.
+"""Stage B: two-party vote share and win probability for every Senate and governor race.
 
-On the probability (share) scale, each race is
+On the logit scale, the Democratic share of the two-party vote in race r (state s, office o) is
 
-    share_r = inv_logit( logit(baseline_r) + national_swing
-                         + gamma . race_features_r + state_effect
-                         + national_error + regional_error + race_noise ),
+    logit(share_r) = logit(house_T)                          national environment
+                     + a_o + b_o * (logit(lean_s) - logit(pres_T))   state lean against the nation
+                     + d_o * incumbency_r                     +1 Democratic-side incumbent, -1 Republican
+                     + h_o * track_record_r                   the incumbent's last result against expectation
+                     + region effect + state effect + race noise,
 
-where:
-- baseline_r is the state's recent presidential two-party lean, optionally reweighted
-  by Stage A county turnout draws;
-- national_swing blends the generic-ballot average with special-election over-performance;
-- race_features are incumbency (from `races.py` for 2026) and FEC Senate fundraising;
-- errors share a national term and a Census-region term so simulations are correlated.
+- lean_s, the turnout-first baseline: the state's last presidential two-party share with each
+  county weighted by Stage A's simulated midterm turnout (forecast.turnout_model.lean_draws);
+- pres_T: the national presidential two-party share at the last presidential election;
+- house_T: the national House two-party share. In training it is the actual result; in a
+  forecast it is drawn from forecast.generic_ballot.national_environment, whose bias and
+  spread are estimated from earlier cycles only;
+- track_record_r: for a running incumbent, their last result for this office minus what a uniform
+  swing predicted then (the state's lean moved by that year's national House vote), on the logit
+  scale, from the Democratic side. Zero for open seats and incumbents who have not run before;
+- a_o, b_o, d_o, h_o, and the spreads of the region, state and race terms are fitted in PyMC on past
+  midterms (2018 for the 2022 backtest; 2018 and 2022 for 2026). The 2018 backtest has no
+  earlier race data, so it runs on the priors alone.
 
-PLAN §10 item 6: vote-share model with correlated simulation and 2018/2022 race backtests.
-Fit uses PyMC when installed (`STAGE_B_PYMC=0` forces the ridge stand-in).
+Nothing here is tuned on the year being predicted. Races with no Democrat or independent
+against a Republican are not modelled; races where an independent stands in for the
+Democratic side (forecast.races) get extra race-level uncertainty.
 
     python -m forecast.vote_model
 """
 from __future__ import annotations
 
-import os
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
-from scipy.special import expit, logit as _logit
+import pymc as pm
+from scipy.special import expit, logit
 
-from .features import GOVERNOR, SENATE
+from . import generic_ballot
 from .ingest import OUT
 
 SIMS = 20_000
 SEED = 2026
-RACE_FEATURES = ["incumbency", "fundraising"]
-
-# Census regions for correlated regional errors (DC treated as South).
-REGION = {
-    "CT": "Northeast", "ME": "Northeast", "MA": "Northeast", "NH": "Northeast",
-    "RI": "Northeast", "VT": "Northeast", "NJ": "Northeast", "NY": "Northeast",
-    "PA": "Northeast",
-    "IL": "Midwest", "IN": "Midwest", "MI": "Midwest", "OH": "Midwest", "WI": "Midwest",
-    "IA": "Midwest", "KS": "Midwest", "MN": "Midwest", "MO": "Midwest", "NE": "Midwest",
-    "ND": "Midwest", "SD": "Midwest",
-    "DE": "South", "FL": "South", "GA": "South", "MD": "South", "NC": "South",
-    "SC": "South", "VA": "South", "WV": "South", "AL": "South", "KY": "South",
-    "MS": "South", "TN": "South", "AR": "South", "LA": "South", "OK": "South",
-    "TX": "South", "DC": "South",
-    "AZ": "West", "CO": "West", "ID": "West", "MT": "West", "NV": "West",
-    "NM": "West", "UT": "West", "WY": "West", "AK": "West", "CA": "West",
-    "HI": "West", "OR": "West", "WA": "West",
-}
-REGIONS = ("Northeast", "Midwest", "South", "West")
-
-# Fallback when generic-ballot snapshot / parquet is unavailable. Mean is Democratic
-# advantage on the logit scale relative to the last presidential national lean.
-SWING_PRIOR = {2018: {"mean": 0.04, "sd": 0.03},
-               2022: {"mean": -0.02, "sd": 0.03},
-               2026: {"mean": 0.00, "sd": 0.04}}
-
-# Stage B interval floors (logit scale). Ridge fits collapse gamma/residual variance and
-# left 2022 coverage80 ≈ 0.33; these floors target ~80% out-of-sample coverage without
-# breaking the soft-lean Brier gate (PLAN §10 item 7).
-SIGMA_FLOOR = {
-    "sigma_race": 0.40,
-    "sigma_nat": 0.20,
-    "sigma_state": 0.15,
-    "sigma_region": 0.10,
-}
-GAMMA_SD_FLOOR = 0.12
+OFFICES = ["SEN", "GOV"]
+REGIONS = ["Northeast", "Midwest", "South", "West"]
+REGION = {**{s: "Northeast" for s in "CT ME MA NH RI VT NJ NY PA".split()},
+          **{s: "Midwest" for s in "IL IN MI OH WI IA KS MN MO NE ND SD".split()},
+          **{s: "South" for s in "DE FL GA MD NC SC VA WV AL KY MS TN AR LA OK TX DC".split()},
+          **{s: "West" for s in "AZ CO ID MT NV NM UT WY AK CA HI OR WA".split()}}
+INDEPENDENT_EXTRA_SD = 0.25      # added race noise where an independent stands in for the Democratic side
+FIRST_ROUND_FROM_COUNTY_FILES = {"2018-MS-SENS"}
+# Senate seats not up in 2026, by caucus (53 Republicans, 47 Democrats and independents now).
+SENATE_NOW = {"R": 53, "D": 47}
 
 
-def logit(p: np.ndarray | float, eps: float = 1e-4) -> np.ndarray | float:
-    p = np.clip(p, eps, 1 - eps)
-    return _logit(p)
-
-
-# --------------------------------------------------------------------------- races
-def scheduled_races(year: int) -> pd.DataFrame:
-    """Senate and governor races on the ballot in `year`.
-
-    Regular Class seats come from `features.SENATE` / `GOVERNOR`. Specials:
-    - 2026: FL and OH Senate (special-only rows; not Class-2 regulars)
-    - 2018: MN and MS Senate specials (in addition to Class-1 regulars)
-    - 2022: CA and OK Senate specials (in addition to Class-3 regulars)
-    """
-    if year in (2018, 2022):
-        from .historical_races import SENATE_SPECIAL
-        extra_special = SENATE_SPECIAL.get(year, set())
-    elif year == 2026:
-        extra_special = {"FL", "OH"}
-    else:
-        extra_special = set()
-
-    rows = []
-    for office, states in (("SEN", SENATE[year].split()), ("GOV", GOVERNOR[year].split())):
-        for st in states:
-            if office == "SEN" and year == 2026 and st in extra_special:
-                # 2026 FL/OH are special-only additions to the Class-2 list.
-                rows.append({"year": year, "state_po": st, "office": office, "special": True,
-                             "race_id": f"{year}-{st}-{office}S"})
-                continue
-            rows.append({"year": year, "state_po": st, "office": office, "special": False,
-                         "race_id": f"{year}-{st}-{office}"})
-            if office == "SEN" and st in extra_special and year != 2026:
-                rows.append({"year": year, "state_po": st, "office": office, "special": True,
-                             "race_id": f"{year}-{st}-{office}S"})
-    return pd.DataFrame(rows)
-
-
-def _incumbency_code(open_seat: pd.Series, incumbent_party: pd.Series) -> pd.Series:
-    """+1 Dem (or Dem-caucusing) incumbent, -1 Rep, 0 open / unknown."""
-    open_ = open_seat.fillna(False).astype(bool)
-    party = incumbent_party.fillna("").astype(str)
-    code = np.where(open_, 0.0,
-                    np.where(party.isin(["D", "I"]), 1.0,
-                             np.where(party.eq("R"), -1.0, 0.0)))
-    return pd.Series(code, index=open_seat.index, dtype=float)
-
-
-def race_fundamentals(year: int) -> pd.DataFrame:
-    """Incumbency and fundraising by race.
-
-    Prefer `race_fundamentals_{year}.parquet` when present. Otherwise:
-    - 2026 incumbency / open seats from `forecast.races`
-    - 2018/2022 incumbency from `forecast.historical_races`
-    - Senate fundraising from OpenFEC cache (`fundraising_{year}.parquet`)
-    Governors have no FEC coverage — fundraising stays 0 unless
-    `gov_fundraising_{year}.parquet` is supplied (FollowTheMoney needs an API key).
-    """
-    path = OUT / f"race_fundamentals_{year}.parquet"
-    if path.exists():
-        return pd.read_parquet(path)
-    r = scheduled_races(year)
-    r["incumbency"] = 0.0
-    r["fundraising"] = 0.0
-    r["open_seat"] = False
-    if year == 2026:
-        from . import races as race_meta
-        meta = race_meta.races(2026).rename(columns={"race": "office"})
-        m = r.drop(columns=["open_seat"]).merge(
-            meta[["state_po", "office", "special", "open_seat", "incumbent_party"]],
-            on=["state_po", "office", "special"], how="left")
-        r["open_seat"] = m["open_seat"].fillna(False).astype(bool)
-        r["incumbency"] = _incumbency_code(r["open_seat"], m["incumbent_party"])
-    elif year in (2018, 2022):
-        from . import historical_races as hist
-        meta = hist.races(year)
-        m = r.drop(columns=["open_seat", "incumbency"]).merge(
-            meta[["state_po", "office", "special", "open_seat", "incumbency", "incumbent_party"]],
-            on=["state_po", "office", "special"], how="left")
-        r["open_seat"] = m["open_seat"].fillna(False).astype(bool)
-        r["incumbency"] = m["incumbency"].fillna(0.0)
-    # FEC Senate fundraising: only from cache written by `python -m forecast.fundraising`.
-    fec_path = OUT / f"fundraising_{year}.parquet"
-    if fec_path.exists():
-        feat = pd.read_parquet(fec_path)
-        if "fundraising" in feat.columns:
-            r = r.drop(columns=["fundraising"]).merge(
-                feat[["race_id", "fundraising"]], on="race_id", how="left")
-            r["fundraising"] = r["fundraising"].fillna(0.0)
-    # Optional governor fundraising cache (FollowTheMoney / manual).
-    gov_path = OUT / f"gov_fundraising_{year}.parquet"
-    if gov_path.exists():
-        gov = pd.read_parquet(gov_path)
-        if {"race_id", "fundraising"}.issubset(gov.columns):
-            gmap = gov.set_index("race_id")["fundraising"]
-            is_gov = r["race_id"].isin(gmap.index)
-            r.loc[is_gov, "fundraising"] = r.loc[is_gov, "race_id"].map(gmap).astype(float)
-    return r[["race_id", "incumbency", "fundraising", "open_seat"]]
-
-
-def presidential_lean(year: int) -> pd.Series:
-    """State two-party Democratic share in the last presidential election (year - 2).
-
-    Reads county_panel when present; otherwise returns an empty series so callers can
-    inject a lean column. Turnout-weighted baseline belongs in `baseline`.
-    """
-    panel = OUT / "county_panel.parquet"
-    if not panel.exists():
-        return pd.Series(dtype=float, name="pres_lean")
-    p = pd.read_parquet(panel)
+# --------------------------------------------------------------------------- data
+def _pres(year: int) -> tuple[pd.Series, float]:
+    """State and national Democratic two-party share in the presidential election before `year`."""
+    p = pd.read_parquet(OUT / "county_panel.parquet", columns=["year", "state_po", "dem", "rep"])
     p = p[p["year"] == year - 2]
     g = p.groupby("state_po")[["dem", "rep"]].sum()
-    lean = g["dem"] / (g["dem"] + g["rep"])
-    lean.name = "pres_lean"
-    return lean
+    return g["dem"] / (g["dem"] + g["rep"]), float(p["dem"].sum() / (p["dem"].sum() + p["rep"].sum()))
 
 
-def presidential_national_dem_2p(year: int) -> float | None:
-    """National two-party Dem share in the presidential election two years before `year`."""
-    panel = OUT / "county_panel.parquet"
-    if not panel.exists():
-        return None
-    p = pd.read_parquet(panel, columns=["year", "dem", "rep"])
-    p = p[p["year"] == year - 2]
-    if p.empty:
-        return None
-    return float(p["dem"].sum() / (p["dem"].sum() + p["rep"].sum()))
+def lean_draws(year: int) -> pd.DataFrame:
+    """Turnout-weighted state leans (simulations x states) saved by Stage A."""
+    return pd.read_parquet(OUT / f"lean_draws_{year}.parquet")
 
 
-def baseline(races: pd.DataFrame, lean: pd.Series | None = None,
-             turnout_weights: pd.DataFrame | None = None) -> pd.Series:
-    """Race baseline = state presidential lean (optionally turnout-reweighted).
-
-    `turnout_weights` (optional): columns unit_fips, state_po, weight — e.g. Stage A
-    median turnout * CVAP. When omitted, the lean series is used as-is (already statewide).
-    """
-    if lean is None:
-        lean = presidential_lean(int(races["year"].iloc[0]))
-    if turnout_weights is not None and lean is not None and not lean.empty:
-        # Re-express lean with turnout-weighted county votes when a county lean table is
-        # supplied as turnout_weights with dem/rep columns; otherwise state lean stands.
-        if {"dem", "rep"}.issubset(turnout_weights.columns):
-            w = turnout_weights.copy()
-            w["w"] = w.get("weight", 1.0)
-            g = w.groupby("state_po").apply(
-                lambda d: (d["dem"] * d["w"]).sum() / ((d["dem"] + d["rep"]) * d["w"]).sum(),
-                include_groups=False)
-            lean = g.rename("pres_lean")
-    base = races["state_po"].map(lean)
-    return base.rename("baseline")
+def actual_shares(year: int) -> pd.DataFrame:
+    r = pd.read_parquet(OUT / "county_midterm_results.parquet")
+    r = r[(r["year"] == year) & r["race"].isin(OFFICES)]
+    g = r.groupby(["state_po", "race", "special"], as_index=False)[["dem", "rep"]].sum()
+    g["actual"] = g["dem"] / (g["dem"] + g["rep"])
+    return g.rename(columns={"race": "office"})[["state_po", "office", "special", "actual"]]
 
 
-def _swing_from_snapshot(year: int, snap: dict, detail: pd.DataFrame | None = None) -> dict:
-    """Convert a generic-ballot snapshot dict into logit-scale national swing.
-
-    mean = logit(gb dem_2p) − logit(last presidential national dem_2p), so the swing is
-    the midterm environment relative to the presidential baseline already in `baseline`.
-    When the presidential panel is missing, fall back to logit(gb) vs even (0.5).
-    sd uses aggregator dispersion on the logit scale when available, else SWING_PRIOR sd.
-    """
-    prior = SWING_PRIOR.get(year, {"mean": 0.0, "sd": 0.04})
-    gb = float(snap["dem_2p"])
-    gb_logit = float(logit(gb))
-    pres = presidential_national_dem_2p(year)
-    if pres is not None:
-        mean = gb_logit - float(logit(pres))
-        anchor = "vs_presidential"
-    else:
-        mean = gb_logit  # vs even
-        anchor = "vs_even"
-    sd = float(prior["sd"])
-    if detail is not None and len(detail) >= 2 and "dem_2p" in detail.columns:
-        logits = logit(detail["dem_2p"].to_numpy(dtype=float))
-        spread = float(np.nanstd(logits, ddof=1)) if len(logits) > 1 else 0.0
-        if np.isfinite(spread) and spread > 0:
-            sd = max(sd, spread)
-    return {
-        "mean": mean,
-        "sd": sd,
-        "source": f"generic_ballot.snapshot/{anchor}",
-        "dem_2p": gb,
-        "margin": float(snap.get("margin", float("nan"))),
-        "n_sources": int(snap.get("n_sources", 0)),
-    }
+def frame(year: int) -> pd.DataFrame:
+    """One row per modelled race: leans, incumbency and (for past years) the result."""
+    races = pd.read_parquet(OUT / "races.parquet")
+    f = races[(races["year"] == year) & (races["d_side"] != "not_two_party")].reset_index(drop=True)
+    plain, nat = _pres(year)
+    f["lean_plain"] = f["state_po"].map(plain)
+    f["lean_turnout"] = f["state_po"].map(lean_draws(year).median())
+    f["pres_nat"] = nat
+    f["region"] = f["state_po"].map(REGION)
+    f["office_i"] = f["office"].map({o: i for i, o in enumerate(OFFICES)})
+    f["independent"] = f["d_side"].ne("democrat")
+    f["track_record"] = track_record(f)
+    if year < 2026:
+        # Race results: certified candidate percentages from forecast.races. (MIT's county files
+        # miss counties in places, e.g. Indiana 2022 and Delaware 2018; tests compare the two.)
+        f["actual"] = f["result_dem_2p"].where(~f["independent"])
+        # Wikipedia lists only the 27 November runoff for Mississippi's 2018 special; every other
+        # race is the November general (first round), so use the county files' first round here.
+        first_round = f["race_id"].isin(FIRST_ROUND_FROM_COUNTY_FILES)
+        if first_round.any():
+            county = f.merge(actual_shares(year), on=["state_po", "office", "special"], how="left",
+                             suffixes=("", "_county"))["actual_county"]
+            f.loc[first_round, "actual"] = county[first_round].values
+        f["house"] = float(generic_ballot.history().set_index("year").loc[year, "house_dem_2p"])
+    return f.reset_index(drop=True)
 
 
-def _blend_specials(swing: dict, year: int) -> dict:
-    """Average generic-ballot (or prior) swing with special-election over-performance."""
-    from . import special_elections as se
-    spec = se.summary(year)
-    if spec.get("source") == "empty":
-        return swing
-    mean = 0.5 * float(swing["mean"]) + 0.5 * float(spec["mean"])
-    sd = float(np.sqrt(0.5 * float(swing["sd"]) ** 2 + 0.5 * float(spec["sd"]) ** 2))
-    out = {
-        **swing,
-        "mean": mean,
-        "sd": max(sd, float(swing["sd"])),
-        "special_mean": float(spec["mean"]),
-        "special_mean_pp": float(spec.get("mean_pp", float("nan"))),
-        "special_n": int(spec.get("n", 0)),
-        "source": f"{swing['source']}+{spec['source']}",
-    }
+def track_record(f: pd.DataFrame) -> pd.Series:
+    """Incumbent's previous result against a uniform-swing expectation (logit, Democratic side)."""
+    house = generic_ballot.house_vote().set_index("year")["house_dem_2p"]
+    out = pd.Series(0.0, index=f.index)
+    for i, r in f[f["prev_dem_2p"].notna()].iterrows():
+        y = int(r["prev_year"])
+        lean, nat = _pres(y + 2 if y % 4 == 0 else y)       # presidential years: that year's result
+        expected = logit(house[y]) + logit(lean[r["state_po"]]) - logit(nat)
+        out[i] = logit(r["prev_dem_2p"]) - expected
     return out
 
 
-def national_swing(year: int, source: Path | None = None,
-                   blend_specials: bool = True) -> dict:
-    """Mean and sd of the national Democratic swing (logit scale).
-
-    If `source` is passed, only that parquet is used (mean/sd columns); missing → prior.
-    Otherwise resolution order:
-      1. `generic_ballot_{year}.parquet` with mean/sd (hand-tuned override)
-      2. cached `generic_ballot_snapshot.parquet` / live `generic_ballot.snapshot(year)`
-      3. SWING_PRIOR placeholders
-    Then, unless `blend_specials` is False or `source` was explicit, blend with
-    `special_elections.summary(year)` (PLAN: GB + special over-performance).
-    """
-    prior = SWING_PRIOR.get(year, {"mean": 0.0, "sd": 0.04})
-
-    def _from_mean_sd_parquet(path: Path) -> dict | None:
-        if not path.exists():
-            return None
-        row = pd.read_parquet(path).iloc[0]
-        if not {"mean", "sd"}.issubset(row.index):
-            return None
-        return {"mean": float(row["mean"]), "sd": float(row["sd"]), "source": str(path)}
-
-    if source is not None:
-        return _from_mean_sd_parquet(source) or {**prior, "source": "prior"}
-
-    override = _from_mean_sd_parquet(OUT / f"generic_ballot_{year}.parquet")
-    if override:
-        swing = override
-    else:
-        swing = None
-        snap_path = OUT / "generic_ballot_snapshot.parquet"
-        if snap_path.exists():
-            snaps = pd.read_parquet(snap_path)
-            row = snaps.loc[snaps["year"] == year]
-            if len(row):
-                snap = row.iloc[0].to_dict()
-                detail = None
-                agg_path = OUT / "generic_ballot_aggregates.parquet"
-                if agg_path.exists():
-                    detail = pd.read_parquet(agg_path)
-                    detail = detail[detail["year"] == year]
-                swing = _swing_from_snapshot(year, snap, detail)
-        if swing is None:
-            try:
-                from . import generic_ballot as gb
-                snap = gb.snapshot(year)
-                try:
-                    detail = gb.aggregates(year)
-                except Exception:
-                    detail = None
-                swing = _swing_from_snapshot(year, snap, detail)
-            except Exception:
-                swing = {**prior, "source": "prior"}
-
-    if blend_specials:
-        swing = _blend_specials(swing, year)
-    return swing
-
-
-# --------------------------------------------------------------------------- frames
-def frame(year: int, lean: pd.Series | None = None,
-          fundamentals: pd.DataFrame | None = None,
-          turnout_weights: pd.DataFrame | None = None) -> pd.DataFrame:
-    """One row per race for target year, with baseline and race features.
-
-    Everything needed for Stage B simulation except posterior parameters. Pass `lean` and
-    `fundamentals` in tests to avoid reading processed data.
-    """
-    races = scheduled_races(year)
-    fund = fundamentals if fundamentals is not None else race_fundamentals(year)
-    f = races.merge(fund, on="race_id", how="left")
-    for c in RACE_FEATURES:
-        if c not in f:
-            f[c] = 0.0
-        f[c] = f[c].fillna(0.0)
-    if "open_seat" not in f:
-        f["open_seat"] = False
-    f["open_seat"] = f["open_seat"].fillna(False).astype(bool)
-    f["baseline"] = baseline(f, lean=lean, turnout_weights=turnout_weights).values
-    f["region"] = f["state_po"].map(REGION).fillna("South")
-    f["year"] = year
-    return f
-
-
 # --------------------------------------------------------------------------- fit
-def prior_params(draws: int = 1000, rng: np.random.Generator | None = None) -> dict:
-    """Draw parameters from weakly informative priors (no race training data required)."""
-    rng = rng or np.random.default_rng(SEED)
-    return {
-        "gamma": rng.normal(0, 0.15, size=(draws, len(RACE_FEATURES))),
-        "sigma_state": np.abs(rng.normal(0, 0.08, draws)) + SIGMA_FLOOR["sigma_state"],
-        "sigma_nat": np.abs(rng.normal(0, 0.10, draws)) + SIGMA_FLOOR["sigma_nat"],
-        "sigma_region": np.abs(rng.normal(0, 0.05, draws)) + SIGMA_FLOOR["sigma_region"],
-        "sigma_race": np.abs(rng.normal(0, 0.12, draws)) + SIGMA_FLOOR["sigma_race"],
-        "n_train": 0,
-        "summary": None,
-    }
-
-
-def _apply_interval_floors(params: dict, rng: np.random.Generator | None = None) -> dict:
-    """Widen Stage B uncertainty so 80% intervals are not overconfident after ridge/PyMC."""
-    rng = rng or np.random.default_rng(SEED)
-    for key, floor in SIGMA_FLOOR.items():
-        if key in params:
-            params[key] = np.maximum(np.asarray(params[key], dtype=float), floor)
-    gamma = np.asarray(params["gamma"], dtype=float)
-    if gamma.ndim == 2 and gamma.shape[0] > 1:
-        gsd = gamma.std(axis=0)
-        for j in range(gamma.shape[1]):
-            if gsd[j] < GAMMA_SD_FLOOR:
-                col = gamma[:, j]
-                mu = col.mean()
-                if gsd[j] < 1e-12:
-                    gamma[:, j] = rng.normal(mu, GAMMA_SD_FLOOR, size=gamma.shape[0])
-                else:
-                    gamma[:, j] = mu + (col - mu) * (GAMMA_SD_FLOOR / gsd[j])
-        params["gamma"] = gamma
+def fit(train: list[pd.DataFrame], lean: str = "lean_turnout", draws: int = 1000) -> dict:
+    """Posterior draws (or prior draws when `train` is empty) of the race-model parameters."""
+    with pm.Model():
+        a = pm.Normal("a", 0.0, 0.15, shape=2)
+        b = pm.Normal("b", 1.0, 0.3, shape=2)
+        d = pm.Normal("d", 0.0, 0.2, shape=2)
+        h = pm.Normal("h", 0.0, 0.5, shape=2)
+        sigma = pm.HalfNormal("sigma", 0.3, shape=2)
+        # Regional and same-state errors are barely identified by one or two midterms, so their
+        # priors are set to typical sizes (a few points) rather than left wide.
+        sigma_state = pm.HalfNormal("sigma_state", 0.1)
+        sigma_region = pm.HalfNormal("sigma_region", 0.05)
+        if train:
+            t = pd.concat(train, ignore_index=True)
+            t = t[t["actual"].notna() & ~t["independent"]]
+            o = t["office_i"].to_numpy()
+            x = (logit(t[lean]) - logit(t["pres_nat"])).to_numpy()
+            st_idx, _ = pd.factorize(t["year"].astype(str) + t["state_po"])
+            rg_idx, _ = pd.factorize(t["year"].astype(str) + t["region"])
+            u = pm.Normal("u", 0, 1, shape=int(st_idx.max()) + 1)
+            g = pm.Normal("g", 0, 1, shape=int(rg_idx.max()) + 1)
+            mu = (logit(t["house"].to_numpy()) + a[o] + b[o] * x + d[o] * t["incumbency"].to_numpy()
+                  + h[o] * t["track_record"].to_numpy()
+                  + sigma_state * u[st_idx] + sigma_region * g[rg_idx])
+            pm.Normal("y", mu, sigma[o], observed=logit(t["actual"].to_numpy()))
+            idata = pm.sample(draws, tune=2000, chains=4, target_accept=0.99, random_seed=SEED, progressbar=False)
+            post = idata.posterior.to_dataset() if hasattr(idata.posterior, "to_dataset") else idata.posterior
+            n_train = len(t)
+        else:
+            idata = pm.sample_prior_predictive(draws * 4, random_seed=SEED)
+            post = idata.prior.to_dataset() if hasattr(idata.prior, "to_dataset") else idata.prior
+            n_train = 0
+    post = post.stack(s=("chain", "draw"))
+    names = ["a", "b", "d", "h", "sigma", "sigma_state", "sigma_region"]
+    params = {n: np.asarray(post[n].values).T if post[n].ndim > 1 else np.asarray(post[n].values) for n in names}
+    params.update(n_train=n_train, lean=lean)
+    params["summary"] = pd.DataFrame({n + (f"[{o}]" if params[n].ndim > 1 else ""): v
+                                      for n in names
+                                      for o, v in (zip(OFFICES, params[n].T) if params[n].ndim > 1 else [("", params[n])])}
+                                     ).describe(percentiles=[0.055, 0.945]).T[["mean", "5.5%", "94.5%"]]
     return params
 
 
-def _fit_ridge(d: pd.DataFrame, draws: int, rng: np.random.Generator) -> dict:
-    """Ridge stand-in on logit residual (used when PyMC is unavailable / disabled)."""
-    ok = d["actual_share"].notna() & d["baseline"].notna()
-    y = logit(d.loc[ok, "actual_share"].to_numpy()) - logit(d.loc[ok, "baseline"].to_numpy())
-    # Subtract year-specific national swing mean so gamma learns race features, not climate.
-    if "year" in d.columns:
-        y = y.copy()
-        years = d.loc[ok, "year"].to_numpy()
-        for yr in np.unique(years):
-            y[years == yr] -= national_swing(int(yr), blend_specials=True)["mean"]
-    X = d.loc[ok, RACE_FEATURES].to_numpy()
-    prior_prec = 1 / 0.15**2
-    obs_var = 0.08**2
-    xtx = X.T @ X / obs_var + prior_prec * np.eye(len(RACE_FEATURES))
-    xty = X.T @ y / obs_var
-    mean = np.linalg.solve(xtx, xty)
-    cov = np.linalg.inv(xtx)
-    gamma = rng.multivariate_normal(mean, cov, size=draws)
-    params = prior_params(draws, rng)
-    params["gamma"] = gamma
-    resid = y - X @ mean
-    resid_sd = float(np.std(resid, ddof=1)) if len(resid) > 2 else SIGMA_FLOOR["sigma_race"]
-    params["sigma_race"] = np.maximum(params["sigma_race"], max(resid_sd, SIGMA_FLOOR["sigma_race"]))
-    params["n_train"] = int(ok.sum())
-    params["fit_method"] = "ridge"
-    params["summary"] = pd.DataFrame({"mean": mean, "sd": np.sqrt(np.diag(cov))},
-                                     index=RACE_FEATURES)
-    return _apply_interval_floors(params, rng)
-
-
-def _fit_pymc(d: pd.DataFrame, draws: int, rng: np.random.Generator) -> dict:
-    """Hierarchical Stage B fit in PyMC (PLAN §4). Falls back to ridge on failure."""
-    import pymc as pm
-
-    ok = d["actual_share"].notna() & d["baseline"].notna()
-    dd = d.loc[ok].copy()
-    y = logit(dd["actual_share"].to_numpy()) - logit(dd["baseline"].to_numpy())
-    years = dd["year"].to_numpy() if "year" in dd.columns else np.full(len(dd), 0)
-    for yr in np.unique(years):
-        y[years == yr] -= national_swing(int(yr), blend_specials=True)["mean"]
-    X = dd[RACE_FEATURES].to_numpy(dtype=float)
-    s_idx, _ = pd.factorize(dd["state_po"])
-    n_state = int(s_idx.max()) + 1
-
-    with pm.Model():
-        gamma = pm.Normal("gamma", 0, 0.15, shape=len(RACE_FEATURES))
-        sigma_state = pm.HalfNormal("sigma_state", 0.05)
-        sigma_race = pm.HalfNormal("sigma_race", 0.08)
-        u = pm.Normal("u_state", 0, 1, shape=n_state)
-        mu = pm.math.dot(X, gamma) + sigma_state * u[s_idx]
-        pm.Normal("y", mu=mu, sigma=sigma_race, observed=y)
-        idata = pm.sample(draws, tune=max(500, draws), chains=2, target_accept=0.9,
-                          random_seed=SEED, progressbar=False)
-
-    def _dataset(group):
-        return group.to_dataset() if hasattr(group, "to_dataset") else group
-
-    post = _dataset(idata.posterior).stack(s=("chain", "draw"))
-    # Subsample to `draws` for a stable shape matching prior_params.
-    gamma_draws = np.asarray(post["gamma"].values).T  # features x samples → later transpose
-    if gamma_draws.ndim == 1:
-        gamma_draws = gamma_draws.reshape(1, -1)
-    # post["gamma"] stacked: (feature, sample) or (sample, feature) depending on version
-    g = np.asarray(post["gamma"].values)
-    if g.ndim == 2 and g.shape[0] == len(RACE_FEATURES):
-        gamma_mat = g.T
+# --------------------------------------------------------------------------- simulate
+def simulate(f: pd.DataFrame, params: dict, year: int, sims: int = SIMS,
+             rng: np.random.Generator | None = None, turnout_weighted: bool = True) -> np.ndarray:
+    """Democratic two-party share draws, sims x races, with shared national, regional and
+    state errors, and Stage A turnout uncertainty through the lean draws."""
+    rng = rng or np.random.default_rng(SEED + year)
+    env = generic_ballot.national_environment(year)
+    house = env["mean"] + env["sd"] * rng.standard_t(env["df"], sims)
+    house = np.clip(house, 0.3, 0.7)
+    n_post = len(params["sigma_state"])
+    k = rng.integers(0, n_post, sims)
+    o = f["office_i"].to_numpy()
+    if turnout_weighted and params["lean"] == "lean_turnout":
+        ld = lean_draws(year)
+        lean = ld[f["state_po"]].to_numpy()[rng.integers(0, len(ld), sims)]
     else:
-        gamma_mat = g.reshape(-1, len(RACE_FEATURES))
-    if len(gamma_mat) > draws:
-        pick = rng.choice(len(gamma_mat), draws, replace=False)
-        gamma_mat = gamma_mat[pick]
-    elif len(gamma_mat) < draws:
-        extra = rng.choice(len(gamma_mat), draws - len(gamma_mat), replace=True)
-        gamma_mat = np.vstack([gamma_mat, gamma_mat[extra]])
-
-    params = prior_params(draws, rng)
-    params["gamma"] = gamma_mat
-    params["sigma_state"] = np.asarray(post["sigma_state"].values).ravel()[:draws]
-    if len(params["sigma_state"]) < draws:
-        params["sigma_state"] = np.resize(params["sigma_state"], draws)
-    params["sigma_race"] = np.asarray(post["sigma_race"].values).ravel()[:draws]
-    if len(params["sigma_race"]) < draws:
-        params["sigma_race"] = np.resize(params["sigma_race"], draws)
-    params["n_train"] = int(ok.sum())
-    params["fit_method"] = "pymc"
-    params["summary"] = pd.DataFrame({
-        "mean": gamma_mat.mean(axis=0),
-        "sd": gamma_mat.std(axis=0),
-    }, index=RACE_FEATURES)
-    return _apply_interval_floors(params, rng)
+        lean = np.broadcast_to(f[params["lean"]].to_numpy(), (sims, len(f)))
+    x = logit(lean) - logit(f["pres_nat"].to_numpy())[None, :]
+    st_idx, st_names = pd.factorize(f["state_po"])
+    rg_idx = f["region"].map({r: i for i, r in enumerate(REGIONS)}).to_numpy()
+    u = params["sigma_state"][k, None] * rng.standard_normal((sims, len(st_names)))
+    g = params["sigma_region"][k, None] * rng.standard_normal((sims, len(REGIONS)))
+    sd = params["sigma"][k][:, o]
+    sd = np.sqrt(sd ** 2 + np.where(f["independent"].to_numpy(), INDEPENDENT_EXTRA_SD ** 2, 0.0)[None, :])
+    eps = sd * rng.standard_normal((sims, len(f)))
+    lg = (logit(house)[:, None] + params["a"][k][:, o] + params["b"][k][:, o] * x
+          + params["d"][k][:, o] * f["incumbency"].to_numpy()[None, :]
+          + params["h"][k][:, o] * f["track_record"].to_numpy()[None, :] + u[:, st_idx] + g[:, rg_idx] + eps)
+    return expit(lg).astype(np.float32)
 
 
-def fit(train: list[pd.DataFrame] | None = None, draws: int = 1000,
-        rng: np.random.Generator | None = None) -> dict:
-    """Posterior (or prior) draws of Stage B parameters.
-
-    Preference: PyMC hierarchical fit when pymc is installed and STAGE_B_PYMC is not
-    \"0\"; otherwise the ridge stand-in. Returned dict keys match either way.
-    """
-    rng = rng or np.random.default_rng(SEED)
-    if not train:
-        p = prior_params(draws, rng)
-        p["fit_method"] = "prior"
-        return _apply_interval_floors(p, rng)
-
-    d = pd.concat(train, ignore_index=True)
-    need = ["baseline", "actual_share", *RACE_FEATURES]
-    if not all(c in d.columns for c in need) or d["actual_share"].notna().sum() < 5:
-        p = prior_params(draws, rng)
-        p["fit_method"] = "prior"
-        return _apply_interval_floors(p, rng)
-
-    use_pymc = os.environ.get("STAGE_B_PYMC", "1") != "0"
-    if use_pymc:
-        try:
-            import pymc  # noqa: F401
-            return _fit_pymc(d, draws, rng)
-        except Exception:
-            pass
-    return _fit_ridge(d, draws, rng)
-
-
-# --------------------------------------------------------------------------- summarise / run
 def summarise(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:
-    """Per-race share quantiles and Democratic win probability."""
     q = np.quantile(sims, [0.1, 0.5, 0.9], axis=0)
-    return pd.DataFrame({
-        "race_id": f["race_id"].values,
-        "year": f["year"].values,
-        "state_po": f["state_po"].values,
-        "office": f["office"].values,
-        "special": f["special"].values,
-        "baseline": f["baseline"].values,
-        "lo80": q[0],
-        "median": q[1],
-        "hi80": q[2],
-        "p_dem_win": (sims > 0.5).mean(axis=0),
-    })
+    cols = ["race_id", "year", "state_po", "office", "special", "incumbent", "incumbent_party", "open_seat",
+            "dem_candidate", "rep_candidate", "d_side", "lean_plain", "lean_turnout", "track_record"]
+    out = f[[c for c in cols if c in f]].copy()
+    out["lo80"], out["median"], out["hi80"] = q
+    out["p_dem_win"] = (sims > 0.5).mean(axis=0)
+    if "actual" in f:
+        out["actual"] = f["actual"].values
+    return out
 
 
-def run(target: int, train_years: list[int] | None = None, sims: int = SIMS,
-        draws: int = 1000, params: dict | None = None,
-        lean: pd.Series | None = None,
-        fundamentals: pd.DataFrame | None = None) -> tuple[pd.DataFrame, dict]:
-    """Fit (unless params given) and simulate all races in `target`."""
-    from . import simulate as sim
+def senate_seats(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:
+    """Distribution of Democratic-caucus Senate seats after the election.
 
-    rng = np.random.default_rng(SEED + target)
-    train = None
-    if train_years:
-        train = []
-        for y in train_years:
-            try:
-                train.append(frame(y))
-            except Exception:
-                continue
-            if "actual_share" not in train[-1].columns:
-                # Attach actuals from processed midterm results when available.
-                train[-1] = _attach_actuals(train[-1], y)
-    params = params or fit(train, draws=draws, rng=rng)
-    f = frame(target, lean=lean, fundamentals=fundamentals)
-    if f["baseline"].isna().any() and lean is None:
-        # No panel on disk: leave baseline NaN callers must supply lean in tests.
-        pass
-    swing = national_swing(target)
-    sims_ = sim.simulate(f, params, swing, rng, n_sims=sims)
-    out = summarise(f, sims_)
-    seats = sim.seat_summary(f, sims_)
-    return out, {"params": params, "swing": swing, "seats": seats, "sims": sims_}
+    Seats won by an independent challenger (Nebraska, Idaho, South Dakota in 2026) are not
+    counted as Democratic: they have not said they would caucus with either party. The
+    `independent_seats` column counts them.
+    """
+    sen = f["office"].eq("SEN").to_numpy()
+    up_d = int((sen & f["incumbent_party"].isin(["D", "I"]).to_numpy()).sum())
+    not_up_d = SENATE_NOW["D"] - up_d
+    dem_races = sen & ~f["independent"].to_numpy()
+    ind_races = sen & f["independent"].to_numpy()
+    seats = not_up_d + (sims[:, dem_races] > 0.5).sum(1)
+    ind = (sims[:, ind_races] > 0.5).sum(1)
+    d = pd.DataFrame({"dem_seats": seats, "independent_seats": ind})
+    return d.value_counts(normalize=True).rename("probability").reset_index().sort_values(["dem_seats", "independent_seats"])
 
 
-def _attach_actuals(f: pd.DataFrame, year: int) -> pd.DataFrame:
-    path = OUT / "county_midterm_results.parquet"
-    if not path.exists():
-        f["actual_share"] = np.nan
-        return f
-    r = pd.read_parquet(path)
-    r = r[(r["year"] == year) & (r["race"].isin(["SEN", "GOV"]))]
-    g = r.groupby(["state_po", "race", "special"], as_index=False)[["dem", "rep"]].sum()
-    g["actual_share"] = g["dem"] / (g["dem"] + g["rep"])
-    g = g.rename(columns={"race": "office"})
-    return f.merge(g[["state_po", "office", "special", "actual_share"]],
-                   on=["state_po", "office", "special"], how="left")
+def run(year: int, train_years: list[int], lean: str = "lean_turnout", sims: int = SIMS,
+        params: dict | None = None) -> tuple[pd.DataFrame, dict]:
+    params = params or fit([frame(y) for y in train_years], lean=lean)
+    f = frame(year)
+    s = simulate(f, params, year, sims)
+    return summarise(f, s), {"params": params, "sims": s, "frame": f}
 
 
 def main() -> None:
-    # 2026 table: generic-ballot swing + races.py incumbency when available.
-    lean = presidential_lean(2026)
-    if lean.empty:
-        print("no county_panel yet; writing schedule-only frame with baseline=NaN")
-    out, info = run(2026, train_years=[2018, 2022], lean=None if lean.empty else lean)
-    OUT.mkdir(parents=True, exist_ok=True)
+    out, info = run(2026, [2018, 2022])
     out.to_parquet(OUT / "vote_share_2026.parquet", index=False)
-    info["seats"].to_parquet(OUT / "seat_counts_2026.parquet", index=False)
-    swing = info["swing"]
-    print("races:", len(out), "| swing source:", swing["source"],
-          f"(mean={swing['mean']:+.3f}, sd={swing['sd']:.3f})")
-    print(out[["office", "state_po", "median", "p_dem_win"]].head(10).to_string(index=False))
-    print(info["seats"].to_string(index=False))
+    seats = senate_seats(info["frame"], info["sims"])
+    seats.to_csv(OUT / "senate_seats_2026.csv", index=False)
+    info["params"]["summary"].to_csv(OUT / "vote_model_parameters.csv")
+    env = generic_ballot.national_environment(2026)
+    print(f"national House vote, Democratic two-party: {env['mean']:.3f} (sd {env['sd']:.3f})")
+    print(info["params"]["summary"].round(3).to_string())
+    p_control = seats.loc[seats["dem_seats"] >= 51, "probability"].sum()
+    p_rep = seats.loc[53 + 47 - seats["dem_seats"] - seats["independent_seats"] >= 50, "probability"].sum()
+    by_d = seats.groupby("dem_seats")["probability"].sum()
+    print(f"Democratic-caucus Senate seats: median {np.interp(0.5, by_d.cumsum(), by_d.index):.0f}; "
+          f"P(51+) {p_control:.2f}; P(Republicans hold 50+) {p_rep:.2f}")
+    print(out.sort_values("p_dem_win")[["race_id", "dem_candidate", "rep_candidate", "median", "lo80", "hi80",
+                                       "p_dem_win"]].round(3).to_string(index=False))
 
 
 if __name__ == "__main__":

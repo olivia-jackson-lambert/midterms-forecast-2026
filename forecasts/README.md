@@ -1,18 +1,12 @@
 # Forecasts
 
-Published forecast tables live here as CSVs, **one set per tagged release** (PLAN §6–§7).
+Published forecast tables, one folder per tagged release (`v1/`, `v2/`, ..., `final/`):
 
-Until publish week (19 October):
+- `turnout_counties.csv`: county turnout forecast (median and 80% interval)
+- `turnout_states.csv`: state turnout forecast
+- `races.csv`: every Senate and governor race (vote share, 80% interval, win probability)
+- `senate_seats.csv`: distribution of Democratic-caucus Senate seats
 
-1. Run the October refresh (no tag):
-
-   ```bash
-   STAGE_B_PYMC=0 PYTHONPATH=src python -m forecast.october_refresh
-   ```
-
-2. Review `data/processed/october_refresh_checklist.csv` and the local draft under
-   `forecasts/_draft/` (gitignored).
-
-3. When PLAN §7 says publish: copy the draft CSVs to versioned names in this folder
-   (for example `vote_share_2026_v1.csv`), commit, and tag the commit. Do not tag
-   from `october_refresh` itself.
+To release: refresh the 2026 inputs (`python -m forecast.races --refresh`,
+`python -m forecast.generic_ballot --refresh`), run the pipeline in the README, copy the
+tables here, commit, and tag the commit with the folder name.

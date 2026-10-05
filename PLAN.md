@@ -45,12 +45,12 @@ Every source is public. Mark each one ✅ once its availability and licence are 
 | Citizen voting-age population (turnout denominator) | Census CVAP special tabulation, bulk CSVs on www2.census.gov, every 5-year vintage from 2005–2009 to 2020–2024; each election uses the vintage centred on it | ✅ in ingest |
 | County demographics | ACS 5-year table-based summary files (2020–2024) on www2.census.gov: population, median age, income, race and ethnicity, education, age 18–29 and 65+ | ✅ in ingest. The Census API now needs a key, so it isn't used |
 | Land area (for density) | Census Gazetteer counties file, 2024 | ✅ in ingest |
-| Generic ballot, 2018 and 2022 (backtests) | Wikipedia House election-ratings aggregate tables (RCP + FiveThirtyEight eve-of-election averages); code in `generic_ballot.py` | ✅ rebuilt from public listings |
-| Generic ballot, 2026 | Wikipedia 2026 House elections aggregate table (DDHQ, FiftyPlusOne, NBC, RCP, Silver Bulletin). FiftyPlusOne site reachable; RealClearPolling returns 403 here; FiveThirtyEight project page has no usable poll JSON | ✅ first snapshot in ingest; refresh before publish |
-| 2025–26 special elections | Ballotpedia congressional specials + VA governor 2025 (curated in `special_elections.py`) | ✅ series + swing vs 2024 presidential; refresh before publish |
-| Race fundamentals: incumbency, open seats | Ballotpedia 2026 Senate and governor pages (curated constants in `races.py`; live HTML often empty from this env) | ✅ race list compiled; re-check before publish |
-| Candidate fundraising | FEC OpenFEC API (`fundraising.py`, DEMO_KEY); Senate only — governors are not in FEC | ✅ Senate hook; GOV still 0 |
-| Early and mail vote, October 2026 | UF Election Lab 2026 early-vote tracker (successor to USEP dashboards); CSV `data-downloads/earlyvote/2026/US.csv` | ✅ `forecast.early_vote` (refresh through October) |
+| Generic ballot as of 30 September, 1998–2022 (backtests and polling bias) | FiveThirtyEight's daily average (GitHub `fivethirtyeight/data`, 1998–2016); its 2018 file via the Internet Archive (stops 18 September 2018); its 2022 value from Wikipedia's ratings page as it stood on 30 September 2022 | ✅ `generic_ballot.py`. Never the final pre-election average |
+| Generic ballot, 2026, and House popular vote 1998–2024 | 2026: mean of the aggregators on Wikipedia's 2026 House elections page (DDHQ, FiftyPlusOne, NBC News, RealClearPolitics, Silver Bulletin). House vote: Wikipedia's House election pages | ✅ refresh 2026 with `--refresh` before each release |
+| 2025–26 special elections | Not used. They cannot be backtested (no comparable 2017–18 and 2021–22 series yet), and several 2026 contests are all-party or Democrat-against-Democrat | ☐ possible descriptive chart only |
+| Races, incumbents, open seats, nominees; certified race results 2012–2022 | Wikipedia Senate and gubernatorial election pages, parsed from saved copies (2026 refreshed with `--refresh`) | ✅ `races.py`. Results cross-checked against MIT's county files (tests list the known gaps) |
+| Candidate fundraising | OpenFEC API, nominees' receipts to 30 June. The demo key allows 10 requests an hour, so this needs a free personal key (`FEC_API_KEY`) | ☐ waiting on a key; not in v1 |
+| Early and mail vote, October 2026 | UF Election Lab 2026 early-vote tracker (`forecast.early_vote`) | ⚠️ downloaded, not used: comparing states with each other measures voting rules, not enthusiasm. Needs each state's 2022 pace on the same date |
 | County shapefiles | Census cartographic boundary files 2023 (20m) | ✅ |
 
 **County units.** Results and Census geographies don't line up everywhere, so the panel uses county units: Alaska, Connecticut and DC are one unit each; Jackson, Clay and Platte counties (Kansas City, which reports separately) are one unit; Kalawao is merged into Maui, Bedford city into Bedford County, and Shannon SD is Oglala Lakota. That gives 3,104 units in every year.
@@ -105,6 +105,21 @@ Code: `features.py`, `national.py`, `turnout_model.py`, `backtest.py`.
 - There is no public 2010 county turnout, so the 2018 backtest has no earlier county transition to learn from and runs on priors alone. Only the 2022 backtest tests the full county model.
 - The out-party term was added after the first backtest showed a county-size bias that flipped sign between 2018 and 2022. Both versions are reported below; the forecast uses the version with it.
 
+### Stage B As Built (5 October)
+
+Code: `races.py`, `generic_ballot.py`, `vote_model.py`, `backtest.py`. On the logit scale, the Democratic two-party share in a race is:
+
+- the national House vote (in training, the actual result; in a forecast, drawn from the 30 September generic ballot with its historical bias and spread, estimated from earlier cycles only);
+- plus the state's lean against the nation, where the lean is the last presidential vote re-weighted county by county with Stage A turnout, with a separate slope for Senate (0.89) and governor races (0.76);
+- plus incumbency (Senate 0.06, governor 0.21) and the incumbent's track record: their last result against what a uniform swing predicted (Senate 0.30, governor 0.71);
+- plus regional, same-state and race errors, all fitted in PyMC.
+
+Each simulation draws the national vote, the errors and a Stage A turnout draw, so turnout uncertainty carries into vote share. Races with no Democrat face an independent challenger (Nebraska, Idaho, South Dakota Senate in 2026): the independent stands in for the Democratic side with extra uncertainty, and their seats are not counted as Democratic.
+
+**What turnout weighting does.** Re-weighting counties by forecast turnout moves state leans very little: by 0.07 points on average in 2026, at most 0.5. In backtests it gives a small edge in 2022 and none in 2018. The turnout-first angle matters more for county turnout itself and for uncertainty than for who wins.
+
+**First 2026 run (5 October).** National House vote 52.8% Democratic (two-party). Democrats hold 51 or more Senate seats in 39% of simulations; Republicans hold 50 or more in 56%.
+
 ## 5. Backtest (The Credibility)
 
 For **2018** and **2022**, fit the model using only data available on 1 October of that year, then score it against the actual results:
@@ -134,6 +149,24 @@ Without the out-party term, 2022 error was 4.0 (weighted 4.9) and coverage with 
 **Reading it.** The model beats the baseline in both years. Most of the remaining error is the national level, which every county shares: 2018's surge was outside the national 80% band. With the national level known, the 2022 county intervals are well calibrated (81%). The 2018 intervals are too wide because that backtest has no training data. Two elections can't tell us much about the calibration of the national band itself; it is wide on purpose.
 
 **2026 (first run).** National median 47.9% of eligible citizens (80%: 42.2–53.5%), on the same basis as the backtests.
+
+### Race Results (5 October)
+
+Each year fitted only on earlier midterms; 2018 runs on priors alone. Scored on races with a Democrat against a Republican (68 in 2018, 70 in 2022).
+
+| | 2018 | 2022 |
+|---|---|---|
+| Brier score, model | **0.148** | **0.066** |
+| Brier, presidential lean (certain call) | 0.221 | 0.086 |
+| Brier, lean plus uniform national swing | 0.162 | 0.157 |
+| Vote-share error, model (points) | **5.1** | **3.6** |
+| Vote-share error, presidential lean | 5.9 | 4.3 |
+| Vote-share error, uniform swing | 5.1 | 4.1 |
+| 80% interval coverage | 94% | 84% |
+| Without the track record: Brier / error | 0.152 / 5.1 | 0.072 / 3.9 |
+| Plain lean instead of turnout-weighted: Brier / error | 0.147 / 5.1 | 0.068 / 3.7 |
+
+**Review of the 5 October Cursor branch.** Its Stage B used the final pre-election generic ballot in the backtests, invented special-election swings for 2018 and 2022, and error floors tuned to the 2022 backtest, so its backtests were not out of sample. It was rebuilt on these inputs; the California and Tennessee 2022 results and the early-vote download were kept.
 
 ## 6. Deliverables
 
@@ -187,7 +220,8 @@ midterms-2026/
 1. ~~Build the county presidential panel, 2008–2024, with CVAP turnout and ACS demographics.~~ Done 29 September (`python -m forecast.ingest`, checks in `tests/`).
 2. ~~Aggregate 2018 and 2022 precinct files to county midterm turnout and results, and add 2014 turnout.~~ Done 4 October (`python -m forecast.midterms`).
 3. ~~Turnout model (Stage A) with 2018 and 2022 backtests.~~ First version done 4 October; refresh with October early vote.
-4. ~~Rebuild the 2018 and 2022 generic-ballot averages from public poll listings.~~ Done 5 October (`python -m forecast.generic_ballot`); 2026 snapshot included.
-5. ~~Compile 2026 races, incumbency and special elections from Ballotpedia; fill the California 2022 Senate and Tennessee 2022 governor results from the states.~~ Race list + CA/TN gaps done 5 October (`forecast.races`, supplements in `midterms.py`). Special-election over-performance series: done 5 October (`forecast.special_elections`; House specials + VA governor 2025 vs 2024 presidential).
-6. ~~Vote-share model (Stage B) with correlated simulation and 2018/2022 race backtests.~~ Done 5 October: GB/specials swing, historical + 2026 incumbency, FEC Senate fundraising, PyMC/ridge fit, `ensure_race_data`, race backtests pass soft-lean Brier gate (2018: 0.177 < 0.208; 2022: 0.129 < 0.183). Governor fundraising still needs FollowTheMoney key or manual parquet.
-7. October early-vote refresh (Stage A) and publish path: ~~confirm 2026 early/mail page~~ UF Election Lab CSV wired (`forecast.early_vote`); ~~Stage B race-backtest figures~~ (`figures/make_race_backtest_figures.py`); ~~widen 2022 race intervals~~ (sigma floors → coverage80 ≈ 0.80); ~~publish-path prep~~ (`forecast.october_refresh` → `forecasts/_draft/`, checklist; no tag); ~~Stage A early-vote refresh~~ (offsets applied; national median ≈ 47.8% CVAP). Remaining: forecast post + tagged commit on PLAN §7 publish week (19 Oct).
+4. ~~Generic ballot as of 30 September, and race lists and results.~~ Done 5 October (`generic_ballot.py`, `races.py`).
+5. ~~Vote-share model (Stage B) with correlated simulation and 2018/2022 race backtests.~~ Done 5 October (`vote_model.py`); beats both baselines in both years.
+6. FEC fundraising for nominees (needs a free `FEC_API_KEY`); add only if it improves the backtests.
+7. Early vote: compare each state's 2026 pace with its own 2022 pace on the same date before using it.
+8. Forecast v1 (19 October): refresh the 2026 race pages and generic ballot, run everything, write `forecasts/v1/`, tag.

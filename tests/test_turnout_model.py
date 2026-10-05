@@ -57,3 +57,14 @@ def test_state_offset_preserves_national_total():
     aa = f["state_po"].eq("AA").to_numpy()
     bb = f["state_po"].eq("BB").to_numpy()
     assert sims[:, aa].mean() > sims[:, bb].mean()
+
+
+def test_vendored_figstyle_matches_site():
+    """figures/figstyle.py is a copy of the portfolio site's, so cloud agents draw the same charts."""
+    import os
+    from pathlib import Path
+    site = Path(os.environ.get("PORTFOLIO_SITE", Path.home() / "Documents/portfolio/olivia-jackson-lambert.github.io"))
+    if not (site / "scripts/figstyle.py").exists():
+        pytest.skip("portfolio site not on disk")
+    here = Path(__file__).resolve().parents[1] / "figures/figstyle.py"
+    assert here.read_text() == (site / "scripts/figstyle.py").read_text(), "re-copy scripts/figstyle.py from the site"

@@ -10,38 +10,30 @@ pip install -r requirements.txt
 
 No API keys or download forms are needed. The ingest pulls public files from GitHub
 (MIT Election Lab's county returns and a county results mirror) and from www2.census.gov
-(CVAP, ACS summary files, Gazetteer), the EAC (EAVS) and the UF Election Lab. The first run downloads about 800 MB and caches
-what it needs in `data/raw/`, which is never committed.
+(CVAP, ACS summary files, Gazetteer), the EAC (EAVS), the UF Election Lab, FiveThirtyEight's
+data repo and Wikipedia. The first run downloads about 800 MB and caches what it needs in
+`data/raw/`, which is never committed.
 
 ## Run
 
+In order (each step caches what it downloads):
+
 ```
-cd src && python -m forecast.ingest     # presidential panel: data/processed/county_panel.parquet
-python -m forecast.midterms             # midterm turnout 2014-2022 and 2018/2022 results
-python -m forecast.generic_ballot       # 2018/2022/2026 generic-ballot aggregates
-python -m forecast.special_elections    # 2025–26 specials vs 2024 presidential lean
-python -m forecast.races                # 2026 Senate/governor race list and incumbency
-python -m forecast.historical_races     # 2018/2022 open seats / incumbency for backtests
-python -m forecast.fundraising          # OpenFEC Senate receipts → fundraising feature
-python -m forecast.ensure_race_data     # slim panel + MIT SEN/GOV results for race backtests
-python -m forecast.backtest races       # Stage B Brier / calibration vs lean baseline
-python -m forecast.early_vote           # UF Election Lab 2026 early/mail vote (refresh often)
-python -m forecast.october_refresh      # item 7: EV + GB + specials + Stage B draft (no tag)
-python -m forecast.backtest             # turnout + Stage B race backtests (when data present)
-python -m forecast.turnout_model        # 2026 county turnout forecast (Stage A; uses early vote)
-python -m forecast.vote_model           # Stage B race table (GB + specials swing, incumbency, FEC)
-cd .. && python -m pytest               # data and model checks
+cd src
+python -m forecast.ingest            # presidential county panel, 2008-2024
+python -m forecast.races             # races, incumbents, nominees and results (add --refresh for 2026)
+python -m forecast.midterms          # midterm county turnout 2014-2022 and 2018/2022 county results
+python -m forecast.generic_ballot    # generic ballot as of 30 September and House vote (add --refresh)
+python -m forecast.backtest          # turnout and race backtests, 2018 and 2022
+python -m forecast.turnout_model     # 2026 county turnout (Stage A)
+python -m forecast.vote_model        # 2026 Senate and governor races (Stage B)
+cd .. && python figures/make_figures.py   # figures in figures/out/
+python -m pytest                     # data and model checks
 ```
 
-**Midterms rebuild (CA Senate + TN governor supplements).** `forecast.midterms` merges
-state/Wikipedia gap-fills into `county_midterm_results.parquet` on every run. Re-run after
-a fresh clone once MIT 2018/2022 precinct archives are cached under `data/raw/` (large
-download on first pull). Supplement parsers are unit-tested without the full MIT cache;
-`tests/test_midterms.py::test_races_found` expects 36 GOV / 34+2 SEN in 2022 only after
-that rebuild.
-
-Stage B unit tests (`tests/test_vote_model.py`) use synthetic leans and do not need
-`data/processed/` — run them with `python -m pytest tests/test_vote_model.py`.
+`forecast.races` runs before `forecast.midterms` because MIT's party labels are wrong for
+some nominees, and the parsed nominee names correct them. The backtests run before the 2026
+models because Stage A saves the turnout-weighted leans Stage B needs (`lean_draws_*.parquet`).
 
 `county_panel.parquet` has one row per county unit and presidential year (2008 to 2024):
 Democratic, Republican and total votes, two-party share, citizen voting-age population,

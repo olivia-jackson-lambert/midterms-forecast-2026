@@ -34,13 +34,14 @@ SITE = Path(os.environ.get("PORTFOLIO_SITE", Path.home() / "Documents/portfolio/
 if (SITE / "scripts" / "figstyle.py").exists():
     sys.path.insert(0, str(SITE / "scripts"))
 from figstyle import DIM, INK, LIGHT, MUTED, PAPER, apply, note, tidy  # noqa: E402
-from palette import ACCENT, BASE, CHANGE, CONTEXT, DENSITY, GREEN, PURPLE  # noqa: E402
+from palette import ACCENT, BASE, CHANGE, CONTEXT, DEM, DENSITY, GREEN, PURPLE, REP  # noqa: E402
 
 from forecast import national  # noqa: E402
 from forecast.features import SENATE  # noqa: E402
 from forecast.ingest import OUT as DATA, RAW  # noqa: E402
 
 OUT = HERE / "out"
+GRID_LINE = "#e6e6ec"
 
 
 def save(fig, name):
@@ -273,6 +274,93 @@ def drivers() -> None:
     save(fig, "turnout_drivers.png")
 
 
+# --------------------------------------------------------------------------- races (Stage B)
+def race_backtest() -> None:
+    """Model against the two references, 2018 and 2022: Brier score and vote-share error."""
+    b = pd.read_csv(DATA / "backtest_races.csv").query("variant == 'model'").set_index("year")
+    fig, axes = plt.subplots(2, 1, figsize=(7.6, 4.6), sharey=True)
+    specs = [("Brier Score (Lower Is Better)", ("brier", "uniform_swing_brier", "lean_brier"), "{:.3f}"),
+             ("Vote-Share Error, Points (Lower Is Better)", ("mae_pts", "uniform_swing_mae_pts", "lean_mae_pts"), "{:.1f}")]
+    names = ["Model", "Lean Plus Uniform Swing", "Presidential Lean"]
+    colours = [ACCENT, CONTEXT, LIGHT]
+    for ax, (label, cols, fmt) in zip(axes, specs):
+        for i, year in enumerate([2022, 2018]):
+            vals = [b.loc[year, c] for c in cols]
+            ax.plot([min(vals), max(vals)], [i, i], color=GRID_LINE, lw=2.5, zorder=1)
+            for v, c, n in zip(vals, colours, names):
+                ax.plot(v, i, "o", ms=8, color=c, zorder=3 if c == ACCENT else 2, label=n if i == 0 else None)
+            ax.text(vals[0], i + 0.28, fmt.format(vals[0]), ha="center", fontsize=8.5, color=ACCENT)
+        ax.set_yticks([0, 1], ["2022", "2018"])
+        ax.set_ylim(-0.6, 1.7)
+        ax.set_xlabel(label)
+        tidy(ax, grid_axis="x")
+    axes[0].legend(loc="lower right", bbox_to_anchor=(1, 1.0), ncol=3)
+    fig.tight_layout()
+    note(axes[1], "Each year fitted only on earlier midterms (2018 on priors alone). 68 and 70 races.", y=-0.42)
+    save(fig, "race_backtest.png")
+
+
+def race_calibration() -> None:
+    c = pd.read_csv(DATA / "backtest_races_calibration.csv")
+    g = c.groupby("bin", sort=False).apply(lambda d: pd.Series({
+        "races": d["races"].sum(), "mean_p": np.average(d["mean_p"], weights=d["races"]),
+        "win_rate": np.average(d["win_rate"], weights=d["races"])}), include_groups=False).reset_index()
+    fig, ax = plt.subplots(figsize=(5.4, 5.0))
+    ax.plot([0, 1], [0, 1], color=CONTEXT, lw=1.1, ls=(0, (3, 2)))
+    ax.scatter(g["mean_p"], g["win_rate"], s=g["races"] * 9, color=ACCENT, alpha=0.85, zorder=3, linewidths=0)
+    for _, r in g.iterrows():
+        ax.annotate(f"{int(r['races'])} Races", (r["mean_p"], r["win_rate"]), xytext=(9, -3),
+                    textcoords="offset points", fontsize=8.5, color=DIM)
+    ax.set_xlim(-0.03, 1.03); ax.set_ylim(-0.03, 1.03); ax.set_aspect("equal")
+    ax.set_xlabel("Forecast Chance the Democratic Side Wins")
+    ax.set_ylabel("Share of Races It Won")
+    tidy(ax, grid_axis="both")
+    note(ax, "2018 and 2022 backtests pooled, in five bins. Dashed line: perfect calibration.", y=-0.16)
+    save(fig, "race_calibration.png")
+
+
+def race_probabilities() -> None:
+    """Every 2026 Senate and governor race by the chance the Democratic side wins (partisan colours)."""
+    v = pd.read_parquet(DATA / "vote_share_2026.parquet")
+    v["label"] = v["state_po"] + np.where(v["special"], " (Special)", "")
+    fig, axes = plt.subplots(1, 2, figsize=(8.6, 9.6), sharex=True)
+    for ax, office, title in zip(axes, ["SEN", "GOV"], ["Senate", "Governor"]):
+        d = v[v["office"] == office].sort_values("p_dem_win").reset_index(drop=True)
+        for i, r in d.iterrows():
+            c = DEM if r["p_dem_win"] >= 0.5 else REP
+            hollow = r["d_side"] != "democrat"
+            ax.plot([0.5, r["p_dem_win"]], [i, i], color=c, alpha=0.25, lw=2)
+            ax.plot(r["p_dem_win"], i, "o", ms=6, color=c, mfc="white" if hollow else c, mew=1.4)
+        ax.axvline(0.5, color=INK, lw=0.8)
+        ax.set_yticks(range(len(d)), d["label"])
+        ax.tick_params(axis="y", labelsize=8.5)
+        ax.set_xlim(0, 1)
+        ax.set_xticks([0, 0.25, 0.5, 0.75, 1], ["Safe R", "75% R", "Even", "75% D", "Safe D"])
+        ax.set_title(title, fontsize=10.5, color=INK, loc="left")
+        tidy(ax, grid_axis="x")
+    axes[0].set_xlabel("Chance of Winning")
+    axes[1].set_xlabel("Chance of Winning")
+    note(axes[1], "Hollow points: an independent stands in for the Democratic side (NE, ID, SD Senate).", y=-0.07)
+    fig.tight_layout()
+    save(fig, "race_probabilities_2026.png")
+
+
+def senate_seats() -> None:
+    s = pd.read_csv(DATA / "senate_seats_2026.csv").groupby("dem_seats")["probability"].sum()
+    s = s[(s.index >= 42) & (s.index <= 58)]
+    fig, ax = plt.subplots(figsize=(7.6, 3.8))
+    ax.bar(s.index, s.values * 100, color=[DEM if k >= 51 else REP for k in s.index], width=0.78)
+    ax.axvline(50.5, color=INK, lw=0.8, ls=(0, (2, 2)))
+    p51 = s[s.index >= 51].sum()
+    ax.text(50.7, ax.get_ylim()[1] * 0.92, f"Democrats Win 51+: {p51 * 100:.0f}%", fontsize=9.5, color=DEM)
+    ax.set_xlabel("Democratic-Caucus Senate Seats After the Election")
+    ax.set_ylabel("Chance (%)")
+    tidy(ax)
+    note(ax, "20,000 simulations. Democrats need 51 seats for control (the Vice President breaks ties). "
+             "Seats won by independents are not counted.", y=-0.2)
+    save(fig, "senate_seats_2026.png")
+
+
 def main() -> None:
     apply()
     t = turnout_2026()
@@ -282,12 +370,10 @@ def main() -> None:
     backtest_errors()
     backtest_scatter()
     drivers()
-    # Stage B race backtests when present (PLAN §6 signature visuals).
-    try:
-        from make_race_backtest_figures import main as race_backtest_figures
-        race_backtest_figures()
-    except Exception as exc:  # data may be missing on a fresh Stage A-only run
-        print("  skip race backtest figures:", exc)
+    race_backtest()
+    race_calibration()
+    race_probabilities()
+    senate_seats()
 
 
 if __name__ == "__main__":

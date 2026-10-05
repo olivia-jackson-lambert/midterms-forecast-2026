@@ -1,110 +1,151 @@
-"""Portfolio figure style for Turnout First charts.
+"""Shared matplotlib style for every case-study figure, so charts match the site.
 
-Mirrors the site's scripts/figstyle.py when PORTFOLIO_SITE is unavailable: Lora (or
-Georgia), Title Case axis labels, no titles inside figures, quiet captions via `note`.
-Neutrals recovered from published charts / docs/visual-brand.md.
+Usage (from any figure script):
 
-When the portfolio repo is on disk, make_figures.py prefers that copy; this module
-keeps cloud agents and CI on the same look.
+    import sys; sys.path.insert(0, "<repo>/scripts")
+    from figstyle import apply, tidy, INK, SLATE, RUST, DIM, GRID, MUTED
+    apply()
+    ...
+    tidy(ax)                                   # hairline axes, no top/right spines
+    fig.savefig(path, dpi=200, bbox_inches="tight", facecolor="white")
+
+Rules the style encodes:
+- Lora for all text, including small labels (MONO is kept as a name for older
+  scripts but now also points at Lora, so every chart uses one face).
+- No chart titles inside the figure; the caption in the article carries the title.
+- White background, hairline light grid on the value axis only, no top/right spines.
+- Colours come only from this file. Slate is the default series colour, rust is
+  for the one thing the reader should notice, dim/grey for context. Heatmaps use
+  CMAP, signed values CMAP_DIVERGING, many-category charts CATEGORICAL, and box or
+  band fills SLATE_TINT / RUST_TINT / PAPER. No other hex codes or named cmaps.
+- Every piece of text in a figure (axis labels, legends, panel titles, colour-bar
+  labels, annotations) is in Title Case; use title_case() when in doubt.
+- Figures are read in a 620px column on a vertically scrolling page. Prefer layouts
+  no wider than about 2:1: stack panels vertically, run pipelines top to bottom.
 """
-from __future__ import annotations
+from pathlib import Path
 
+import matplotlib as mpl
+import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
-from matplotlib import font_manager
 
-# Neutrals (figstyle names)
-INK = "#161616"
-DIM = "#4c525a"
-MUTED = "#8c8c90"
-LIGHT = "#bebec0"
-PAPER = "#ffffff"
+FONT_DIR = Path(__file__).resolve().parent / "fonts"
 
-# Party (site slate / rust) — only for DEM / REP series
-SLATE = "#7189a6"
-RUST = "#c85040"
+INK = "#16181b"      # text and primary lines
+SLATE = "#7189a6"    # default series
+RUST = "#c9503f"     # emphasis: the one thing to look at
+DIM = "#3a3f48"      # secondary dark series
+MUTED = "#8a8f98"    # notes, annotations, context series
+GRID = "#e6e6ec"     # gridlines
+LIGHT = "#c9ced6"    # light context fills
+SEQ = [SLATE, RUST, DIM, "#a9b8ca", "#e3a397", MUTED]  # order for multi-series plots
 
-# Site categorical used by palette.PURPLE
-CATEGORICAL = [
-    SLATE, RUST, "#5b7a8c", "#c4a35a", "#6a8f7b", "#b07d62",
-    "#8c6d8f", "#7a8b6f", "#9a7b6d", "#6d7f8c",
-]
+# Soft fills for boxes, bands and table rows (diagrams, highlighted regions)
+SLATE_TINT = "#e6ecf3"   # light slate fill
+RUST_TINT = "#f6e1dc"    # light rust fill (errors, the thing to notice)
+PAPER = "#f4f5f7"        # neutral panel / box fill
 
-_GRID = "#e6e6e8"
+# Ten muted, distinguishable colours for charts with many categories (digit classes,
+# particle types). Slate and rust stay first so emphasis matches every other chart.
+CATEGORICAL = [SLATE, RUST, DIM, "#a9b8ca", "#e3a397", "#8a9a7b",
+               "#8c6d8f", "#b08b5a", "#5f8a8b", "#c9ced6"]
+
+# Heatmaps (confusion matrices, grids): white to slate to near-ink, one ramp everywhere.
+from matplotlib.colors import LinearSegmentedColormap as _LSC
+CMAP = _LSC.from_list("site_slate", ["#ffffff", "#c9d4e2", SLATE, "#3d5470", "#1f2a38"])
+# Signed values (residuals, differences): slate for negative, rust for positive.
+CMAP_DIVERGING = _LSC.from_list("site_div", ["#3d5470", SLATE, "#f4f5f7", "#e3a397", RUST])
+
+_SMALL = {"a", "an", "the", "and", "but", "or", "nor", "for", "so", "yet", "as", "at",
+          "by", "in", "of", "off", "on", "per", "to", "up", "via", "vs", "vs.", "with", "from", "into"}
 
 
-def _pick_serif() -> str:
-    available = {f.name for f in font_manager.fontManager.ttflist}
-    for name in ("Lora", "Georgia", "Times New Roman", "DejaVu Serif"):
-        if name in available:
-            return name
-    return "serif"
+def title_case(text: str) -> str:
+    """Title Case for axis labels, legends, panel titles and annotations.
 
-
-def _title_case(s: str) -> str:
-    """Title Case small axis labels; leave short tokens and % alone."""
-    if not s or not isinstance(s, str):
-        return s
-    small = {"of", "a", "an", "the", "and", "or", "vs", "to", "in", "on", "for", "by"}
-    parts = s.split()
+    Small words stay lowercase unless first, last or opening a bracket; single-letter
+    symbols (p, n, x), words that already contain a capital or digit (ResNet, BGE-M3,
+    F1, R², pT) and units with a slash such as (GeV/c) are kept as written, so
+    "(log scale)" becomes "(Log Scale)".
+    """
+    words = text.split(" ")
     out = []
-    for i, w in enumerate(parts):
-        if w.isupper() and len(w) <= 4:
+    for i, w in enumerate(words):
+        core = w.strip("()[]{}\"'")
+        lead = w[: len(w) - len(w.lstrip("([{\"'"))]
+        if not core or (len(core) == 1 and core != "a") \
+                or any(c.isupper() for c in core[1:]) or any(c.isdigit() for c in core) \
+                or w.startswith("$") or "/" in core:
             out.append(w)
-            continue
-        low = w.lower()
-        if i > 0 and low in small:
-            out.append(low)
+        elif core.lower() in _SMALL and 0 < i < len(words) - 1 and not lead:
+            out.append(w.lower())
         else:
-            out.append(w[:1].upper() + w[1:] if w else w)
+            body = w[len(lead):]
+            out.append(lead + "-".join(p[:1].upper() + p[1:] for p in body.split("-")))
     return " ".join(out)
 
+SANS = "Lora"
+MONO = "Lora"
 
-def apply() -> None:
-    serif = _pick_serif()
+
+def apply():
+    for f in FONT_DIR.glob("*.ttf"):
+        fm.fontManager.addfont(str(f))
+    for cm in (CMAP, CMAP_DIVERGING):
+        try:
+            mpl.colormaps.register(cm)
+        except ValueError:
+            pass
     plt.rcParams.update({
-        "font.family": serif,
+        "figure.dpi": 120,
+        "savefig.dpi": 200,
+        "savefig.facecolor": "white",
+        "figure.facecolor": "white",
+        "axes.facecolor": "white",
+        "font.family": SANS,
         "font.size": 10.5,
-        "axes.labelsize": 11,
-        "axes.titlesize": 11,
+        "text.color": INK,
         "axes.labelcolor": INK,
-        "axes.edgecolor": INK,
+        "axes.labelsize": 10.5,
+        "axes.titlesize": 11,
+        "axes.titleweight": "semibold",
+        "axes.edgecolor": "#b9bec6",
         "axes.linewidth": 0.8,
         "axes.spines.top": False,
         "axes.spines.right": False,
-        "xtick.color": DIM,
-        "ytick.color": DIM,
+        "axes.grid": True,
+        "axes.grid.axis": "y",
+        "grid.color": GRID,
+        "grid.linewidth": 0.8,
+        "axes.axisbelow": True,
+        "axes.prop_cycle": mpl.cycler(color=SEQ),
+        "xtick.color": "#5a606a",
+        "ytick.color": "#5a606a",
         "xtick.labelsize": 9.5,
         "ytick.labelsize": 9.5,
-        "legend.fontsize": 9.5,
+        "xtick.major.size": 0,
+        "ytick.major.size": 0,
         "legend.frameon": False,
-        "figure.facecolor": PAPER,
-        "axes.facecolor": PAPER,
-        "text.color": INK,
-        "grid.color": _GRID,
-        "grid.linewidth": 0.8,
-        "axes.titlepad": 8,
+        "legend.fontsize": 9.5,
+        "lines.linewidth": 2,
+        "image.cmap": "site_slate",
+        # maths labels ($p_T$, $\\Delta$) in Lora too, not matplotlib's default face
+        "mathtext.fontset": "custom",
+        "mathtext.rm": SANS,
+        "mathtext.it": SANS,
+        "mathtext.bf": SANS + ":semibold",
     })
 
 
-def tidy(ax, grid_axis: str = "y") -> None:
-    """Light grid, dim ticks, Title Case axis labels — Claude's standard cleanup."""
-    if grid_axis:
-        ax.grid(axis=grid_axis, color=_GRID, lw=0.8, zorder=0)
-    ax.set_axisbelow(True)
-    ax.tick_params(colors=DIM, length=3, width=0.7)
-    xlabel = ax.get_xlabel()
-    ylabel = ax.get_ylabel()
-    if xlabel:
-        ax.set_xlabel(_title_case(xlabel))
-    if ylabel:
-        ax.set_ylabel(_title_case(ylabel))
-    for spine in ax.spines.values():
-        spine.set_color(INK)
-        spine.set_linewidth(0.8)
+def tidy(ax, grid_axis="y"):
+    """Hairline finish for one axes."""
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.grid(True, axis=grid_axis, color=GRID, linewidth=0.8)
+    ax.tick_params(length=0)
+    return ax
 
 
-def note(ax, text: str, x: float = 0.0, y: float = -0.18, ha: str = "left",
-         fontsize: float = 8.5) -> None:
-    """Caption under the axes (write-up voice). Multi-line ok."""
-    ax.text(x, y, text, transform=ax.transAxes, fontsize=fontsize, color=MUTED,
-            va="top", ha=ha, linespacing=1.35)
+def note(ax, text, x=1.0, y=-0.16, ha="right"):
+    """Small grey source or method note under an axes."""
+    ax.text(x, y, text, transform=ax.transAxes, ha=ha, va="top", fontsize=8.5, color=MUTED)

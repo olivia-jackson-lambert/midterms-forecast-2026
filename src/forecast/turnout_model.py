@@ -158,12 +158,14 @@ def cvap_vep_ratio(year: int) -> float:
 
 def run(target: int, train_years: list[int], sims: int = SIMS, draws: int = 1000,
         params: dict | None = None, national_fixed: float | None = None,
-        early_vote: bool = True, chains: int = 4, tune: int | None = None) -> tuple[pd.DataFrame, dict]:
+        early_vote: bool = False, chains: int = 4, tune: int | None = None) -> tuple[pd.DataFrame, dict]:
     """Fit (unless params are given) and simulate target. national_fixed pins national turnout
     (CVAP basis) to one value, to test the county model on its own.
 
-    When `early_vote` is True and `early_vote_{target}.parquet` exists, apply state logit
-    offsets from relative October early-vote pace (PLAN §4 / §10 item 7).
+    `early_vote` (off by default) applies state logit offsets from forecast.early_vote. They
+    compare states' early-vote pace with each other, which mostly reflects voting rules
+    (all-mail states always look ahead), and have not been backtested, so the forecast does
+    not use them until they compare each state with its own 2022 pace.
     """
     rng = np.random.default_rng(SEED + target)
     params = params or fit([frame(y) for y in train_years], draws=draws, chains=chains,
@@ -189,7 +191,28 @@ def run(target: int, train_years: list[int], sims: int = SIMS, draws: int = 1000
     w = f["cvap"].to_numpy()
     nat_sim = (sims_ * w[None, :]).sum(1) / w.sum()
     return out, {"params": params, "national": np.quantile(nat_sim, [0.1, 0.5, 0.9]),
-                 "states": state_summary(f, sims_), "early_vote": ev_meta}
+                 "states": state_summary(f, sims_), "early_vote": ev_meta,
+                 "lean_draws": lean_draws(f, sims_, target)}
+
+
+def lean_draws(f: pd.DataFrame, sims: np.ndarray, target: int, keep: int = 4000) -> pd.DataFrame:
+    """The turnout-first baseline: each state's Democratic two-party share in the last
+    presidential election, re-weighted county by county by simulated midterm turnout.
+
+    One row per simulation (the first `keep`), one column per state. Stage B draws from these
+    so turnout uncertainty carries into vote share.
+    """
+    pres = pd.read_parquet(OUT / "county_panel.parquet", columns=["year", "unit_fips", "dem", "rep"])
+    pres = pres[pres["year"] == target - 2].set_index("unit_fips")
+    dem2p = (pres["dem"] / (pres["dem"] + pres["rep"])).reindex(f["unit_fips"]).to_numpy()
+    w = (sims[:keep] * f["cvap"].to_numpy()[None, :]).astype(float)
+    ok = ~np.isnan(dem2p)
+    out = {}
+    for st, idx in f.groupby("state_po").indices.items():
+        idx = idx[ok[idx]]
+        ww = w[:, idx]
+        out[st] = (ww * dem2p[idx][None, :]).sum(1) / ww.sum(1)
+    return pd.DataFrame(out)
 
 
 def state_summary(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:
@@ -209,6 +232,7 @@ def main() -> None:
                         national_fixed=info["national"][1], early_vote=True)
     out["lo80_county"], out["hi80_county"] = rel["lo80"].values, rel["hi80"].values
     out.to_parquet(OUT / "turnout_2026.parquet", index=False)
+    info["lean_draws"].to_parquet(OUT / "lean_draws_2026.parquet", index=False)
     st = info["states"].merge(rel_info["states"][["state_po", "lo80", "hi80"]], on="state_po",
                               suffixes=("", "_state"))      # *_state: national turnout held at its median
     st.to_parquet(OUT / "turnout_2026_states.parquet", index=False)

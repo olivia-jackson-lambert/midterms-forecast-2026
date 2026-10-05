@@ -273,6 +273,35 @@ def results_supplements(year: int) -> pd.DataFrame:
     return pd.concat([california_senate_2022(), tennessee_governor_2022()], ignore_index=True)
 
 
+def _surname(name: str) -> str:
+    parts = [w for w in re.sub(r"[^A-Za-z\- ]", " ", str(name)).upper().split() if w not in {"JR", "SR", "II", "III", "IV"}]
+    return parts[-1] if parts else ""
+
+
+def _nominee_parties(df: pd.DataFrame, party: pd.Series, year: int) -> pd.Series:
+    """Correct MIT's party labels for Senate and governor nominees.
+
+    MIT's party_simplified is wrong for some nominees (2022: Walz in Minnesota and Christiansen
+    in North Dakota are "OTHER", Wyoming's Democratic nominee is "LIBERTARIAN"). Votes for the
+    Democratic and Republican nominees named in forecast.races count for those parties.
+    """
+    races_path = OUT / "races.parquet"
+    if not races_path.exists():
+        return party
+    r = pd.read_parquet(races_path)
+    r = r[(r["year"] == year) & r["d_side"].eq("democrat")]
+    party = party.copy()
+    cand = df["candidate"].astype(str).map(_surname)
+    office = df["office"].map(OFFICES)
+    for _, row in r.iterrows():
+        here = df["state_po"].eq(row["state_po"]) & office.eq(row["office"])
+        here &= df["special"].astype(str).str.upper().eq("TRUE").eq(bool(row["special"])) | office.eq("GOV")
+        for col, label in (("dem_candidate", "DEMOCRAT"), ("rep_candidate", "REPUBLICAN")):
+            if row[col]:
+                party = party.mask(here & cand.eq(_surname(row[col])), label)
+    return party
+
+
 def county_results(year: int, race_offices: tuple[str, ...] | None = None) -> pd.DataFrame:
     """County votes by race: office (SEN, GOV, HOUSE), special flag, Democratic, Republican, total.
     House is summed over all districts in the county.
@@ -289,6 +318,7 @@ def county_results(year: int, race_offices: tuple[str, ...] | None = None) -> pd
         cand = df["candidate"].astype(str).str.upper().str.strip()
         fill = cand.map(NM_GOV_2022_CANDIDATES)
         party = party.where(party.ne(""), fill.fillna(""))
+    party = _nominee_parties(df, party, year)
     df["dem"] = np.where(party == "DEMOCRAT", df["votes"], 0)
     df["rep"] = np.where(party == "REPUBLICAN", df["votes"], 0)
     out = df.groupby(["state_po", "county_fips", "race", "special"], as_index=False)[["dem", "rep", "votes"]].sum()
