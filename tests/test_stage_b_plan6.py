@@ -70,18 +70,15 @@ def test_fundraising_feature_codes_log_ratio(tmp_path, monkeypatch):
 
 
 def test_race_score_gate_beats_lean_baseline():
-    """Hand-built case: soft probs beat hard lean calls on Brier (PLAN publish gate)."""
-    # Lean wrongly calls three toss-ups; model assigns ~0.55/0.45 and is closer.
+    """Hand-built case: soft probs beat soft presidential-lean baseline (PLAN gate)."""
     out = pd.DataFrame({
         "p_dem_win": [0.9, 0.1, 0.55, 0.45, 0.7, 0.3],
         "actual_share": [0.8, 0.2, 0.52, 0.48, 0.65, 0.35],
-        "baseline": [0.9, 0.1, 0.51, 0.49, 0.51, 0.49],  # hard calls miss the close pairs' nuance
+        # Soft lean worse than model on the close races.
+        "baseline": [0.85, 0.15, 0.40, 0.60, 0.55, 0.45],
         "lo80": [0.7, 0.0, 0.4, 0.3, 0.5, 0.15],
         "hi80": [1.0, 0.3, 0.7, 0.6, 0.85, 0.5],
     })
-    # Make lean baseline worse: flip the close races' lean calls opposite of truth.
-    out.loc[2, "baseline"] = 0.4   # lean says R, Dem wins
-    out.loc[3, "baseline"] = 0.6   # lean says D, Rep wins
     s = backtest.score_races(out)
     assert s["n_races"] == 6
     assert s["beats_lean_baseline"] is True

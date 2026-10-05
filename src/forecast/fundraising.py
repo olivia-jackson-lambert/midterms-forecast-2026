@@ -1,12 +1,11 @@
 """Candidate fundraising for Stage B race features.
 
-PLAN §3 / §4: fundraising enters the vote-share equation. Senate receipts come from the
-public OpenFEC API (DEMO_KEY works; set FEC_API_KEY for higher volume). Governors are
-state offices and are not in FEC — their fundraising feature stays 0 until a public
-state source is wired.
-
-Feature coding: standardized log(Dem receipts / Rep receipts) by race, clipped.
-Open seats and races with missing party totals get 0.
+PLAN §3 / §4: fundraising enters the vote-share equation.
+- Senate: public OpenFEC API (`DEMO_KEY` works; set `FEC_API_KEY` for volume).
+- Governors: not in FEC. FollowTheMoney / OpenSecrets state data needs a free API
+  account key (`FTM_API_KEY`). Until that key is set, write an optional cache
+  `data/processed/gov_fundraising_{year}.parquet` (columns race_id, fundraising)
+  or leave GOV fundraising at 0.
 
     python -m forecast.fundraising
 """
@@ -26,6 +25,8 @@ FEC = "https://api.open.fec.gov/v1/candidates/totals/"
 RAW_FEC = RAW / "fec"
 PARTY_DEM = {"DEM", "DFL"}
 PARTY_REP = {"REP"}
+# FollowTheMoney Ask Anything API (account key required; not called without FTM_API_KEY).
+FTM = "https://api.followthemoney.org/"
 
 
 def _api_key() -> str:
@@ -99,18 +100,9 @@ def fundraising_feature(election_year: int) -> pd.DataFrame:
 
     Returns columns race_id, fundraising (z-scored log Dem/Rep ratio).
     """
-    from .features import GOVERNOR
+    from .vote_model import scheduled_races
 
-    rows = []
-    for office, states in (("SEN", SENATE[election_year].split()),
-                           ("GOV", GOVERNOR[election_year].split())):
-        for st in states:
-            special = office == "SEN" and election_year == 2026 and st in ("FL", "OH")
-            rows.append({
-                "year": election_year, "state_po": st, "office": office, "special": special,
-                "race_id": f"{election_year}-{st}-{office}{'S' if special else ''}",
-            })
-    races = pd.DataFrame(rows)
+    races = scheduled_races(election_year)
     sen = senate_party_receipts(election_year)
     by_state = sen.set_index("state_po") if len(sen) else pd.DataFrame()
     vals = []
@@ -152,6 +144,13 @@ def main() -> None:
         print(f"{year}: states={len(sen)} races_nonzero="
               f"{(feat['fundraising'] != 0).sum()} "
               f"mean_raw={feat.loc[feat.fundraising_raw != 0, 'fundraising_raw'].mean():+.2f}")
+    key = os.environ.get("FTM_API_KEY")
+    if key:
+        print("FTM_API_KEY set — governor fundraising via FollowTheMoney not yet automated; "
+              "write gov_fundraising_{year}.parquet manually for now.")
+    else:
+        print("Governor fundraising: no FTM_API_KEY; GOV feature stays 0 "
+              "(optional cache: gov_fundraising_{year}.parquet).")
 
 
 if __name__ == "__main__":

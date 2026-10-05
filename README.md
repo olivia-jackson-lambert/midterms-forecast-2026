@@ -21,7 +21,11 @@ python -m forecast.midterms             # midterm turnout 2014-2022 and 2018/202
 python -m forecast.generic_ballot       # 2018/2022/2026 generic-ballot aggregates
 python -m forecast.special_elections    # 2025–26 specials vs 2024 presidential lean
 python -m forecast.races                # 2026 Senate/governor race list and incumbency
+python -m forecast.historical_races     # 2018/2022 open seats / incumbency for backtests
 python -m forecast.fundraising          # OpenFEC Senate receipts → fundraising feature
+python -m forecast.ensure_race_data     # slim panel + MIT SEN/GOV results for race backtests
+python -m forecast.backtest races       # Stage B Brier / calibration vs lean baseline
+python -m forecast.early_vote           # October early-vote stub (confirm USEP 2026 page)
 python -m forecast.backtest             # turnout + Stage B race backtests (when data present)
 python -m forecast.turnout_model        # 2026 county turnout forecast (Stage A)
 python -m forecast.vote_model           # Stage B race table (GB + specials swing, incumbency, FEC)

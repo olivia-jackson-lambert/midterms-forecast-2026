@@ -69,6 +69,12 @@ CA_SENATE_CERTIFIED = {
     True: {"dem": 6_559_308, "rep": 4_212_450},
 }
 TN_GOV_CERTIFIED = {"dem": 572_818, "rep": 1_129_390}
+# New Mexico 2022 governor: MIT party_simplified is blank; map nominees by name.
+NM_GOV_2022_CANDIDATES = {
+    "MICHELLE LUJAN GRISHAM": "DEMOCRAT",
+    "MARK V RONCHETTI": "REPUBLICAN",
+    "MARK RONCHETTI": "REPUBLICAN",
+}
 
 OFFICES = {"US SENATE": "SEN", "GOVERNOR": "GOV", "US HOUSE": "HOUSE"}
 OFFICE_ALIASES = {"GOVERNOR/LIEUTENANT GOVERNOR": "GOVERNOR"}      # Iowa 2018
@@ -141,17 +147,26 @@ def _read(path, chunks: bool = False) -> pd.DataFrame:
     return _clean(pd.concat(parts))
 
 
-def precinct_results(year: int) -> pd.DataFrame:
-    cache = RAW / "medsl" / f"results_{year}.parquet"
+def precinct_results(year: int, offices: tuple[str, ...] | None = None) -> pd.DataFrame:
+    """MIT precinct rows. `offices` limits which national 2018 zips to fetch
+    (e.g. (\"SENATE\", \"STATE\") for Stage B race backtests — skips HOUSE)."""
+    want = tuple(offices) if offices else ("SENATE", "HOUSE", "STATE")
+    tag = "all" if offices is None else "_".join(want).lower()
+    cache = RAW / "medsl" / f"results_{year}_{tag}.parquet"
     if cache.exists():
         return pd.read_parquet(cache)
+    legacy = RAW / "medsl" / f"results_{year}.parquet"
+    if offices is None and legacy.exists():
+        return pd.read_parquet(legacy)
     (RAW / "medsl").mkdir(exist_ok=True)
     if year == 2018:
-        parts = [_read(fetch(MEDSL_2018.format(o=o), RAW / "medsl" / f"2018_{o}.zip"), chunks=o == "STATE")
-                 for o in ("SENATE", "HOUSE", "STATE")]
-        for s, offices in SUPPLEMENT_2018.items():
+        parts = []
+        for o in want:
+            parts.append(_read(fetch(MEDSL_2018.format(o=o), RAW / "medsl" / f"2018_{o}.zip"),
+                               chunks=(o == "STATE")))
+        for s, office_list in SUPPLEMENT_2018.items():
             d = _read(fetch(MEDSL_2018_STATE.format(s=s), RAW / "medsl" / f"2018_state_{s}.zip"))
-            parts.append(d[d["office"].isin(offices)])
+            parts.append(d[d["office"].isin(office_list)])
     else:
         parts = [_read(fetch(MEDSL_2022.format(s=s), RAW / "medsl" / f"2022_{s}.zip")) for s in STATES]
     df = pd.concat(parts, ignore_index=True)
@@ -258,14 +273,22 @@ def results_supplements(year: int) -> pd.DataFrame:
     return pd.concat([california_senate_2022(), tennessee_governor_2022()], ignore_index=True)
 
 
-def county_results(year: int) -> pd.DataFrame:
+def county_results(year: int, race_offices: tuple[str, ...] | None = None) -> pd.DataFrame:
     """County votes by race: office (SEN, GOV, HOUSE), special flag, Democratic, Republican, total.
-    House is summed over all districts in the county."""
-    df = precinct_results(year)
+    House is summed over all districts in the county.
+
+    `race_offices`: optional MIT zip names for 2018, e.g. (\"SENATE\", \"STATE\") to skip HOUSE.
+    """
+    df = precinct_results(year, offices=race_offices)
     df = df[df["county_fips"].str.len() == 5]
     df["race"] = df["office"].map(OFFICES)
     df["special"] = df["special"].astype(str).str.upper().eq("TRUE") & df["race"].eq("SEN")
-    party = df["party_simplified"].fillna("")
+    party = df["party_simplified"].fillna("").astype(str).str.upper()
+    # Fill known MIT party blanks (New Mexico 2022 governor).
+    if year == 2022:
+        cand = df["candidate"].astype(str).str.upper().str.strip()
+        fill = cand.map(NM_GOV_2022_CANDIDATES)
+        party = party.where(party.ne(""), fill.fillna(""))
     df["dem"] = np.where(party == "DEMOCRAT", df["votes"], 0)
     df["rep"] = np.where(party == "REPUBLICAN", df["votes"], 0)
     out = df.groupby(["state_po", "county_fips", "race", "special"], as_index=False)[["dem", "rep", "votes"]].sum()

@@ -66,18 +66,34 @@ def logit(p: np.ndarray | float, eps: float = 1e-4) -> np.ndarray | float:
 
 # --------------------------------------------------------------------------- races
 def scheduled_races(year: int) -> pd.DataFrame:
-    """Senate and governor races on the ballot in `year`, from the Stage A schedule lists.
+    """Senate and governor races on the ballot in `year`.
 
-    Specials: Florida and Ohio Senate seats in 2026 are already in SENATE[2026]; they are
-    flagged here so incumbency / fundraising tables can attach. Historical specials
-    are not reconstructed yet (PLAN race-backtest work).
+    Regular Class seats come from `features.SENATE` / `GOVERNOR`. Specials:
+    - 2026: FL and OH Senate (special-only rows; not Class-2 regulars)
+    - 2018: MN and MS Senate specials (in addition to Class-1 regulars)
+    - 2022: CA and OK Senate specials (in addition to Class-3 regulars)
     """
+    if year in (2018, 2022):
+        from .historical_races import SENATE_SPECIAL
+        extra_special = SENATE_SPECIAL.get(year, set())
+    elif year == 2026:
+        extra_special = {"FL", "OH"}
+    else:
+        extra_special = set()
+
     rows = []
     for office, states in (("SEN", SENATE[year].split()), ("GOV", GOVERNOR[year].split())):
         for st in states:
-            special = office == "SEN" and year == 2026 and st in ("FL", "OH")
-            rows.append({"year": year, "state_po": st, "office": office, "special": special,
-                         "race_id": f"{year}-{st}-{office}{'S' if special else ''}"})
+            if office == "SEN" and year == 2026 and st in extra_special:
+                # 2026 FL/OH are special-only additions to the Class-2 list.
+                rows.append({"year": year, "state_po": st, "office": office, "special": True,
+                             "race_id": f"{year}-{st}-{office}S"})
+                continue
+            rows.append({"year": year, "state_po": st, "office": office, "special": False,
+                         "race_id": f"{year}-{st}-{office}"})
+            if office == "SEN" and st in extra_special and year != 2026:
+                rows.append({"year": year, "state_po": st, "office": office, "special": True,
+                             "race_id": f"{year}-{st}-{office}S"})
     return pd.DataFrame(rows)
 
 
@@ -96,8 +112,10 @@ def race_fundamentals(year: int) -> pd.DataFrame:
 
     Prefer `race_fundamentals_{year}.parquet` when present. Otherwise:
     - 2026 incumbency / open seats from `forecast.races`
-    - Senate fundraising from OpenFEC (`forecast.fundraising`) when reachable / cached
-    Governors have no FEC coverage — fundraising stays 0 for GOV.
+    - 2018/2022 incumbency from `forecast.historical_races`
+    - Senate fundraising from OpenFEC cache (`fundraising_{year}.parquet`)
+    Governors have no FEC coverage — fundraising stays 0 unless
+    `gov_fundraising_{year}.parquet` is supplied (FollowTheMoney needs an API key).
     """
     path = OUT / f"race_fundamentals_{year}.parquet"
     if path.exists():
@@ -114,6 +132,14 @@ def race_fundamentals(year: int) -> pd.DataFrame:
             on=["state_po", "office", "special"], how="left")
         r["open_seat"] = m["open_seat"].fillna(False).astype(bool)
         r["incumbency"] = _incumbency_code(r["open_seat"], m["incumbent_party"])
+    elif year in (2018, 2022):
+        from . import historical_races as hist
+        meta = hist.races(year)
+        m = r.drop(columns=["open_seat", "incumbency"]).merge(
+            meta[["state_po", "office", "special", "open_seat", "incumbency", "incumbent_party"]],
+            on=["state_po", "office", "special"], how="left")
+        r["open_seat"] = m["open_seat"].fillna(False).astype(bool)
+        r["incumbency"] = m["incumbency"].fillna(0.0)
     # FEC Senate fundraising: only from cache written by `python -m forecast.fundraising`.
     fec_path = OUT / f"fundraising_{year}.parquet"
     if fec_path.exists():
@@ -122,6 +148,14 @@ def race_fundamentals(year: int) -> pd.DataFrame:
             r = r.drop(columns=["fundraising"]).merge(
                 feat[["race_id", "fundraising"]], on="race_id", how="left")
             r["fundraising"] = r["fundraising"].fillna(0.0)
+    # Optional governor fundraising cache (FollowTheMoney / manual).
+    gov_path = OUT / f"gov_fundraising_{year}.parquet"
+    if gov_path.exists():
+        gov = pd.read_parquet(gov_path)
+        if {"race_id", "fundraising"}.issubset(gov.columns):
+            gmap = gov.set_index("race_id")["fundraising"]
+            is_gov = r["race_id"].isin(gmap.index)
+            r.loc[is_gov, "fundraising"] = r.loc[is_gov, "race_id"].map(gmap).astype(float)
     return r[["race_id", "incumbency", "fundraising", "open_seat"]]
 
 

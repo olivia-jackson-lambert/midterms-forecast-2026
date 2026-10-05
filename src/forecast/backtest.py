@@ -99,26 +99,32 @@ def calibration_table(p: np.ndarray, y: np.ndarray, bins: int = 5) -> pd.DataFra
 
 
 def score_races(out: pd.DataFrame) -> dict:
-    """Score Stage B forecasts. Requires columns p_dem_win, actual_share, baseline."""
+    """Score Stage B forecasts. Requires columns p_dem_win, actual_share, baseline.
+
+    Primary baseline (PLAN §5): presidential lean as a *probability* (soft). Hard 0/1
+    lean calls are reported too; the publish gate is soft-lean Brier.
+    """
     d = out.dropna(subset=["p_dem_win", "actual_share", "baseline"]).copy()
     if d.empty:
         return {"n_races": 0, "brier": np.nan, "log_loss": np.nan,
                 "baseline_brier": np.nan, "beats_lean_baseline": False}
     y = (d["actual_share"] > 0.5).astype(float).to_numpy()
     p = d["p_dem_win"].to_numpy(dtype=float)
-    # Lean baseline: treat presidential lean as a deterministic win probability
-    # (hard 0/1 at 0.5) — the PLAN "same as the last presidential lean" rule.
-    lean_call = (d["baseline"] > 0.5).astype(float).to_numpy()
+    lean = np.clip(d["baseline"].to_numpy(dtype=float), 1e-3, 1 - 1e-3)
+    lean_hard = (lean > 0.5).astype(float)
     brier = _brier(p, y)
-    base_brier = _brier(lean_call, y)
+    base_brier = _brier(lean, y)          # soft presidential lean
+    base_brier_hard = _brier(lean_hard, y)
     return {
         "n_races": len(d),
         "brier": brier,
         "log_loss": _log_loss(p, y),
         "baseline_brier": base_brier,
+        "baseline_brier_hard": base_brier_hard,
+        "baseline_log_loss": _log_loss(lean, y),
         "beats_lean_baseline": bool(brier < base_brier),
         "accuracy": float(((p > 0.5) == (y > 0.5)).mean()),
-        "baseline_accuracy": float((lean_call == y).mean()),
+        "baseline_accuracy": float((lean_hard == y).mean()),
         "coverage80": float(d["actual_share"].between(d["lo80"], d["hi80"]).mean())
         if {"lo80", "hi80"}.issubset(d.columns) else np.nan,
     }
