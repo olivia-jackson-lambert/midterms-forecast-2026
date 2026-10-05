@@ -19,9 +19,13 @@ what it needs in `data/raw/`, which is never committed.
 cd src && python -m forecast.ingest     # presidential panel: data/processed/county_panel.parquet
 python -m forecast.midterms             # midterm turnout 2014-2022 and 2018/2022 results
 python -m forecast.backtest             # turnout backtests, 2018 and 2022
-python -m forecast.turnout_model        # 2026 county turnout forecast
+python -m forecast.turnout_model        # 2026 county turnout forecast (Stage A)
+python -m forecast.vote_model           # 2026 race vote-share scaffold (Stage B; priors until inputs land)
 cd .. && python -m pytest               # data and model checks
 ```
+
+Stage B unit tests (`tests/test_vote_model.py`) use synthetic leans and do not need
+`data/processed/` — run them with `python -m pytest tests/test_vote_model.py`.
 
 `county_panel.parquet` has one row per county unit and presidential year (2008 to 2024):
 Democratic, Republican and total votes, two-party share, citizen voting-age population,
