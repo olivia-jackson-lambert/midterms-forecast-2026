@@ -10,9 +10,19 @@ Republican and Democratic whatever they show, so:
   readers.
 - The homepage card keeps the site's usual slate and rust (figures/make_thumbnail.py).
 """
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
 from matplotlib.colors import LinearSegmentedColormap
 
-from figstyle import CATEGORICAL, DIM, INK, LIGHT, MUTED, PAPER, RUST, SLATE  # noqa: F401
+# Allow `from palette import …` whether figstyle comes from PORTFOLIO_SITE or figures/.
+_HERE = Path(__file__).resolve().parent
+if str(_HERE) not in sys.path:
+    sys.path.insert(0, str(_HERE))
+
+from figstyle import CATEGORICAL, DIM, INK, LIGHT, MUTED, PAPER, RUST, SLATE  # noqa: E402, F401
 
 DEM, REP = SLATE, RUST
 

@@ -43,3 +43,17 @@ def test_cvap_ratio_scales_the_target():
     sims = simulate(f, p, nat, rng, cvap_ratio=1.02)
     w = f["cvap"].to_numpy()
     assert np.allclose((sims * w).sum(1) / w.sum(), 0.459, atol=1e-4)
+
+
+def test_state_offset_preserves_national_total():
+    f, p = _inputs(n=120, draws=40, seed=3)
+    rng = np.random.default_rng(4)
+    nat = np.full(80, 0.48)
+    off = pd.Series({"AA": 0.25, "BB": -0.20, "CC": 0.0})
+    sims = simulate(f, p, nat, rng, cvap_ratio=1.0, state_offset=off)
+    w = f["cvap"].to_numpy()
+    assert np.allclose((sims * w).sum(1) / w.sum(), nat, atol=1e-4)
+    # AA counties should sit above BB after a strong positive offset.
+    aa = f["state_po"].eq("AA").to_numpy()
+    bb = f["state_po"].eq("BB").to_numpy()
+    assert sims[:, aa].mean() > sims[:, bb].mean()

@@ -58,6 +58,17 @@ SWING_PRIOR = {2018: {"mean": 0.04, "sd": 0.03},
                2022: {"mean": -0.02, "sd": 0.03},
                2026: {"mean": 0.00, "sd": 0.04}}
 
+# Stage B interval floors (logit scale). Ridge fits collapse gamma/residual variance and
+# left 2022 coverage80 ≈ 0.33; these floors target ~80% out-of-sample coverage without
+# breaking the soft-lean Brier gate (PLAN §10 item 7).
+SIGMA_FLOOR = {
+    "sigma_race": 0.40,
+    "sigma_nat": 0.20,
+    "sigma_state": 0.15,
+    "sigma_region": 0.10,
+}
+GAMMA_SD_FLOOR = 0.12
+
 
 def logit(p: np.ndarray | float, eps: float = 1e-4) -> np.ndarray | float:
     p = np.clip(p, eps, 1 - eps)
@@ -355,13 +366,34 @@ def prior_params(draws: int = 1000, rng: np.random.Generator | None = None) -> d
     rng = rng or np.random.default_rng(SEED)
     return {
         "gamma": rng.normal(0, 0.15, size=(draws, len(RACE_FEATURES))),
-        "sigma_state": np.abs(rng.normal(0, 0.05, draws)) + 0.02,
-        "sigma_nat": np.abs(rng.normal(0, 0.04, draws)) + 0.02,
-        "sigma_region": np.abs(rng.normal(0, 0.03, draws)) + 0.01,
-        "sigma_race": np.abs(rng.normal(0, 0.05, draws)) + 0.02,
+        "sigma_state": np.abs(rng.normal(0, 0.08, draws)) + SIGMA_FLOOR["sigma_state"],
+        "sigma_nat": np.abs(rng.normal(0, 0.10, draws)) + SIGMA_FLOOR["sigma_nat"],
+        "sigma_region": np.abs(rng.normal(0, 0.05, draws)) + SIGMA_FLOOR["sigma_region"],
+        "sigma_race": np.abs(rng.normal(0, 0.12, draws)) + SIGMA_FLOOR["sigma_race"],
         "n_train": 0,
         "summary": None,
     }
+
+
+def _apply_interval_floors(params: dict, rng: np.random.Generator | None = None) -> dict:
+    """Widen Stage B uncertainty so 80% intervals are not overconfident after ridge/PyMC."""
+    rng = rng or np.random.default_rng(SEED)
+    for key, floor in SIGMA_FLOOR.items():
+        if key in params:
+            params[key] = np.maximum(np.asarray(params[key], dtype=float), floor)
+    gamma = np.asarray(params["gamma"], dtype=float)
+    if gamma.ndim == 2 and gamma.shape[0] > 1:
+        gsd = gamma.std(axis=0)
+        for j in range(gamma.shape[1]):
+            if gsd[j] < GAMMA_SD_FLOOR:
+                col = gamma[:, j]
+                mu = col.mean()
+                if gsd[j] < 1e-12:
+                    gamma[:, j] = rng.normal(mu, GAMMA_SD_FLOOR, size=gamma.shape[0])
+                else:
+                    gamma[:, j] = mu + (col - mu) * (GAMMA_SD_FLOOR / gsd[j])
+        params["gamma"] = gamma
+    return params
 
 
 def _fit_ridge(d: pd.DataFrame, draws: int, rng: np.random.Generator) -> dict:
@@ -384,11 +416,14 @@ def _fit_ridge(d: pd.DataFrame, draws: int, rng: np.random.Generator) -> dict:
     gamma = rng.multivariate_normal(mean, cov, size=draws)
     params = prior_params(draws, rng)
     params["gamma"] = gamma
+    resid = y - X @ mean
+    resid_sd = float(np.std(resid, ddof=1)) if len(resid) > 2 else SIGMA_FLOOR["sigma_race"]
+    params["sigma_race"] = np.maximum(params["sigma_race"], max(resid_sd, SIGMA_FLOOR["sigma_race"]))
     params["n_train"] = int(ok.sum())
     params["fit_method"] = "ridge"
     params["summary"] = pd.DataFrame({"mean": mean, "sd": np.sqrt(np.diag(cov))},
                                      index=RACE_FEATURES)
-    return params
+    return _apply_interval_floors(params, rng)
 
 
 def _fit_pymc(d: pd.DataFrame, draws: int, rng: np.random.Generator) -> dict:
@@ -450,7 +485,7 @@ def _fit_pymc(d: pd.DataFrame, draws: int, rng: np.random.Generator) -> dict:
         "mean": gamma_mat.mean(axis=0),
         "sd": gamma_mat.std(axis=0),
     }, index=RACE_FEATURES)
-    return params
+    return _apply_interval_floors(params, rng)
 
 
 def fit(train: list[pd.DataFrame] | None = None, draws: int = 1000,
@@ -464,14 +499,14 @@ def fit(train: list[pd.DataFrame] | None = None, draws: int = 1000,
     if not train:
         p = prior_params(draws, rng)
         p["fit_method"] = "prior"
-        return p
+        return _apply_interval_floors(p, rng)
 
     d = pd.concat(train, ignore_index=True)
     need = ["baseline", "actual_share", *RACE_FEATURES]
     if not all(c in d.columns for c in need) or d["actual_share"].notna().sum() < 5:
         p = prior_params(draws, rng)
         p["fit_method"] = "prior"
-        return p
+        return _apply_interval_floors(p, rng)
 
     use_pymc = os.environ.get("STAGE_B_PYMC", "1") != "0"
     if use_pymc:

@@ -85,6 +85,23 @@ def test_race_score_gate_beats_lean_baseline():
     assert s["brier"] < s["baseline_brier"]
 
 
+def test_interval_floors_applied_after_ridge():
+    """PLAN item 7: Stage B sigma floors keep 80% intervals from collapsing."""
+    rng = np.random.default_rng(1)
+    f = vote_model.frame(2026, lean=pd.Series(
+        {st: 0.5 for st in vote_model.scheduled_races(2026)["state_po"].unique()}))
+    f = f.head(25).copy()
+    f["actual_share"] = np.clip(f["baseline"] + rng.normal(0, 0.04, len(f)), 0.1, 0.9)
+    f["incumbency"] = rng.choice([-1.0, 0.0, 1.0], len(f))
+    f["fundraising"] = rng.normal(0, 1, len(f))
+    import os
+    os.environ["STAGE_B_PYMC"] = "0"
+    params = vote_model.fit([f], draws=40, rng=rng)
+    for key, floor in vote_model.SIGMA_FLOOR.items():
+        assert float(np.min(params[key])) >= floor - 1e-9
+    assert params["gamma"].std(axis=0).min() >= vote_model.GAMMA_SD_FLOOR - 1e-6
+
+
 def test_ridge_fit_method_tag():
     rng = np.random.default_rng(1)
     f = vote_model.frame(2026, lean=pd.Series(

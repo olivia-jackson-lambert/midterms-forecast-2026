@@ -94,11 +94,14 @@ def fit(train: list[pd.DataFrame], draws: int = 1000, chains: int = 4) -> dict:
 
 # --------------------------------------------------------------------------- simulate
 def simulate(f: pd.DataFrame, params: dict, national_draws: np.ndarray, rng: np.random.Generator,
-             cvap_ratio: float) -> np.ndarray:
+             cvap_ratio: float, state_offset: pd.Series | None = None) -> np.ndarray:
     """County turnout draws (sims x counties) for frame f.
 
     national_draws are VEP turnout shares; cvap_ratio converts them to the CVAP basis used
     here (national CVAP-based turnout / VEP turnout at the last midterm).
+
+    `state_offset` is an optional logit nudge by state_po (October early-vote pace). The
+    national calibration still pins the CVAP-weighted total, so offsets reshuffle states.
     """
     n_sims, n = len(national_draws), len(f)
     n_post = len(params["lam"])
@@ -111,6 +114,10 @@ def simulate(f: pd.DataFrame, params: dict, national_draws: np.ndarray, rng: np.
     s_idx, s_names = pd.factorize(f["state_po"])
     w = f["cvap"].to_numpy()
     target = np.clip(national_draws * cvap_ratio, 0.05, 0.95)
+    if state_offset is not None and len(state_offset):
+        off = f["state_po"].map(state_offset).fillna(0.0).to_numpy(dtype=float)
+    else:
+        off = np.zeros(n, dtype=float)
 
     out = np.empty((n_sims, n), dtype=np.float32)
     for start in range(0, n_sims, 1000):
@@ -123,7 +130,7 @@ def simulate(f: pd.DataFrame, params: dict, national_draws: np.ndarray, rng: np.
         eps = scale * rng.standard_t(params["nu"][p, None], size=(m, n))
         d = (Z @ params["gamma"][p].T).T + beta @ X.T + u[:, s_idx] + params["lam"][p, None] * pma[None, :] \
             + params["rho"][p, None] * (anc - params["anchor_mean"])[None, :] + eps \
-            + params["phi"][p, None] * opl[None, :]
+            + params["phi"][p, None] * opl[None, :] + off[None, :]
         lg = anc[None, :] + d
         # Shift each simulation so the CVAP-weighted total hits its national draw (bisection:
         # slower than Newton but cannot diverge on extreme draws).
@@ -149,15 +156,30 @@ def cvap_vep_ratio(year: int) -> float:
 
 
 def run(target: int, train_years: list[int], sims: int = SIMS, draws: int = 1000,
-        params: dict | None = None, national_fixed: float | None = None) -> tuple[pd.DataFrame, dict]:
+        params: dict | None = None, national_fixed: float | None = None,
+        early_vote: bool = True) -> tuple[pd.DataFrame, dict]:
     """Fit (unless params are given) and simulate target. national_fixed pins national turnout
-    (CVAP basis) to one value, to test the county model on its own."""
+    (CVAP basis) to one value, to test the county model on its own.
+
+    When `early_vote` is True and `early_vote_{target}.parquet` exists, apply state logit
+    offsets from relative October early-vote pace (PLAN §4 / §10 item 7).
+    """
     rng = np.random.default_rng(SEED + target)
     params = params or fit([frame(y) for y in train_years], draws=draws)
     f = frame(target)
     ratio = cvap_vep_ratio(target - 4)
     nat = national.draws(target, sims, rng) if national_fixed is None else np.full(sims, national_fixed / ratio)
-    sims_ = simulate(f, params, nat, rng, ratio)
+    state_off = None
+    ev_meta = {"applied": False}
+    if early_vote:
+        try:
+            from . import early_vote as ev
+            state_off = ev.state_offsets(target)
+            if len(state_off) and float(np.abs(state_off.to_numpy(dtype=float)).sum()) > 0:
+                ev_meta = {"applied": True, **ev.national_pace(target)}
+        except Exception:
+            state_off = None
+    sims_ = simulate(f, params, nat, rng, ratio, state_offset=state_off)
     out = summarise(f, sims_)
     if "actual" in f:
         out["actual"] = f["actual"].values
@@ -165,7 +187,7 @@ def run(target: int, train_years: list[int], sims: int = SIMS, draws: int = 1000
     w = f["cvap"].to_numpy()
     nat_sim = (sims_ * w[None, :]).sum(1) / w.sum()
     return out, {"params": params, "national": np.quantile(nat_sim, [0.1, 0.5, 0.9]),
-                 "states": state_summary(f, sims_)}
+                 "states": state_summary(f, sims_), "early_vote": ev_meta}
 
 
 def state_summary(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:

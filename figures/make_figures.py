@@ -28,8 +28,11 @@ from shapely import affinity
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(HERE))
 SITE = Path(os.environ.get("PORTFOLIO_SITE", Path.home() / "Documents/portfolio/olivia-jackson-lambert.github.io"))
-sys.path.insert(0, str(SITE / "scripts"))
+# Live portfolio figstyle wins when present; otherwise figures/figstyle.py.
+if (SITE / "scripts" / "figstyle.py").exists():
+    sys.path.insert(0, str(SITE / "scripts"))
 from figstyle import DIM, INK, LIGHT, MUTED, PAPER, apply, note, tidy  # noqa: E402
 from palette import ACCENT, BASE, CHANGE, CONTEXT, DENSITY, GREEN, PURPLE  # noqa: E402
 
@@ -279,6 +282,12 @@ def main() -> None:
     backtest_errors()
     backtest_scatter()
     drivers()
+    # Stage B race backtests when present (PLAN §6 signature visuals).
+    try:
+        from make_race_backtest_figures import main as race_backtest_figures
+        race_backtest_figures()
+    except Exception as exc:  # data may be missing on a fresh Stage A-only run
+        print("  skip race backtest figures:", exc)
 
 
 if __name__ == "__main__":
