@@ -11,13 +11,14 @@ where:
   by Stage A county turnout draws;
 - national_swing comes from the generic-ballot average (and later special-election
   over-performance), with its own uncertainty;
-- race_features are incumbency and fundraising (stubs until Stage B inputs land);
+- race_features are incumbency (from `races.py` for 2026) and fundraising (still stub);
 - errors share a national term and a Census-region term so simulations are correlated.
 
-This module is a working skeleton: prior-based parameters and mock-friendly frames so
-tests and wiring run before generic-ballot / race-fundamentals tables exist.
+PLAN §10 item 6: vote-share model with correlated simulation and 2018/2022 race backtests.
+This module wires Stage B inputs (generic ballot + race open/incumbency) into the scaffold;
+PyMC fit, special-election swing series, FEC fundraising, and race backtests remain open.
 
-    python -m forecast.vote_model     # prior-based 2026 race table (needs race frame inputs)
+    python -m forecast.vote_model     # 2026 race table (generic-ballot swing + incumbency)
 """
 from __future__ import annotations
 
@@ -52,9 +53,9 @@ REGION = {
 }
 REGIONS = ("Northeast", "Midwest", "South", "West")
 
-# Placeholder national-swing priors until generic-ballot rebuild lands (Stage B inputs).
-# Mean 0 = no national shift from the presidential baseline; sd is wide on purpose.
-SWING_PRIOR = {2018: {"mean": 0.04, "sd": 0.03},   # D+ midterm environment (illustrative)
+# Fallback when generic-ballot snapshot / parquet is unavailable. Mean is Democratic
+# advantage on the logit scale relative to the last presidential national lean.
+SWING_PRIOR = {2018: {"mean": 0.04, "sd": 0.03},
                2022: {"mean": -0.02, "sd": 0.03},
                2026: {"mean": 0.00, "sd": 0.04}}
 
@@ -69,34 +70,51 @@ def scheduled_races(year: int) -> pd.DataFrame:
     """Senate and governor races on the ballot in `year`, from the Stage A schedule lists.
 
     Specials: Florida and Ohio Senate seats in 2026 are already in SENATE[2026]; they are
-    flagged here so incumbency / fundraising tables can attach later. Historical specials
-    are not reconstructed in this scaffold.
+    flagged here so incumbency / fundraising tables can attach. Historical specials
+    are not reconstructed yet (PLAN race-backtest work).
     """
     rows = []
     for office, states in (("SEN", SENATE[year].split()), ("GOV", GOVERNOR[year].split())):
         for st in states:
             special = office == "SEN" and year == 2026 and st in ("FL", "OH")
-            # FL and OH also appear once for the regular Class-2 cycle; keep a single row
-            # per (state, office, special). Regular Class-2 still covers FL/OH via the list,
-            # so mark only the explicit specials once — both appear in SENATE[2026] once each.
             rows.append({"year": year, "state_po": st, "office": office, "special": special,
                          "race_id": f"{year}-{st}-{office}{'S' if special else ''}"})
     return pd.DataFrame(rows)
 
 
+def _incumbency_code(open_seat: pd.Series, incumbent_party: pd.Series) -> pd.Series:
+    """+1 Dem (or Dem-caucusing) incumbent, -1 Rep, 0 open / unknown."""
+    open_ = open_seat.fillna(False).astype(bool)
+    party = incumbent_party.fillna("").astype(str)
+    code = np.where(open_, 0.0,
+                    np.where(party.isin(["D", "I"]), 1.0,
+                             np.where(party.eq("R"), -1.0, 0.0)))
+    return pd.Series(code, index=open_seat.index, dtype=float)
+
+
 def race_fundamentals(year: int) -> pd.DataFrame:
     """Incumbency and fundraising by race.
 
-    Stub: zeros until Ballotpedia / FEC tables are wired. Shape matches what `frame` expects
-    so callers can merge real columns later without changing the model interface.
+    Prefer `race_fundamentals_{year}.parquet` when present. Otherwise, for 2026, join
+    open-seat / incumbent-party flags from `forecast.races`. Fundraising stays stubbed
+    (FEC hook later). 2018/2022 incumbency for race backtests is still open.
     """
     path = OUT / f"race_fundamentals_{year}.parquet"
     if path.exists():
         return pd.read_parquet(path)
     r = scheduled_races(year)
-    r["incumbency"] = 0.0          # +1 Dem incumbent, -1 Rep, 0 open
-    r["fundraising"] = 0.0         # standardized log Dem/Rep receipts (stub)
-    return r[["race_id", "incumbency", "fundraising"]]
+    r["incumbency"] = 0.0
+    r["fundraising"] = 0.0
+    r["open_seat"] = False
+    if year == 2026:
+        from . import races as race_meta
+        meta = race_meta.races(2026).rename(columns={"race": "office"})
+        m = r.drop(columns=["open_seat"]).merge(
+            meta[["state_po", "office", "special", "open_seat", "incumbent_party"]],
+            on=["state_po", "office", "special"], how="left")
+        r["open_seat"] = m["open_seat"].fillna(False).astype(bool)
+        r["incumbency"] = _incumbency_code(r["open_seat"], m["incumbent_party"])
+    return r[["race_id", "incumbency", "fundraising", "open_seat"]]
 
 
 def presidential_lean(year: int) -> pd.Series:
@@ -114,6 +132,18 @@ def presidential_lean(year: int) -> pd.Series:
     lean = g["dem"] / (g["dem"] + g["rep"])
     lean.name = "pres_lean"
     return lean
+
+
+def presidential_national_dem_2p(year: int) -> float | None:
+    """National two-party Dem share in the presidential election two years before `year`."""
+    panel = OUT / "county_panel.parquet"
+    if not panel.exists():
+        return None
+    p = pd.read_parquet(panel, columns=["year", "dem", "rep"])
+    p = p[p["year"] == year - 2]
+    if p.empty:
+        return None
+    return float(p["dem"].sum() / (p["dem"].sum() + p["rep"].sum()))
 
 
 def baseline(races: pd.DataFrame, lean: pd.Series | None = None,
@@ -139,17 +169,94 @@ def baseline(races: pd.DataFrame, lean: pd.Series | None = None,
     return base.rename("baseline")
 
 
+def _swing_from_snapshot(year: int, snap: dict, detail: pd.DataFrame | None = None) -> dict:
+    """Convert a generic-ballot snapshot dict into logit-scale national swing.
+
+    mean = logit(gb dem_2p) − logit(last presidential national dem_2p), so the swing is
+    the midterm environment relative to the presidential baseline already in `baseline`.
+    When the presidential panel is missing, fall back to logit(gb) vs even (0.5).
+    sd uses aggregator dispersion on the logit scale when available, else SWING_PRIOR sd.
+    """
+    prior = SWING_PRIOR.get(year, {"mean": 0.0, "sd": 0.04})
+    gb = float(snap["dem_2p"])
+    gb_logit = float(logit(gb))
+    pres = presidential_national_dem_2p(year)
+    if pres is not None:
+        mean = gb_logit - float(logit(pres))
+        anchor = "vs_presidential"
+    else:
+        mean = gb_logit  # vs even
+        anchor = "vs_even"
+    sd = float(prior["sd"])
+    if detail is not None and len(detail) >= 2 and "dem_2p" in detail.columns:
+        logits = logit(detail["dem_2p"].to_numpy(dtype=float))
+        spread = float(np.nanstd(logits, ddof=1)) if len(logits) > 1 else 0.0
+        if np.isfinite(spread) and spread > 0:
+            sd = max(sd, spread)
+    return {
+        "mean": mean,
+        "sd": sd,
+        "source": f"generic_ballot.snapshot/{anchor}",
+        "dem_2p": gb,
+        "margin": float(snap.get("margin", float("nan"))),
+        "n_sources": int(snap.get("n_sources", 0)),
+    }
+
+
 def national_swing(year: int, source: Path | None = None) -> dict:
     """Mean and sd of the national Democratic swing (logit scale).
 
-    Reads `generic_ballot_{year}.parquet` (columns mean, sd) when Stage B inputs land;
-    otherwise uses SWING_PRIOR placeholders.
+    If `source` is passed, only that parquet is used (mean/sd columns); missing → prior.
+    Otherwise resolution order:
+      1. `generic_ballot_{year}.parquet` with mean/sd (hand-tuned override)
+      2. cached `generic_ballot_snapshot.parquet` / live `generic_ballot.snapshot(year)`
+      3. SWING_PRIOR placeholders
+
+    Special-election over-performance is not yet folded in (PLAN §10 item 5 residual).
     """
-    path = source or (OUT / f"generic_ballot_{year}.parquet")
-    if path.exists():
-        row = pd.read_parquet(path).iloc[0]
-        return {"mean": float(row["mean"]), "sd": float(row["sd"]), "source": str(path)}
     prior = SWING_PRIOR.get(year, {"mean": 0.0, "sd": 0.04})
+
+    def _from_mean_sd_parquet(path: Path) -> dict | None:
+        if not path.exists():
+            return None
+        row = pd.read_parquet(path).iloc[0]
+        if not {"mean", "sd"}.issubset(row.index):
+            return None
+        return {"mean": float(row["mean"]), "sd": float(row["sd"]), "source": str(path)}
+
+    if source is not None:
+        return _from_mean_sd_parquet(source) or {**prior, "source": "prior"}
+
+    override = _from_mean_sd_parquet(OUT / f"generic_ballot_{year}.parquet")
+    if override:
+        return override
+
+    # Cached multi-year snapshot table from `python -m forecast.generic_ballot`.
+    snap_path = OUT / "generic_ballot_snapshot.parquet"
+    if snap_path.exists():
+        snaps = pd.read_parquet(snap_path)
+        row = snaps.loc[snaps["year"] == year]
+        if len(row):
+            snap = row.iloc[0].to_dict()
+            detail = None
+            agg_path = OUT / "generic_ballot_aggregates.parquet"
+            if agg_path.exists():
+                detail = pd.read_parquet(agg_path)
+                detail = detail[detail["year"] == year]
+            return _swing_from_snapshot(year, snap, detail)
+
+    # Live / cached Wikipedia rebuild via generic_ballot.snapshot.
+    try:
+        from . import generic_ballot as gb
+        snap = gb.snapshot(year)
+        try:
+            detail = gb.aggregates(year)
+        except Exception:
+            detail = None
+        return _swing_from_snapshot(year, snap, detail)
+    except Exception:
+        pass
+
     return {**prior, "source": "prior"}
 
 
@@ -169,6 +276,9 @@ def frame(year: int, lean: pd.Series | None = None,
         if c not in f:
             f[c] = 0.0
         f[c] = f[c].fillna(0.0)
+    if "open_seat" not in f:
+        f["open_seat"] = False
+    f["open_seat"] = f["open_seat"].fillna(False).astype(bool)
     f["baseline"] = baseline(f, lean=lean, turnout_weights=turnout_weights).values
     f["region"] = f["state_po"].map(REGION).fillna("South")
     f["year"] = year
@@ -292,7 +402,7 @@ def _attach_actuals(f: pd.DataFrame, year: int) -> pd.DataFrame:
 
 
 def main() -> None:
-    # Prior-based 2026 table; real lean from county_panel when ingest has been run.
+    # 2026 table: generic-ballot swing + races.py incumbency when available.
     lean = presidential_lean(2026)
     if lean.empty:
         print("no county_panel yet; writing schedule-only frame with baseline=NaN")
@@ -300,7 +410,9 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     out.to_parquet(OUT / "vote_share_2026.parquet", index=False)
     info["seats"].to_parquet(OUT / "seat_counts_2026.parquet", index=False)
-    print("races:", len(out), "| swing source:", info["swing"]["source"])
+    swing = info["swing"]
+    print("races:", len(out), "| swing source:", swing["source"],
+          f"(mean={swing['mean']:+.3f}, sd={swing['sd']:.3f})")
     print(out[["office", "state_po", "median", "p_dem_win"]].head(10).to_string(index=False))
     print(info["seats"].to_string(index=False))
 

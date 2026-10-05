@@ -1,6 +1,8 @@
 """Unit checks on Stage B vote-share model and correlated race simulation.
 
-Uses synthetic leans / fundamentals — no processed Stage B inputs required.
+Uses synthetic leans / fundamentals where needed — no processed Stage B inputs required
+for the core path. Wiring tests cover generic-ballot snapshot → national_swing and
+races.py → incumbency.
 """
 from __future__ import annotations
 
@@ -9,6 +11,7 @@ import pandas as pd
 import pytest
 
 from forecast import simulate, vote_model
+from forecast.races import GOV_OPEN, SENATE_OPEN
 from forecast.vote_model import RACE_FEATURES, REGION, prior_params, scheduled_races
 
 
@@ -38,15 +41,32 @@ def test_scheduled_races_2026_covers_senate_and_governor():
     assert r["race_id"].is_unique
 
 
-def test_frame_uses_injected_lean_and_stub_fundamentals():
+def test_frame_uses_injected_lean_and_races_incumbency():
     lean = _lean_for(2026)
     f = vote_model.frame(2026, lean=lean)
     assert f["baseline"].notna().all()
     assert set(RACE_FEATURES).issubset(f.columns)
-    assert (f["incumbency"] == 0).all() and (f["fundraising"] == 0).all()
+    assert (f["fundraising"] == 0).all()          # FEC still stubbed
     assert f["region"].isin(REGION.values()).all()
-    # Baseline matches the injected lean.
     assert np.allclose(f["baseline"], f["state_po"].map(lean))
+    # Open seats from races.py → incumbency 0; sitting Dem/Rep coded ±1.
+    open_sen = f["office"].eq("SEN") & f["state_po"].isin(SENATE_OPEN)
+    open_gov = f["office"].eq("GOV") & f["state_po"].isin(GOV_OPEN)
+    assert (f.loc[open_sen | open_gov, "incumbency"] == 0).all()
+    assert (f.loc[open_sen | open_gov, "open_seat"]).all()
+    sitting = f.loc[~(open_sen | open_gov)]
+    assert sitting["incumbency"].isin([-1.0, 1.0]).all()
+
+
+def test_race_fundamentals_2026_codes_parties():
+    fund = vote_model.race_fundamentals(2026)
+    assert set(fund.columns) >= {"race_id", "incumbency", "fundraising", "open_seat"}
+    # AK Senate: Dan Sullivan (R) running → -1; MI Senate open → 0; AZ governor Hobbs (D) → +1.
+    by_id = fund.set_index("race_id")["incumbency"]
+    assert by_id["2026-AK-SEN"] == -1.0
+    assert by_id["2026-MI-SEN"] == 0.0
+    assert by_id["2026-AZ-GOV"] == 1.0
+    assert by_id["2026-FL-SENS"] == -1.0   # Moody (R) special
 
 
 def test_national_swing_falls_back_to_prior(tmp_path):
@@ -62,6 +82,50 @@ def test_national_swing_reads_parquet(tmp_path):
     assert s["mean"] == pytest.approx(0.02)
     assert s["sd"] == pytest.approx(0.025)
     assert s["source"] == str(path)
+
+
+def test_national_swing_from_generic_ballot_snapshot(tmp_path, monkeypatch):
+    """Cached snapshot → logit(gb) − logit(pres) when panel exists; else vs even."""
+    monkeypatch.setattr(vote_model, "OUT", tmp_path)
+    # No county_panel → vs_even path.
+    snaps = pd.DataFrame([
+        {"year": 2026, "dem": 48.0, "rep": 42.0, "dem_2p": 48 / 90, "margin": 6.0, "n_sources": 3,
+         "sources": "A, B, C"},
+    ])
+    snaps.to_parquet(tmp_path / "generic_ballot_snapshot.parquet", index=False)
+    detail = pd.DataFrame({
+        "year": [2026, 2026, 2026],
+        "source": ["A", "B", "C"],
+        "dem": [47.0, 48.0, 49.0],
+        "rep": [43.0, 42.0, 41.0],
+        "dem_2p": [47 / 90, 48 / 90, 49 / 90],
+        "margin": [4.0, 6.0, 8.0],
+    })
+    detail.to_parquet(tmp_path / "generic_ballot_aggregates.parquet", index=False)
+    s = vote_model.national_swing(2026)
+    assert s["source"] == "generic_ballot.snapshot/vs_even"
+    assert s["mean"] == pytest.approx(float(vote_model.logit(48 / 90)))
+    assert s["sd"] >= vote_model.SWING_PRIOR[2026]["sd"]
+    assert s["n_sources"] == 3
+
+
+def test_national_swing_subtracts_presidential_national(tmp_path, monkeypatch):
+    monkeypatch.setattr(vote_model, "OUT", tmp_path)
+    # Tiny fake panel: national dem_2p = 0.50 in 2024.
+    panel = pd.DataFrame({
+        "year": [2024, 2024],
+        "state_po": ["CA", "TX"],
+        "dem": [100.0, 50.0],
+        "rep": [100.0, 50.0],
+    })
+    panel.to_parquet(tmp_path / "county_panel.parquet", index=False)
+    pd.DataFrame([{
+        "year": 2026, "dem": 55.0, "rep": 45.0, "dem_2p": 0.55, "margin": 10.0,
+        "n_sources": 1, "sources": "X",
+    }]).to_parquet(tmp_path / "generic_ballot_snapshot.parquet", index=False)
+    s = vote_model.national_swing(2026)
+    assert s["source"] == "generic_ballot.snapshot/vs_presidential"
+    assert s["mean"] == pytest.approx(float(vote_model.logit(0.55) - vote_model.logit(0.5)))
 
 
 def test_prior_fit_and_ridge_fit_with_synthetic_actuals():
@@ -141,3 +205,6 @@ def test_run_with_mocks_no_data_dir(tmp_path, monkeypatch):
     assert len(out) == len(scheduled_races(2026))
     assert "seats" in info and info["params"]["n_train"] == 0
     assert out["p_dem_win"].between(0, 1).all()
+    # Without snapshot cache, swing falls back to prior when OUT is empty
+    # (live Wikipedia fetch may still succeed in some envs — accept either).
+    assert info["swing"]["source"] in ("prior",) or "generic_ballot" in info["swing"]["source"]

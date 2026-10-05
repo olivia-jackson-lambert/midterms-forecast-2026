@@ -22,9 +22,16 @@ python -m forecast.generic_ballot       # 2018/2022/2026 generic-ballot aggregat
 python -m forecast.races                # 2026 Senate/governor race list and incumbency
 python -m forecast.backtest             # turnout backtests, 2018 and 2022
 python -m forecast.turnout_model        # 2026 county turnout forecast (Stage A)
-python -m forecast.vote_model           # 2026 race vote-share scaffold (Stage B; priors until inputs land)
+python -m forecast.vote_model           # Stage B race table (generic-ballot swing + incumbency)
 cd .. && python -m pytest               # data and model checks
 ```
+
+**Midterms rebuild (CA Senate + TN governor supplements).** `forecast.midterms` merges
+state/Wikipedia gap-fills into `county_midterm_results.parquet` on every run. Re-run after
+a fresh clone once MIT 2018/2022 precinct archives are cached under `data/raw/` (large
+download on first pull). Supplement parsers are unit-tested without the full MIT cache;
+`tests/test_midterms.py::test_races_found` expects 36 GOV / 34+2 SEN in 2022 only after
+that rebuild.
 
 Stage B unit tests (`tests/test_vote_model.py`) use synthetic leans and do not need
 `data/processed/` — run them with `python -m pytest tests/test_vote_model.py`.

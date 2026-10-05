@@ -16,6 +16,12 @@ House races in the county) is scaled up by that state's ratio of ballots to high
 votes.
 
     python -m forecast.midterms          # from the src/ directory, after forecast.ingest
+
+Rebuild notes: first run downloads MIT 2018/2022 precinct archives into data/raw/ (large).
+CA Senate + TN governor supplements always merge into county_midterm_results.parquet when
+those years are built. Re-run on any machine that already has the MIT cache to refresh the
+processed panel after supplement changes; parsers are covered by tests/test_stage_b_inputs.py
+without needing the full MIT download.
 """
 from __future__ import annotations
 

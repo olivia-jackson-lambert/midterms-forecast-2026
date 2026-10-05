@@ -189,4 +189,4 @@ midterms-2026/
 3. ~~Turnout model (Stage A) with 2018 and 2022 backtests.~~ First version done 4 October; refresh with October early vote.
 4. ~~Rebuild the 2018 and 2022 generic-ballot averages from public poll listings.~~ Done 5 October (`python -m forecast.generic_ballot`); 2026 snapshot included.
 5. ~~Compile 2026 races, incumbency and special elections from Ballotpedia; fill the California 2022 Senate and Tennessee 2022 governor results from the states.~~ Race list + CA/TN gaps done 5 October (`forecast.races`, supplements in `midterms.py`). Special-election over-performance series still TODO.
-6. Vote-share model (Stage B) with correlated simulation and 2018/2022 race backtests.
+6. Vote-share model (Stage B) with correlated simulation and 2018/2022 race backtests. In progress 5 October: scaffold (`vote_model` / `simulate`) + wire generic-ballot snapshot → national swing and `races` open/incumbency → race features. Still open: special-election swing term, FEC fundraising, PyMC hierarchical fit, 2018/2022 race backtests and calibration.
