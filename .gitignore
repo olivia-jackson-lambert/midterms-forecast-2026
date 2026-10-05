@@ -11,3 +11,4 @@ __pycache__/
 .DS_Store
 * 2.*
 .venv/
+figures/out/

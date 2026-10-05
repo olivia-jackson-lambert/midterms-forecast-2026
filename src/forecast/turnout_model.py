@@ -162,13 +162,34 @@ def run(target: int, train_years: list[int], sims: int = SIMS, draws: int = 1000
     if "actual" in f:
         out["actual"] = f["actual"].values
         out["last_midterm"] = 1 / (1 + np.exp(-f["anchor"].values))
-    nat_sim = (sims_ * f["cvap"].to_numpy()[None, :]).sum(1) / f["cvap"].sum()
-    return out, {"params": params, "national": np.quantile(nat_sim, [0.1, 0.5, 0.9])}
+    w = f["cvap"].to_numpy()
+    nat_sim = (sims_ * w[None, :]).sum(1) / w.sum()
+    return out, {"params": params, "national": np.quantile(nat_sim, [0.1, 0.5, 0.9]),
+                 "states": state_summary(f, sims_)}
+
+
+def state_summary(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:
+    """State turnout quantiles, aggregated within each simulation (not by adding county quantiles)."""
+    rows = []
+    for st, idx in f.groupby("state_po").indices.items():
+        w = f["cvap"].to_numpy()[idx]
+        s = (sims[:, idx] * w[None, :]).sum(1) / w.sum()
+        rows.append((st, *np.quantile(s, [0.1, 0.5, 0.9])))
+    return pd.DataFrame(rows, columns=["state_po", "lo80", "median", "hi80"])
 
 
 def main() -> None:
     out, info = run(2026, [2018, 2022])
+    # Each county's own uncertainty: the same model with national turnout fixed at its median.
+    rel, rel_info = run(2026, [2018, 2022], params=info["params"], national_fixed=info["national"][1])
+    out["lo80_county"], out["hi80_county"] = rel["lo80"].values, rel["hi80"].values
     out.to_parquet(OUT / "turnout_2026.parquet", index=False)
+    st = info["states"].merge(rel_info["states"][["state_po", "lo80", "hi80"]], on="state_po",
+                              suffixes=("", "_state"))      # *_state: national turnout held at its median
+    st.to_parquet(OUT / "turnout_2026_states.parquet", index=False)
+    info["params"]["summary"].to_csv(OUT / "turnout_2026_parameters.csv")
+    pd.DataFrame({"quantile": [0.1, 0.5, 0.9], "turnout": info["national"]}).to_csv(
+        OUT / "turnout_2026_national.csv", index=False)
     print("national 2026 turnout (CVAP basis), 10/50/90%:", np.round(info["national"], 3))
     print(info["params"]["summary"])
 
