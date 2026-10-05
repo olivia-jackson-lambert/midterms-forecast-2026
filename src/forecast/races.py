@@ -69,13 +69,8 @@ GOV_INCUMBENT = {
     "WY": "Mark Gordon",
 }
 
-# TODO: compile 2025–26 special-election over-performance series from Ballotpedia / state
-# results for the national midterm-environment term. Scaffold only.
-SPECIAL_ELECTIONS_TODO = [
-    {"date": "2025-11-04", "state_po": "VA", "office": "GOV", "note": "Virginia governor 2025; Dem flipped"},
-    {"date": None, "state_po": None, "office": None,
-     "note": "TODO: full 2025–26 special House/Senate list + Dem two-party swing vs 2024 presidential"},
-]
+# 2025–26 special-election over-performance lives in forecast.special_elections
+# (Ballotpedia House specials + VA governor 2025). This module keeps the race schedule.
 
 
 def senate_races(year: int = 2026) -> pd.DataFrame:
@@ -124,7 +119,9 @@ def main() -> None:
     print("open Senate:", sorted(df.loc[df.race.eq("SEN") & df.open_seat, "state_po"]))
     print("special Senate:", sorted(df.loc[df.race.eq("SEN") & df.special, "state_po"]))
     print("open governor:", sorted(df.loc[df.race.eq("GOV") & df.open_seat, "state_po"]))
-    print("special-elections TODO rows:", len(SPECIAL_ELECTIONS_TODO))
+    from .special_elections import summary as special_summary
+    s = special_summary(2026)
+    print(f"special-election swing: n={s['n']} mean_pp={s['mean_pp']:+.1f}")
 
 
 if __name__ == "__main__":

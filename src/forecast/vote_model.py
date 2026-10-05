@@ -9,19 +9,18 @@ On the probability (share) scale, each race is
 where:
 - baseline_r is the state's recent presidential two-party lean, optionally reweighted
   by Stage A county turnout draws;
-- national_swing comes from the generic-ballot average (and later special-election
-  over-performance), with its own uncertainty;
-- race_features are incumbency (from `races.py` for 2026) and fundraising (still stub);
+- national_swing blends the generic-ballot average with special-election over-performance;
+- race_features are incumbency (from `races.py` for 2026) and FEC Senate fundraising;
 - errors share a national term and a Census-region term so simulations are correlated.
 
 PLAN §10 item 6: vote-share model with correlated simulation and 2018/2022 race backtests.
-This module wires Stage B inputs (generic ballot + race open/incumbency) into the scaffold;
-PyMC fit, special-election swing series, FEC fundraising, and race backtests remain open.
+Fit uses PyMC when installed (`STAGE_B_PYMC=0` forces the ridge stand-in).
 
-    python -m forecast.vote_model     # 2026 race table (generic-ballot swing + incumbency)
+    python -m forecast.vote_model
 """
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import numpy as np
@@ -95,9 +94,10 @@ def _incumbency_code(open_seat: pd.Series, incumbent_party: pd.Series) -> pd.Ser
 def race_fundamentals(year: int) -> pd.DataFrame:
     """Incumbency and fundraising by race.
 
-    Prefer `race_fundamentals_{year}.parquet` when present. Otherwise, for 2026, join
-    open-seat / incumbent-party flags from `forecast.races`. Fundraising stays stubbed
-    (FEC hook later). 2018/2022 incumbency for race backtests is still open.
+    Prefer `race_fundamentals_{year}.parquet` when present. Otherwise:
+    - 2026 incumbency / open seats from `forecast.races`
+    - Senate fundraising from OpenFEC (`forecast.fundraising`) when reachable / cached
+    Governors have no FEC coverage — fundraising stays 0 for GOV.
     """
     path = OUT / f"race_fundamentals_{year}.parquet"
     if path.exists():
@@ -114,6 +114,14 @@ def race_fundamentals(year: int) -> pd.DataFrame:
             on=["state_po", "office", "special"], how="left")
         r["open_seat"] = m["open_seat"].fillna(False).astype(bool)
         r["incumbency"] = _incumbency_code(r["open_seat"], m["incumbent_party"])
+    # FEC Senate fundraising: only from cache written by `python -m forecast.fundraising`.
+    fec_path = OUT / f"fundraising_{year}.parquet"
+    if fec_path.exists():
+        feat = pd.read_parquet(fec_path)
+        if "fundraising" in feat.columns:
+            r = r.drop(columns=["fundraising"]).merge(
+                feat[["race_id", "fundraising"]], on="race_id", how="left")
+            r["fundraising"] = r["fundraising"].fillna(0.0)
     return r[["race_id", "incumbency", "fundraising", "open_seat"]]
 
 
@@ -203,7 +211,28 @@ def _swing_from_snapshot(year: int, snap: dict, detail: pd.DataFrame | None = No
     }
 
 
-def national_swing(year: int, source: Path | None = None) -> dict:
+def _blend_specials(swing: dict, year: int) -> dict:
+    """Average generic-ballot (or prior) swing with special-election over-performance."""
+    from . import special_elections as se
+    spec = se.summary(year)
+    if spec.get("source") == "empty":
+        return swing
+    mean = 0.5 * float(swing["mean"]) + 0.5 * float(spec["mean"])
+    sd = float(np.sqrt(0.5 * float(swing["sd"]) ** 2 + 0.5 * float(spec["sd"]) ** 2))
+    out = {
+        **swing,
+        "mean": mean,
+        "sd": max(sd, float(swing["sd"])),
+        "special_mean": float(spec["mean"]),
+        "special_mean_pp": float(spec.get("mean_pp", float("nan"))),
+        "special_n": int(spec.get("n", 0)),
+        "source": f"{swing['source']}+{spec['source']}",
+    }
+    return out
+
+
+def national_swing(year: int, source: Path | None = None,
+                   blend_specials: bool = True) -> dict:
     """Mean and sd of the national Democratic swing (logit scale).
 
     If `source` is passed, only that parquet is used (mean/sd columns); missing → prior.
@@ -211,8 +240,8 @@ def national_swing(year: int, source: Path | None = None) -> dict:
       1. `generic_ballot_{year}.parquet` with mean/sd (hand-tuned override)
       2. cached `generic_ballot_snapshot.parquet` / live `generic_ballot.snapshot(year)`
       3. SWING_PRIOR placeholders
-
-    Special-election over-performance is not yet folded in (PLAN §10 item 5 residual).
+    Then, unless `blend_specials` is False or `source` was explicit, blend with
+    `special_elections.summary(year)` (PLAN: GB + special over-performance).
     """
     prior = SWING_PRIOR.get(year, {"mean": 0.0, "sd": 0.04})
 
@@ -229,35 +258,36 @@ def national_swing(year: int, source: Path | None = None) -> dict:
 
     override = _from_mean_sd_parquet(OUT / f"generic_ballot_{year}.parquet")
     if override:
-        return override
+        swing = override
+    else:
+        swing = None
+        snap_path = OUT / "generic_ballot_snapshot.parquet"
+        if snap_path.exists():
+            snaps = pd.read_parquet(snap_path)
+            row = snaps.loc[snaps["year"] == year]
+            if len(row):
+                snap = row.iloc[0].to_dict()
+                detail = None
+                agg_path = OUT / "generic_ballot_aggregates.parquet"
+                if agg_path.exists():
+                    detail = pd.read_parquet(agg_path)
+                    detail = detail[detail["year"] == year]
+                swing = _swing_from_snapshot(year, snap, detail)
+        if swing is None:
+            try:
+                from . import generic_ballot as gb
+                snap = gb.snapshot(year)
+                try:
+                    detail = gb.aggregates(year)
+                except Exception:
+                    detail = None
+                swing = _swing_from_snapshot(year, snap, detail)
+            except Exception:
+                swing = {**prior, "source": "prior"}
 
-    # Cached multi-year snapshot table from `python -m forecast.generic_ballot`.
-    snap_path = OUT / "generic_ballot_snapshot.parquet"
-    if snap_path.exists():
-        snaps = pd.read_parquet(snap_path)
-        row = snaps.loc[snaps["year"] == year]
-        if len(row):
-            snap = row.iloc[0].to_dict()
-            detail = None
-            agg_path = OUT / "generic_ballot_aggregates.parquet"
-            if agg_path.exists():
-                detail = pd.read_parquet(agg_path)
-                detail = detail[detail["year"] == year]
-            return _swing_from_snapshot(year, snap, detail)
-
-    # Live / cached Wikipedia rebuild via generic_ballot.snapshot.
-    try:
-        from . import generic_ballot as gb
-        snap = gb.snapshot(year)
-        try:
-            detail = gb.aggregates(year)
-        except Exception:
-            detail = None
-        return _swing_from_snapshot(year, snap, detail)
-    except Exception:
-        pass
-
-    return {**prior, "source": "prior"}
+    if blend_specials:
+        swing = _blend_specials(swing, year)
+    return swing
 
 
 # --------------------------------------------------------------------------- frames
@@ -300,29 +330,17 @@ def prior_params(draws: int = 1000, rng: np.random.Generator | None = None) -> d
     }
 
 
-def fit(train: list[pd.DataFrame] | None = None, draws: int = 1000,
-        rng: np.random.Generator | None = None) -> dict:
-    """Posterior (or prior) draws of Stage B parameters.
-
-    With no usable training frames, returns `prior_params`. A PyMC hierarchical fit will
-    replace this path once race outcomes and fundamentals for 2018/2022 are wired; the
-    returned dict keys stay the same either way.
-    """
-    rng = rng or np.random.default_rng(SEED)
-    if not train:
-        return prior_params(draws, rng)
-
-    d = pd.concat(train, ignore_index=True)
-    need = ["baseline", "actual_share", *RACE_FEATURES]
-    if not all(c in d.columns for c in need) or d["actual_share"].notna().sum() < 5:
-        return prior_params(draws, rng)
-
-    # Lightweight ridge update on the logit residual (scaffold stand-in for PyMC).
-    # residual = logit(actual) - logit(baseline) ~ gamma . X + noise
+def _fit_ridge(d: pd.DataFrame, draws: int, rng: np.random.Generator) -> dict:
+    """Ridge stand-in on logit residual (used when PyMC is unavailable / disabled)."""
     ok = d["actual_share"].notna() & d["baseline"].notna()
     y = logit(d.loc[ok, "actual_share"].to_numpy()) - logit(d.loc[ok, "baseline"].to_numpy())
+    # Subtract year-specific national swing mean so gamma learns race features, not climate.
+    if "year" in d.columns:
+        y = y.copy()
+        years = d.loc[ok, "year"].to_numpy()
+        for yr in np.unique(years):
+            y[years == yr] -= national_swing(int(yr), blend_specials=True)["mean"]
     X = d.loc[ok, RACE_FEATURES].to_numpy()
-    # Prior N(0, 0.15); observation variance ~0.08^2
     prior_prec = 1 / 0.15**2
     obs_var = 0.08**2
     xtx = X.T @ X / obs_var + prior_prec * np.eye(len(RACE_FEATURES))
@@ -333,9 +351,102 @@ def fit(train: list[pd.DataFrame] | None = None, draws: int = 1000,
     params = prior_params(draws, rng)
     params["gamma"] = gamma
     params["n_train"] = int(ok.sum())
+    params["fit_method"] = "ridge"
     params["summary"] = pd.DataFrame({"mean": mean, "sd": np.sqrt(np.diag(cov))},
                                      index=RACE_FEATURES)
     return params
+
+
+def _fit_pymc(d: pd.DataFrame, draws: int, rng: np.random.Generator) -> dict:
+    """Hierarchical Stage B fit in PyMC (PLAN §4). Falls back to ridge on failure."""
+    import pymc as pm
+
+    ok = d["actual_share"].notna() & d["baseline"].notna()
+    dd = d.loc[ok].copy()
+    y = logit(dd["actual_share"].to_numpy()) - logit(dd["baseline"].to_numpy())
+    years = dd["year"].to_numpy() if "year" in dd.columns else np.full(len(dd), 0)
+    for yr in np.unique(years):
+        y[years == yr] -= national_swing(int(yr), blend_specials=True)["mean"]
+    X = dd[RACE_FEATURES].to_numpy(dtype=float)
+    s_idx, _ = pd.factorize(dd["state_po"])
+    n_state = int(s_idx.max()) + 1
+
+    with pm.Model():
+        gamma = pm.Normal("gamma", 0, 0.15, shape=len(RACE_FEATURES))
+        sigma_state = pm.HalfNormal("sigma_state", 0.05)
+        sigma_race = pm.HalfNormal("sigma_race", 0.08)
+        u = pm.Normal("u_state", 0, 1, shape=n_state)
+        mu = pm.math.dot(X, gamma) + sigma_state * u[s_idx]
+        pm.Normal("y", mu=mu, sigma=sigma_race, observed=y)
+        idata = pm.sample(draws, tune=max(500, draws), chains=2, target_accept=0.9,
+                          random_seed=SEED, progressbar=False)
+
+    def _dataset(group):
+        return group.to_dataset() if hasattr(group, "to_dataset") else group
+
+    post = _dataset(idata.posterior).stack(s=("chain", "draw"))
+    # Subsample to `draws` for a stable shape matching prior_params.
+    gamma_draws = np.asarray(post["gamma"].values).T  # features x samples → later transpose
+    if gamma_draws.ndim == 1:
+        gamma_draws = gamma_draws.reshape(1, -1)
+    # post["gamma"] stacked: (feature, sample) or (sample, feature) depending on version
+    g = np.asarray(post["gamma"].values)
+    if g.ndim == 2 and g.shape[0] == len(RACE_FEATURES):
+        gamma_mat = g.T
+    else:
+        gamma_mat = g.reshape(-1, len(RACE_FEATURES))
+    if len(gamma_mat) > draws:
+        pick = rng.choice(len(gamma_mat), draws, replace=False)
+        gamma_mat = gamma_mat[pick]
+    elif len(gamma_mat) < draws:
+        extra = rng.choice(len(gamma_mat), draws - len(gamma_mat), replace=True)
+        gamma_mat = np.vstack([gamma_mat, gamma_mat[extra]])
+
+    params = prior_params(draws, rng)
+    params["gamma"] = gamma_mat
+    params["sigma_state"] = np.asarray(post["sigma_state"].values).ravel()[:draws]
+    if len(params["sigma_state"]) < draws:
+        params["sigma_state"] = np.resize(params["sigma_state"], draws)
+    params["sigma_race"] = np.asarray(post["sigma_race"].values).ravel()[:draws]
+    if len(params["sigma_race"]) < draws:
+        params["sigma_race"] = np.resize(params["sigma_race"], draws)
+    params["n_train"] = int(ok.sum())
+    params["fit_method"] = "pymc"
+    params["summary"] = pd.DataFrame({
+        "mean": gamma_mat.mean(axis=0),
+        "sd": gamma_mat.std(axis=0),
+    }, index=RACE_FEATURES)
+    return params
+
+
+def fit(train: list[pd.DataFrame] | None = None, draws: int = 1000,
+        rng: np.random.Generator | None = None) -> dict:
+    """Posterior (or prior) draws of Stage B parameters.
+
+    Preference: PyMC hierarchical fit when pymc is installed and STAGE_B_PYMC is not
+    \"0\"; otherwise the ridge stand-in. Returned dict keys match either way.
+    """
+    rng = rng or np.random.default_rng(SEED)
+    if not train:
+        p = prior_params(draws, rng)
+        p["fit_method"] = "prior"
+        return p
+
+    d = pd.concat(train, ignore_index=True)
+    need = ["baseline", "actual_share", *RACE_FEATURES]
+    if not all(c in d.columns for c in need) or d["actual_share"].notna().sum() < 5:
+        p = prior_params(draws, rng)
+        p["fit_method"] = "prior"
+        return p
+
+    use_pymc = os.environ.get("STAGE_B_PYMC", "1") != "0"
+    if use_pymc:
+        try:
+            import pymc  # noqa: F401
+            return _fit_pymc(d, draws, rng)
+        except Exception:
+            pass
+    return _fit_ridge(d, draws, rng)
 
 
 # --------------------------------------------------------------------------- summarise / run

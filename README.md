@@ -19,10 +19,12 @@ what it needs in `data/raw/`, which is never committed.
 cd src && python -m forecast.ingest     # presidential panel: data/processed/county_panel.parquet
 python -m forecast.midterms             # midterm turnout 2014-2022 and 2018/2022 results
 python -m forecast.generic_ballot       # 2018/2022/2026 generic-ballot aggregates
+python -m forecast.special_elections    # 2025–26 specials vs 2024 presidential lean
 python -m forecast.races                # 2026 Senate/governor race list and incumbency
-python -m forecast.backtest             # turnout backtests, 2018 and 2022
+python -m forecast.fundraising          # OpenFEC Senate receipts → fundraising feature
+python -m forecast.backtest             # turnout + Stage B race backtests (when data present)
 python -m forecast.turnout_model        # 2026 county turnout forecast (Stage A)
-python -m forecast.vote_model           # Stage B race table (generic-ballot swing + incumbency)
+python -m forecast.vote_model           # Stage B race table (GB + specials swing, incumbency, FEC)
 cd .. && python -m pytest               # data and model checks
 ```
 

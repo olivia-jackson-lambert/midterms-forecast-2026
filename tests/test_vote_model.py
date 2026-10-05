@@ -102,11 +102,27 @@ def test_national_swing_from_generic_ballot_snapshot(tmp_path, monkeypatch):
         "margin": [4.0, 6.0, 8.0],
     })
     detail.to_parquet(tmp_path / "generic_ballot_aggregates.parquet", index=False)
-    s = vote_model.national_swing(2026)
+    s = vote_model.national_swing(2026, blend_specials=False)
     assert s["source"] == "generic_ballot.snapshot/vs_even"
     assert s["mean"] == pytest.approx(float(vote_model.logit(48 / 90)))
     assert s["sd"] >= vote_model.SWING_PRIOR[2026]["sd"]
     assert s["n_sources"] == 3
+
+
+def test_national_swing_blends_special_elections(tmp_path, monkeypatch):
+    monkeypatch.setattr(vote_model, "OUT", tmp_path)
+    pd.DataFrame([{
+        "year": 2026, "dem": 50.0, "rep": 50.0, "dem_2p": 0.5, "margin": 0.0,
+        "n_sources": 1, "sources": "X",
+    }]).to_parquet(tmp_path / "generic_ballot_snapshot.parquet", index=False)
+    s = vote_model.national_swing(2026, blend_specials=True)
+    assert "special_elections" in s["source"]
+    assert "special_mean_pp" in s and s["special_n"] >= 10
+    # Blended mean sits between GB (≈0 vs even) and special mean.
+    from forecast.special_elections import summary
+    spec = summary(2026)
+    assert min(0.0, spec["mean"]) <= s["mean"] <= max(0.0, spec["mean"]) or \
+        abs(s["mean"] - 0.5 * spec["mean"]) < 1e-9
 
 
 def test_national_swing_subtracts_presidential_national(tmp_path, monkeypatch):
@@ -123,7 +139,7 @@ def test_national_swing_subtracts_presidential_national(tmp_path, monkeypatch):
         "year": 2026, "dem": 55.0, "rep": 45.0, "dem_2p": 0.55, "margin": 10.0,
         "n_sources": 1, "sources": "X",
     }]).to_parquet(tmp_path / "generic_ballot_snapshot.parquet", index=False)
-    s = vote_model.national_swing(2026)
+    s = vote_model.national_swing(2026, blend_specials=False)
     assert s["source"] == "generic_ballot.snapshot/vs_presidential"
     assert s["mean"] == pytest.approx(float(vote_model.logit(0.55) - vote_model.logit(0.5)))
 
@@ -205,6 +221,5 @@ def test_run_with_mocks_no_data_dir(tmp_path, monkeypatch):
     assert len(out) == len(scheduled_races(2026))
     assert "seats" in info and info["params"]["n_train"] == 0
     assert out["p_dem_win"].between(0, 1).all()
-    # Without snapshot cache, swing falls back to prior when OUT is empty
-    # (live Wikipedia fetch may still succeed in some envs — accept either).
-    assert info["swing"]["source"] in ("prior",) or "generic_ballot" in info["swing"]["source"]
+    # Empty OUT → prior GB path, then blended with curated specials.
+    assert "prior" in info["swing"]["source"] or "generic_ballot" in info["swing"]["source"]

@@ -47,9 +47,9 @@ Every source is public. Mark each one ✅ once its availability and licence are 
 | Land area (for density) | Census Gazetteer counties file, 2024 | ✅ in ingest |
 | Generic ballot, 2018 and 2022 (backtests) | Wikipedia House election-ratings aggregate tables (RCP + FiveThirtyEight eve-of-election averages); code in `generic_ballot.py` | ✅ rebuilt from public listings |
 | Generic ballot, 2026 | Wikipedia 2026 House elections aggregate table (DDHQ, FiftyPlusOne, NBC, RCP, Silver Bulletin). FiftyPlusOne site reachable; RealClearPolling returns 403 here; FiveThirtyEight project page has no usable poll JSON | ✅ first snapshot in ingest; refresh before publish |
-| 2025–26 special elections | Ballotpedia (reachable) and other public trackers | ☐ scaffold + TODO in `races.py`; full swing series still open |
+| 2025–26 special elections | Ballotpedia congressional specials + VA governor 2025 (curated in `special_elections.py`) | ✅ series + swing vs 2024 presidential; refresh before publish |
 | Race fundamentals: incumbency, open seats | Ballotpedia 2026 Senate and governor pages (curated constants in `races.py`; live HTML often empty from this env) | ✅ race list compiled; re-check before publish |
-| Candidate fundraising | FEC API (works with the demo key; register a free key for volume) | ✅ |
+| Candidate fundraising | FEC OpenFEC API (`fundraising.py`, DEMO_KEY); Senate only — governors are not in FEC | ✅ Senate hook; GOV still 0 |
 | Early and mail vote, October 2026 | US Elections Project (site reachable); state dashboards | ☐ confirm 2026 page |
 | County shapefiles | Census cartographic boundary files 2023 (20m) | ✅ |
 
@@ -188,5 +188,5 @@ midterms-2026/
 2. ~~Aggregate 2018 and 2022 precinct files to county midterm turnout and results, and add 2014 turnout.~~ Done 4 October (`python -m forecast.midterms`).
 3. ~~Turnout model (Stage A) with 2018 and 2022 backtests.~~ First version done 4 October; refresh with October early vote.
 4. ~~Rebuild the 2018 and 2022 generic-ballot averages from public poll listings.~~ Done 5 October (`python -m forecast.generic_ballot`); 2026 snapshot included.
-5. ~~Compile 2026 races, incumbency and special elections from Ballotpedia; fill the California 2022 Senate and Tennessee 2022 governor results from the states.~~ Race list + CA/TN gaps done 5 October (`forecast.races`, supplements in `midterms.py`). Special-election over-performance series still TODO.
-6. Vote-share model (Stage B) with correlated simulation and 2018/2022 race backtests. In progress 5 October: scaffold (`vote_model` / `simulate`) + wire generic-ballot snapshot → national swing and `races` open/incumbency → race features. Still open: special-election swing term, FEC fundraising, PyMC hierarchical fit, 2018/2022 race backtests and calibration.
+5. ~~Compile 2026 races, incumbency and special elections from Ballotpedia; fill the California 2022 Senate and Tennessee 2022 governor results from the states.~~ Race list + CA/TN gaps done 5 October (`forecast.races`, supplements in `midterms.py`). Special-election over-performance series: done 5 October (`forecast.special_elections`; House specials + VA governor 2025 vs 2024 presidential).
+6. Vote-share model (Stage B) with correlated simulation and 2018/2022 race backtests. In progress 5 October: scaffold + GB/specials swing blend + races incumbency + FEC Senate fundraising hook + PyMC fit (ridge fallback) + race backtest/calibration gates in `forecast.backtest`. Still open: governor fundraising (no FEC), historical 2018/2022 incumbency curation, full data-backed race backtest run on a machine with `county_panel` + midterm results, October early-vote refresh for Stage A.
