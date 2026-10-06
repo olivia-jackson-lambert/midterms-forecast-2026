@@ -6,6 +6,7 @@ On the logit scale, the Democratic share of the two-party vote in race r (state 
                      + a_o + b_o * (logit(lean_s) - logit(pres_T))   state lean against the nation
                      + d_o * incumbency_r                     +1 Democratic-side incumbent, -1 Republican
                      + h_o * track_record_r                   the incumbent's last result against expectation
+                     + q * fundraising_r                      Senate only: log ratio of receipts to 30 June
                      + region effect + state effect + race noise,
 
 - lean_s, the turnout-first baseline: the state's last presidential two-party share with each
@@ -47,6 +48,9 @@ REGION = {**{s: "Northeast" for s in "CT ME MA NH RI VT NJ NY PA".split()},
           **{s: "West" for s in "AZ CO ID MT NV NM UT WY AK CA HI OR WA".split()}}
 INDEPENDENT_EXTRA_SD = 0.25      # added race noise where an independent stands in for the Democratic side
 FIRST_ROUND_FROM_COUNTY_FILES = {"2018-MS-SENS"}
+# Off: in the 2022 backtest (trained on 2018) fundraising made vote-share error and Brier worse
+# (3.72 v 3.64 points, 0.069 v 0.067), failing the rule set before testing. PLAN.md, Race Results.
+USE_FUNDRAISING = False
 # Senate seats not up in 2026, by caucus (53 Republicans, 47 Democrats and independents now).
 SENATE_NOW = {"R": 53, "D": 47}
 
@@ -85,6 +89,7 @@ def frame(year: int) -> pd.DataFrame:
     f["office_i"] = f["office"].map({o: i for i, o in enumerate(OFFICES)})
     f["independent"] = f["d_side"].ne("democrat")
     f["track_record"] = track_record(f)
+    f["fundraising"] = fundraising(f, year)
     if year < 2026:
         # Race results: certified candidate percentages from forecast.races. (MIT's county files
         # miss counties in places, e.g. Indiana 2022 and Delaware 2018; tests compare the two.)
@@ -98,6 +103,15 @@ def frame(year: int) -> pd.DataFrame:
             f.loc[first_round, "actual"] = county[first_round].values
         f["house"] = float(generic_ballot.history().set_index("year").loc[year, "house_dem_2p"])
     return f.reset_index(drop=True)
+
+
+def fundraising(f: pd.DataFrame, year: int) -> pd.Series:
+    """Senate nominees' log receipts ratio to 30 June (forecast.fundraising); 0 for governors,
+    or everywhere when USE_FUNDRAISING is off or the FEC data have not been downloaded."""
+    from . import fundraising as fec
+    if not USE_FUNDRAISING or not (fec.RAW_FEC / f"nominee_receipts_{year}.csv").exists():
+        return pd.Series(0.0, index=f.index)
+    return f["race_id"].map(fec.feature(year)).fillna(0.0).where(f["office"].eq("SEN"), 0.0)
 
 
 def track_record(f: pd.DataFrame) -> pd.Series:
@@ -120,6 +134,7 @@ def fit(train: list[pd.DataFrame], lean: str = "lean_turnout", draws: int = 1000
         b = pm.Normal("b", 1.0, 0.3, shape=2)
         d = pm.Normal("d", 0.0, 0.2, shape=2)
         h = pm.Normal("h", 0.0, 0.5, shape=2)
+        q = pm.Normal("q", 0.0, 0.1)
         sigma = pm.HalfNormal("sigma", 0.3, shape=2)
         # Regional and same-state errors are barely identified by one or two midterms, so their
         # priors are set to typical sizes (a few points) rather than left wide.
@@ -135,7 +150,7 @@ def fit(train: list[pd.DataFrame], lean: str = "lean_turnout", draws: int = 1000
             u = pm.Normal("u", 0, 1, shape=int(st_idx.max()) + 1)
             g = pm.Normal("g", 0, 1, shape=int(rg_idx.max()) + 1)
             mu = (logit(t["house"].to_numpy()) + a[o] + b[o] * x + d[o] * t["incumbency"].to_numpy()
-                  + h[o] * t["track_record"].to_numpy()
+                  + h[o] * t["track_record"].to_numpy() + q * t["fundraising"].to_numpy()
                   + sigma_state * u[st_idx] + sigma_region * g[rg_idx])
             pm.Normal("y", mu, sigma[o], observed=logit(t["actual"].to_numpy()))
             idata = pm.sample(draws, tune=2000, chains=4, target_accept=0.99, random_seed=SEED, progressbar=False)
@@ -146,7 +161,7 @@ def fit(train: list[pd.DataFrame], lean: str = "lean_turnout", draws: int = 1000
             post = idata.prior.to_dataset() if hasattr(idata.prior, "to_dataset") else idata.prior
             n_train = 0
     post = post.stack(s=("chain", "draw"))
-    names = ["a", "b", "d", "h", "sigma", "sigma_state", "sigma_region"]
+    names = ["a", "b", "d", "h", "q", "sigma", "sigma_state", "sigma_region"]
     params = {n: np.asarray(post[n].values).T if post[n].ndim > 1 else np.asarray(post[n].values) for n in names}
     params.update(n_train=n_train, lean=lean)
     params["summary"] = pd.DataFrame({n + (f"[{o}]" if params[n].ndim > 1 else ""): v
@@ -183,14 +198,15 @@ def simulate(f: pd.DataFrame, params: dict, year: int, sims: int = SIMS,
     eps = sd * rng.standard_normal((sims, len(f)))
     lg = (logit(house)[:, None] + params["a"][k][:, o] + params["b"][k][:, o] * x
           + params["d"][k][:, o] * f["incumbency"].to_numpy()[None, :]
-          + params["h"][k][:, o] * f["track_record"].to_numpy()[None, :] + u[:, st_idx] + g[:, rg_idx] + eps)
+          + params["h"][k][:, o] * f["track_record"].to_numpy()[None, :]
+          + params["q"][k][:, None] * f["fundraising"].to_numpy()[None, :] + u[:, st_idx] + g[:, rg_idx] + eps)
     return expit(lg).astype(np.float32)
 
 
 def summarise(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:
     q = np.quantile(sims, [0.1, 0.5, 0.9], axis=0)
     cols = ["race_id", "year", "state_po", "office", "special", "incumbent", "incumbent_party", "open_seat",
-            "dem_candidate", "rep_candidate", "d_side", "lean_plain", "lean_turnout", "track_record"]
+            "dem_candidate", "rep_candidate", "d_side", "lean_plain", "lean_turnout", "track_record", "fundraising"]
     out = f[[c for c in cols if c in f]].copy()
     out["lo80"], out["median"], out["hi80"] = q
     out["p_dem_win"] = (sims > 0.5).mean(axis=0)

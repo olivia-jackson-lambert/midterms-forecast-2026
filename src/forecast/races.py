@@ -48,6 +48,8 @@ STATES = {
     "South Dakota": "SD", "Tennessee": "TN", "Texas": "TX", "Utah": "UT", "Vermont": "VT",
     "Virginia": "VA", "Washington": "WA", "West Virginia": "WV", "Wisconsin": "WI", "Wyoming": "WY",
 }
+# The incumbent shares a name with another candidate on the ballot.
+NAMESAKES = {(2026, "AK", "SEN"): "Dan S. Sullivan"}   # incumbent Daniel S. Sullivan; Dan J. Sullivan also running
 OPEN = re.compile(r"retir|term[- ]limited|lost renomination|resign|ineligible|died|not seeking", re.I)
 DEM = {"Democratic", "DFL", "Democratic–NPL", "Democratic-NPL", "Democratic–Farmer–Labor"}
 
@@ -148,6 +150,19 @@ def races(year: int, refresh: bool = False) -> pd.DataFrame:
                     if top == {"R"} or top == {"D"}:
                         d_kind = "not_two_party"
                 pct = {n: v for n, _, v in cands if v is not None}
+                # Several Republicans on the November ballot (Alaska's top four): the incumbent if
+                # running, else the past race's leader, else no single name.
+                inc_name = _clean(r[person]).split(" (")[0]
+                if len(reps) <= 1:
+                    rep_name = reps[0] if reps else None
+                elif (year, STATES[r["_state"]], office) in NAMESAKES:
+                    rep_name = NAMESAKES[(year, STATES[r["_state"]], office)]
+                elif inc_party == "R" and not open_seat and inc_name in reps:
+                    rep_name = inc_name
+                elif any(n in pct for n in reps):
+                    rep_name = max((n for n in reps if n in pct), key=pct.get)
+                else:
+                    rep_name = "Several Republicans (top four)"
                 # Party totals (all of a party's candidates, which matters in all-party primaries
                 # such as Louisiana's); the Democratic side is its nominee or stand-in independent.
                 d_total = sum(v for n, p, v in cands if v is not None and
@@ -160,7 +175,7 @@ def races(year: int, refresh: bool = False) -> pd.DataFrame:
                     "result_dem_2p": d_total / (d_total + r_total) if d_total and r_total else None,
                     "incumbent": _clean(r[person]).split(" (")[0], "incumbent_party": inc_party,
                     "status": stat, "open_seat": open_seat,
-                    "dem_candidate": d_side, "rep_candidate": reps[0] if reps else None,
+                    "dem_candidate": d_side, "rep_candidate": rep_name,
                     "d_side": d_kind,
                 })
     df = pd.DataFrame(rows)

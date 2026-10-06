@@ -101,13 +101,13 @@ def _toy_frame(n=6):
         "race_id": [f"r{i}" for i in range(n)], "state_po": ["AA", "AA", "BB", "CC", "DD", "EE"][:n],
         "office": ["SEN", "GOV"] * (n // 2), "office_i": [0, 1] * (n // 2), "region": ["West"] * n,
         "lean_plain": np.linspace(0.35, 0.65, n), "lean_turnout": np.linspace(0.35, 0.65, n),
-        "pres_nat": 0.5, "incumbency": 0.0, "track_record": 0.0, "independent": False,
+        "pres_nat": 0.5, "incumbency": 0.0, "track_record": 0.0, "fundraising": 0.0, "independent": False,
     })
 
 
 def _toy_params(draws=200, sd=0.1):
     return {"a": np.zeros((draws, 2)), "b": np.ones((draws, 2)), "d": np.zeros((draws, 2)),
-            "h": np.zeros((draws, 2)), "sigma": np.full((draws, 2), sd), "sigma_state": np.full(draws, sd),
+            "h": np.zeros((draws, 2)), "q": np.zeros(draws), "sigma": np.full((draws, 2), sd), "sigma_state": np.full(draws, sd),
             "sigma_region": np.full(draws, sd), "lean": "lean_plain"}
 
 
@@ -126,3 +126,20 @@ def test_shared_national_error_correlates_races(monkeypatch):
     sims = vm.simulate(_toy_frame(), _toy_params(sd=0.01), 2026, sims=4000, turnout_weighted=False)
     c = np.corrcoef(sims.T)
     assert c[np.triu_indices_from(c, 1)].min() > 0.8
+
+
+# --------------------------------------------------------------------------- fundraising (no network)
+@pytest.mark.parametrize("fec_name, nominee, ok", [
+    ("CRUZ, RAFAEL EDWARD  TED", "Ted Cruz", True),
+    ("CASEY, ROBERT P. JR.", "Bob Casey Jr.", True),          # suffix
+    ("VAN HOLLEN, CHRIS", "Chris Van Hollen", True),          # two-word surname
+    ("CORTEZ MASTO, CATHERINE", "Catherine Cortez Masto", True),
+    ("LUJAN, BEN RAY", "Ben Ray Luján", True),                # accent
+    ("ARENHOLZ, ASHLEY HINSON", "Ashley Hinson", True),       # files under another surname
+    ("COLLINS, MICHAEL A JR", "Susan Collins", True),         # same surname: both kept, largest receipts wins
+    ("HOLLENBECK, DAVID", "Chris Van Hollen", False),
+    ("JACKSON, ANNETTE", "Troy Jackson", True),
+])
+def test_fec_name_matching(fec_name, nominee, ok):
+    from forecast.fundraising import _matches
+    assert _matches(fec_name, nominee) is ok
