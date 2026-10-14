@@ -20,7 +20,7 @@ format:
 ::: {.cs-key}
 [The Decision]{.cs-label}
 
-[Keep an input only if it beats a simple baseline out of sample, written down before testing. Fundraising and early vote did not, so they are not in the model.]{.cs-decision}
+[Keep an input only if it beats a simple baseline out of sample, written down before testing. Fundraising did not, and early vote could not be tested, so neither is in the model.]{.cs-decision}
 :::
 
 ::: {.cs-key}
@@ -248,7 +248,7 @@ So turnout does not decide who is forecast to win. Where it matters is the count
 
 **Fundraising.** I downloaded each Senate nominee's receipts from the FEC, using the June report, the last public before 1 October. The rule, set before testing: keep it only if it improves the 2022 backtest on both Brier score and vote-share error. It made both worse (Brier 0.069 against 0.067, error 3.7 against 3.6 points), so it is out. Once the state's lean, the national environment and the incumbent's record are in, money adds little. Well-funded challengers mostly run where the race was already close.
 
-**Early vote, as currently built.** The UF Election Lab's early-vote tracker is downloaded but not used. Comparing early-vote pace between states mostly measures voting rules, such as how widely mail ballots are sent, not enthusiasm. To use it properly I need each state's 2022 pace on the same date, so each state is compared with itself. If that is ready in time, it will come in through the weekly updates. <!-- v1: update if early vote is added -->
+**Early vote.** The fair test compares each state's early-vote pace with its own pace at the same point in the previous midterm, because comparing states with each other mostly measures voting rules, such as how widely mail ballots are sent. I could not run that test: no state-level early-vote figures from three weeks before the 2018 election survive, and only national totals survive for 2022. So early vote is not in the model. I am saving the 2026 figures every day, so the test will be possible next cycle.
 
 **Special elections.** Over-performance in special elections is a common signal of the national mood. It cannot be backtested here, because there is no comparable public series for 2017 to 2018 and 2021 to 2022. Several 2026 contests were also all-party ballots or Democrat against Democrat, which makes a two-party swing hard to define.
 
