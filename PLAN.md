@@ -135,7 +135,15 @@ Each simulation draws the national vote, the errors and a Stage A turnout draw, 
 
 **What turnout weighting does.** Re-weighting counties by forecast turnout moves state leans very little: by 0.07 points on average in 2026, at most 0.5. In backtests it gives a small edge in 2022 and none in 2018. The turnout-first angle matters more for county turnout itself and for uncertainty than for who wins.
 
-**First 2026 run (5 October).** National House vote 52.8% Democratic (two-party). Democrats hold 51 or more Senate seats in 40% of simulations; Republicans hold 50 or more in 55%.
+**2026 runs.** 5 October, fundamentals only: national House vote 52.8% Democratic (two-party); Democrats hold 51 or more Senate seats in 40% of simulations, Republicans 50 or more in 55%. 14 October, with race polls: national House vote 52.7%; Democrats 51 or more in 64%, Republicans 50 or more in 31% (the rest go to independents). The biggest moves towards the Democratic side are Texas Senate (32% to 57%), the Ohio special (30% to 58%), Alaska Senate (20% to 42%) and Iowa governor (35% to 88%).
+
+### Race Polls (Added 14 October)
+
+Code: `polls.py`. Each race's public polls come from its Wikipedia article. For 2018 and 2022 only polls whose fieldwork ended by 26 September count (the 2022 result is the same using the articles as they stood on 1 October). For 2026, polls run to the latest refresh. The average weights each pollster's latest poll (likely voters preferred) by recency (half-life 21 days) and sample size. The blend treats the poll average as a noisy observation of the result: a national polling error shared by every race, plus a race error that shrinks with more polls, with spreads fitted on earlier years only (priors for 2018). The fundamentals forecast then moves towards the polls by their precision. Races without qualifying polls keep the fundamentals forecast.
+
+Coverage: 64 of 70 races had polls in 2018, 56 of 71 in 2022 and 57 of 71 in 2026 (median four or five polls each). Under the same rule as everything else, polls stay because they improve the 2022 backtest on both Brier and vote-share error (Race Results).
+
+**The cost: intervals are now too narrow.** 80% intervals covered 77% of 2022 results and 71% of 2018's. With two elections there is too little evidence to size the national polling error well, and tuning it to the backtests would repeat the mistake this project avoids. The forecast reports this plainly, and the most confident calls should be read as overstated. Details in `notes/race_polls.md`.
 
 ### Nominee Track Record (Tested 14 October, Left Out)
 
@@ -191,13 +199,15 @@ Each year fitted only on earlier midterms; 2018 runs on priors alone. Scored on 
 
 | | 2018 | 2022 |
 |---|---|---|
-| Brier score, model | **0.149** | **0.067** |
+| Brier score, model with polls | **0.062** | **0.031** |
+| Brier score, fundamentals only | 0.149 | 0.067 |
 | Brier, presidential lean (certain call) | 0.221 | 0.086 |
 | Brier, lean plus uniform national swing | 0.162 | 0.157 |
-| Vote-share error, model (points) | **5.1** | **3.6** |
+| Vote-share error, model with polls (points) | **2.7** | **2.7** |
+| Vote-share error, fundamentals only | 5.1 | 3.6 |
 | Vote-share error, presidential lean | 5.9 | 4.3 |
 | Vote-share error, uniform swing | 5.1 | 4.1 |
-| 80% interval coverage | 96% | 86% |
+| 80% interval coverage, with polls / fundamentals only | 71% / 96% | 77% / 86% |
 | Without the track record: Brier / error | 0.153 / 5.1 | 0.072 / 3.9 |
 | Plain lean instead of turnout-weighted: Brier / error | 0.147 / 5.1 | 0.069 / 3.8 |
 | With fundraising: Brier / error | 0.153 / 5.1 | 0.069 / 3.7 |
@@ -262,6 +272,6 @@ midterms-2026/
 5. ~~Vote-share model (Stage B) with correlated simulation and 2018/2022 race backtests.~~ Done 5 October (`vote_model.py`); beats both baselines in both years.
 6. ~~FEC fundraising for nominees.~~ Tested 5 October; it made the 2022 backtest worse, so it is left out.
 7. ~~Early vote: compare each state's 2026 pace with its own 2022 pace on the same date before using it.~~ Built 13 October; it can't be backtested, so it is left out (see Early Vote Test). Optional: a descriptive chart of 2026 pace against 2022 turnout, with the voting-rule caveats.
-8. Race polls: built 14 October, being tested under the same rule (`notes/race_polls.md`).
+8. ~~Race polls.~~ Added 14 October: they pass the rule; intervals are too narrow (see Race Polls).
 10. Forecast v1 (19 October): refresh the 2026 race and House pages and the generic ballot, run `python -m forecast.pipeline --refresh`, then `python -m forecast.release v1`, tag.
 9. Before the scorecard: save the UF early-vote CSV every day to Election Day (`python -m forecast.early_vote` keeps a dated copy), so 2030 has a dated 2026 series to test against. Check the voting-rule list in `early_vote.RULE_CHANGES` against NCSL's tables.
