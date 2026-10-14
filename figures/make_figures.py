@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.colors import LinearSegmentedColormap, to_rgb
+from matplotlib.ticker import MaxNLocator
 from shapely import affinity
 
 HERE = Path(__file__).resolve().parent
@@ -276,32 +277,40 @@ def drivers() -> None:
 
 # --------------------------------------------------------------------------- races (Stage B)
 def race_backtest() -> None:
-    """Model against the two references, 2018 and 2022: Brier score and vote-share error."""
-    b = pd.read_csv(DATA / "backtest_races.csv").query("variant == 'model'").set_index("year")
-    fig, axes = plt.subplots(2, 1, figsize=(7.6, 4.6), sharey=True)
+    """The model with polls and with fundamentals only, against the two references, 2018 and 2022:
+    Brier score and vote-share error. In backtest_races.csv "model" is with polls, "no polls" is
+    the fundamentals alone."""
+    b = pd.read_csv(DATA / "backtest_races.csv")
+    polls = b.query("variant == 'model'").set_index("year")
+    fund = b.query("variant == 'no polls'").set_index("year")
+    fig, axes = plt.subplots(2, 1, figsize=(7.6, 5.0), sharey=True)
     specs = [("Brier Score (Lower Is Better)", ("brier", "uniform_swing_brier", "lean_brier"), "{:.3f}"),
              ("Vote-Share Error, Points (Lower Is Better)", ("mae_pts", "uniform_swing_mae_pts", "lean_mae_pts"), "{:.1f}")]
-    names = ["Model", "Lean Plus Uniform Swing", "Presidential Lean"]
-    colours = [ACCENT, CONTEXT, LIGHT]
+    names = ["Model With Polls", "Fundamentals Only", "Lean Plus Uniform Swing", "Presidential Lean"]
+    colours = [ACCENT, BASE, CONTEXT, LIGHT]
     for ax, (label, cols, fmt) in zip(axes, specs):
         for i, year in enumerate([2022, 2018]):
-            vals = [b.loc[year, c] for c in cols]
+            vals = [polls.loc[year, cols[0]], fund.loc[year, cols[0]]] + [polls.loc[year, c] for c in cols[1:]]
             ax.plot([min(vals), max(vals)], [i, i], color=GRID_LINE, lw=2.5, zorder=1)
             for v, c, n in zip(vals, colours, names):
-                ax.plot(v, i, "o", ms=8, color=c, zorder=3 if c == ACCENT else 2, label=n if i == 0 else None)
+                ax.plot(v, i, "o", ms=8, color=c, zorder=3 if c in (ACCENT, BASE) else 2, label=n if i == 0 else None)
             ax.text(vals[0], i + 0.28, fmt.format(vals[0]), ha="center", fontsize=8.5, color=ACCENT)
+            ax.text(vals[1], i + 0.28, fmt.format(vals[1]), ha="center", fontsize=8.5, color=BASE)
         ax.set_yticks([0, 1], ["2022", "2018"])
         ax.set_ylim(-0.6, 1.7)
+        ax.set_xlim(0, None)
         ax.set_xlabel(label)
         tidy(ax, grid_axis="x")
-    axes[0].legend(loc="lower right", bbox_to_anchor=(1, 1.0), ncol=3)
+    axes[0].legend(loc="lower left", bbox_to_anchor=(0, 1.0), ncol=2)
     fig.tight_layout()
-    note(axes[1], "Each year fitted only on earlier midterms (2018 on priors alone). 68 and 70 races.", y=-0.42)
+    note(axes[1], "Each year fitted only on earlier midterms (2018 on priors alone). 68 and 70 races.", y=-0.38)
     save(fig, "race_backtest.png")
 
 
 def race_calibration() -> None:
     c = pd.read_csv(DATA / "backtest_races_calibration.csv")
+    if "variant" in c:
+        c = c[c["variant"] == "model"]          # the model with polls
     g = c.groupby("bin", sort=False).apply(lambda d: pd.Series({
         "races": d["races"].sum(), "mean_p": np.average(d["mean_p"], weights=d["races"]),
         "win_rate": np.average(d["win_rate"], weights=d["races"])}), include_groups=False).reset_index()
@@ -309,13 +318,13 @@ def race_calibration() -> None:
     ax.plot([0, 1], [0, 1], color=CONTEXT, lw=1.1, ls=(0, (3, 2)))
     ax.scatter(g["mean_p"], g["win_rate"], s=g["races"] * 9, color=ACCENT, alpha=0.85, zorder=3, linewidths=0)
     for _, r in g.iterrows():
-        ax.annotate(f"{int(r['races'])} Races", (r["mean_p"], r["win_rate"]), xytext=(9, -3),
+        ax.annotate(f"{int(r['races'])} Races", (r["mean_p"], r["win_rate"]), xytext=(np.sqrt(r["races"] * 9 / np.pi) + 4, -3),
                     textcoords="offset points", fontsize=8.5, color=DIM)
     ax.set_xlim(-0.03, 1.03); ax.set_ylim(-0.03, 1.03); ax.set_aspect("equal")
     ax.set_xlabel("Forecast Chance the Democratic Side Wins")
     ax.set_ylabel("Share of Races It Won")
     tidy(ax, grid_axis="both")
-    note(ax, "2018 and 2022 backtests pooled, in five bins. Dashed line: perfect calibration.", y=-0.16)
+    note(ax, "Model with polls; 2018 and 2022 backtests pooled, in five bins. Dashed line: perfect calibration.", y=-0.16)
     save(fig, "race_calibration.png")
 
 
@@ -333,15 +342,16 @@ def race_probabilities() -> None:
             ax.plot(r["p_dem_win"], i, "o", ms=6, color=c, mfc="white" if hollow else c, mew=1.4)
         ax.axvline(0.5, color=INK, lw=0.8)
         ax.set_yticks(range(len(d)), d["label"])
+        ax.set_ylim(-0.8, len(d) - 0.2)
         ax.tick_params(axis="y", labelsize=8.5)
-        ax.set_xlim(0, 1)
+        ax.set_xlim(-0.03, 1.03)
         ax.set_xticks([0, 0.25, 0.5, 0.75, 1], ["Safe R", "75% R", "Even", "75% D", "Safe D"])
         ax.set_title(title, fontsize=10.5, color=INK, loc="left")
         tidy(ax, grid_axis="x")
     axes[0].set_xlabel("Chance of Winning")
     axes[1].set_xlabel("Chance of Winning")
-    note(axes[1], "Hollow points: an independent stands in for the Democratic side (NE, ID, SD Senate).", y=-0.07)
     fig.tight_layout()
+    note(axes[1], "Hollow points: an independent stands in for the Democratic side (NE, ID, SD Senate).", y=-0.07)
     save(fig, "race_probabilities_2026.png")
 
 
@@ -352,7 +362,9 @@ def senate_seats() -> None:
     ax.bar(s.index, s.values * 100, color=[DEM if k >= 51 else REP for k in s.index], width=0.78)
     ax.axvline(50.5, color=INK, lw=0.8, ls=(0, (2, 2)))
     p51 = s[s.index >= 51].sum()
-    ax.text(50.7, ax.get_ylim()[1] * 0.92, f"Democrats Win 51+: {p51 * 100:.0f}%", fontsize=9.5, color=DEM)
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True, steps=[1, 2, 5, 10]))
+    ax.text(s.index.max() + 0.4, ax.get_ylim()[1] * 0.92, f"Democrats Win 51+: {p51 * 100:.0f}%", ha="right",
+            fontsize=9.5, color=DEM)
     ax.set_xticks(range(int(s.index.min()), int(s.index.max()) + 1, 2))
     ax.set_xlabel("Democratic-Caucus Senate Seats After the Election")
     ax.set_ylabel("Chance (%)")
@@ -360,6 +372,87 @@ def senate_seats() -> None:
     note(ax, "20,000 simulations. Democrats need 51 seats for control (the Vice President breaks ties). "
              "Seats won by independents are not counted.", y=-0.2)
     save(fig, "senate_seats_2026.png")
+
+
+def fundamentals_only_2026() -> pd.DataFrame:
+    """The 2026 race forecast without the poll layer, computed in memory (nothing is saved).
+
+    vote_model.run fits on 2018 and 2022 and simulates with a fixed seed, so with USE_POLLS off
+    this reproduces the fundamentals draws the published run blends polls into. The fit takes
+    a few seconds; only summary parameters are saved to disk, so it is refitted here."""
+    from forecast import vote_model
+    keep = vote_model.USE_POLLS
+    vote_model.USE_POLLS = False
+    try:
+        out, _ = vote_model.run(2026, [2018, 2022])
+    finally:
+        vote_model.USE_POLLS = keep
+    return out
+
+
+def polls_shift(fund: pd.DataFrame) -> None:
+    """Competitive races: Democratic-side win probability without and with polls (partisan colours:
+    each end coloured by the side it favours)."""
+    v = pd.read_parquet(DATA / "vote_share_2026.parquet")
+    d = v.merge(fund[["race_id", "p_dem_win"]], on="race_id", suffixes=("", "_fund"))
+    lo, hi = d[["p_dem_win", "p_dem_win_fund"]].min(axis=1), d[["p_dem_win", "p_dem_win_fund"]].max(axis=1)
+    d = d[(hi > 0.05) & (lo < 0.95)].copy()
+    d["label"] = d["state_po"] + np.where(d["special"], " (Special)", "")
+    side = lambda p: DEM if p >= 0.5 else REP
+    n = d["office"].value_counts()
+    fig, axes = plt.subplots(2, 1, figsize=(7.4, 10.6), sharex=True,
+                             gridspec_kw={"height_ratios": [n.get("SEN", 1), n.get("GOV", 1)]})
+    for ax, office, title in zip(axes, ["SEN", "GOV"], ["Senate", "Governor"]):
+        o = d[d["office"] == office].sort_values("p_dem_win").reset_index(drop=True)
+        for i, r in o.iterrows():
+            a, b = r["p_dem_win_fund"], r["p_dem_win"]
+            ax.plot([a, b], [i, i], color=LIGHT, lw=2.2, zorder=1, solid_capstyle="round")
+            ax.plot(a, i, "o", ms=6.5, mfc="white", mec=side(a), mew=1.5, zorder=2)
+            ax.plot(b, i, "o", ms=7, color=side(b), zorder=3)
+        ax.axvline(0.5, color=INK, lw=0.8)
+        ax.set_yticks(range(len(o)), o["label"])
+        ax.set_ylim(-0.7, len(o) - 0.3)
+        ax.tick_params(axis="y", labelsize=8.5)
+        ax.set_xlim(-0.02, 1.02)
+        ax.set_xticks([0, 0.25, 0.5, 0.75, 1], ["Safe R", "75% R", "Even", "75% D", "Safe D"])
+        ax.set_title(title, fontsize=10.5, color=INK, loc="left")
+        tidy(ax, grid_axis="x")
+    axes[1].set_xlabel("Chance of Winning")
+    handles = [plt.Line2D([], [], marker="o", ls="", ms=6.5, mfc="white", mec=DIM, mew=1.5, label="Fundamentals Only"),
+               plt.Line2D([], [], marker="o", ls="", ms=7, color=DIM, label="With Polls")]
+    axes[0].legend(handles=handles, loc="lower right", bbox_to_anchor=(1, 1.0), ncol=2)
+    note(axes[1], "Races where either version gives the Democratic side between 5% and 95%. Blue: favours the Democratic\n"
+                  "side; red: favours the Republican. NE and SD Senate: an independent stands in for the Democratic side.",
+         y=-0.1)
+    fig.tight_layout()
+    save(fig, "polls_shift_2026.png")
+
+
+def house_seats() -> None:
+    """Distribution of Democratic House seats (partisan colours), from the joint seat distribution."""
+    h = pd.read_csv(DATA / "house_seats_2026.csv").groupby("dem_seats")["probability"].sum()
+    cum = h.cumsum()
+    lo = int(h.index[cum.searchsorted(0.002)])
+    hi = int(h.index[cum.searchsorted(0.998)])
+    s = h.reindex(range(lo, hi + 1), fill_value=0.0)
+    fig, ax = plt.subplots(figsize=(7.6, 3.8))
+    ax.bar(s.index, s.values * 100, color=[DEM if k >= 218 else REP for k in s.index], width=0.85, linewidth=0)
+    ax.axvline(217.5, color=INK, lw=0.8, ls=(0, (2, 2)))
+    p218 = h[h.index >= 218].sum()
+    med = int(h.index[cum.searchsorted(0.5)])
+    top = ax.get_ylim()[1]
+    ax.text(hi, top * 0.92, f"Democrats Win 218+: {p218 * 100:.0f}%", ha="right", fontsize=9.5, color=DEM)
+    ax.text(hi, top * 0.83, f"Median: {med} Seats (80%: {int(h.index[cum.searchsorted(0.1)])}–"
+                            f"{int(h.index[cum.searchsorted(0.9)])})", ha="right", fontsize=9, color=DIM)
+    step = 10
+    ax.set_xticks(range((lo // step + 1) * step, hi + 1, step))
+    ax.set_xlim(lo - 1, hi + 1)
+    ax.set_xlabel("Democratic House Seats After the Election")
+    ax.set_ylabel("Chance (%)")
+    tidy(ax)
+    note(ax, "20,000 simulations. 218 seats are a majority. Seats won by independents are not counted.\n"
+             "The 0.2% of simulations at each extreme are off the chart.", y=-0.2)
+    save(fig, "house_seats_2026.png")
 
 
 def main() -> None:
@@ -375,6 +468,8 @@ def main() -> None:
     race_calibration()
     race_probabilities()
     senate_seats()
+    polls_shift(fundamentals_only_2026())
+    house_seats()
 
 
 if __name__ == "__main__":
