@@ -212,7 +212,7 @@ def _running(member: str, party: str, status: str) -> bool:
 
 def _stand_in(cands: list, party: str) -> tuple[str, float | None]:
     """The main opponent of a lone major party: the strongest other candidate in a past race,
-    or, before the election, the first independent (else the first other candidate) listed."""
+    or, before the election, the first independent listed."""
     others = [c for c in cands if _party_code(c[1]) != party]
     if any(c[2] is not None for c in others):
         best = max((c for c in others if c[2] is not None), key=lambda c: c[2])
@@ -239,7 +239,14 @@ def districts(html: str, year: int) -> pd.DataFrame:
         parties = [_party_code(p) for _, p, _ in cands]
         d_tot = sum(v for (_, p, v) in cands if v is not None and _party_code(p) == "D")
         r_tot = sum(v for (_, p, v) in cands if v is not None and _party_code(p) == "R")
-        has_d, has_r, has_other = "D" in parties, "R" in parties, any(p not in ("D", "R") for p in parties)
+        has_d, has_r = "D" in parties, "R" in parties
+        # Before the election only an independent can stand in for a missing party, as in Stage B;
+        # a Libertarian or Green against a lone major party is not a real contest. Past races use
+        # the result (the strongest other candidate), and are excluded from training anyway.
+        if any(v is not None for _, _, v in cands):
+            has_other = any(p not in ("D", "R") for p in parties)
+        else:
+            has_other = any(pp.startswith(("Independent", "Nonpartisan")) for _, pp, _ in cands)
         ranked = sorted([c for c in cands if c[2] is not None], key=lambda c: -c[2])
         same_top_two = len(ranked) >= 2 and _party_code(ranked[0][1]) == _party_code(ranked[1][1])
         d_side = r_side = stand_in = None

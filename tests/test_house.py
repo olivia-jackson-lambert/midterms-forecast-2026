@@ -89,7 +89,9 @@ def test_2026_nominees_without_results():
     assert d.loc["AL-02", "contested"] and np.isnan(d.loc["AL-02", "result_dem_2p"])
     assert d.loc["AL-02", "winner"] is None
     assert not d.loc["CA-15", "contested"] and d.loc["CA-15", "sole_party"] == "D"   # two Democrats
-    assert d.loc["AL-01", "modelled"] and d.loc["AL-01", "d_side"] == "independent_challenger"
+    # Before the election only an independent stands in for a missing party; a Republican facing
+    # only a minor-party candidate is a certain hold, not a modelled contest.
+    assert not d.loc["AL-01", "modelled"]
 
 
 def test_2026_independent_against_democrat():
