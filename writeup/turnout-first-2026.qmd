@@ -39,7 +39,7 @@ Turnout First is my forecast of the 3 November 2026 US midterms. It covers turno
 
 Most public forecasts start with who wins. This one starts with how many people vote. The model forecasts national turnout of 47.9% of citizens of voting age<!-- v1: update -->, a little above 2022's 46.5%. In the Senate, Republicans keep 50 or more seats in 56% of simulations<!-- v1: update --> and Democrats reach 51 in 39%<!-- v1: update -->. The more useful finding is about the method itself: forecasting turnout first improves the county picture a great deal and changes the race forecasts very little.
 
-**Source code**: [github.com/olivia-jackson-lambert/midterms-2026](https://github.com/olivia-jackson-lambert/midterms-2026) <!-- v1: confirm repo URL and add the link to the v1 tag -->
+**Source code**: [github.com/olivia-jackson-lambert/turnout-2026](https://github.com/olivia-jackson-lambert/turnout-2026) <!-- v1: add the link to the v1 tag (the repo is private until then) -->
 
 ![Forecast change in turnout by county, 2026 against 2022. Colour fades where the county's own 80% interval is wide.](assets/hero_turnout_change_map.png){fig-alt="Map of the United States by county, coloured by forecast change in turnout from 2022 to 2026 on a scale from minus 10 to plus 10 points, with green for higher and purple for lower, and colours fading towards grey where the forecast is less certain. Green dominates Tennessee, Virginia, North Carolina, Mississippi, Alabama, New Jersey and parts of Montana and Idaho. Purple dominates Oregon, Washington, upstate New York, Pennsylvania, Missouri and much of the interior West. The Plains and Midwest are mostly pale. Alaska and Connecticut are drawn as single units." width="100%"}
 

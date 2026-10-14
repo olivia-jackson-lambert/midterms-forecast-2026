@@ -353,6 +353,7 @@ def senate_seats() -> None:
     ax.axvline(50.5, color=INK, lw=0.8, ls=(0, (2, 2)))
     p51 = s[s.index >= 51].sum()
     ax.text(50.7, ax.get_ylim()[1] * 0.92, f"Democrats Win 51+: {p51 * 100:.0f}%", fontsize=9.5, color=DEM)
+    ax.set_xticks(range(int(s.index.min()), int(s.index.max()) + 1, 2))
     ax.set_xlabel("Democratic-Caucus Senate Seats After the Election")
     ax.set_ylabel("Chance (%)")
     tidy(ax)
