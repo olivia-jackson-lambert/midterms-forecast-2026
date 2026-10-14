@@ -16,7 +16,22 @@ data repo and Wikipedia. The first run downloads about 800 MB and caches what it
 
 ## Run
 
-In order (each step caches what it downloads):
+One command runs everything, in the order below (each step caches what it downloads, and
+the two model fits take about an hour):
+
+```
+cd src
+python -m forecast.pipeline                    # add --refresh for new 2026 data, --skip-backtests to leave out the backtest
+python -m forecast.release v1 --draft          # forecast tables to forecasts/_draft/v1/, for checking
+python -m forecast.release v1                  # the same to forecasts/v1/, ready to commit and tag
+```
+
+`--refresh` is passed on to `races` and `generic_ballot`. `--skip-backtests` only works if
+a backtest has been run before, because the 2026 models read the leans it saved. The
+pipeline does not add `--refresh` for you: on release day, pass it. `--dry-run` prints the
+steps without running them. A release refuses to overwrite a published folder.
+
+The steps one at a time:
 
 ```
 cd src
