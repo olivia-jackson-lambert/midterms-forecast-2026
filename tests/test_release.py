@@ -122,7 +122,7 @@ def test_manifest(folder):
 
 def test_pipeline_order():
     names = [n for n, _ in plan(refresh=True)]
-    assert names == ["ingest", "races", "midterms", "generic_ballot", "backtest", "turnout_model", "vote_model"]
+    assert names == ["ingest", "races", "midterms", "generic_ballot", "polls", "backtest", "turnout_model", "vote_model"]
     assert dict(plan(refresh=True))["races"] == {"refresh": True}
     assert dict(plan(refresh=True))["generic_ballot"] == {"refresh": True}
     assert dict(plan())["races"] == {}
