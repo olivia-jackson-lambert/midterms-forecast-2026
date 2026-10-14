@@ -55,10 +55,21 @@ def test_contested_result(snippet):
 
 
 def test_uncontested(snippet):
-    for cd, party in [("AL-01", "R"), ("FL-05", "R"), ("CA-15", "D")]:
-        assert not snippet.loc[cd, "contested"], cd
+    # Only one candidate, or only one party's candidates: a certain hold.
+    for cd, party in [("FL-05", "R"), ("CA-15", "D")]:
+        assert not snippet.loc[cd, "contested"] and not snippet.loc[cd, "modelled"], cd
         assert np.isnan(snippet.loc[cd, "result_dem_2p"]), cd
         assert snippet.loc[cd, "sole_party"] == party, cd
+
+
+def test_stand_in_for_missing_party(snippet):
+    # A Republican against a Libertarian only: the Libertarian stands in for the Democratic side.
+    r = snippet.loc["AL-01"]
+    assert r["modelled"] and not r["contested"] and pd.isna(r["sole_party"])
+    assert r["d_side"] == "independent_challenger" and r["r_side"] == "republican"
+    assert r["stand_in"] == "Alexander Remrey"
+    assert np.isnan(r["result_dem_2p"])                     # never trained or scored on
+    assert r["result_side_2p"] == pytest.approx(16.2 / 100)
 
 
 def test_two_members_one_running(snippet):
@@ -78,22 +89,43 @@ def test_2026_nominees_without_results():
     assert d.loc["AL-02", "contested"] and np.isnan(d.loc["AL-02", "result_dem_2p"])
     assert d.loc["AL-02", "winner"] is None
     assert not d.loc["CA-15", "contested"] and d.loc["CA-15", "sole_party"] == "D"   # two Democrats
-    assert not d.loc["AL-01", "contested"] and d.loc["AL-01", "sole_party"] == "R"   # no Democrat
+    assert d.loc["AL-01", "modelled"] and d.loc["AL-01", "d_side"] == "independent_challenger"
+
+
+def test_2026_independent_against_democrat():
+    """California 6, 2026: Kiley (elected as a Republican, now independent) against Pan."""
+    html = (FIX / "wiki_house_ca06_2026.html").read_text()
+    d = house.districts(html, 2026).set_index("cd")
+    r = d.loc["CA-06"]
+    assert r["modelled"] and not r["contested"] and pd.isna(r["sole_party"])
+    assert r["d_side"] == "democrat" and r["r_side"] == "independent_challenger"
+    assert r["stand_in"] == "Kevin Kiley" and r["incumbency"] == -1
+    assert not d.loc["CA-07", "modelled"] and d.loc["CA-07", "sole_party"] == "D"   # two Democrats
+    assert not d.loc["MA-02", "modelled"] and d.loc["MA-02", "sole_party"] == "D"   # unopposed
 
 
 def test_simulate_fixes_uncontested():
-    f = pd.DataFrame({"cd": ["AA-01", "AA-02", "AA-03"], "state_po": ["NY"] * 3, "region": ["Northeast"] * 3,
-                      "lean_plain": [0.5, 0.8, 0.3], "pres_nat": 0.5, "incumbency": [0.0, 1.0, -1.0],
-                      "track_record": 0.0, "contested": [True, False, False], "sole_party": [None, "D", "R"]})
+    f = pd.DataFrame({"cd": ["AA-01", "AA-02", "AA-03", "AA-04"], "state_po": ["NY"] * 4,
+                      "region": ["Northeast"] * 4, "lean_plain": [0.5, 0.8, 0.3, 0.5], "pres_nat": 0.5,
+                      "incumbency": [0.0, 1.0, -1.0, 0.0], "track_record": 0.0,
+                      "contested": [True, False, False, False], "modelled": [True, False, False, True],
+                      "sole_party": [None, "D", "R", None],
+                      "d_side": ["democrat", None, None, "democrat"],
+                      "r_side": ["republican", None, None, "independent_challenger"]})
     n = 50
     params = {"a": np.zeros(n), "b": np.ones(n), "d": np.zeros(n), "h": np.zeros(n), "sigma": np.full(n, 0.1),
               "sigma_state": np.full(n, 0.05), "sigma_region": np.full(n, 0.02)}
     s = house.simulate(f, params, 2026, sims=200, house_fixed=0.5)
     assert (s[:, 1] == 1).all() and (s[:, 2] == 0).all()
     assert 0.3 < np.median(s[:, 0]) < 0.7
-    seats = house.seat_distribution(s)
+    # The stand-in race is a real contest, with more spread than the Democrat-v-Republican one.
+    assert 0.3 < (s[:, 3] > 0.5).mean() < 0.7
+    assert np.std(s[:, 3]) > np.std(s[:, 0])
+    seats = house.seat_distribution(f, s)
     assert seats["probability"].sum() == pytest.approx(1)
-    assert seats["dem_seats"].between(1, 2).all()
+    assert seats["dem_seats"].between(1, 3).all() and seats["independent_seats"].between(0, 1).all()
+    assert (seats["independent_seats"] > 0).any()
+    assert (seats["dem_seats"] + seats["independent_seats"] + seats["rep_seats"] == house.SEATS).all()
 
 
 # --------------------------------------------------------------------------- data (after a run)
@@ -125,12 +157,15 @@ def test_lean_in_unit_interval(frames):
 @needs_run
 def test_uncontested_handling(frames):
     for y, f in frames.items():
-        u = f[~f["contested"]]
+        u = f[~f["modelled"]]
         assert u["sole_party"].isin(["D", "R"]).all(), y
+        assert f.loc[f["modelled"], "sole_party"].isna().all()
         assert len(u) < 60, y
         if y < 2026:
-            assert u["actual"].isna().all() and f.loc[f["contested"], "actual"].notna().all()
+            assert f.loc[~f["contested"], "actual"].isna().all() and f.loc[f["contested"], "actual"].notna().all()
             assert (u["winner"] == u["sole_party"]).all()
+    ca06 = frames[2026].set_index("cd").loc["CA-06"]
+    assert ca06["modelled"] and ca06["r_side"] == "independent_challenger"
 
 
 @needs_run
@@ -145,12 +180,15 @@ def test_past_seat_totals(frames):
 def test_forecast_outputs():
     d = pd.read_parquet(DISTRICTS)
     assert len(d) == 435 and d["p_dem_win"].between(0, 1).all()
-    assert (d.loc[~d["contested"], "p_dem_win"].isin([0, 1])).all()
+    assert (d.loc[~d["modelled"], "p_dem_win"].isin([0, 1])).all()
+    assert 0 < d.set_index("cd").loc["CA-06", "p_dem_win"] < 1
+    assert (d["p_dem_win"] + d["p_rep_win"] + d["p_ind_win"]).round(6).eq(1).all()
     s = pd.read_csv(SEATS)
     assert s["probability"].sum() == pytest.approx(1, abs=1e-9)
     assert s["dem_seats"].between(0, 435).all()
     # The seat distribution and the district table agree on expected seats.
     assert (s["dem_seats"] * s["probability"]).sum() == pytest.approx(d["p_dem_win"].sum(), abs=0.5)
-    sure_d = int((~d["contested"] & d["sole_party"].eq("D")).sum())
-    sure_r = int((~d["contested"] & d["sole_party"].eq("R")).sum())
+    assert (s["dem_seats"] + s["independent_seats"] + s["rep_seats"] == 435).all()
+    sure_d = int((~d["modelled"] & d["sole_party"].eq("D")).sum())
+    sure_r = int((~d["modelled"] & d["sole_party"].eq("R")).sum())
     assert s["dem_seats"].min() >= sure_d and s["dem_seats"].max() <= 435 - sure_r

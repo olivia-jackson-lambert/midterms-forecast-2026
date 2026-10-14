@@ -37,7 +37,12 @@ On the logit scale, the Democratic two-party share in district i is
 
 Each year is fitted on earlier midterms only: 2018 runs on the priors alone, 2022 is fitted on 2018, and 2026 on 2018 and 2022. Each simulation (20,000) draws the national vote, the parameters, and the regional, state and district errors, so districts in the same state move together.
 
-**Uncontested seats.** A district without both a Democrat and a Republican on the ballot (unopposed members, California top-two finals between two members of one party, and past races where the top two were from one party) has no two-party result. It is left out of training and scoring, and in a forecast it is a certain hold for the party on the ballot. That is 41 districts in 2018, 36 in 2022 and 19 in 2026.
+**Districts without a Democrat against a Republican.** Two kinds, handled as Stage B handles its Senate races:
+
+- *Stand-in races.* One major party has no candidate, but the other faces an independent or minor-party opponent. The main opponent (the strongest in a past race; before the election, the first independent listed, else the first other candidate) stands in for the missing side, the race gets the same extra district noise as Stage B's independent races (0.25 on the logit scale), and an independent win counts as neither party's seat. An independent member who is the stand-in counts as the incumbent on that side. That is 18 districts in 2018, 13 in 2022 and 5 in 2026: Arizona 3, California 6 (Kevin Kiley, elected as a Republican, now an independent, against Richard Pan), Massachusetts 1, New Jersey 8 and Pennsylvania 3.
+- *Certain holds.* A single candidate, or candidates of only one party (California's same-party top-two finals, and past races where the top two were from one party). The seat goes to that party. That is 23 districts in 2018, 23 in 2022 and 14 in 2026 (13 Democratic, 1 Republican).
+
+Neither kind is used for training or scoring; only Democrat-against-Republican results are.
 
 **Incumbent track record: tested, left out.** The specification included the incumbent's last House result against a uniform-swing expectation, where the district kept its shape (the same presidential election within half a point on the old and new lines; 296 running members in 2018, 64 in 2022 after the census redraw, 239 in 2026). In the 2022 backtest it made both Brier and vote-share error worse (0.035 against 0.031, 2.26 against 2.21 points). Stage B's rule for fundraising, set before any House run, is that a term stays only if it improves 2022 on both, so it is off (`USE_TRACK_RECORD`). It is still computed and saved (`track_record_raw`), and with it the 2026 headline barely moves (median 232 seats, P(218+) 0.91).
 
@@ -45,7 +50,7 @@ Each year is fitted on earlier midterms only: 2018 runs on the priors alone, 202
 
 ## Backtest
 
-Scored on districts with a Democrat against a Republican (394 in 2018, 399 in 2022). Both references are called with certainty. Seat counts include uncontested seats.
+Scored on districts with a Democrat against a Republican (394 in 2018, 399 in 2022). Both references are called with certainty. Seat counts include every district.
 
 | | 2018 | 2022 |
 |---|---|---|
@@ -58,7 +63,7 @@ Scored on districts with a Democrat against a Republican (394 in 2018, 399 in 20
 | Log loss | 0.220 | 0.101 |
 | 80% interval coverage | 99% | 91% |
 | Democratic seats, actual | 234 | 213 |
-| Model, median (80% interval) | 229 (191-291) | 210 (195-225) |
+| Model, median (80% interval) | 228 (191-291) | 210 (195-225) |
 | Presidential lean | 207 | 226 |
 | Uniform swing | 223 | 206 |
 | Model, chance of a Democratic majority | 62% | 26% |
@@ -87,18 +92,18 @@ The rule was that the House goes in the forecast only if it beats both reference
 
 National House vote 52.7% Democratic (two-party, sd 1.2 points), as in Stage B. Parameters, fitted on 2018 and 2022: lean slope 0.92, incumbency 0.09 on the logit scale (about 2 points in a close seat), district noise 0.11, state 0.09, region 0.02.
 
-- **Democratic seats: median 232, 80% interval 219-250.**
-- **Chance Democrats win 218 or more: 92%.**
-- 205 districts at 90% or more for Democrats, 162 at 10% or less, 12 between 40% and 60%.
+- **Democratic seats: median 232, 80% interval 218-250.**
+- **Chance Democrats win 218 or more: 91%** (Republicans 8%; in the rest neither party reaches 218 because an independent takes a seat).
+- Independents win 0.25 seats on average, mostly California 6 (Kiley 20%; Massachusetts 1, 4%).
+- 203 districts at 90% or more for Democrats, 162 at 10% or less, 12 between 40% and 60%.
 
-Outputs: `house_2026.parquet` (district table), `house_seats_2026.csv` (seat distribution), `house_seats_2026_summary.csv`, `house_parameters.csv`.
+Outputs: `house_2026.parquet` (district table, with Democratic, Republican and independent win chances), `house_seats_2026.csv` (joint distribution of Democratic, independent and Republican seats), `house_seats_2026_summary.csv`, `house_parameters.csv`.
 
 ## Known gaps
 
-- **California 6.** Kevin Kiley, elected as a Republican, is running as an independent against Richard Pan (Democratic) on the new map. With no Republican on the ballot the rule makes it a certain Democratic hold; in reality it is a contest.
+- **Stand-in races** treat an independent like the missing party's nominee, with extra noise. That suits California 6, where the independent is a sitting member, but probably overstates minor candidates elsewhere (Massachusetts 1 gets a 4% chance of an independent win). None of these races can be backtested: they are excluded from scoring, as in Stage B.
 - **Louisiana.** The new map's first round is on 3 November with several candidates from each party, and some seats may not be settled until later. The model treats each district as the summed Democratic against Republican vote.
 - **Alaska and Maine** use first-round shares (all of a party's candidates summed), not the ranked-choice final round.
 - **Nominee changes after 13 October** (for example North Carolina 11, where the member withdrew) need `--refresh`.
 - **Correlation** is national, regional and by state only. Districts that move together for other reasons (heavily Hispanic districts in 2024, for example) are treated as independent within a state, so the seat interval may be too narrow.
 - **2018 runs on priors alone.** Only the 2022 backtest tests the fitted model, and one midterm is a thin basis for the slopes.
-- **Independents standing in for Democrats** (Stage B's Nebraska-style races) are not modelled for the House; no 2026 district has one except California 6 above.

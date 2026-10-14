@@ -166,19 +166,21 @@ def score_house(out: pd.DataFrame, year: int, sims: np.ndarray | None = None) ->
 
     References, both called with certainty: "presidential lean" (the district's last presidential
     share) and "uniform swing" (that lean moved by the 30 September forecast of the national
-    House vote). Uncontested seats count for the party on the ballot in every seat total.
+    House vote). Seats without a contest count for the party on the ballot in every seat total;
+    in races where an independent stands in for one side, the references call the Democratic
+    side by its lean, and only a Democrat winning counts as a Democratic seat.
     """
     from . import generic_ballot
-    from .house import MAJORITY
+    from .house import MAJORITY, winners
     env = generic_ballot.national_environment(year)
     swing = logit(env["mean"]) - logit(out["pres_nat"].iloc[0])
     uniform = expit(logit(out["lean_plain"]) + swing)
     d = out[out["actual"].notna()]
     y = (d["actual"] > 0.5).astype(float).to_numpy()
     u = uniform[d.index]
-    sure_d = int((~out["contested"] & out["sole_party"].eq("D")).sum())
+    sure_d = int((~out["modelled"] & out["sole_party"].eq("D")).sum())
     actual_seats = int(out["winner"].eq("D").sum())
-    c = out["contested"].to_numpy()
+    c = (out["modelled"] & out["d_side"].eq("democrat")).to_numpy()
     res = {
         "districts": len(d),
         "mae_pts": 100 * (d["median"] - d["actual"]).abs().mean(),
@@ -197,7 +199,7 @@ def score_house(out: pd.DataFrame, year: int, sims: np.ndarray | None = None) ->
         "expected_dem_seats": float(out["p_dem_win"].sum()),
     }
     if sims is not None:
-        seats = (sims > 0.5).sum(axis=1)
+        seats = winners(out, sims)[0].sum(axis=1)
         lo, med, hi = np.quantile(seats, [0.1, 0.5, 0.9])
         res.update(median_dem_seats=float(med), seats_lo80=float(lo), seats_hi80=float(hi),
                    p_dem_218=float((seats >= MAJORITY).mean()),
@@ -234,7 +236,7 @@ def run_house_backtests() -> pd.DataFrame:
             rows.append(s)
             if s["forecast_configuration"]:
                 out.to_parquet(OUT / f"backtest_house_{year}.parquet", index=False)
-                cals.append(calibration(out[out["contested"]]).assign(year=year))
+                cals.append(calibration(out[out["actual"].notna()]).assign(year=year))
                 params["summary"].to_csv(OUT / f"backtest_house_{year}_parameters.csv")
     res = pd.DataFrame(rows).set_index(["year", "variant"])
     res.to_csv(OUT / "backtest_house.csv")

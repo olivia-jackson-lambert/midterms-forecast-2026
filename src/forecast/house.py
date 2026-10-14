@@ -22,9 +22,12 @@ Democratic share of the two-party vote in district i (state s, region g) is
   presidential result on the old and new lines within half a point), their last House result
   minus what a uniform swing predicted then, on the logit scale. Zero otherwise.
 
-Contests without both a Democrat and a Republican (unopposed members, California and Washington
-top-two finals between two members of one party) are left out of training and scoring; in a
-forecast they are certain holds for the party on the ballot.
+Where one major party has no candidate but the other faces an independent or minor-party
+opponent, that opponent stands in for the missing side (as in Stage B), with INDEPENDENT_EXTRA_SD
+more district noise, and an independent win is counted as neither party's seat. Only districts
+with a single candidate or candidates of one party (California's same-party top-two finals) are
+certain holds. Neither kind is used for training or scoring: only Democrat-against-Republican
+results are.
 
 Data (all public, cached under data/raw/house/):
 - presidential results by district: The Downballot's public Google Sheets (SHEETS);
@@ -52,6 +55,7 @@ from scipy.special import expit, logit
 from . import generic_ballot
 from .ingest import OUT, RAW, UA, fetch
 from .races import STATES, _clean, _party_code, _surname, candidates
+from .vote_model import INDEPENDENT_EXTRA_SD          # extra race noise where an independent stands in
 
 RAW_HOUSE = RAW / "house"
 SIMS = 20_000
@@ -206,11 +210,27 @@ def _running(member: str, party: str, status: str) -> bool:
     return bool(RUNNING.search(status)) and not NOT_RUNNING.search(status)
 
 
+def _stand_in(cands: list, party: str) -> tuple[str, float | None]:
+    """The main opponent of a lone major party: the strongest other candidate in a past race,
+    or, before the election, the first independent (else the first other candidate) listed."""
+    others = [c for c in cands if _party_code(c[1]) != party]
+    if any(c[2] is not None for c in others):
+        best = max((c for c in others if c[2] is not None), key=lambda c: c[2])
+    else:
+        best = next((c for c in others if c[1].startswith(("Independent", "Nonpartisan"))), others[0])
+    return best[0], best[2]
+
+
 def districts(html: str, year: int) -> pd.DataFrame:
     """One row per district: members running, incumbency, candidates and (past years) result.
 
-    contested: at least one Democrat and one Republican on the November ballot (and, for past
-    results, the top two finishers were not both from one party).
+    d_side / r_side: "democrat" / "republican" when that party has a candidate. Where one major
+    party is missing but the other faces an independent or minor-party opponent (California 6
+    in 2026: Kiley, elected as a Republican, now an independent, against a Democrat), the main
+    opponent stands in for the missing side ("independent_challenger"), as in Stage B.
+    contested: a Democrat against a Republican (and, for past results, the top two finishers
+    were not from one party). modelled: contested or a stand-in race. Districts that are neither
+    (a single candidate, or only candidates of one party) are certain holds (sole_party).
     """
     rows = district_rows(html)
     out = []
@@ -219,16 +239,38 @@ def districts(html: str, year: int) -> pd.DataFrame:
         parties = [_party_code(p) for _, p, _ in cands]
         d_tot = sum(v for (_, p, v) in cands if v is not None and _party_code(p) == "D")
         r_tot = sum(v for (_, p, v) in cands if v is not None and _party_code(p) == "R")
-        has_d, has_r = "D" in parties, "R" in parties
-        contested = has_d and has_r
+        has_d, has_r, has_other = "D" in parties, "R" in parties, any(p not in ("D", "R") for p in parties)
         ranked = sorted([c for c in cands if c[2] is not None], key=lambda c: -c[2])
-        if contested and len(ranked) >= 2 and _party_code(ranked[0][1]) == _party_code(ranked[1][1]):
-            contested = False
+        same_top_two = len(ranked) >= 2 and _party_code(ranked[0][1]) == _party_code(ranked[1][1])
+        d_side = r_side = stand_in = None
+        if has_d and has_r:
+            d_side, r_side = "democrat", "republican"
+        elif has_d and has_other:
+            d_side, r_side = "democrat", "independent_challenger"
+            stand_in, pct = _stand_in(cands, "D")
+            r_tot = pct or 0.0
+        elif has_r and has_other:
+            d_side, r_side = "independent_challenger", "republican"
+            stand_in, pct = _stand_in(cands, "R")
+            d_tot = pct or 0.0
+        modelled = d_side is not None and not same_top_two
+        contested = modelled and stand_in is None
+        if not modelled:
+            d_side = r_side = stand_in = None
         running = [(m, p) for m, p, s in zip(g["member"], g["member_party"], g["status"]) if _running(m, p, s)]
-        inc = sum(1 if _party_code(p) == "D" else -1 if _party_code(p) == "R" else 0 for _, p in running)
-        result = d_tot / (d_tot + r_tot) if contested and d_tot and r_tot else np.nan
+        # An independent member who is the stand-in is the incumbent on that side (Kiley, CA-06),
+        # as Stage B treats King and Sanders on the Democratic side.
+        def side(m, p):
+            code = _party_code(p)
+            if code == "I" and stand_in and _surname(m) == _surname(stand_in):
+                return 1 if d_side == "independent_challenger" else -1
+            return 1 if code == "D" else -1 if code == "R" else 0
+        inc = sum(side(m, p) for m, p in running)
+        # Democratic side's share of the two sides' vote (past years). For stand-in races it is
+        # kept for reference only; they are never used for training or scoring, as in Stage B.
+        side_share = d_tot / (d_tot + r_tot) if modelled and d_tot and r_tot else np.nan
         # Who holds (or will hold) the seat when there is no contest: the only major party on the ballot.
-        sole = "D" if has_d and not has_r else "R" if has_r and not has_d else None
+        sole = None if modelled else "D" if has_d and not has_r else "R" if has_r and not has_d else None
         if year < 2026 and ranked:
             winner = _party_code(ranked[0][1])
         elif year < 2026 and len(cands) == 1:
@@ -244,16 +286,18 @@ def districts(html: str, year: int) -> pd.DataFrame:
             "candidates": "; ".join(n for n, _, _ in cands),
             "dem_candidates": "; ".join(n for n, p, _ in cands if _party_code(p) == "D"),
             "rep_candidates": "; ".join(n for n, p, _ in cands if _party_code(p) == "R"),
-            "contested": contested, "sole_party": sole if not contested else None,
-            "result_dem_2p": result, "winner": winner,
+            "stand_in": stand_in, "d_side": d_side, "r_side": r_side,
+            "contested": contested, "modelled": modelled, "sole_party": sole,
+            "result_side_2p": side_share, "result_dem_2p": side_share if contested else np.nan,
+            "winner": winner,
         })
     df = pd.DataFrame(out)
     # Past races with both parties listed but two of one party in the top two (California's
     # top-two final, Louisiana's all-party primary): the seat went to that party.
-    tie = ~df["contested"] & df["sole_party"].isna()
+    tie = ~df["modelled"] & df["sole_party"].isna()
     df.loc[tie, "sole_party"] = df.loc[tie, "winner"]
-    if (~df["contested"] & df["sole_party"].isna()).any():
-        raise ValueError(f"{year}: no major party in {df.loc[~df['contested'] & df['sole_party'].isna(), 'cd'].tolist()}")
+    if (~df["modelled"] & df["sole_party"].isna()).any():
+        raise ValueError(f"{year}: no major party in {df.loc[~df['modelled'] & df['sole_party'].isna(), 'cd'].tolist()}")
     return df
 
 
@@ -356,8 +400,9 @@ def fit(train: list[pd.DataFrame], draws: int = 1000) -> dict:
 # --------------------------------------------------------------------------- simulate
 def simulate(f: pd.DataFrame, params: dict, year: int, sims: int = SIMS, house_fixed: float | None = None,
              rng: np.random.Generator | None = None) -> np.ndarray:
-    """Democratic two-party share draws, sims x districts, with shared national, regional and
-    state errors. Uncontested districts are 1 (Democrat unopposed by a Republican) or 0."""
+    """Democratic-side share draws, sims x districts, with shared national, regional and state
+    errors. Stand-in races get INDEPENDENT_EXTRA_SD more district noise, as in Stage B. Districts
+    without a contest are 1 (only Democrats on the ballot) or 0 (only Republicans)."""
     rng = rng or np.random.default_rng(SEED + year)
     if house_fixed is None:
         env = generic_ballot.national_environment(year)
@@ -370,41 +415,59 @@ def simulate(f: pd.DataFrame, params: dict, year: int, sims: int = SIMS, house_f
     rg_idx = f["region"].map({r: i for i, r in enumerate(REGIONS)}).to_numpy()
     u = params["sigma_state"][k, None] * rng.standard_normal((sims, len(st_names)))
     g = params["sigma_region"][k, None] * rng.standard_normal((sims, len(REGIONS)))
-    eps = params["sigma"][k, None] * rng.standard_normal((sims, len(f)))
+    indep = (f["d_side"].eq("independent_challenger") | f["r_side"].eq("independent_challenger")).to_numpy()
+    sd = np.sqrt(params["sigma"][k, None] ** 2 + np.where(indep, INDEPENDENT_EXTRA_SD ** 2, 0.0)[None, :])
+    eps = sd * rng.standard_normal((sims, len(f)))
     lg = (logit(house)[:, None] + params["a"][k, None] + params["b"][k, None] * x
           + params["d"][k, None] * f["incumbency"].to_numpy()[None, :]
           + params["h"][k, None] * f["track_record"].to_numpy()[None, :] + u[:, st_idx] + g[:, rg_idx] + eps)
     s = expit(lg)
-    fixed = ~f["contested"].to_numpy()
+    fixed = ~f["modelled"].to_numpy()
     s[:, fixed] = np.where(f.loc[fixed, "sole_party"].eq("D").to_numpy(), 1.0, 0.0)[None, :]
     return s.astype(np.float32)
+
+
+def winners(f: pd.DataFrame, sims: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Boolean sims x districts: Democratic, Republican and independent seat."""
+    side_d = sims > 0.5
+    d_ind = f["d_side"].eq("independent_challenger").to_numpy()[None, :]
+    r_ind = f["r_side"].eq("independent_challenger").to_numpy()[None, :]
+    dem = side_d & ~d_ind
+    ind = (side_d & d_ind) | (~side_d & r_ind)
+    return dem, ~dem & ~ind, ind
 
 
 def summarise(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:
     q = np.quantile(sims, [0.1, 0.5, 0.9], axis=0)
     cols = ["cd", "year", "state_po", "members", "member_parties", "status", "incumbents_running", "incumbency",
-            "dem_candidates", "rep_candidates", "contested", "sole_party", "lean_plain", "pres_nat",
-            "same_shape", "prev_dem_2p", "track_record_raw", "track_record"]
+            "dem_candidates", "rep_candidates", "stand_in", "d_side", "r_side", "contested", "modelled",
+            "sole_party", "lean_plain", "pres_nat", "same_shape", "prev_dem_2p", "track_record_raw", "track_record"]
     out = f[[c for c in cols if c in f]].copy()
-    out["lo80"], out["median"], out["hi80"] = q
-    out["p_dem_win"] = (sims > 0.5).mean(axis=0)
+    out["lo80"], out["median"], out["hi80"] = q          # Democratic side's share
+    dem, rep, ind = winners(f, sims)
+    out["p_dem_win"], out["p_rep_win"], out["p_ind_win"] = dem.mean(0), rep.mean(0), ind.mean(0)
     if "actual" in f:
         out["actual"] = f["actual"].values
         out["winner"] = f["winner"].values
     return out
 
 
-def seat_distribution(sims: np.ndarray) -> pd.DataFrame:
-    seats = (sims > 0.5).sum(axis=1)
-    d = pd.Series(seats).value_counts(normalize=True).sort_index()
-    return pd.DataFrame({"dem_seats": d.index, "probability": d.values})
+def seat_distribution(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:
+    """Joint distribution of Democratic and independent seats (Republicans hold the rest)."""
+    dem, _, ind = winners(f, sims)
+    d = pd.DataFrame({"dem_seats": dem.sum(1), "independent_seats": ind.sum(1)})
+    d = d.value_counts(normalize=True).rename("probability").reset_index()
+    d["rep_seats"] = SEATS - d["dem_seats"] - d["independent_seats"]
+    return d.sort_values(["dem_seats", "independent_seats"]).reset_index(drop=True)
 
 
-def seat_summary(sims: np.ndarray) -> dict:
-    seats = (sims > 0.5).sum(axis=1)
+def seat_summary(f: pd.DataFrame, sims: np.ndarray) -> dict:
+    dem, rep, ind = winners(f, sims)
+    seats, rseats = dem.sum(1), rep.sum(1)
     lo, med, hi = np.quantile(seats, [0.1, 0.5, 0.9])
     return {"median": float(med), "lo80": float(lo), "hi80": float(hi), "mean": float(seats.mean()),
-            "p_dem_218": float((seats >= MAJORITY).mean())}
+            "p_dem_218": float((seats >= MAJORITY).mean()), "p_rep_218": float((rseats >= MAJORITY).mean()),
+            "mean_independent_seats": float(ind.sum(1).mean())}
 
 
 def run(year: int, train_years: list[int], sims: int = SIMS, params: dict | None = None,
@@ -439,18 +502,23 @@ def main(refresh: bool | None = None) -> None:
     out, info = run(2026, [2018, 2022], refresh=refresh)
     f, s = info["frame"], info["sims"]
     out.to_parquet(OUT / "house_2026.parquet", index=False)
-    seats = seat_distribution(s)
-    summ = seat_summary(s)
+    seats = seat_distribution(f, s)
+    summ = seat_summary(f, s)
     seats.to_csv(OUT / "house_seats_2026.csv", index=False)
     pd.DataFrame([summ]).to_csv(OUT / "house_seats_2026_summary.csv", index=False)
     info["params"]["summary"].to_csv(OUT / "house_parameters.csv")
     env = generic_ballot.national_environment(2026)
     print(f"national House vote, Democratic two-party: {env['mean']:.3f} (sd {env['sd']:.3f})")
     print(info["params"]["summary"].round(3).to_string())
-    print(f"districts {len(f)}; contested {int(f['contested'].sum())}; uncontested D {int((~f['contested'] & f['sole_party'].eq('D')).sum())}, "
-          f"R {int((~f['contested'] & f['sole_party'].eq('R')).sum())}; track record available {int((f['track_record_raw'] != 0).sum())}, used: {USE_TRACK_RECORD}")
+    print(f"districts {len(f)}; Democrat v Republican {int(f['contested'].sum())}; stand-in races "
+          f"{f.loc[f['modelled'] & ~f['contested'], 'cd'].tolist()}; certain holds D "
+          f"{int((~f['modelled'] & f['sole_party'].eq('D')).sum())}, R {int((~f['modelled'] & f['sole_party'].eq('R')).sum())}; "
+          f"track record available {int((f['track_record_raw'] != 0).sum())}, used: {USE_TRACK_RECORD}")
     print(f"Democratic seats: median {summ['median']:.0f} (80%: {summ['lo80']:.0f}-{summ['hi80']:.0f}); "
-          f"P(218+) {summ['p_dem_218']:.3f}")
+          f"P(218+) {summ['p_dem_218']:.3f}; P(Republicans 218+) {summ['p_rep_218']:.3f}; "
+          f"independent seats, mean {summ['mean_independent_seats']:.2f}")
+    print(out[out["modelled"] & ~out["contested"]][["cd", "dem_candidates", "rep_candidates", "stand_in", "incumbency", "lean_plain",
+                                                     "median", "p_dem_win", "p_ind_win"]].round(3).to_string(index=False))
     gap = check_against_pvi(house_page(2026), f)
     print("largest gap between our lean and Wikipedia's Cook PVI, by state (points):")
     print(gap.sort_values(ascending=False).head(8).round(1).to_string())
