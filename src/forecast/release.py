@@ -124,7 +124,9 @@ def races() -> pd.DataFrame:
 
 def senate_seats() -> pd.DataFrame:
     s = pd.read_csv(OUT / "senate_seats_2026.csv")
-    return _rounded(s, probs=["probability"]).sort_values(["dem_seats", "independent_seats"]).reset_index(drop=True)
+    # Four decimals: 20,000 simulations resolve 0.00005, and three would show the tails as 0.
+    s["probability"] = s["probability"].round(4)
+    return s.sort_values(["dem_seats", "independent_seats"]).reset_index(drop=True)
 
 
 def backtests() -> pd.DataFrame:
