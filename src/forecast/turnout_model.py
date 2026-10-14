@@ -162,10 +162,10 @@ def run(target: int, train_years: list[int], sims: int = SIMS, draws: int = 1000
     """Fit (unless params are given) and simulate target. national_fixed pins national turnout
     (CVAP basis) to one value, to test the county model on its own.
 
-    `early_vote` (off by default) applies state logit offsets from forecast.early_vote. They
-    compare states' early-vote pace with each other, which mostly reflects voting rules
-    (all-mail states always look ahead), and have not been backtested, so the forecast does
-    not use them until they compare each state with its own 2022 pace.
+    `early_vote` (off by default) applies state logit offsets from forecast.early_vote, which
+    compares each state's pace 21 days out with its own last midterm. The pre-registered
+    backtest could not be run (no dated 2018 state data survive), so early_vote.WIRED is False
+    and the offsets are empty: the flag currently changes nothing.
     """
     rng = np.random.default_rng(SEED + target)
     params = params or fit([frame(y) for y in train_years], draws=draws, chains=chains,
