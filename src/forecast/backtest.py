@@ -10,6 +10,7 @@ the turnout-weighted lean and once with the plain presidential lean.
     python -m forecast.backtest              # turnout + races when data exist
     python -m forecast.backtest races         # Stage B only
     python -m forecast.backtest turnout       # Stage A only
+    python -m forecast.backtest house         # House districts and seats (forecast.house)
 """
 from __future__ import annotations
 
@@ -160,6 +161,92 @@ def run_race_backtests() -> pd.DataFrame:
     return res
 
 
+# --------------------------------------------------------------------------- House
+HOUSE_TRAIN = {2018: [], 2022: [2018]}
+
+
+def score_house(out: pd.DataFrame, year: int, sims: np.ndarray | None = None) -> dict:
+    """House scores on contested districts (a Democrat against a Republican), plus seat count.
+
+    References, both called with certainty: "presidential lean" (the district's last presidential
+    share) and "uniform swing" (that lean moved by the 30 September forecast of the national
+    House vote). Seats without a contest count for the party on the ballot in every seat total;
+    in races where an independent stands in for one side, the references call the Democratic
+    side by its lean, and only a Democrat winning counts as a Democratic seat.
+    """
+    from . import generic_ballot
+    from .house import MAJORITY, winners
+    env = generic_ballot.national_environment(year)
+    swing = logit(env["mean"]) - logit(out["pres_nat"].iloc[0])
+    uniform = expit(logit(out["lean_plain"]) + swing)
+    d = out[out["actual"].notna()]
+    y = (d["actual"] > 0.5).astype(float).to_numpy()
+    u = uniform[d.index]
+    sure_d = int((~out["modelled"] & out["sole_party"].eq("D")).sum())
+    actual_seats = int(out["winner"].eq("D").sum())
+    c = (out["modelled"] & out["d_side"].eq("democrat")).to_numpy()
+    res = {
+        "districts": len(d),
+        "mae_pts": 100 * (d["median"] - d["actual"]).abs().mean(),
+        "lean_mae_pts": 100 * (d["lean_plain"] - d["actual"]).abs().mean(),
+        "uniform_swing_mae_pts": 100 * (u - d["actual"]).abs().mean(),
+        "brier": _brier(d["p_dem_win"].to_numpy(), y),
+        "lean_brier": _brier((d["lean_plain"] > 0.5).astype(float).to_numpy(), y),
+        "uniform_swing_brier": _brier((u > 0.5).astype(float).to_numpy(), y),
+        "log_loss": _log_loss(d["p_dem_win"].to_numpy(), y),
+        "accuracy": float(((d["p_dem_win"] > 0.5) == (y > 0.5)).mean()),
+        "coverage80": float(d["actual"].between(d["lo80"], d["hi80"]).mean()),
+        "bias_pts": 100 * (d["median"] - d["actual"]).mean(),
+        "actual_dem_seats": actual_seats,
+        "lean_dem_seats": sure_d + int((out["lean_plain"][c] > 0.5).sum()),
+        "uniform_swing_dem_seats": sure_d + int((uniform[c] > 0.5).sum()),
+        "expected_dem_seats": float(out["p_dem_win"].sum()),
+    }
+    if sims is not None:
+        seats = winners(out, sims)[0].sum(axis=1)
+        lo, med, hi = np.quantile(seats, [0.1, 0.5, 0.9])
+        res.update(median_dem_seats=float(med), seats_lo80=float(lo), seats_hi80=float(hi),
+                   p_dem_218=float((seats >= MAJORITY).mean()),
+                   p_actual_majority=float(((seats >= MAJORITY) == (actual_seats >= MAJORITY)).mean()))
+    res["seat_error"] = res.get("median_dem_seats", res["expected_dem_seats"]) - actual_seats
+    res["lean_seat_error"] = res["lean_dem_seats"] - actual_seats
+    res["uniform_swing_seat_error"] = res["uniform_swing_dem_seats"] - actual_seats
+    return res
+
+
+def run_house_backtests() -> pd.DataFrame:
+    """Each year fitted only on earlier midterms (2018 on the priors alone): with and without
+    the incumbent track record, and the forecast configuration with the national House vote
+    known (to separate district error from the national miss)."""
+    from . import house
+    rows, cals = [], []
+    for year, train in HOUSE_TRAIN.items():
+        frames = [house.frame(t) for t in train]
+        f = house.frame(year)
+        fitted = {}
+        for name in ("with track record", "no track record", "national vote known"):
+            use = house.USE_TRACK_RECORD if name == "national vote known" else name == "with track record"
+            tr = [x.assign(track_record=x["track_record_raw"] if use else 0.0) for x in frames]
+            ff = f.assign(track_record=f["track_record_raw"] if use else 0.0)
+            if use not in fitted:
+                fitted[use] = house.fit(tr)
+            params = fitted[use]
+            fixed = float(f["house"].iloc[0]) if name == "national vote known" else None
+            sims = house.simulate(ff, params, year, house_fixed=fixed)
+            out = house.summarise(ff, sims)
+            s = score_house(out, year, sims)
+            s.update(year=year, variant=name, trained_on=",".join(map(str, train)) or "priors only",
+                     forecast_configuration=use == house.USE_TRACK_RECORD and fixed is None)
+            rows.append(s)
+            if s["forecast_configuration"]:
+                out.to_parquet(OUT / f"backtest_house_{year}.parquet", index=False)
+                cals.append(calibration(out[out["actual"].notna()]).assign(year=year))
+                params["summary"].to_csv(OUT / f"backtest_house_{year}_parameters.csv")
+    res = pd.DataFrame(rows).set_index(["year", "variant"])
+    res.to_csv(OUT / "backtest_house.csv")
+    pd.concat(cals).to_csv(OUT / "backtest_house_calibration.csv", index=False)
+    return res
+
 def main(argv: list[str] | None = None) -> None:
     argv = argv if argv is not None else sys.argv[1:]
     mode = argv[0] if argv else "all"
@@ -172,6 +259,8 @@ def main(argv: list[str] | None = None) -> None:
             print(f"turnout backtest skipped: {exc}")
     if mode in ("all", "races"):
         print(run_race_backtests().T.round(3).to_string())
+    if mode in ("all", "house"):
+        print(run_house_backtests().T.round(3).to_string())
 
 
 if __name__ == "__main__":
