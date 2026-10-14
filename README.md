@@ -17,7 +17,7 @@ data repo and Wikipedia. The first run downloads about 800 MB and caches what it
 ## Run
 
 One command runs everything, in the order below (each step caches what it downloads, and
-the two model fits take about an hour):
+the model fits take about an hour):
 
 ```
 cd src
@@ -26,7 +26,7 @@ python -m forecast.release v1 --draft          # forecast tables to forecasts/_d
 python -m forecast.release v1                  # the same to forecasts/v1/, ready to commit and tag
 ```
 
-`--refresh` is passed on to `races` and `generic_ballot`. `--skip-backtests` only works if
+`--refresh` is passed on to `races`, `generic_ballot`, `polls` and `house`. `--skip-backtests` only works if
 a backtest has been run before, because the 2026 models read the leans it saved. The
 pipeline does not add `--refresh` for you: on release day, pass it. `--dry-run` prints the
 steps without running them. A release refuses to overwrite a published folder.
@@ -39,9 +39,11 @@ python -m forecast.ingest            # presidential county panel, 2008-2024
 python -m forecast.races             # races, incumbents, nominees and results (add --refresh for 2026)
 python -m forecast.midterms          # midterm county turnout 2014-2022 and 2018/2022 county results
 python -m forecast.generic_ballot    # generic ballot as of 30 September and House vote (add --refresh)
-python -m forecast.backtest          # turnout and race backtests, 2018 and 2022
+python -m forecast.polls             # race polls from Wikipedia and their averages (add --refresh)
+python -m forecast.backtest          # turnout, race and House backtests, 2018 and 2022
 python -m forecast.turnout_model     # 2026 county turnout (Stage A)
 python -m forecast.vote_model        # 2026 Senate and governor races (Stage B)
+python -m forecast.house             # 2026 House: 435 districts and the seat distribution (add --refresh)
 cd .. && python figures/make_figures.py   # figures in figures/out/
 python -m pytest                     # data and model checks
 ```

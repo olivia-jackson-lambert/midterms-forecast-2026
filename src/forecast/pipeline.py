@@ -2,13 +2,14 @@
 
     python -m forecast.pipeline [--refresh] [--skip-backtests] [--dry-run]
 
-The steps are ingest, races, midterms, generic_ballot, polls, backtest, turnout_model and
-vote_model. Each is the module's own main(), called in turn. Nothing is skipped
+The steps are ingest, races, midterms, generic_ballot, polls, backtest (turnout, race and
+House backtests), turnout_model, vote_model and house. Each is the module's own main(), called in turn. Nothing is skipped
 automatically: every step reads its own cache in data/raw/, so a repeat run is cheap
 except for the model fits (about an hour in all).
 
---refresh re-downloads the 2026 Wikipedia pages (races and race polls) and the 2026 generic ballot.
---skip-backtests leaves out the backtest step. The 2026 models need the turnout-weighted
+--refresh re-downloads the 2026 Wikipedia pages (races, race polls and the House page) and the
+2026 generic ballot.
+--skip-backtests leaves out the backtest step. The 2026 models (including the House) need the turnout-weighted
 leans it saves for 2018 and 2022 (lean_draws_*.parquet), so the run stops before
 starting if those files are missing.
 --dry-run prints the plan and imports nothing.
@@ -21,8 +22,8 @@ import time
 
 from .ingest import OUT
 
-STEPS = ["ingest", "races", "midterms", "generic_ballot", "polls", "backtest", "turnout_model", "vote_model"]
-TAKES_REFRESH = {"races", "generic_ballot", "polls"}
+STEPS = ["ingest", "races", "midterms", "generic_ballot", "polls", "backtest", "turnout_model", "vote_model", "house"]
+TAKES_REFRESH = {"races", "generic_ballot", "polls", "house"}
 NEEDED_FROM_BACKTEST = ["lean_draws_2018.parquet", "lean_draws_2022.parquet"]
 
 
@@ -59,7 +60,7 @@ def run(refresh: bool = False, skip_backtests: bool = False, dry_run: bool = Fal
 
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description="Run the whole forecast pipeline.")
-    ap.add_argument("--refresh", action="store_true", help="re-download the 2026 race pages and generic ballot")
+    ap.add_argument("--refresh", action="store_true", help="re-download the 2026 race, poll and House pages and the generic ballot")
     ap.add_argument("--skip-backtests", action="store_true", help="leave out the backtest step")
     ap.add_argument("--dry-run", action="store_true", help="print the steps without running them")
     a = ap.parse_args(argv)

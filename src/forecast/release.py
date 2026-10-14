@@ -8,9 +8,11 @@ forecasts/<version>/ (forecasts/_draft/<version>/ with --draft, which git ignore
     turnout_counties.csv  county turnout, 2022 and the 2026 forecast (median, 80% interval)
     turnout_states.csv    the same by state
     national.csv          national turnout and House vote, with the generic ballot behind it
-    races.csv             every 2026 Senate and governor race
+    races.csv             every 2026 Senate and governor race, with its poll average
     senate_seats.csv      distribution of Democratic-caucus Senate seats
-    backtests.csv         the 2018 and 2022 backtest scores, one metric per row
+    house_districts.csv   all 435 House districts
+    house_seats.csv       distribution of House seats (Democratic, Republican, independent)
+    backtests.csv         the 2018 and 2022 backtest scores (turnout, races, House), one metric per row
     manifest.json         version, time, git commit, input dates, simulation counts, file hashes
 
 Shares are rounded to four decimals and probabilities to three.
@@ -20,7 +22,18 @@ Column notes. In the turnout tables `lo80`/`hi80` include uncertainty in nationa
 only what is left to the county or state itself. Turnout is votes cast as a share of
 citizen voting-age population. In races.csv, `d_side` says who stands on the Democratic
 side (a Democrat, or an independent where no Democrat runs) and the shares and
-probabilities are for that side.
+probabilities are for that side. `poll_avg` is the Democratic-side share of the two-party
+poll average and `n_polls` the number of polls behind it (0 and blank where no polls exist).
+The median of the fundamentals alone is not saved by the pipeline, so races.csv has no such
+column.
+
+In house_districts.csv the median and 80% interval are the Democratic share of the two-party
+vote and are blank in the districts that are not modelled (a certain hold, where only one
+party's candidate is on the ballot). `contested` is true where a Democrat stands against a
+Republican; `stand_in` names the candidate who takes the place of a missing party;
+`certain_hold_party` is D or R for a certain hold. The three win probabilities sum to one up
+to rounding. In backtests.csv the "model" variant of the race backtest is the one with polls,
+as published. The House rows appear once `forecast.backtest house` has run.
 """
 from __future__ import annotations
 
@@ -29,6 +42,7 @@ import datetime as dt
 import hashlib
 import json
 import subprocess
+import re
 import zipfile
 from pathlib import Path
 
@@ -36,6 +50,8 @@ import pandas as pd
 
 from . import backtest, generic_ballot
 from .ingest import RAW, OUT, ROOT
+
+RAW_HOUSE = RAW / "house"
 
 SHARE_DP, PROB_DP = 4, 3
 FORECAST_YEAR = 2026
@@ -119,7 +135,41 @@ def races() -> pd.DataFrame:
         "dem_share_median": v["median"], "dem_share_lo80": v["lo80"], "dem_share_hi80": v["hi80"],
         "p_dem_win": v["p_dem_win"]})
     out = out.sort_values("race_id").reset_index(drop=True)
-    return _rounded(out, shares=["dem_share_median", "dem_share_lo80", "dem_share_hi80"], probs=["p_dem_win"])
+    out = out.merge(poll_averages(), on="race_id", how="left")
+    out["n_polls"] = out["n_polls"].fillna(0).astype(int)
+    out.loc[out["n_polls"] == 0, "poll_avg"] = float("nan")
+    return _rounded(out, shares=["dem_share_median", "dem_share_lo80", "dem_share_hi80", "poll_avg"],
+                    probs=["p_dem_win"])
+
+
+def poll_averages() -> pd.DataFrame:
+    """The 2026 race poll averages (Democratic side) and poll counts from forecast.polls."""
+    a = pd.read_csv(OUT / "poll_averages.csv")
+    return a[a["year"] == FORECAST_YEAR][["race_id", "poll_avg", "n_polls"]]
+
+
+def house_districts() -> pd.DataFrame:
+    h = pd.read_parquet(OUT / "house_2026.parquet")
+    m = h["modelled"].astype(bool)
+    out = pd.DataFrame({
+        "cd": h["cd"], "state": h["state_po"], "incumbents_running": h["incumbents_running"].fillna(""),
+        "dem_candidates": h["dem_candidates"].fillna(""), "rep_candidates": h["rep_candidates"].fillna(""),
+        "stand_in": h["stand_in"].fillna(""), "contested": h["contested"].astype(bool),
+        "certain_hold_party": h["sole_party"].where(~m).fillna(""),
+        "presidential_lean_dem_2p": h["lean_plain"],
+        "dem_share_median": h["median"].where(m), "dem_share_lo80": h["lo80"].where(m),
+        "dem_share_hi80": h["hi80"].where(m),
+        "p_dem_win": h["p_dem_win"], "p_rep_win": h["p_rep_win"], "p_ind_win": h["p_ind_win"]})
+    out = out.sort_values("cd").reset_index(drop=True)
+    return _rounded(out, shares=["presidential_lean_dem_2p", "dem_share_median", "dem_share_lo80",
+                                 "dem_share_hi80"], probs=["p_dem_win", "p_rep_win", "p_ind_win"])
+
+
+def house_seats() -> pd.DataFrame:
+    s = pd.read_csv(OUT / "house_seats_2026.csv")
+    s["probability"] = s["probability"].round(4)
+    s = s[["dem_seats", "rep_seats", "independent_seats", "probability"]]
+    return s.sort_values(["dem_seats", "independent_seats"]).reset_index(drop=True)
 
 
 def senate_seats() -> pd.DataFrame:
@@ -139,7 +189,14 @@ def backtests() -> pd.DataFrame:
     r["variant"] = r["variant"].str.replace(" ", "_")
     r = r.melt(["year", "variant", "trained_on"], var_name="metric")
     r.insert(0, "backtest", "races")
-    out = pd.concat([t, r], ignore_index=True)
+    parts = [t, r]
+    if (OUT / "backtest_house.csv").exists():
+        hb = pd.read_csv(OUT / "backtest_house.csv").drop(columns="forecast_configuration", errors="ignore")
+        hb["variant"] = hb["variant"].str.replace(" ", "_")
+        hb = hb.melt(["year", "variant", "trained_on"], var_name="metric")
+        hb.insert(0, "backtest", "house")
+        parts.append(hb)
+    out = pd.concat(parts, ignore_index=True)
     out["value"] = out["value"].astype(float).round(SHARE_DP + 2)
     return out[["backtest", "year", "variant", "trained_on", "metric", "value"]]
 
@@ -161,8 +218,22 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def house_page_date() -> str | None:
+    """Fetch date of the saved 2026 Wikipedia House page the model used (the newest copy)."""
+    dates = [m.group(1) for p in RAW_HOUSE.glob(f"wiki_house_{FORECAST_YEAR}_*.html")
+             if (m := re.search(r"_(\d{4}-\d{2}-\d{2})\.html$", p.name))]
+    return max(dates) if dates else None
+
+
+def latest_poll_end() -> str | None:
+    """Latest end date among the 2026 race polls behind the averages."""
+    p = pd.read_parquet(OUT / "polls.parquet", columns=["year", "end"])
+    p = p[p["year"] == FORECAST_YEAR]["end"].dropna()
+    return None if p.empty else str(p.max().date())
+
+
 def manifest(version: str, draft: bool, files: list[Path]) -> dict:
-    from . import turnout_model, vote_model       # for the simulation counts
+    from . import house, turnout_model, vote_model       # for the simulation counts
 
     status = _git("status", "--porcelain")
     pages = [RAW / "races" / f"{FORECAST_YEAR}_United_States_{k}_elections.html"
@@ -176,10 +247,12 @@ def manifest(version: str, draft: bool, files: list[Path]) -> dict:
         "git_working_tree_clean": None if status is None else status == "",
         "inputs": {
             "races_wikipedia_modified_utc": max(_mtime(p) for p in pages),
+            "house_wikipedia_fetched": house_page_date(),
+            "latest_poll_end_date": latest_poll_end(),
             "generic_ballot_as_of": national()["generic_ballot_as_of"].iloc[0],
             "early_vote_applied": bool(ev["applied"].iloc[0]) if "applied" in ev else False,
         },
-        "simulations": {"turnout": turnout_model.SIMS, "vote": vote_model.SIMS},
+        "simulations": {"turnout": turnout_model.SIMS, "vote": vote_model.SIMS, "house": house.SIMS},
         "sha256": {p.name: sha256(p) for p in files},
     }
 
@@ -187,6 +260,7 @@ def manifest(version: str, draft: bool, files: list[Path]) -> dict:
 # --------------------------------------------------------------------------- release
 TABLES = {"turnout_counties.csv": turnout_counties, "turnout_states.csv": turnout_states,
           "national.csv": national, "races.csv": races, "senate_seats.csv": senate_seats,
+          "house_districts.csv": house_districts, "house_seats.csv": house_seats,
           "backtests.csv": backtests}
 
 

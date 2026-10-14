@@ -18,7 +18,8 @@ from forecast.pipeline import plan  # noqa: E402
 NEEDED = ["turnout_2026.parquet", "turnout_2026_states.parquet", "turnout_2026_national.csv",
           "turnout_2026_early_vote.csv", "county_midterm_turnout.parquet", "vote_share_2026.parquet",
           "senate_seats_2026.csv", "backtest_turnout.csv", "backtest_races.csv",
-          "generic_ballot_history.csv"]
+          "generic_ballot_history.csv", "house_2026.parquet", "house_seats_2026.csv", "poll_averages.csv",
+          "polls.parquet"]
 pytestmark = pytest.mark.skipif(not all((OUT / f).exists() for f in NEEDED),
                                 reason="run the pipeline first (forecast.turnout_model, forecast.vote_model)")
 
@@ -81,6 +82,34 @@ def test_races(folder):
     assert (r["dem_share_median"] <= r["dem_share_hi80"]).all()
     assert r["dem_share_median"].between(0, 1).all()
     assert r[["dem_candidate", "rep_candidate", "d_side", "state"]].notna().all().all()
+    assert "poll_avg" in r and "n_polls" in r
+    assert (r["n_polls"] >= 0).all() and r["poll_avg"].dropna().between(0, 1).all()
+    assert r["poll_avg"].isna().equals(r["n_polls"] == 0)
+    assert "fundamentals_median" not in r        # not saved by the pipeline
+
+
+def test_house_districts(folder):
+    h = read(folder, "house_districts.csv")
+    assert len(h) == 435 and h["cd"].is_unique and h["state"].notna().all()
+    p = h[["p_dem_win", "p_rep_win", "p_ind_win"]]
+    assert ((p >= 0) & (p <= 1)).all().all()
+    assert ((p.sum(axis=1) - 1).abs() <= 0.002).all()
+    m = h[h["dem_share_median"].notna()]
+    assert len(m) > 400
+    assert (m["dem_share_lo80"] <= m["dem_share_median"]).all() and (m["dem_share_median"] <= m["dem_share_hi80"]).all()
+    assert m["dem_share_median"].between(0, 1).all()
+    held = h[h["dem_share_median"].isna()]
+    assert held["certain_hold_party"].isin(["D", "R"]).all() and not held["contested"].any()
+    assert h.loc[h["dem_share_median"].notna(), "certain_hold_party"].isna().all()
+    assert h["presidential_lean_dem_2p"].between(0, 1).all()
+
+
+def test_house_seats(folder):
+    s = read(folder, "house_seats.csv")
+    assert list(s.columns) == ["dem_seats", "rep_seats", "independent_seats", "probability"]
+    assert ((s["dem_seats"] + s["rep_seats"] + s["independent_seats"]) == 435).all()
+    assert s["probability"].between(0, 1).all() and abs(s["probability"].sum() - 1) < 0.01
+    assert (s["probability"].round(4) == s["probability"]).all()
 
 
 def test_senate_seats(folder):
@@ -93,7 +122,11 @@ def test_senate_seats(folder):
 def test_backtests(folder):
     b = read(folder, "backtests.csv")
     assert list(b.columns) == ["backtest", "year", "variant", "trained_on", "metric", "value"]
-    assert set(b["backtest"]) == {"turnout", "races"} and set(b["year"]) == {2018, 2022}
+    assert {"turnout", "races"} <= set(b["backtest"]) <= {"turnout", "races", "house"}
+    assert set(b["year"]) == {2018, 2022}
+    assert {"model", "no_polls"} <= set(b.loc[b["backtest"] == "races", "variant"])
+    if (OUT / "backtest_house.csv").exists():
+        assert "house" in set(b["backtest"])
     assert b["value"].notna().all()
     assert not b.duplicated(["backtest", "year", "variant", "metric"]).any()
 
@@ -111,19 +144,26 @@ def test_manifest(folder):
     assert m["version"] == "v1" and m["draft"] is True
     assert pd.Timestamp(m["created_utc"]).tzinfo is not None
     assert m["simulations"]["turnout"] > 0 and m["simulations"]["vote"] > 0
-    assert set(m["inputs"]) >= {"races_wikipedia_modified_utc", "generic_ballot_as_of"}
+    assert set(m["inputs"]) >= {"races_wikipedia_modified_utc", "generic_ballot_as_of",
+                                "house_wikipedia_fetched", "latest_poll_end_date"}
+    pd.Timestamp(m["inputs"]["house_wikipedia_fetched"])
+    pd.Timestamp(m["inputs"]["latest_poll_end_date"])
+    assert m["simulations"]["house"] > 0
     assert "git_commit" in m and "git_working_tree_clean" in m
     files = {p.name for p in folder.iterdir()} - {"manifest.json"}
     assert set(m["sha256"]) == files == {"turnout_counties.csv", "turnout_states.csv", "national.csv",
-                                         "races.csv", "senate_seats.csv", "backtests.csv"}
+                                         "races.csv", "senate_seats.csv", "house_districts.csv",
+                                         "house_seats.csv", "backtests.csv"}
     for name, digest in m["sha256"].items():
         assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == digest
 
 
 def test_pipeline_order():
     names = [n for n, _ in plan(refresh=True)]
-    assert names == ["ingest", "races", "midterms", "generic_ballot", "polls", "backtest", "turnout_model", "vote_model"]
+    assert names == ["ingest", "races", "midterms", "generic_ballot", "polls", "backtest", "turnout_model", "vote_model",
+                     "house"]
     assert dict(plan(refresh=True))["races"] == {"refresh": True}
     assert dict(plan(refresh=True))["generic_ballot"] == {"refresh": True}
-    assert dict(plan())["races"] == {}
+    assert dict(plan(refresh=True))["house"] == {"refresh": True}
+    assert dict(plan())["races"] == {} and dict(plan())["house"] == {}
     assert "backtest" not in [n for n, _ in plan(skip_backtests=True)]
