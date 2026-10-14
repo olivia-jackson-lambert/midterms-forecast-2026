@@ -117,7 +117,7 @@ The offset would be k × feature on Stage A's state logit, with the national tot
 
 **What exists 21 days out:**
 - 2026 (13 October): the UF Election Lab CSV, saved on the day. 37 states report; 4.4 million ballots returned, 5.4% of those states' 2022 turnout.
-- 2022 (18 October): the Internet Archive has McDonald's national page as updated at 10:18 that morning (2.6 million early votes in 25 reporting states). State figures were on separate pages that the Archive caught only on scattered dates, mostly after the election.
+- 2022 (18 October): the Internet Archive has McDonald's national page as updated at 10:18 that morning (2.6 million early votes in 25 reporting states). State figures were on separate pages; the Archive holds just 8 versions of 7 of them (early October or after the election), none near 18 October.
 - 2018 (16 October) and 2014 (14 October): nothing by state. The electproject.org pages were archived, but their tables were embedded Google Sheets whose contents were never captured. The live 2018 sheet holds only the final pre-election report (5 and 6 November), a later revision; it is saved for description only.
 
 **Decision:** no 2018 data at the right date, so there is nothing to fit k on and no fair 2022 test. Under the rule, early vote stays out of the forecast (`early_vote.WIRED = False`; `turnout_model.run(early_vote=True)` now changes nothing). The national 2026 and 2022 totals aren't comparable either, because the reporting states differ. The downloads stay for descriptive charts.

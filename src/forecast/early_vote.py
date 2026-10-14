@@ -36,7 +36,8 @@ What Exists (checked 13 October 2026)
   (https://rpubs.com/ElectProject/early_vote_2022). The Internet Archive holds the version
   "Last updated: 10/18/2022 10:18 AM Eastern" (captured 18 October 2022 15:03 UTC). It has
   national totals only (2,608,748 early votes); state figures sat on separate RPubs pages,
-  which the Archive caught only on scattered dates (see `SNAPSHOTS[2022]`).
+  which the Archive caught only 8 times across 7 states (7 and 9 October, or after the
+  election), never near 18 October.
 - 2018, T-21 (16 October): not available. McDonald's page
   (http://www.electproject.org/early_2018) was captured on 27 September and 20 October 2018,
   but its state table was an embedded Google Sheet whose tabs were never archived. The live
@@ -83,7 +84,7 @@ SNAPSHOTS = {
            "archived": "https://web.archive.org/web/20221018150307/https://rstudio-pubs-static"
                        ".s3.amazonaws.com/948837_33894f88a1454fae8e8ac6d0e2c3f9e6.html",
            "file": "wayback/rpubs_early_vote_2022_20221018150307.html",
-           "note": "national totals only at T-21; state pages archived on scattered dates"},
+           "note": "national totals only at T-21; the Archive holds 8 versions of 7 state pages, none from 11-25 October 2022"},
     2018: {"usable": False, "as_of": "2018-10-16",
            "source": "http://www.electproject.org/early_2018",
            "note": "state table was an embedded Google Sheet, never archived; live sheet is "
