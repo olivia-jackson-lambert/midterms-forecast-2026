@@ -51,6 +51,10 @@ FIRST_ROUND_FROM_COUNTY_FILES = {"2018-MS-SENS"}
 # Off: in the 2022 backtest (trained on 2018) fundraising made vote-share error and Brier worse
 # (3.72 v 3.64 points, 0.069 v 0.067), failing the rule set before testing. PLAN.md, Race Results.
 USE_FUNDRAISING = False
+# Race-level polls blended on top of the fundamentals (forecast.polls). On: in the 2022 backtest
+# (trained on 2018) they cut Brier from 0.067 to 0.031 and share error from 3.64 to 2.67 points,
+# passing the rule set before testing (both must improve). notes/race_polls.md.
+USE_POLLS = True
 # Senate seats not up in 2026, by caucus (53 Republicans, 47 Democrats and independents now).
 SENATE_NOW = {"R": 53, "D": 47}
 
@@ -238,7 +242,11 @@ def run(year: int, train_years: list[int], lean: str = "lean_turnout", sims: int
     params = params or fit([frame(y) for y in train_years], lean=lean)
     f = frame(year)
     s = simulate(f, params, year, sims)
-    return summarise(f, s), {"params": params, "sims": s, "frame": f}
+    poll_info = None
+    if USE_POLLS:
+        from . import polls
+        s, poll_info = polls.blend(f, s, year, train_years)
+    return summarise(f, s), {"params": params, "sims": s, "frame": f, "polls": poll_info}
 
 
 def main() -> None:

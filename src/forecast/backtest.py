@@ -125,8 +125,9 @@ def calibration(out: pd.DataFrame, bins=(0, 0.2, 0.4, 0.6, 0.8, 1.0)) -> pd.Data
 
 def run_race_backtests() -> pd.DataFrame:
     """Each year fitted only on earlier midterms: the model, and variants (the plain presidential
-    lean instead of the turnout-weighted one; no incumbent track record; with fundraising)."""
-    from . import vote_model
+    lean instead of the turnout-weighted one; no incumbent track record; with fundraising; with
+    race polls blended in, or without them when vote_model.USE_POLLS is on)."""
+    from . import polls, vote_model
     rows, cals = [], []
     variants = {"model": ("lean_turnout", None, False), "plain lean": ("lean_plain", None, False),
                 "no track record": ("lean_turnout", "track_record", False),
@@ -143,13 +144,24 @@ def run_race_backtests() -> pd.DataFrame:
                     x[drop] = 0.0
             params = vote_model.fit(frames, lean=lean)
             sims = vote_model.simulate(f, params, year, turnout_weighted=lean == "lean_turnout")
-            out = vote_model.summarise(f, sims).assign(pres_nat=f["pres_nat"].values)
-            s = score_races(out, year)
-            s.update(year=year, variant=name, trained_on=",".join(map(str, train)) or "priors only")
-            rows.append(s)
+            runs = [(name, sims)]
             if name == "model":
-                out.to_parquet(OUT / f"backtest_races_{year}.parquet", index=False)
-                cals.append(calibration(out).assign(year=year))
+                # Race polls (forecast.polls) on top of the same fundamentals draws, with the poll
+                # error spreads estimated on the training years only (priors alone for 2018).
+                blended, poll_info = polls.blend(f, sims, year, train)
+                poll_info.assign(year=year).to_csv(OUT / f"backtest_polls_{year}.csv", index=False)
+                pair = [("model", blended), ("no polls", sims)] if vote_model.USE_POLLS else \
+                    [("model", sims), ("with polls", blended)]
+                runs = pair
+            for label, draws in runs:
+                out = vote_model.summarise(f, draws).assign(pres_nat=f["pres_nat"].values)
+                s = score_races(out, year)
+                s.update(year=year, variant=label, trained_on=",".join(map(str, train)) or "priors only")
+                rows.append(s)
+                if label in ("model", "with polls", "no polls"):
+                    suffix = "" if label == "model" else "_" + label.replace(" ", "_")
+                    out.to_parquet(OUT / f"backtest_races_{year}{suffix}.parquet", index=False)
+                    cals.append(calibration(out).assign(year=year, variant=label))
     res = pd.DataFrame(rows).set_index(["year", "variant"])
     res.to_csv(OUT / "backtest_races.csv")
     pd.concat(cals).to_csv(OUT / "backtest_races_calibration.csv", index=False)

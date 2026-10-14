@@ -2,12 +2,12 @@
 
     python -m forecast.pipeline [--refresh] [--skip-backtests] [--dry-run]
 
-The steps are ingest, races, midterms, generic_ballot, backtest, turnout_model and
+The steps are ingest, races, midterms, generic_ballot, polls, backtest, turnout_model and
 vote_model. Each is the module's own main(), called in turn. Nothing is skipped
 automatically: every step reads its own cache in data/raw/, so a repeat run is cheap
 except for the model fits (about an hour in all).
 
---refresh re-downloads the 2026 Wikipedia pages (races) and the 2026 generic ballot.
+--refresh re-downloads the 2026 Wikipedia pages (races and race polls) and the 2026 generic ballot.
 --skip-backtests leaves out the backtest step. The 2026 models need the turnout-weighted
 leans it saves for 2018 and 2022 (lean_draws_*.parquet), so the run stops before
 starting if those files are missing.
@@ -21,8 +21,8 @@ import time
 
 from .ingest import OUT
 
-STEPS = ["ingest", "races", "midterms", "generic_ballot", "backtest", "turnout_model", "vote_model"]
-TAKES_REFRESH = {"races", "generic_ballot"}
+STEPS = ["ingest", "races", "midterms", "generic_ballot", "polls", "backtest", "turnout_model", "vote_model"]
+TAKES_REFRESH = {"races", "generic_ballot", "polls"}
 NEEDED_FROM_BACKTEST = ["lean_draws_2018.parquet", "lean_draws_2022.parquet"]
 
 
