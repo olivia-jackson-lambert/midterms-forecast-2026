@@ -50,7 +50,7 @@ Every source is public. Mark each one ✅ once its availability and licence are 
 | 2025–26 special elections | Not used. They cannot be backtested (no comparable 2017–18 and 2021–22 series yet), and several 2026 contests are all-party or Democrat-against-Democrat | ☐ possible descriptive chart only |
 | Races, incumbents, open seats, nominees; certified race results 2012–2022 | Wikipedia Senate and gubernatorial election pages, parsed from saved copies (2026 refreshed with `--refresh`) | ✅ `races.py`. Results cross-checked against MIT's county files (tests list the known gaps) |
 | Candidate fundraising | OpenFEC API (`fundraising.py`, free key in `FEC_API_KEY`): each Senate nominee's cycle-to-date receipts on the June report, the last public before 1 October | ✅ downloaded; **not used**: it made the 2022 backtest worse (see Race Results) |
-| Early and mail vote, October 2026 | UF Election Lab 2026 early-vote tracker (`forecast.early_vote`) | ⚠️ downloaded, not used: comparing states with each other measures voting rules, not enthusiasm. Needs each state's 2022 pace on the same date |
+| Early and mail vote, 21 days out, 2014–2026 | 2026: UF Election Lab tracker CSV, saved on 13 October (21 days out). 2022: McDonald's RPubs tracker via the Internet Archive (18 October 2022 version, national totals only). 2018 and 2014: electproject.org pages via the Internet Archive (`forecast.early_vote`) | ⚠️ downloaded, **not used**: the 2018 and 2014 state tables were embedded Google Sheets the Archive never captured, so the backtest can't be run (see Early Vote Test) |
 | County shapefiles | Census cartographic boundary files 2023 (20m) | ✅ |
 
 **County units.** Results and Census geographies don't line up everywhere, so the panel uses county units: Alaska, Connecticut and DC are one unit each; Jackson, Clay and Platte counties (Kansas City, which reports separately) are one unit; Kalawao is merged into Maui, Bedford city into Bedford County, and Shannon SD is Oglala Lakota. That gives 3,104 units in every year.
@@ -71,7 +71,7 @@ All raw data lives in `data/` and is never committed (see `.gitignore`).
 - a national midterm-environment term, from special-election energy and the generic-ballot trend;
 - a state effect: competitive top-of-ticket races raise turnout;
 - county demographic slopes (age, education, density), shrunk toward national values;
-- early-vote signal in October, where states report it.
+- early-vote signal in October, where states report it (tested 13 October; not used, see below).
 
 **Stage B, vote share (race):**
 
@@ -104,6 +104,23 @@ Code: `features.py`, `national.py`, `turnout_model.py`, `backtest.py`.
 - Demographics come from ACS 2020–2024 for every year (the table-based files start with the 2021 vintage). They change slowly and contain no results.
 - There is no public 2010 county turnout, so the 2018 backtest has no earlier county transition to learn from and runs on priors alone. Only the 2022 backtest tests the full county model.
 - The out-party term was added after the first backtest showed a county-size bias that flipped sign between 2018 and 2022. Both versions are reported below; the forecast uses the version with it.
+
+### Early Vote Test (13 October)
+
+Code: `early_vote.py`. The old version ranked states' early-vote pace against each other, which mostly measures voting rules: all-mail states always look ahead. The new one compares each state with itself, 21 days before Election Day:
+
+`feature = log(early ballots now / last midterm's turnout) − log(early ballots at the same point last time / the turnout before that)`
+
+The offset would be k × feature on Stage A's state logit, with the national total still pinned. States whose voting rules changed between the two cycles are left out (for 2018 to 2022: California, Nevada, Vermont, Utah, Hawaii and DC moved to all-mail; Pennsylvania, Virginia, Michigan, Massachusetts, Delaware and Rhode Island added no-excuse mail; Georgia and Iowa shortened their mail windows; and others; the full list is in the code).
+
+**The rule, set before looking:** fit k on 2018 (2018 pace against 2014), test on 2022. Use it only if it improves both the 2022 state turnout error and the 2022 weighted county error. If dated 2018 or 2022 state data don't exist, don't use it.
+
+**What exists 21 days out:**
+- 2026 (13 October): the UF Election Lab CSV, saved on the day. 37 states report; 4.4 million ballots returned, 5.4% of those states' 2022 turnout.
+- 2022 (18 October): the Internet Archive has McDonald's national page as updated at 10:18 that morning (2.6 million early votes in 25 reporting states). State figures were on separate pages that the Archive caught only on scattered dates, mostly after the election.
+- 2018 (16 October) and 2014 (14 October): nothing by state. The electproject.org pages were archived, but their tables were embedded Google Sheets whose contents were never captured. The live 2018 sheet holds only the final pre-election report (5 and 6 November), a later revision; it is saved for description only.
+
+**Decision:** no 2018 data at the right date, so there is nothing to fit k on and no fair 2022 test. Under the rule, early vote stays out of the forecast (`early_vote.WIRED = False`; `turnout_model.run(early_vote=True)` now changes nothing). The national 2026 and 2022 totals aren't comparable either, because the reporting states differ. The downloads stay for descriptive charts.
 
 ### Stage B As Built (5 October)
 
@@ -226,5 +243,6 @@ midterms-2026/
 4. ~~Generic ballot as of 30 September, and race lists and results.~~ Done 5 October (`generic_ballot.py`, `races.py`).
 5. ~~Vote-share model (Stage B) with correlated simulation and 2018/2022 race backtests.~~ Done 5 October (`vote_model.py`); beats both baselines in both years.
 6. ~~FEC fundraising for nominees.~~ Tested 5 October; it made the 2022 backtest worse, so it is left out.
-7. Early vote: compare each state's 2026 pace with its own 2022 pace on the same date before using it.
+7. ~~Early vote: compare each state's 2026 pace with its own 2022 pace on the same date before using it.~~ Built 13 October; it can't be backtested, so it is left out (see Early Vote Test). Optional: a descriptive chart of 2026 pace against 2022 turnout, with the voting-rule caveats.
 8. Forecast v1 (19 October): refresh the 2026 race pages and generic ballot, run everything, write `forecasts/v1/`, tag.
+9. Before the scorecard: save the UF early-vote CSV every day to Election Day (`python -m forecast.early_vote` keeps a dated copy), so 2030 has a dated 2026 series to test against. Check the voting-rule list in `early_vote.RULE_CHANGES` against NCSL's tables.
