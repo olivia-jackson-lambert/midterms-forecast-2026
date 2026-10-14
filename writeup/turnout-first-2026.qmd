@@ -15,7 +15,6 @@ format:
 ---
 
 ::: {.cs-top}
-[A solo project]{.cs-with}
 
 ::: {.cs-keys}
 ::: {.cs-key}
@@ -117,7 +116,7 @@ The errors are shared. Every simulation draws one national error, plus regional 
 
 In Nebraska, Idaho and South Dakota the Senate race has no Democrat, and an independent challenger faces the Republican. The independent stands in for the Democratic side with extra uncertainty, and a seat they win is not counted as Democratic.
 
-An earlier version of the vote model looked better in backtests than it should have. It used the final pre-election generic ballot, invented special-election swings for 2018 and 2022, and set error floors by looking at the 2022 backtest. None of those backtests were out of sample. I rebuilt it on the inputs above. <!-- check: name the tool here, or keep it general? -->
+An earlier version of the vote model looked better in backtests than it should have. It used the final pre-election generic ballot, invented special-election swings for 2018 and 2022, and set error floors by looking at the 2022 backtest. None of those backtests were out of sample. I rebuilt it on the inputs above.
 
 # Backtests
 
