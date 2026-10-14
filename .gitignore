@@ -14,3 +14,4 @@ __pycache__/
 * 2.*
 .venv/
 figures/out/
+!tests/fixtures/**
