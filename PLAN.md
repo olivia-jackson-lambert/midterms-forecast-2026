@@ -133,7 +133,7 @@ Code: `races.py`, `generic_ballot.py`, `vote_model.py`, `backtest.py`. On the lo
 
 Each simulation draws the national vote, the errors and a Stage A turnout draw, so turnout uncertainty carries into vote share. Races with no Democrat face an independent challenger (Nebraska, Idaho, South Dakota Senate in 2026): the independent stands in for the Democratic side with extra uncertainty, and their seats are not counted as Democratic.
 
-**What turnout weighting does.** Re-weighting counties by forecast turnout moves state leans very little: by 0.07 points on average in 2026, at most 0.5. In backtests it gives a small edge in 2022 and none in 2018. The turnout-first angle matters more for county turnout itself and for uncertainty than for who wins.
+**What turnout weighting does.** Re-weighting counties by forecast turnout moves state leans very little: by 0.15 points on average across the 71 races in 2026 (the size of the shift; signed, the average is +0.07), at most 0.5. In backtests it gives a small edge in 2022 and none in 2018. The turnout-first angle matters more for county turnout itself and for uncertainty than for who wins.
 
 **2026 runs.** 5 October, fundamentals only: national House vote 52.8% Democratic (two-party); Democrats hold 51 or more Senate seats in 40% of simulations, Republicans 50 or more in 55%. 14 October, with race polls: national House vote 52.7%; Democrats 51 or more in 64%, Republicans 50 or more in 31% (the rest go to independents). The biggest moves towards the Democratic side are Texas Senate (32% to 57%), the Ohio special (30% to 58%), Alaska Senate (20% to 42%) and Iowa governor (35% to 88%).
 

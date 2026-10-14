@@ -39,8 +39,8 @@ Each year is fitted on earlier midterms only: 2018 runs on the priors alone, 202
 
 **Districts without a Democrat against a Republican.** Two kinds, handled as Stage B handles its Senate races:
 
-- *Stand-in races.* One major party has no candidate, but the other faces an independent or minor-party opponent. The main opponent (the strongest in a past race; before the election, the first independent listed, else the first other candidate) stands in for the missing side, the race gets the same extra district noise as Stage B's independent races (0.25 on the logit scale), and an independent win counts as neither party's seat. An independent member who is the stand-in counts as the incumbent on that side. That is 18 districts in 2018, 13 in 2022 and 5 in 2026: Arizona 3, California 6 (Kevin Kiley, elected as a Republican, now an independent, against Richard Pan), Massachusetts 1, New Jersey 8 and Pennsylvania 3.
-- *Certain holds.* A single candidate, or candidates of only one party (California's same-party top-two finals, and past races where the top two were from one party). The seat goes to that party. That is 23 districts in 2018, 23 in 2022 and 14 in 2026 (13 Democratic, 1 Republican).
+- *Stand-in races.* One major party has no candidate, but the other faces an independent or minor-party opponent. The main opponent (the strongest in a past race; before the election, only an independent: a Libertarian or Green against a lone major party is a certain hold) stands in for the missing side, the race gets the same extra district noise as Stage B's independent races (0.25 on the logit scale), and an independent win counts as neither party's seat. An independent member who is the stand-in counts as the incumbent on that side. That is 18 districts in 2018, 13 in 2022 and 4 in 2026: California 6 (Kevin Kiley, elected as a Republican, now an independent, against Richard Pan), Massachusetts 1, New Jersey 8 and Pennsylvania 3.
+- *Certain holds.* A single candidate, or candidates of only one party (California's same-party top-two finals, and past races where the top two were from one party). The seat goes to that party. That is 23 districts in 2018, 23 in 2022 and 15 in 2026 (14 Democratic, 1 Republican), including a lone major party against a minor-party candidate (Arizona 3).
 
 Neither kind is used for training or scoring; only Democrat-against-Republican results are.
 
@@ -101,7 +101,7 @@ Outputs: `house_2026.parquet` (district table, with Democratic, Republican and i
 
 ## Known gaps
 
-- **Stand-in races** treat an independent like the missing party's nominee, with extra noise. That suits California 6, where the independent is a sitting member, but probably overstates minor candidates elsewhere (Massachusetts 1 gets a 4% chance of an independent win). None of these races can be backtested: they are excluded from scoring, as in Stage B.
+- **Stand-in races** treat an independent like the missing party's nominee, with extra noise. That suits California 6, where the independent is a sitting member, and only independents qualify before the election, though a weak independent can still be overstated (Massachusetts 1 gets a 4% chance of an independent win). None of these races can be backtested: they are excluded from scoring, as in Stage B.
 - **Louisiana.** The new map's first round is on 3 November with several candidates from each party, and some seats may not be settled until later. The model treats each district as the summed Democratic against Republican vote.
 - **Alaska and Maine** use first-round shares (all of a party's candidates summed), not the ranked-choice final round.
 - **Nominee changes after 13 October** (for example North Carolina 11, where the member withdrew) need `--refresh`.
