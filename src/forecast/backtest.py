@@ -125,22 +125,26 @@ def calibration(out: pd.DataFrame, bins=(0, 0.2, 0.4, 0.6, 0.8, 1.0)) -> pd.Data
 
 def run_race_backtests() -> pd.DataFrame:
     """Each year fitted only on earlier midterms: the model, and variants (the plain presidential
-    lean instead of the turnout-weighted one; no incumbent track record; with fundraising)."""
+    lean instead of the turnout-weighted one; track record of the nominees on both sides, of the
+    incumbent only, or none; with fundraising). "model" uses whatever vote_model switches on."""
     from . import vote_model
     rows, cals = [], []
+    # variant: (lean, track record source, fundraising); the source is None for the model's own
     variants = {"model": ("lean_turnout", None, False), "plain lean": ("lean_plain", None, False),
-                "no track record": ("lean_turnout", "track_record", False),
+                "nominee track record": ("lean_turnout", "track_record_nominees", False),
+                "incumbent-only track record": ("lean_turnout", "track_record_incumbent", False),
+                "no track record": ("lean_turnout", "none", False),
                 "with fundraising": ("lean_turnout", None, True)}
     default = vote_model.USE_FUNDRAISING
     for year, train in RACE_TRAIN.items():
-        for name, (lean, drop, fund) in variants.items():
+        for name, (lean, track, fund) in variants.items():
             vote_model.USE_FUNDRAISING = fund
             frames = [vote_model.frame(t) for t in train]
             f = vote_model.frame(year)
             vote_model.USE_FUNDRAISING = default
-            if drop:
+            if track:
                 for x in [*frames, f]:
-                    x[drop] = 0.0
+                    x["track_record"] = 0.0 if track == "none" else x[track]
             params = vote_model.fit(frames, lean=lean)
             sims = vote_model.simulate(f, params, year, turnout_weighted=lean == "lean_turnout")
             out = vote_model.summarise(f, sims).assign(pres_nat=f["pres_nat"].values)

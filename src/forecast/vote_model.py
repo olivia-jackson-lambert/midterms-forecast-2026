@@ -17,7 +17,22 @@ On the logit scale, the Democratic share of the two-party vote in race r (state 
   spread are estimated from earlier cycles only;
 - track_record_r: for a running incumbent, their last result for this office minus what a uniform
   swing predicted then (the state's lean moved by that year's national House vote), on the logit
-  scale, from the Democratic side. Zero for open seats and incumbents who have not run before;
+  scale, from the Democratic side. Zero for open seats and incumbents who have not run before.
+
+  A symmetric version for every nominee is built but switched off (USE_NOMINEE_TRACK_RECORD).
+  Each nominee's overperformance is taken in their most recent earlier statewide general
+  election (Senate, governor or at-large House seat, 2010 onwards; forecast.races): their own
+  side's two-party share against the same uniform-swing expectation, from their own side. Then
+
+      track_record = dem_record - rep_record
+
+  where each record is 0 for a nominee with no statewide history (or whose last race was not a
+  Democrat-Republican contest). The parties are treated alike: swap them and the sign flips.
+  Where the two nominees faced each other in that race (Maryland's governor in 2022), it counts
+  once, not twice. With only the incumbent having a history it equals the incumbent feature; the
+  addition is challengers (Sherrod Brown, Roy Cooper, Doug Jones, Mary Peltola). One coefficient
+  per office covers incumbents and challengers: one or two training midterms cannot separate two. This
+  design was fixed before testing and failed the pre-registered rule (see the flag below);
 - a_o, b_o, d_o, h_o, and the spreads of the region, state and race terms are fitted in PyMC on past
   midterms (2018 for the 2022 backtest; 2018 and 2022 for 2026). The 2018 backtest has no
   earlier race data, so it runs on the priors alone.
@@ -51,6 +66,11 @@ FIRST_ROUND_FROM_COUNTY_FILES = {"2018-MS-SENS"}
 # Off: in the 2022 backtest (trained on 2018) fundraising made vote-share error and Brier worse
 # (3.72 v 3.64 points, 0.069 v 0.067), failing the rule set before testing. PLAN.md, Race Results.
 USE_FUNDRAISING = False
+# Off: the track record of both nominees, instead of the incumbent's alone. Rule, set before testing:
+# keep it only if the 2022 backtest (trained on 2018) improves on BOTH Brier score and vote-share
+# error against the incumbent-only feature (0.0666, 3.64 points). It made both worse (0.0748,
+# 3.77 points), so it fails. See notes/challenger_track_record.md.
+USE_NOMINEE_TRACK_RECORD = False
 # Senate seats not up in 2026, by caucus (53 Republicans, 47 Democrats and independents now).
 SENATE_NOW = {"R": 53, "D": 47}
 
@@ -88,7 +108,9 @@ def frame(year: int) -> pd.DataFrame:
     f["region"] = f["state_po"].map(REGION)
     f["office_i"] = f["office"].map({o: i for i, o in enumerate(OFFICES)})
     f["independent"] = f["d_side"].ne("democrat")
-    f["track_record"] = track_record(f)
+    f["track_record_incumbent"] = track_record(f, nominees=False)
+    f["track_record_nominees"] = track_record(f, nominees=True)
+    f["track_record"] = f["track_record_nominees" if USE_NOMINEE_TRACK_RECORD else "track_record_incumbent"]
     f["fundraising"] = fundraising(f, year)
     if year < 2026:
         # Race results: certified candidate percentages from forecast.races. (MIT's county files
@@ -114,15 +136,37 @@ def fundraising(f: pd.DataFrame, year: int) -> pd.Series:
     return f["race_id"].map(fec.feature(year)).fillna(0.0).where(f["office"].eq("SEN"), 0.0)
 
 
-def track_record(f: pd.DataFrame) -> pd.Series:
-    """Incumbent's previous result against a uniform-swing expectation (logit, Democratic side)."""
-    house = generic_ballot.house_vote().set_index("year")["house_dem_2p"]
-    out = pd.Series(0.0, index=f.index)
-    for i, r in f[f["prev_dem_2p"].notna()].iterrows():
-        y = int(r["prev_year"])
-        lean, nat = _pres(y + 2 if y % 4 == 0 else y)       # presidential years: that year's result
-        expected = logit(house[y]) + logit(lean[r["state_po"]]) - logit(nat)
-        out[i] = logit(r["prev_dem_2p"]) - expected
+def _expected_logit(year: int, state: str, cache: dict) -> float:
+    """What a uniform swing predicts for the state in `year`: its presidential lean (that year's
+    in a presidential year, the previous one otherwise) moved by that year's national House vote."""
+    if "house" not in cache:
+        cache["house"] = generic_ballot.house_vote().set_index("year")["house_dem_2p"]
+    if year not in cache:
+        cache[year] = _pres(year + 2 if year % 4 == 0 else year)
+    lean, nat = cache[year]
+    return float(logit(cache["house"][year]) + logit(lean[state]) - logit(nat))
+
+
+def track_record(f: pd.DataFrame, nominees: bool = True) -> pd.Series:
+    """Track record feature (logit, Democratic side); see the module docstring.
+
+    nominees=False: the old feature, the running incumbent's last result for the same office.
+    nominees=True: dem_record - rep_record over both sides' nominees, any statewide office."""
+    out, cache = pd.Series(0.0, index=f.index), {}
+    if not nominees or "dem_prev_dem_2p" not in f:
+        for i, r in f[f["prev_dem_2p"].notna()].iterrows():
+            out[i] = logit(r["prev_dem_2p"]) - _expected_logit(int(r["prev_year"]), r["state_po"], cache)
+        return out
+    for i, r in f.iterrows():
+        rec = {}
+        for side in ("dem", "rep"):
+            if pd.isna(r[f"{side}_prev_dem_2p"]):
+                continue
+            resid = logit(r[f"{side}_prev_dem_2p"]) - _expected_logit(int(r[f"{side}_prev_year"]), r["state_po"], cache)
+            rec[side] = resid if r[f"{side}_prev_side"] == "D" else -resid      # from the nominee's own side
+        same = (len(rec) == 2 and r["dem_prev_year"] == r["rep_prev_year"]
+                and r["dem_prev_office"] == r["rep_prev_office"])               # they faced each other
+        out[i] = 0.5 * (rec["dem"] - rec["rep"]) if same else rec.get("dem", 0.0) - rec.get("rep", 0.0)
     return out
 
 
