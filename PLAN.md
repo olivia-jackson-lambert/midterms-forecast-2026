@@ -14,7 +14,7 @@
 1. County-level turnout for November 2026, as a share of the voting-age population, with an 80% interval.
 2. Two-party vote share and win probability for every 2026 **Senate** and **governor** race, about 70 races.
 
-**Stretch goal:** the House, 435 districts. Attempt it only if the Senate and governor model is finished and backtested by 19 October.
+**Added 13 October:** the House, 435 districts (originally a stretch goal; built and backtested, see House As Built).
 
 **Out of scope:** primaries, ballot measures and state legislatures.
 
@@ -137,6 +137,24 @@ Each simulation draws the national vote, the errors and a Stage A turnout draw, 
 
 **First 2026 run (5 October).** National House vote 52.8% Democratic (two-party). Democrats hold 51 or more Senate seats in 40% of simulations; Republicans hold 50 or more in 55%.
 
+### Nominee Track Record (Tested 14 October, Left Out)
+
+Incumbents' track records help (Race Results). The same idea for every nominee, using each candidate's most recent statewide race (Senate, governor or at-large House, 2010 onwards), was built and tested under the same rule. It made the 2022 backtest worse on both Brier (0.075 against 0.067) and vote-share error (3.77 against 3.64 points), so it is off (`USE_NOMINEE_TRACK_RECORD = False`). Challengers' past overperformance does not seem to carry over the way incumbents' does. It would have moved Alaska Senate from 20% to 35% and Ohio Senate from 30% to 40% for the Democratic side. Details in `notes/challenger_track_record.md`.
+
+### House As Built (14 October)
+
+Code: `house.py`. The same structure as Stage B: each district's lean is the 2024 presidential two-party share on the map in force for 2026 (nine states redrew for 2026: Texas, California, North Carolina, Ohio, Utah, Florida, Tennessee, Louisiana and Alabama), moved by the national House vote, plus incumbency and regional, state and district errors, fitted in PyMC on earlier midterms. Presidential results by district come from The Downballot's public sheets; results, members and nominees from Wikipedia's House pages. Turnout weighting is left out (it barely moves leans in Stage B), and so is the incumbent track record, which made the 2022 House backtest worse.
+
+Only independents stand in for a missing party (California 6: Kiley, now an independent, against a Democrat). Districts with one candidate, one party's candidates, or a lone major party against a minor-party candidate are certain holds (15 in 2026).
+
+| House backtest | 2018 (priors only) | 2022 (fitted on 2018) |
+|---|---|---|
+| Brier: model / lean / uniform swing | 0.058 / 0.084 / 0.053 | **0.031** / 0.055 / 0.055 |
+| Vote-share error, points: model / lean / uniform swing | 2.78 / 3.53 / 2.77 | **2.21** / 3.22 / 2.31 |
+| Democratic seats: actual / model median (80%) | 234 / 228 (191-291) | 213 / 210 (195-225) |
+
+The model beats both baselines in 2022, narrowly on vote share against uniform swing. In 2018, on priors alone, it does not beat uniform swing on Brier. **First 2026 run (14 October):** Democrats win a median of 232 seats (80%: 218-250) and 218 or more in 91% of simulations. Known gaps: Alaska and Maine use first-round shares; Louisiana's 3 November vote has several candidates per party; seat intervals may be a little narrow because errors are only national, regional and state. Details in `notes/house.md`.
+
 ## 5. Backtest (The Credibility)
 
 For **2018** and **2022**, fit the model using only data available on 1 October of that year, then score it against the actual results:
@@ -244,5 +262,6 @@ midterms-2026/
 5. ~~Vote-share model (Stage B) with correlated simulation and 2018/2022 race backtests.~~ Done 5 October (`vote_model.py`); beats both baselines in both years.
 6. ~~FEC fundraising for nominees.~~ Tested 5 October; it made the 2022 backtest worse, so it is left out.
 7. ~~Early vote: compare each state's 2026 pace with its own 2022 pace on the same date before using it.~~ Built 13 October; it can't be backtested, so it is left out (see Early Vote Test). Optional: a descriptive chart of 2026 pace against 2022 turnout, with the voting-rule caveats.
-8. Forecast v1 (19 October): refresh the 2026 race pages and generic ballot, run everything, write `forecasts/v1/`, tag.
+8. Race polls: built 14 October, being tested under the same rule (`notes/race_polls.md`).
+10. Forecast v1 (19 October): refresh the 2026 race and House pages and the generic ballot, run `python -m forecast.pipeline --refresh`, then `python -m forecast.release v1`, tag.
 9. Before the scorecard: save the UF early-vote CSV every day to Election Day (`python -m forecast.early_vote` keeps a dated copy), so 2030 has a dated 2026 series to test against. Check the voting-rule list in `early_vote.RULE_CHANGES` against NCSL's tables.
