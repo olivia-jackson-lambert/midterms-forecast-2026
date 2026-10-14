@@ -217,8 +217,9 @@ def all_races(refresh: bool = False) -> pd.DataFrame:
     return add_incumbent_history(out, past)
 
 
-def main() -> None:
-    refresh = "--refresh" in sys.argv
+def main(refresh: bool | None = None) -> None:
+    if refresh is None:
+        refresh = "--refresh" in sys.argv
     df = all_races(refresh)
     OUT.mkdir(parents=True, exist_ok=True)
     df.to_parquet(OUT / "races.parquet", index=False)

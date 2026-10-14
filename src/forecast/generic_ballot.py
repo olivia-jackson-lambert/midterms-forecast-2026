@@ -178,8 +178,9 @@ def interval(env: dict, level: float = 0.8) -> tuple[float, float]:
     return tuple(env["mean"] + env["sd"] * q)
 
 
-def main() -> None:
-    refresh = "--refresh" in sys.argv
+def main(refresh: bool | None = None) -> None:
+    if refresh is None:
+        refresh = "--refresh" in sys.argv
     gb = generic_ballot(refresh)
     h = gb.merge(house_vote(), on="year", how="left")
     h["error"] = h["house_dem_2p"] - h["gb_dem_2p"]
