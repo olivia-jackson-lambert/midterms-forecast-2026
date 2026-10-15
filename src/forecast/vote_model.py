@@ -286,11 +286,16 @@ def run(year: int, train_years: list[int], lean: str = "lean_turnout", sims: int
     params = params or fit([frame(y) for y in train_years], lean=lean)
     f = frame(year)
     s = simulate(f, params, year, sims)
+    fundamentals = summarise(f, s)
     poll_info = None
     if USE_POLLS:
         from . import polls
         s, poll_info = polls.blend(f, s, year, train_years)
-    return summarise(f, s), {"params": params, "sims": s, "frame": f, "polls": poll_info}
+    out = summarise(f, s)
+    # Keep the fundamentals-only forecast alongside, so readers can see what polls changed.
+    out["fundamentals_median"] = fundamentals["median"].values
+    out["fundamentals_p_dem_win"] = fundamentals["p_dem_win"].values
+    return out, {"params": params, "sims": s, "frame": f, "polls": poll_info}
 
 
 def main() -> None:

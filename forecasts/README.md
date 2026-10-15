@@ -21,8 +21,8 @@ Alaska, Connecticut and DC are one unit each, and Jackson, Clay and Platte count
 are one unit for Kansas City. In `races.csv` the shares and probabilities belong to the
 Democratic side (`d_side`), which is an independent in the few races with no Democrat.
 In `races.csv`, `poll_avg` is the Democratic side's share of the two-party poll average and
-`n_polls` the polls behind it (blank and 0 where there are none). The fundamentals-only median
-is not saved by the pipeline, so it is not published. In `house_districts.csv` the median and
+`n_polls` the polls behind it (blank and 0 where there are none). `fundamentals_median` and
+`fundamentals_p_dem_win` are the forecast before polls, so you can see what polls changed. In `house_districts.csv` the median and
 interval are blank in the districts that are not modelled: a certain hold (`certain_hold_party`
 is D or R) has only one party's candidate on the ballot. `contested` means a Democrat against
 a Republican; `stand_in` names the candidate who takes a missing party's place. The three win

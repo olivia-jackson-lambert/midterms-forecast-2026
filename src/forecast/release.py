@@ -134,12 +134,19 @@ def races() -> pd.DataFrame:
         "dem_candidate": v["dem_candidate"], "rep_candidate": v["rep_candidate"], "d_side": v["d_side"],
         "dem_share_median": v["median"], "dem_share_lo80": v["lo80"], "dem_share_hi80": v["hi80"],
         "p_dem_win": v["p_dem_win"]})
+    # Fundamentals-only forecast (before polls), when the vote model saved it.
+    if "fundamentals_median" in v:
+        out["fundamentals_median"] = v["fundamentals_median"]
+        out["fundamentals_p_dem_win"] = v["fundamentals_p_dem_win"]
     out = out.sort_values("race_id").reset_index(drop=True)
     out = out.merge(poll_averages(), on="race_id", how="left")
     out["n_polls"] = out["n_polls"].fillna(0).astype(int)
     out.loc[out["n_polls"] == 0, "poll_avg"] = float("nan")
-    return _rounded(out, shares=["dem_share_median", "dem_share_lo80", "dem_share_hi80", "poll_avg"],
-                    probs=["p_dem_win"])
+    shares = ["dem_share_median", "dem_share_lo80", "dem_share_hi80", "poll_avg"]
+    probs = ["p_dem_win"]
+    if "fundamentals_median" in out:
+        shares, probs = shares + ["fundamentals_median"], probs + ["fundamentals_p_dem_win"]
+    return _rounded(out, shares=shares, probs=probs)
 
 
 def poll_averages() -> pd.DataFrame:

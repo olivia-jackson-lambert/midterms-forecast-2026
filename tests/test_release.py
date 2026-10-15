@@ -85,7 +85,9 @@ def test_races(folder):
     assert "poll_avg" in r and "n_polls" in r
     assert (r["n_polls"] >= 0).all() and r["poll_avg"].dropna().between(0, 1).all()
     assert r["poll_avg"].isna().equals(r["n_polls"] == 0)
-    assert "fundamentals_median" not in r        # not saved by the pipeline
+    # The forecast before polls, published alongside so readers can see what polls changed.
+    assert r["fundamentals_median"].between(0, 1).all()
+    assert r["fundamentals_p_dem_win"].between(0, 1).all()
 
 
 def test_house_districts(folder):
