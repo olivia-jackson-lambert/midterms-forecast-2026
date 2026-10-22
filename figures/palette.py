@@ -24,7 +24,9 @@ if str(_HERE) not in sys.path:
 
 from figstyle import CATEGORICAL, DIM, INK, LIGHT, MUTED, PAPER, RUST, SLATE  # noqa: E402, F401
 
-DEM, REP = SLATE, RUST
+# Partisan blue: a deeper, still muted slate than the site's SLATE, which read too light
+# against white in the maps and bars. Rust stays the site's.
+DEM, REP = "#4d6a8f", RUST
 
 GREEN, GREEN_DEEP, GREEN_LIGHT = "#4e7d5b", "#2e5539", "#b5cfbb"
 PURPLE, PURPLE_DEEP, PURPLE_LIGHT = CATEGORICAL[6], "#4f3a5c", "#d3c5d5"      # "#8c6d8f"
