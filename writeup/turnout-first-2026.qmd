@@ -58,6 +58,8 @@ Starting with turnout also gives the forecast something concrete to be wrong abo
 
 Whether turnout changes who is forecast to win was an open question. It turned out not to, and that result is below.
 
+![How the forecast is built, from public data to the published numbers. Green boxes are fitted models.](assets/pipeline_overview.png){fig-alt="Flow diagram. Four sources at the top: election results from MIT precinct files, Wikipedia and states; ballots cast from the EAC survey and UF certified totals; Census citizens of voting age and ACS; and the generic ballot from aggregators since 1998. The first three feed an ingest and checks step covering 3,104 county units, using only values available by 1 October in every backtest. That feeds Stage A, the county turnout model. The generic ballot becomes the national House vote, corrected for bias using earlier cycles only. Stage A passes turnout-weighted leans to Stage B, the Senate and governor model for 71 races, which also takes the national vote. The national vote also feeds the House model for 435 districts. Race polls from Wikipedia are blended into Stage B. Stage B with polls and the House model feed 20,000 joint simulations, which produce county turnout, race probabilities and chamber control. All three outputs are checked against the 2018 and 2022 backtests." width="80%"}
+
 # The Data
 
 Every source is public and needs no API key or download form, except the FEC, which needs a free key.
@@ -290,6 +292,8 @@ So turnout does not decide who is forecast to win. Where it matters is the count
 # What Was Tested and Left Out
 
 The rule for each: keep it only if it improves the 2022 backtest on both Brier score and vote-share error, against the fundamentals at 0.067 and 3.6 points.
+
+![Every input tested, kept or left out under the same rule.](assets/what_was_tested.png){fig-alt="Two columns of boxes. Kept, in green: presidential surge carried over, the strongest turnout predictor; out-party lean, which raised 2022 interval coverage from 72% to 81%; Senate race on the ballot, about plus 1.3 points of turnout; incumbent track record, race Brier 0.072 to 0.067 in 2022; race polls, race Brier 0.067 to 0.031 in 2022; and turnout-weighted leans, a small edge in 2022 and none in 2018. Tested and left out, in dashed outline: fundraising, worse in 2022 at Brier 0.069 against 0.067; every nominee's track record, worse at 0.075 against 0.067; track record in the House, worse in the 2022 House backtest; early vote, untestable because no 2018 state data survive; special elections, with no comparable 2018 or 2022 series; and pundit ratings, never an input and used for comparison only." width="80%"}
 
 **Fundraising.** I downloaded each Senate nominee's receipts from the FEC, using the June report, the last public before 1 October. It made both scores worse (Brier 0.069, error 3.7 points), so it is out. Once the state's lean, the national environment and the incumbent's record are in, money adds little. Well-funded challengers mostly run where the race was already close.
 
