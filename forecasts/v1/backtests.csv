@@ -1,0 +1,359 @@
+backtest,year,variant,trained_on,metric,value
+turnout,2018,no_out_party_term,priors only,counties,2843.0
+turnout,2022,no_out_party_term,2018,counties,3094.0
+turnout,2018,model,priors only,counties,2843.0
+turnout,2022,model,2018,counties,3094.0
+turnout,2018,no_out_party_term,priors only,mae_pts,6.363707
+turnout,2022,no_out_party_term,2018,mae_pts,3.974695
+turnout,2018,model,priors only,mae_pts,6.356367
+turnout,2022,model,2018,mae_pts,4.20097
+turnout,2018,no_out_party_term,priors only,baseline_mae_pts,10.495787
+turnout,2022,no_out_party_term,2018,baseline_mae_pts,4.62732
+turnout,2018,model,priors only,baseline_mae_pts,10.495787
+turnout,2022,model,2018,baseline_mae_pts,4.62732
+turnout,2018,no_out_party_term,priors only,weighted_mae_pts,8.871029
+turnout,2022,no_out_party_term,2018,weighted_mae_pts,4.945537
+turnout,2018,model,priors only,weighted_mae_pts,8.909874
+turnout,2022,model,2018,weighted_mae_pts,4.605285
+turnout,2018,no_out_party_term,priors only,baseline_weighted_mae_pts,14.005398
+turnout,2022,no_out_party_term,2018,baseline_weighted_mae_pts,5.304388
+turnout,2018,model,priors only,baseline_weighted_mae_pts,14.005398
+turnout,2022,model,2018,baseline_weighted_mae_pts,5.304388
+turnout,2018,no_out_party_term,priors only,coverage80,0.958143
+turnout,2022,no_out_party_term,2018,coverage80,0.924693
+turnout,2018,model,priors only,coverage80,0.962012
+turnout,2022,model,2018,coverage80,0.889787
+turnout,2018,no_out_party_term,priors only,coverage80_5k_plus,0.954675
+turnout,2022,no_out_party_term,2018,coverage80_5k_plus,0.925328
+turnout,2018,model,priors only,coverage80_5k_plus,0.959167
+turnout,2022,model,2018,coverage80_5k_plus,0.886679
+turnout,2018,no_out_party_term,priors only,national_actual,0.508848
+turnout,2022,no_out_party_term,2018,national_actual,0.465213
+turnout,2018,model,priors only,national_actual,0.508848
+turnout,2022,model,2018,national_actual,0.465213
+turnout,2018,no_out_party_term,priors only,bias_pts_small,-2.431699
+turnout,2022,no_out_party_term,2018,bias_pts_small,-0.313251
+turnout,2018,model,priors only,bias_pts_small,-2.295005
+turnout,2022,model,2018,bias_pts_small,1.954823
+turnout,2018,no_out_party_term,priors only,bias_pts_mid,-4.285041
+turnout,2022,no_out_party_term,2018,bias_pts_mid,1.014994
+turnout,2018,model,priors only,bias_pts_mid,-4.206218
+turnout,2022,model,2018,bias_pts_mid,2.773922
+turnout,2018,no_out_party_term,priors only,bias_pts_large,-7.851067
+turnout,2022,no_out_party_term,2018,bias_pts_large,3.844639
+turnout,2018,model,priors only,bias_pts_large,-7.868827
+turnout,2022,model,2018,bias_pts_large,3.860587
+turnout,2018,no_out_party_term,priors only,national_lo80,0.382601
+turnout,2022,no_out_party_term,2018,national_lo80,0.444617
+turnout,2018,model,priors only,national_lo80,0.382601
+turnout,2022,model,2018,national_lo80,0.444617
+turnout,2018,no_out_party_term,priors only,national_median,0.430444
+turnout,2022,no_out_party_term,2018,national_median,0.504249
+turnout,2018,model,priors only,national_median,0.430444
+turnout,2022,model,2018,national_median,0.504249
+turnout,2018,no_out_party_term,priors only,national_hi80,0.47959
+turnout,2022,no_out_party_term,2018,national_hi80,0.563128
+turnout,2018,model,priors only,national_hi80,0.47959
+turnout,2022,model,2018,national_hi80,0.563128
+turnout,2018,no_out_party_term,priors only,mae_pts_national_known,5.982382
+turnout,2022,no_out_party_term,2018,mae_pts_national_known,4.718618
+turnout,2018,model,priors only,mae_pts_national_known,5.939112
+turnout,2022,model,2018,mae_pts_national_known,3.879919
+turnout,2018,no_out_party_term,priors only,weighted_mae_pts_national_known,4.986764
+turnout,2022,no_out_party_term,2018,weighted_mae_pts_national_known,3.784163
+turnout,2018,model,priors only,weighted_mae_pts_national_known,4.917483
+turnout,2022,model,2018,weighted_mae_pts_national_known,3.320838
+turnout,2018,no_out_party_term,priors only,coverage80_national_known,0.986634
+turnout,2022,no_out_party_term,2018,coverage80_national_known,0.72075
+turnout,2018,model,priors only,coverage80_national_known,0.988393
+turnout,2022,model,2018,coverage80_national_known,0.804783
+turnout,2018,no_out_party_term,priors only,bias_pts_small_national_known,5.484278
+turnout,2022,no_out_party_term,2018,bias_pts_small_national_known,-4.157743
+turnout,2018,model,priors only,bias_pts_small_national_known,5.493424
+turnout,2022,model,2018,bias_pts_small_national_known,-1.851629
+turnout,2018,no_out_party_term,priors only,bias_pts_mid_national_known,3.940816
+turnout,2022,no_out_party_term,2018,bias_pts_mid_national_known,-2.871657
+turnout,2018,model,priors only,bias_pts_mid_national_known,3.908635
+turnout,2022,model,2018,bias_pts_mid_national_known,-1.14744
+turnout,2018,no_out_party_term,priors only,bias_pts_large_national_known,0.342931
+turnout,2022,no_out_party_term,2018,bias_pts_large_national_known,-0.079534
+turnout,2018,model,priors only,bias_pts_large_national_known,0.310135
+turnout,2022,model,2018,bias_pts_large_national_known,-0.069778
+races,2018,model,priors only,races,68.0
+races,2018,no_polls,priors only,races,68.0
+races,2018,plain_lean,priors only,races,68.0
+races,2018,nominee_track_record,priors only,races,68.0
+races,2018,incumbent-only_track_record,priors only,races,68.0
+races,2018,no_track_record,priors only,races,68.0
+races,2018,with_fundraising,priors only,races,68.0
+races,2022,model,2018,races,70.0
+races,2022,no_polls,2018,races,70.0
+races,2022,plain_lean,2018,races,70.0
+races,2022,nominee_track_record,2018,races,70.0
+races,2022,incumbent-only_track_record,2018,races,70.0
+races,2022,no_track_record,2018,races,70.0
+races,2022,with_fundraising,2018,races,70.0
+races,2018,model,priors only,mae_pts,2.735565
+races,2018,no_polls,priors only,mae_pts,5.09399
+races,2018,plain_lean,priors only,mae_pts,5.093114
+races,2018,nominee_track_record,priors only,mae_pts,5.09434
+races,2018,incumbent-only_track_record,priors only,mae_pts,5.09399
+races,2018,no_track_record,priors only,mae_pts,5.116535
+races,2018,with_fundraising,priors only,mae_pts,5.094566
+races,2022,model,2018,mae_pts,2.673091
+races,2022,no_polls,2018,mae_pts,3.64367
+races,2022,plain_lean,2018,mae_pts,3.750381
+races,2022,nominee_track_record,2018,mae_pts,3.772136
+races,2022,incumbent-only_track_record,2018,mae_pts,3.64367
+races,2022,no_track_record,2018,mae_pts,3.870833
+races,2022,with_fundraising,2018,mae_pts,3.715958
+races,2018,model,priors only,lean_mae_pts,5.855591
+races,2018,no_polls,priors only,lean_mae_pts,5.855591
+races,2018,plain_lean,priors only,lean_mae_pts,5.855591
+races,2018,nominee_track_record,priors only,lean_mae_pts,5.855591
+races,2018,incumbent-only_track_record,priors only,lean_mae_pts,5.855591
+races,2018,no_track_record,priors only,lean_mae_pts,5.855591
+races,2018,with_fundraising,priors only,lean_mae_pts,5.855591
+races,2022,model,2018,lean_mae_pts,4.323108
+races,2022,no_polls,2018,lean_mae_pts,4.323108
+races,2022,plain_lean,2018,lean_mae_pts,4.323108
+races,2022,nominee_track_record,2018,lean_mae_pts,4.323108
+races,2022,incumbent-only_track_record,2018,lean_mae_pts,4.323108
+races,2022,no_track_record,2018,lean_mae_pts,4.323108
+races,2022,with_fundraising,2018,lean_mae_pts,4.323108
+races,2018,model,priors only,uniform_swing_mae_pts,5.136229
+races,2018,no_polls,priors only,uniform_swing_mae_pts,5.136229
+races,2018,plain_lean,priors only,uniform_swing_mae_pts,5.136229
+races,2018,nominee_track_record,priors only,uniform_swing_mae_pts,5.136229
+races,2018,incumbent-only_track_record,priors only,uniform_swing_mae_pts,5.136229
+races,2018,no_track_record,priors only,uniform_swing_mae_pts,5.136229
+races,2018,with_fundraising,priors only,uniform_swing_mae_pts,5.136229
+races,2022,model,2018,uniform_swing_mae_pts,4.114027
+races,2022,no_polls,2018,uniform_swing_mae_pts,4.114027
+races,2022,plain_lean,2018,uniform_swing_mae_pts,4.114027
+races,2022,nominee_track_record,2018,uniform_swing_mae_pts,4.114027
+races,2022,incumbent-only_track_record,2018,uniform_swing_mae_pts,4.114027
+races,2022,no_track_record,2018,uniform_swing_mae_pts,4.114027
+races,2022,with_fundraising,2018,uniform_swing_mae_pts,4.114027
+races,2018,model,priors only,brier,0.061835
+races,2018,no_polls,priors only,brier,0.148967
+races,2018,plain_lean,priors only,brier,0.147367
+races,2018,nominee_track_record,priors only,brier,0.149305
+races,2018,incumbent-only_track_record,priors only,brier,0.148967
+races,2018,no_track_record,priors only,brier,0.152854
+races,2018,with_fundraising,priors only,brier,0.153237
+races,2022,model,2018,brier,0.031274
+races,2022,no_polls,2018,brier,0.066579
+races,2022,plain_lean,2018,brier,0.068627
+races,2022,nominee_track_record,2018,brier,0.074761
+races,2022,incumbent-only_track_record,2018,brier,0.066579
+races,2022,no_track_record,2018,brier,0.072446
+races,2022,with_fundraising,2018,brier,0.069008
+races,2018,model,priors only,lean_brier,0.220588
+races,2018,no_polls,priors only,lean_brier,0.220588
+races,2018,plain_lean,priors only,lean_brier,0.220588
+races,2018,nominee_track_record,priors only,lean_brier,0.220588
+races,2018,incumbent-only_track_record,priors only,lean_brier,0.220588
+races,2018,no_track_record,priors only,lean_brier,0.220588
+races,2018,with_fundraising,priors only,lean_brier,0.220588
+races,2022,model,2018,lean_brier,0.085714
+races,2022,no_polls,2018,lean_brier,0.085714
+races,2022,plain_lean,2018,lean_brier,0.085714
+races,2022,nominee_track_record,2018,lean_brier,0.085714
+races,2022,incumbent-only_track_record,2018,lean_brier,0.085714
+races,2022,no_track_record,2018,lean_brier,0.085714
+races,2022,with_fundraising,2018,lean_brier,0.085714
+races,2018,model,priors only,uniform_swing_brier,0.161765
+races,2018,no_polls,priors only,uniform_swing_brier,0.161765
+races,2018,plain_lean,priors only,uniform_swing_brier,0.161765
+races,2018,nominee_track_record,priors only,uniform_swing_brier,0.161765
+races,2018,incumbent-only_track_record,priors only,uniform_swing_brier,0.161765
+races,2018,no_track_record,priors only,uniform_swing_brier,0.161765
+races,2018,with_fundraising,priors only,uniform_swing_brier,0.161765
+races,2022,model,2018,uniform_swing_brier,0.157143
+races,2022,no_polls,2018,uniform_swing_brier,0.157143
+races,2022,plain_lean,2018,uniform_swing_brier,0.157143
+races,2022,nominee_track_record,2018,uniform_swing_brier,0.157143
+races,2022,incumbent-only_track_record,2018,uniform_swing_brier,0.157143
+races,2022,no_track_record,2018,uniform_swing_brier,0.157143
+races,2022,with_fundraising,2018,uniform_swing_brier,0.157143
+races,2018,model,priors only,log_loss,0.20049
+races,2018,no_polls,priors only,log_loss,0.477074
+races,2018,plain_lean,priors only,log_loss,0.473833
+races,2018,nominee_track_record,priors only,log_loss,0.477874
+races,2018,incumbent-only_track_record,priors only,log_loss,0.477074
+races,2018,no_track_record,priors only,log_loss,0.50819
+races,2018,with_fundraising,priors only,log_loss,0.490385
+races,2022,model,2018,log_loss,0.11264
+races,2022,no_polls,2018,log_loss,0.214268
+races,2022,plain_lean,2018,log_loss,0.22012
+races,2022,nominee_track_record,2018,log_loss,0.233253
+races,2022,incumbent-only_track_record,2018,log_loss,0.214268
+races,2022,no_track_record,2018,log_loss,0.233894
+races,2022,with_fundraising,2018,log_loss,0.219043
+races,2018,model,priors only,accuracy,0.926471
+races,2018,no_polls,priors only,accuracy,0.823529
+races,2018,plain_lean,priors only,accuracy,0.838235
+races,2018,nominee_track_record,priors only,accuracy,0.823529
+races,2018,incumbent-only_track_record,priors only,accuracy,0.823529
+races,2018,no_track_record,priors only,accuracy,0.823529
+races,2018,with_fundraising,priors only,accuracy,0.823529
+races,2022,model,2018,accuracy,0.942857
+races,2022,no_polls,2018,accuracy,0.9
+races,2022,plain_lean,2018,accuracy,0.914286
+races,2022,nominee_track_record,2018,accuracy,0.885714
+races,2022,incumbent-only_track_record,2018,accuracy,0.9
+races,2022,no_track_record,2018,accuracy,0.914286
+races,2022,with_fundraising,2018,accuracy,0.914286
+races,2018,model,priors only,coverage80,0.705882
+races,2018,no_polls,priors only,coverage80,0.955882
+races,2018,plain_lean,priors only,coverage80,0.955882
+races,2018,nominee_track_record,priors only,coverage80,0.955882
+races,2018,incumbent-only_track_record,priors only,coverage80,0.955882
+races,2018,no_track_record,priors only,coverage80,0.941176
+races,2018,with_fundraising,priors only,coverage80,0.955882
+races,2022,model,2018,coverage80,0.771429
+races,2022,no_polls,2018,coverage80,0.857143
+races,2022,plain_lean,2018,coverage80,0.857143
+races,2022,nominee_track_record,2018,coverage80,0.857143
+races,2022,incumbent-only_track_record,2018,coverage80,0.857143
+races,2022,no_track_record,2018,coverage80,0.842857
+races,2022,with_fundraising,2018,coverage80,0.842857
+house,2018,with_track_record,priors only,districts,394.0
+house,2018,no_track_record,priors only,districts,394.0
+house,2018,national_vote_known,priors only,districts,394.0
+house,2022,with_track_record,2018,districts,399.0
+house,2022,no_track_record,2018,districts,399.0
+house,2022,national_vote_known,2018,districts,399.0
+house,2018,with_track_record,priors only,mae_pts,2.774544
+house,2018,no_track_record,priors only,mae_pts,2.7807
+house,2018,national_vote_known,priors only,mae_pts,2.729475
+house,2022,with_track_record,2018,mae_pts,2.264272
+house,2022,no_track_record,2018,mae_pts,2.214621
+house,2022,national_vote_known,2018,mae_pts,2.197569
+house,2018,with_track_record,priors only,lean_mae_pts,3.534304
+house,2018,no_track_record,priors only,lean_mae_pts,3.534304
+house,2018,national_vote_known,priors only,lean_mae_pts,3.534304
+house,2022,with_track_record,2018,lean_mae_pts,3.224428
+house,2022,no_track_record,2018,lean_mae_pts,3.224428
+house,2022,national_vote_known,2018,lean_mae_pts,3.224428
+house,2018,with_track_record,priors only,uniform_swing_mae_pts,2.768611
+house,2018,no_track_record,priors only,uniform_swing_mae_pts,2.768611
+house,2018,national_vote_known,priors only,uniform_swing_mae_pts,2.768611
+house,2022,with_track_record,2018,uniform_swing_mae_pts,2.312115
+house,2022,no_track_record,2018,uniform_swing_mae_pts,2.312115
+house,2022,national_vote_known,2018,uniform_swing_mae_pts,2.312115
+house,2018,with_track_record,priors only,brier,0.059472
+house,2018,no_track_record,priors only,brier,0.058339
+house,2018,national_vote_known,priors only,brier,0.058354
+house,2022,with_track_record,2018,brier,0.035448
+house,2022,no_track_record,2018,brier,0.030822
+house,2022,national_vote_known,2018,brier,0.031122
+house,2018,with_track_record,priors only,lean_brier,0.083756
+house,2018,no_track_record,priors only,lean_brier,0.083756
+house,2018,national_vote_known,priors only,lean_brier,0.083756
+house,2022,with_track_record,2018,lean_brier,0.055138
+house,2022,no_track_record,2018,lean_brier,0.055138
+house,2022,national_vote_known,2018,lean_brier,0.055138
+house,2018,with_track_record,priors only,uniform_swing_brier,0.053299
+house,2018,no_track_record,priors only,uniform_swing_brier,0.053299
+house,2018,national_vote_known,priors only,uniform_swing_brier,0.053299
+house,2022,with_track_record,2018,uniform_swing_brier,0.055138
+house,2022,no_track_record,2018,uniform_swing_brier,0.055138
+house,2022,national_vote_known,2018,uniform_swing_brier,0.055138
+house,2018,with_track_record,priors only,log_loss,0.222939
+house,2018,no_track_record,priors only,log_loss,0.219772
+house,2018,national_vote_known,priors only,log_loss,0.219425
+house,2022,with_track_record,2018,log_loss,0.112653
+house,2022,no_track_record,2018,log_loss,0.100799
+house,2022,national_vote_known,2018,log_loss,0.099963
+house,2018,with_track_record,priors only,accuracy,0.946701
+house,2018,no_track_record,priors only,accuracy,0.944162
+house,2018,national_vote_known,priors only,accuracy,0.954315
+house,2022,with_track_record,2018,accuracy,0.949875
+house,2022,no_track_record,2018,accuracy,0.949875
+house,2022,national_vote_known,2018,accuracy,0.944862
+house,2018,with_track_record,priors only,coverage80,0.994924
+house,2018,no_track_record,priors only,coverage80,0.992386
+house,2018,national_vote_known,priors only,coverage80,0.989848
+house,2022,with_track_record,2018,coverage80,0.882206
+house,2022,no_track_record,2018,coverage80,0.909774
+house,2022,national_vote_known,2018,coverage80,0.904762
+house,2018,with_track_record,priors only,bias_pts,-0.838385
+house,2018,no_track_record,priors only,bias_pts,-0.844777
+house,2018,national_vote_known,priors only,bias_pts,0.173258
+house,2022,with_track_record,2018,bias_pts,0.043033
+house,2022,no_track_record,2018,bias_pts,0.33063
+house,2022,national_vote_known,2018,bias_pts,-0.046966
+house,2018,with_track_record,priors only,actual_dem_seats,234.0
+house,2018,no_track_record,priors only,actual_dem_seats,234.0
+house,2018,national_vote_known,priors only,actual_dem_seats,234.0
+house,2022,with_track_record,2018,actual_dem_seats,213.0
+house,2022,no_track_record,2018,actual_dem_seats,213.0
+house,2022,national_vote_known,2018,actual_dem_seats,213.0
+house,2018,with_track_record,priors only,lean_dem_seats,207.0
+house,2018,no_track_record,priors only,lean_dem_seats,207.0
+house,2018,national_vote_known,priors only,lean_dem_seats,207.0
+house,2022,with_track_record,2018,lean_dem_seats,226.0
+house,2022,no_track_record,2018,lean_dem_seats,226.0
+house,2022,national_vote_known,2018,lean_dem_seats,226.0
+house,2018,with_track_record,priors only,uniform_swing_dem_seats,223.0
+house,2018,no_track_record,priors only,uniform_swing_dem_seats,223.0
+house,2018,national_vote_known,priors only,uniform_swing_dem_seats,223.0
+house,2022,with_track_record,2018,uniform_swing_dem_seats,206.0
+house,2022,no_track_record,2018,uniform_swing_dem_seats,206.0
+house,2022,national_vote_known,2018,uniform_swing_dem_seats,206.0
+house,2018,with_track_record,priors only,expected_dem_seats,234.65915
+house,2018,no_track_record,priors only,expected_dem_seats,235.08
+house,2018,national_vote_known,priors only,expected_dem_seats,244.2998
+house,2022,with_track_record,2018,expected_dem_seats,205.99225
+house,2022,no_track_record,2018,expected_dem_seats,209.85005
+house,2022,national_vote_known,2018,expected_dem_seats,207.1565
+house,2018,with_track_record,priors only,median_dem_seats,228.0
+house,2018,no_track_record,priors only,median_dem_seats,228.0
+house,2018,national_vote_known,priors only,median_dem_seats,237.0
+house,2022,with_track_record,2018,median_dem_seats,206.0
+house,2022,no_track_record,2018,median_dem_seats,210.0
+house,2022,national_vote_known,2018,median_dem_seats,207.0
+house,2018,with_track_record,priors only,seats_lo80,191.0
+house,2018,no_track_record,priors only,seats_lo80,191.0
+house,2018,national_vote_known,priors only,seats_lo80,200.0
+house,2022,with_track_record,2018,seats_lo80,189.0
+house,2022,no_track_record,2018,seats_lo80,195.0
+house,2022,national_vote_known,2018,seats_lo80,198.0
+house,2018,with_track_record,priors only,seats_hi80,290.0
+house,2018,no_track_record,priors only,seats_hi80,291.0
+house,2018,national_vote_known,priors only,seats_hi80,301.0
+house,2022,with_track_record,2018,seats_hi80,222.0
+house,2022,no_track_record,2018,seats_hi80,225.0
+house,2022,national_vote_known,2018,seats_hi80,216.0
+house,2018,with_track_record,priors only,p_dem_218,0.61375
+house,2018,no_track_record,priors only,p_dem_218,0.6154
+house,2018,national_vote_known,priors only,p_dem_218,0.7106
+house,2022,with_track_record,2018,p_dem_218,0.18135
+house,2022,no_track_record,2018,p_dem_218,0.25815
+house,2022,national_vote_known,2018,p_dem_218,0.0687
+house,2018,with_track_record,priors only,p_actual_majority,0.61375
+house,2018,no_track_record,priors only,p_actual_majority,0.6154
+house,2018,national_vote_known,priors only,p_actual_majority,0.7106
+house,2022,with_track_record,2018,p_actual_majority,0.81865
+house,2022,no_track_record,2018,p_actual_majority,0.74185
+house,2022,national_vote_known,2018,p_actual_majority,0.9313
+house,2018,with_track_record,priors only,seat_error,-6.0
+house,2018,no_track_record,priors only,seat_error,-6.0
+house,2018,national_vote_known,priors only,seat_error,3.0
+house,2022,with_track_record,2018,seat_error,-7.0
+house,2022,no_track_record,2018,seat_error,-3.0
+house,2022,national_vote_known,2018,seat_error,-6.0
+house,2018,with_track_record,priors only,lean_seat_error,-27.0
+house,2018,no_track_record,priors only,lean_seat_error,-27.0
+house,2018,national_vote_known,priors only,lean_seat_error,-27.0
+house,2022,with_track_record,2018,lean_seat_error,13.0
+house,2022,no_track_record,2018,lean_seat_error,13.0
+house,2022,national_vote_known,2018,lean_seat_error,13.0
+house,2018,with_track_record,priors only,uniform_swing_seat_error,-11.0
+house,2018,no_track_record,priors only,uniform_swing_seat_error,-11.0
+house,2018,national_vote_known,priors only,uniform_swing_seat_error,-11.0
+house,2022,with_track_record,2018,uniform_swing_seat_error,-7.0
+house,2022,no_track_record,2018,uniform_swing_seat_error,-7.0
+house,2022,national_vote_known,2018,uniform_swing_seat_error,-7.0

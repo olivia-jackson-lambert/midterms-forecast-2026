@@ -1,0 +1,30 @@
+{
+  "version": "v1",
+  "draft": false,
+  "created_utc": "2026-10-22T23:25:15+00:00",
+  "git_commit": "bb985aae1ec3b346c7849242ada884e8e1f69855",
+  "git_working_tree_clean": false,
+  "inputs": {
+    "races_wikipedia_modified_utc": "2026-10-22T22:59:06+00:00",
+    "house_wikipedia_fetched": "2026-10-22",
+    "latest_poll_end_date": "2026-10-21",
+    "generic_ballot_as_of": "2026-10-22",
+    "early_vote_applied": false
+  },
+  "simulations": {
+    "turnout": 20000,
+    "vote": 20000,
+    "house": 20000
+  },
+  "sha256": {
+    "turnout_counties.csv": "d0480f0c4facdb7be855478c83dc9002fb54148048eff62b40595c200a7a2f6f",
+    "turnout_states.csv": "41451444ff5280eb66dbecb5ccba4401742e0e511aa13d9cfe273a5b97ca4703",
+    "national.csv": "bfb06cdfe33d8d69f6d49a5dcd4d890a44c65d7c24bb86c538bdd34adac53a00",
+    "races.csv": "c20b81b1646b1fb54fd887c36b56ab2faf638df302b6a9f0472f78e73e6c5900",
+    "senate_seats.csv": "e894196b58cc065742171578df8695dbcedadafd4b4f6fd6eefa3e56b7a95398",
+    "governor_seats.csv": "fcd066b7963aaf24036763e798e5f2933fcd207ea6a5b2342781e5546a8b992d",
+    "house_districts.csv": "b194a84fb84700112fc067c36a433b54e8c7973fe4d6692b73ad38648b3f4147",
+    "house_seats.csv": "7c69302674170a5154c922bcc82938e40468e78bb9d53509cd27febb1a6dd234",
+    "backtests.csv": "e0ebada9269c29435dd2e47eec888e6c23ae3c87189f6164f2fc6323eae5d471"
+  }
+}
