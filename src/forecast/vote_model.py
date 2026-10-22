@@ -77,6 +77,9 @@ USE_NOMINEE_TRACK_RECORD = False
 USE_POLLS = True
 # Senate seats not up in 2026, by caucus (53 Republicans, 47 Democrats and independents now).
 SENATE_NOW = {"R": 53, "D": 47}
+# Governorships not up in 2026, by the governor's party (24 Democrats and 26 Republicans now,
+# after Virginia's 2025 election). With the 36 races these make 50.
+GOVERNORS_NOT_UP = {"D": "KY NJ VA DE NC WA".split(), "R": "LA MS IN MO MT ND UT WV".split()}
 
 
 # --------------------------------------------------------------------------- data
@@ -281,6 +284,24 @@ def senate_seats(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:
     return d.value_counts(normalize=True).rename("probability").reset_index().sort_values(["dem_seats", "independent_seats"])
 
 
+def governor_seats(f: pd.DataFrame, sims: np.ndarray) -> pd.DataFrame:
+    """Distribution of Democratic governorships after the election.
+
+    As for the Senate, a race won by an independent standing in for the Democratic side is
+    counted in `independent_seats`, not as Democratic.
+    """
+    gov = f["office"].eq("GOV").to_numpy()
+    up = set(f.loc[gov, "state_po"])
+    not_up = {st for v in GOVERNORS_NOT_UP.values() for st in v}
+    assert len(up) == gov.sum() and not up & not_up and len(up | not_up) == 50, "governor states do not add to 50"
+    dem_races = gov & ~f["independent"].to_numpy()
+    ind_races = gov & f["independent"].to_numpy()
+    seats = len(GOVERNORS_NOT_UP["D"]) + (sims[:, dem_races] > 0.5).sum(1)
+    ind = (sims[:, ind_races] > 0.5).sum(1)
+    d = pd.DataFrame({"dem_seats": seats, "independent_seats": ind})
+    return d.value_counts(normalize=True).rename("probability").reset_index().sort_values(["dem_seats", "independent_seats"])
+
+
 def run(year: int, train_years: list[int], lean: str = "lean_turnout", sims: int = SIMS,
         params: dict | None = None) -> tuple[pd.DataFrame, dict]:
     params = params or fit([frame(y) for y in train_years], lean=lean)
@@ -303,6 +324,8 @@ def main() -> None:
     out.to_parquet(OUT / "vote_share_2026.parquet", index=False)
     seats = senate_seats(info["frame"], info["sims"])
     seats.to_csv(OUT / "senate_seats_2026.csv", index=False)
+    govs = governor_seats(info["frame"], info["sims"])
+    govs.to_csv(OUT / "governor_seats_2026.csv", index=False)
     info["params"]["summary"].to_csv(OUT / "vote_model_parameters.csv")
     env = generic_ballot.national_environment(2026)
     print(f"national House vote, Democratic two-party: {env['mean']:.3f} (sd {env['sd']:.3f})")
@@ -312,6 +335,9 @@ def main() -> None:
     by_d = seats.groupby("dem_seats")["probability"].sum()
     print(f"Democratic-caucus Senate seats: median {np.interp(0.5, by_d.cumsum(), by_d.index):.0f}; "
           f"P(51+) {p_control:.2f}; P(Republicans hold 50+) {p_rep:.2f}")
+    by_g = govs.groupby("dem_seats")["probability"].sum()
+    print(f"Democratic governorships: median {np.interp(0.5, by_g.cumsum(), by_g.index):.0f}; "
+          f"P(26+) {by_g[by_g.index >= 26].sum():.2f}")
     print(out.sort_values("p_dem_win")[["race_id", "dem_candidate", "rep_candidate", "median", "lo80", "hi80",
                                        "p_dem_win"]].round(3).to_string(index=False))
 

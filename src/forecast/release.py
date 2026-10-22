@@ -10,6 +10,7 @@ forecasts/<version>/ (forecasts/_draft/<version>/ with --draft, which git ignore
     national.csv          national turnout and House vote, with the generic ballot behind it
     races.csv             every 2026 Senate and governor race, with its poll average
     senate_seats.csv      distribution of Democratic-caucus Senate seats
+    governor_seats.csv    distribution of Democratic governorships
     house_districts.csv   all 435 House districts
     house_seats.csv       distribution of House seats (Democratic, Republican, independent)
     backtests.csv         the 2018 and 2022 backtest scores (turnout, races, House), one metric per row
@@ -186,6 +187,12 @@ def senate_seats() -> pd.DataFrame:
     return s.sort_values(["dem_seats", "independent_seats"]).reset_index(drop=True)
 
 
+def governor_seats() -> pd.DataFrame:
+    s = pd.read_csv(OUT / "governor_seats_2026.csv")
+    s["probability"] = s["probability"].round(4)
+    return s.sort_values(["dem_seats", "independent_seats"]).reset_index(drop=True)
+
+
 def backtests() -> pd.DataFrame:
     t = pd.read_csv(OUT / "backtest_turnout.csv")
     t["variant"] = t["out_party"].map(TURNOUT_VARIANTS)
@@ -267,7 +274,7 @@ def manifest(version: str, draft: bool, files: list[Path]) -> dict:
 # --------------------------------------------------------------------------- release
 TABLES = {"turnout_counties.csv": turnout_counties, "turnout_states.csv": turnout_states,
           "national.csv": national, "races.csv": races, "senate_seats.csv": senate_seats,
-          "house_districts.csv": house_districts, "house_seats.csv": house_seats,
+          "governor_seats.csv": governor_seats, "house_districts.csv": house_districts, "house_seats.csv": house_seats,
           "backtests.csv": backtests}
 
 

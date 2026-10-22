@@ -251,8 +251,9 @@ def drivers() -> None:
           "gamma[0]": 1.0, "gamma[1]": f["d_close"].std(), **{f"beta[{i}]": 1.0 for i in range(len(DEMOGRAPHICS))}}
     labels = {"lam": "Presidential Surge Carried Over", "rho": "Pull Back to Average",
               "phi": "Out-Party Lean", "gamma[0]": "Senate Race Added", "gamma[1]": "Top Race Closer",
-              "beta[0]": "Degree Holders", "beta[1]": "Aged 18–29", "beta[2]": "Aged 65 and Over",
-              "beta[3]": "Hispanic", "beta[4]": "Black", "beta[5]": "Population Density", "beta[6]": "Median Income"}
+              "beta[0]": "Share With a Degree", "beta[1]": "Share Aged 18–29", "beta[2]": "Share Aged 65 and Over",
+              "beta[3]": "Share Hispanic or Latino", "beta[4]": "Share Black, Non-Hispanic",
+              "beta[5]": "Population Density", "beta[6]": "Median Household Income"}
     keys = [k for k in labels if k in p.index]
     lo, hi = p.columns[2], p.columns[3]
     scale = 0.25 * 100                       # logit to points near 50% turnout
@@ -270,8 +271,9 @@ def drivers() -> None:
     ax.set_xlabel("Effect on Turnout Change (Points) for a Typical Difference")
     tidy(ax, grid_axis="x")
     note(ax, "Posterior means and 89% intervals; green raises turnout, purple lowers it, grey is unclear. Fitted on 2014–2018 and\n"
-             "2018–2022. A typical difference is one standard deviation across counties; for the Senate term, a race\n"
-             "joining the ballot.", y=-0.13)
+             "2018–2022. A typical difference is one standard deviation across counties; for the Senate term, a race joining\n"
+             "the ballot. Shares are of each county's residents (ACS categories): they describe places, not individual voters.",
+         y=-0.13)
     save(fig, "turnout_drivers.png")
 
 
@@ -374,6 +376,26 @@ def senate_seats() -> None:
     save(fig, "senate_seats_2026.png")
 
 
+
+def governor_seats() -> None:
+    s = pd.read_csv(DATA / "governor_seats_2026.csv").groupby("dem_seats")["probability"].sum()
+    s = s[(s.index >= 16) & (s.index <= 36)]
+    fig, ax = plt.subplots(figsize=(7.6, 3.8))
+    ax.bar(s.index, s.values * 100, width=0.78,
+           color=[DEM if k >= 26 else REP if k <= 24 else MUTED for k in s.index])
+    ax.axvline(25.5, color=INK, lw=0.8, ls=(0, (2, 2)))
+    p26 = s[s.index >= 26].sum()
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True, steps=[1, 2, 5, 10]))
+    ax.text(s.index.max() + 0.4, ax.get_ylim()[1] * 0.92, f"Democrats Hold 26+: {p26 * 100:.0f}%", ha="right",
+            fontsize=9.5, color=DEM)
+    ax.set_xticks(range(int(s.index.min()), int(s.index.max()) + 1, 2))
+    ax.set_xlabel("Democratic Governors After the Election")
+    ax.set_ylabel("Chance (%)")
+    tidy(ax)
+    note(ax, "20,000 simulations. 36 races; 6 Democratic and 8 Republican governors are not up in 2026. "
+             "25 is an even split (grey).", y=-0.2)
+    save(fig, "governor_seats_2026.png")
+
 def fundamentals_only_2026() -> pd.DataFrame:
     """The 2026 race forecast without the poll layer, computed in memory (nothing is saved).
 
@@ -468,6 +490,7 @@ def main() -> None:
     race_calibration()
     race_probabilities()
     senate_seats()
+    governor_seats()
     polls_shift(fundamentals_only_2026())
     house_seats()
 

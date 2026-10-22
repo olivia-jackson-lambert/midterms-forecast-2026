@@ -17,7 +17,7 @@ from forecast.pipeline import plan  # noqa: E402
 
 NEEDED = ["turnout_2026.parquet", "turnout_2026_states.parquet", "turnout_2026_national.csv",
           "turnout_2026_early_vote.csv", "county_midterm_turnout.parquet", "vote_share_2026.parquet",
-          "senate_seats_2026.csv", "backtest_turnout.csv", "backtest_races.csv",
+          "senate_seats_2026.csv", "governor_seats_2026.csv", "backtest_turnout.csv", "backtest_races.csv",
           "generic_ballot_history.csv", "house_2026.parquet", "house_seats_2026.csv", "poll_averages.csv",
           "polls.parquet"]
 pytestmark = pytest.mark.skipif(not all((OUT / f).exists() for f in NEEDED),
@@ -121,6 +121,13 @@ def test_senate_seats(folder):
     assert abs(s["probability"].sum() - 1) < 0.01
 
 
+def test_governor_seats(folder):
+    s = read(folder, "governor_seats.csv")
+    assert list(s.columns) == ["dem_seats", "independent_seats", "probability"]
+    assert s["dem_seats"].between(6, 42).all()        # 6 Democrats not up; 36 races
+    assert abs(s["probability"].sum() - 1) < 0.01
+
+
 def test_backtests(folder):
     b = read(folder, "backtests.csv")
     assert list(b.columns) == ["backtest", "year", "variant", "trained_on", "metric", "value"]
@@ -154,7 +161,7 @@ def test_manifest(folder):
     assert "git_commit" in m and "git_working_tree_clean" in m
     files = {p.name for p in folder.iterdir()} - {"manifest.json"}
     assert set(m["sha256"]) == files == {"turnout_counties.csv", "turnout_states.csv", "national.csv",
-                                         "races.csv", "senate_seats.csv", "house_districts.csv",
+                                         "races.csv", "senate_seats.csv", "governor_seats.csv", "house_districts.csv",
                                          "house_seats.csv", "backtests.csv"}
     for name, digest in m["sha256"].items():
         assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == digest

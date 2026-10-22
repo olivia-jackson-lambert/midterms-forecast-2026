@@ -2,8 +2,7 @@
 title: "Turnout First: Forecasting the 2026 Midterms"
 description: "A public, pre-registered forecast of the 2026 US midterms that predicts county turnout first and builds Senate, governor and House forecasts on top. Every part had to beat a simple baseline out of sample."
 image: /project/cover_assets/thumbs/turnout-first-2026.png
-date: 2026-10-19
-draft: true  # remove when v1 is tagged and the numbers below are updated
+date: 2026-10-22
 categories: [Bayesian Inference, Forecasting, PyMC, Elections, Backtesting]
 format:
   html:
@@ -30,19 +29,19 @@ format:
 - Race polls halve the 2022 Brier score (0.067 to 0.031), but their 80% intervals caught only 77% of results. The most confident calls are probably overstated.
 - The House model beats both baselines in 2022, though only narrowly against uniform swing on vote share.
 - Weighting by forecast turnout barely moves state leans. Turnout matters for counties and for uncertainty, not for who wins.
+- The v1 forecast favours Democrats in the House (93%), narrowly in the Senate (63%) and for a majority of governorships (62%).
 :::
 :::
 :::
 
 Turnout First is my forecast of the 3 November 2026 US midterms. It covers turnout in every county, the chance each side wins every Senate and governor race (71 in all) and all 435 House seats. It uses public data only. The forecast is a tagged Git commit with a timestamp, so it cannot be edited after the fact, and I will score it against the certified results.
 
-Most public forecasts start with who wins. This one starts with how many people vote. The model forecasts national turnout of 47.9% of citizens of voting age<!-- v1: update -->, a little above 2022's 46.5%. Democrats reach 51 Senate seats in 64% of simulations<!-- v1: update --> and Republicans keep 50 or more in 31%<!-- v1: update -->. In the House, Democrats win 218 or more seats in 91%<!-- v1: update -->. The more useful finding is about the method: forecasting turnout first improves the county picture a great deal and changes the race forecasts very little.
+Most public forecasts start with who wins. This one starts with how many people vote. The model forecasts national turnout of 47.9% of citizens of voting age, a little above 2022's 46.5%. Democrats reach 51 Senate seats in 63% of simulations and Republicans keep 50 or more in 33%. Democrats hold a majority of governorships (26 or more) in 62%, and win 218 or more House seats in 93%. The more useful finding is about the method: forecasting turnout first improves the county picture a great deal and changes the race forecasts very little.
 
 **Source code**: [github.com/olivia-jackson-lambert/turnout-2026](https://github.com/olivia-jackson-lambert/turnout-2026) <!-- v1: add the link to the v1 tag (the repo is private until then) -->
 
 ![Forecast change in turnout by county, 2026 against 2022. Colour fades where the county's own 80% interval is wide.](assets/hero_turnout_change_map.png){fig-alt="Map of the United States by county, coloured by forecast change in turnout from 2022 to 2026 on a scale from minus 10 to plus 10 points, with green for higher and purple for lower, and colours fading towards grey where the forecast is less certain. Green dominates Tennessee, Virginia, North Carolina, Mississippi, Alabama, New Jersey and parts of Montana and Idaho. Purple dominates Oregon, Washington, upstate New York, Pennsylvania, Missouri and much of the interior West. The Plains and Midwest are mostly pale. Alaska and Connecticut are drawn as single units." width="100%"}
 
-<!-- v1: update map description if the pattern changes -->
 
 # The Question
 
@@ -95,7 +94,7 @@ The turnout model has two levels, fitted in PyMC.
 
 **County.** Each county's change from the last midterm depends on how far presidential turnout ran above that midterm, a pull back towards the county's average, a Senate race joining or leaving the ballot, the closeness of the top race, an out-party effect (county lean times a change in which party holds the White House), seven demographic slopes and a state effect. County noise is Student-t and grows for small counties. It is fitted on the 2014 to 2018 and 2018 to 2022 transitions.
 
-![What drives the change in county turnout, as points of turnout for a typical difference between counties.](assets/turnout_drivers.png){fig-alt="Dot plot of twelve terms with 89% intervals, in points of turnout change. Presidential surge carried over is largest at plus 3.2. Pull back to average is minus 1.9. Senate race added is plus 1.3. Aged 65 and over plus 0.8, degree holders plus 0.7 and out-party lean plus 0.4 are also clearly positive. Population density, Hispanic share, top race closer, Black share, median income and aged 18 to 29 all have intervals crossing zero." width="88%"}
+![What drives the change in county turnout, as points of turnout for a typical difference between counties.](assets/turnout_drivers.png){fig-alt="Dot plot of twelve terms with 89% intervals, in points of turnout change. Presidential surge carried over is largest at plus 3.2. Pull back to average is minus 1.9. Senate race added is plus 1.3. Share aged 65 and over plus 0.8, share with a degree plus 0.7 and out-party lean plus 0.4 are also clearly positive. Population density, the shares of residents who are Hispanic or Latino and Black non-Hispanic, top race closer, median household income and share aged 18 to 29 all have intervals crossing zero. A note explains that the shares describe counties, not individual voters." width="88%"}
 
 The strongest predictor is how much of the last presidential surge carries over. A county whose 2024 turnout ran well above its 2022 turnout tends to stay higher. A Senate race on the ballot adds about 1.3 points. Most demographic slopes are too uncertain to call either way.
 
@@ -112,7 +111,7 @@ The vote model forecasts the Democratic share of the two-party vote in each Sena
 - incumbency, and the incumbent's track record: how their last result compared with what a uniform swing predicted;
 - regional, same-state and race errors.
 
-I call this the fundamentals forecast. Around 30 September the generic ballot has overstated the Democratic House vote in 11 of the 12 cycles since 1998, by 1.7 points on average, and the model corrects for that. The 2026 generic ballot of 54.5% two-party<!-- v1: update --> becomes a national House vote of 52.7%<!-- v1: update --> (80%: 51.1 to 54.3<!-- v1: update -->).
+I call this the fundamentals forecast. Around 30 September the generic ballot has overstated the Democratic House vote in 11 of the 12 cycles since 1998, by 1.7 points on average, and the model corrects for that. The 2026 generic ballot of 54.7% two-party becomes a national House vote of 52.9% (80%: 51.3 to 54.5).
 
 The errors are shared. Every simulation draws one national error, plus regional and same-state errors, so the model does not treat races as independent. Treating them as independent is the most common way a forecast becomes overconfident.
 
@@ -124,13 +123,13 @@ An earlier version looked better in backtests than it should have: it used the f
 
 The fundamentals forecast knows nothing about the candidates beyond incumbency, which is the main reason it disagreed with published ratings in Texas, Ohio, Alaska and Iowa. So I added race polls as a separate layer on top.
 
-**What.** For each race I take the poll tables from its Wikipedia article and keep only head-to-heads between the actual nominees. In the backtests a poll counts only if its fieldwork ended by 26 September. In 2026, 57 of 71 races have at least one qualifying poll<!-- v1: update -->. The rest are mostly safe seats, plus Florida, Colorado and Alaska governor, and keep the fundamentals forecast.
+**What.** For each race I take the poll tables from its Wikipedia article and keep only head-to-heads between the actual nominees. In the backtests a poll counts only if its fieldwork ended by 26 September. In 2026, 60 of 71 races have at least one qualifying poll. The rest are mostly safe seats, plus Florida, Colorado and Alaska governor, and keep the fundamentals forecast.
 
-**How.** Each race gets a poll average: each pollster's latest poll, likely voters preferred, weighted towards recent polls (a 21-day half-life) and larger samples. The model treats that average as a noisy reading of the result. Polls miss in two ways: a national error that every race shares in a given year, and a race error that shrinks as polls accumulate. The size of each is fitted on earlier years only. In each simulation the forecast moves from the fundamentals towards the polls in proportion to how precise the polls are, with one national polling error drawn for every race at once. In 2026 the polls get a median weight of about two thirds<!-- v1: update -->.
+**How.** Each race gets a poll average: each pollster's latest poll, likely voters preferred, weighted towards recent polls (a 21-day half-life) and larger samples. The model treats that average as a noisy reading of the result. Polls miss in two ways: a national error that every race shares in a given year, and a race error that shrinks as polls accumulate. The size of each is fitted on earlier years only. In each simulation the forecast moves from the fundamentals towards the polls in proportion to how precise the polls are, with one national polling error drawn for every race at once. In 2026 the polls get a median weight of about 70%.
 
 **The gain.** The rule was the same as for every other input: keep polls only if they improve the 2022 backtest on both Brier score and vote-share error. They do, by a lot. The 2022 Brier score falls from 0.067 to 0.031 and vote-share error from 3.6 to 2.7 points. In 2018, on priors alone, Brier falls from 0.149 to 0.062.
 
-**The cost.** The intervals are now too narrow. With polls, the 80% intervals contained 77% of 2022 results and 71% of 2018's. Two elections are not enough to size the national polling error well, and widening the intervals until the backtests look right would be tuning to the test, the mistake that sank the earlier version. So I am leaving it and saying it plainly: the most confident calls are probably overstated. North Carolina's Senate race is the clearest case. The model gives the Democratic side 98%<!-- v1: update -->, on a poll average of 55.4%<!-- v1: update --> from 17 polls, while the published ratings call it Lean or Likely Democratic. I would read it as a clear favourite, not a near certainty, and the same goes for other races above 90%.
+**The cost.** The intervals are now too narrow. With polls, the 80% intervals contained 77% of 2022 results and 71% of 2018's. Two elections are not enough to size the national polling error well, and widening the intervals until the backtests look right would be tuning to the test, the mistake that sank the earlier version. So I am leaving it and saying it plainly: the most confident calls are probably overstated. North Carolina's Senate race is the clearest case. The model gives the Democratic side 98%, on a poll average of 55.6% from 18 polls, while the published ratings call it Lean or Likely Democratic. I would read it as a clear favourite, not a near certainty, and the same goes for other races above 90%.
 
 # Backtests
 
@@ -187,7 +186,7 @@ The ends of the scale are well calibrated: 111 races forecast below 20% or above
 
 # The House
 
-**Method.** The House model has the same structure as the vote model. Each district's lean is the 2024 presidential two-party share on the map in force for 2026; nine states redrew for 2026, including Texas, California, North Carolina and Ohio. The lean is moved by the same national House vote, plus incumbency and regional, state and district errors, fitted in PyMC on earlier midterms only. Each simulation draws the national vote and the errors, so districts in the same state move together. Two things from the vote model are left out. Turnout weighting would need a county-to-district split of every new map, which is not public, and it barely moves leans anyway. The incumbent's track record made the 2022 House backtest worse (Brier 0.035 against 0.031), so it failed the rule. Fifteen districts<!-- v1: update --> with candidates of only one party are counted as certain holds.
+**Method.** The House model has the same structure as the vote model. Each district's lean is the 2024 presidential two-party share on the map in force for 2026; nine states redrew for 2026, including Texas, California, North Carolina and Ohio. The lean is moved by the same national House vote, plus incumbency and regional, state and district errors, fitted in PyMC on earlier midterms only. Each simulation draws the national vote and the errors, so districts in the same state move together. Two things from the vote model are left out. Turnout weighting would need a county-to-district split of every new map, which is not public, and it barely moves leans anyway. The incumbent's track record made the 2022 House backtest worse (Brier 0.035 against 0.031), so it failed the rule. Fifteen districts with candidates of only one party are counted as certain holds.
 
 Scored on districts with a Democrat against a Republican (394 in 2018, 399 in 2022). Both baselines are called with certainty.
 
@@ -205,85 +204,96 @@ Scored on districts with a Democrat against a Republican (394 in 2018, 399 in 20
 
 In 2022 the model beats both baselines, though only narrowly against uniform swing on vote share (2.2 against 2.3 points), and the actual seat count fell inside its 80% band. In 2018, on priors alone, it does not beat uniform swing on Brier and its intervals are far too wide. Most of its edge comes from giving probabilities instead of certain calls. It passes the rule, and I present it with that caveat.
 
-![Distribution of Democratic House seats across 20,000 simulations.](assets/house_seats_2026.png){fig-alt="Bar chart of the chance of each number of Democratic House seats after the election, from about 200 to 283. Bars below 218 seats are red and bars from 218 are blue, with a dashed line between 217 and 218. The distribution peaks around 228 to 232 seats at about 3.5% each, with a long tail towards higher counts. Text reads Democrats win 218 plus: 91%, and median 232 seats, 80% interval 218 to 250." width="88%"}
+![Distribution of Democratic House seats across 20,000 simulations.](assets/house_seats_2026.png){fig-alt="Bar chart of the chance of each number of Democratic House seats after the election, from about 202 to 287. Bars below 218 seats are red and bars from 218 are blue, with a dashed line between 217 and 218. The distribution peaks around 228 to 236 seats at about 3.5% each, with a long tail towards higher counts. Text reads Democrats win 218 plus: 93%, and median 234 seats, 80% interval 219 to 252." width="88%"}
 
-<!-- v1: update chart values in alt text -->
-
-**2026.** Democrats win a median of 232 seats<!-- v1: update --> (80%: 218 to 250<!-- v1: update -->) and 218 or more in 91% of simulations<!-- v1: update -->; Republicans reach 218 in 8%<!-- v1: update -->. Twelve districts<!-- v1: update --> sit between 40% and 60%.
+**2026.** Democrats win a median of 234 seats (80%: 219 to 252) and 218 or more in 93% of simulations; Republicans reach 218 in 7%. Thirteen districts give the Democratic side between a 40% and 60% chance, and 50 between 20% and 80%.
 
 **Known gaps.** Alaska and Maine are modelled on first-round shares, not the ranked-choice final round. Louisiana's new map holds a first round on 3 November with several candidates per party, modelled as the summed Democratic against Republican vote. Errors are shared only nationally, by region and by state, so districts that move together for other reasons are treated as independent within a state, and the seat interval may be a little narrow. And with 2018 running on priors, one midterm is a thin basis for the fitted slopes.
 
 # The 2026 Forecast
 
-These are the forecast v1 numbers, from the tagged commit of 19 October<!-- v1: update -->. Weekly updates follow until Election Day.
+These are the forecast v1 numbers, from the tagged commit of 22 October. The plan was 19 October; the release slipped by three days, and every input is dated in the release manifest. Weekly updates follow until Election Day.
+
+| | Forecast | 80% interval |
+|---|--:|--:|
+| National turnout, share of citizens of voting age | 47.9% | 42.2 to 53.5% |
+| National House vote, Democratic two-party share | 52.9% | 51.3 to 54.5% |
+| Senate: Democrats reach 51 seats | 63% | |
+| Senate: Republicans hold 50 or more | 33% | |
+| Governors: Democrats hold 26 or more | 62% | |
+| Democratic governors, median | 26 | 23 to 29 |
+| House: Democrats win 218 or more | 93% | |
+| Democratic House seats, median | 234 | 219 to 252 |
 
 ## Turnout
 
 ![National turnout in every federal election since 1980, with the 2026 forecast.](assets/national_turnout_history.png){fig-alt="Line chart of voting-eligible population turnout from 1980 to 2024. Presidential years, in light grey, run between about 52 and 66%. Midterms, in dark grey, sit between about 37 and 43% until 2014, jump to 50.0% in 2018, and fall to about 46% in 2022. A green band at 2026 shows the forecast: 47.5% with an 80% interval of 42 to 53%." width="92%"}
 
-<!-- v1: update chart values in alt text -->
-
-On the eligible-population basis used in the chart, national turnout is forecast at 47.5%<!-- v1: update -->. The county model uses citizens of voting age from the Census as its denominator, which gives a slightly different number: 47.9%<!-- v1: update --> (80%: 42.2 to 53.5%<!-- v1: update -->), against 46.5% in 2022. Turnout is forecast to rise in 58% of county units<!-- v1: update -->.
+On the eligible-population basis used in the chart, national turnout is forecast at 47.5%. The county model uses citizens of voting age from the Census as its denominator, which gives a slightly different number: 47.9% (80%: 42.2 to 53.5%), against 46.5% in 2022. Turnout is forecast to rise in 58% of county units.
 
 ![Forecast 2026 turnout by state, with 2022 for comparison. Green marks states where a Senate race joins the ballot.](assets/state_turnout_2026.png){fig-alt="Dot plot of all 50 states and DC, sorted by forecast 2026 turnout, from Maine and Minnesota near 61% at the top to Hawaii near 37% at the bottom. Each state has a filled dot for the forecast, a hollow dot for 2022, a thick bar for its own 80% interval and a thin bar for the interval including national uncertainty. States with a Senate race added, in green, mostly sit to the right of their 2022 value: Tennessee, Mississippi, New Jersey, Delaware, Virginia and West Virginia most clearly. Oregon sits well to the left of its 2022 value." width="70%"}
 
-The largest forecast rises are in states with a Senate race on the ballot this year and none in 2022: Tennessee, Delaware, New Jersey and Mississippi each rise by 7 to 8 points<!-- v1: update -->. Oregon shows the largest fall, about 6 points<!-- v1: update -->, from an unusually high 2022.
+The largest forecast rises are in states with a Senate race on the ballot this year and none in 2022: Tennessee, Delaware, New Jersey and Mississippi each rise by 7.5 to 8 points. Oregon shows the largest fall, about 6 points, from an unusually high 2022.
 
 ## The Senate
 
-![Distribution of Democratic-caucus Senate seats across 20,000 simulations.](assets/senate_seats_2026.png){fig-alt="Bar chart of the chance of each number of Democratic-caucus Senate seats after the election, from 42 to 58. Bars up to 50 seats are red and bars from 51 seats are blue, with a dashed line between 50 and 51. The distribution peaks at 51 seats at about 19%, with 52 seats at about 18% and 50 seats at about 15%. Text reads Democrats win 51 plus: 64%." width="88%"}
-
-<!-- v1: update chart values in alt text -->
+![Distribution of Democratic-caucus Senate seats across 20,000 simulations.](assets/senate_seats_2026.png){fig-alt="Bar chart of the chance of each number of Democratic-caucus Senate seats after the election, from 42 to 58. Bars up to 50 seats are red and bars from 51 seats are blue, with a dashed line between 50 and 51. The distribution peaks at 51 seats at about 19%, with 52 seats at about 18% and 50 seats at about 16%. Text reads Democrats win 51 plus: 63%." width="88%"}
 
 Republicans currently hold 53 seats. Democrats need 51 for control, since the Vice President breaks ties. Across 20,000 simulations:
 
 | Outcome | Chance |
 |---|--:|
-| Democrats reach 51 or more | 64%<!-- v1: update --> |
-| Republicans hold 50 or more seats | 31%<!-- v1: update --> |
-| Neither, with independents holding the balance | 5%<!-- v1: update --> |
+| Democrats reach 51 or more | 63% |
+| Republicans hold 50 or more seats | 33% |
+| Neither, with independents holding the balance | 4% |
 
-The most likely outcomes are 51 or 52 Democratic-caucus seats<!-- v1: update -->, close enough to the line that small shifts in a few races move the control odds a lot. Without polls, these numbers were close to reversed: Democrats reached 51 in 39% of simulations and Republicans held 50 in 56%. Given the narrow intervals described above, I would read 64% as a little too confident.
+The most likely outcomes are 51 or 52 Democratic-caucus seats, close enough to the line that small shifts in a few races move the control odds a lot. Without polls the picture is reversed: Democrats reach 51 in 42% of simulations and Republicans hold 50 in 53%. Given the narrow intervals described above, 63% is probably a little too confident.
 
-## Races to Watch
-
-![Every 2026 Senate and governor race by the chance each side wins.](assets/race_probabilities_2026.png){fig-alt="Two lollipop charts, Senate on the left and governor on the right, each race placed on a scale from safe Republican through even to safe Democratic. Points left of even are red and points right of even are blue. Senate: 17 races lean Democratic, the closest being Texas, the Ohio special and Maine; 18 lean Republican, the closest being Iowa, Alaska and Kansas. Nebraska, South Dakota and Idaho are hollow points, where an independent faces the Republican. Governor: 19 races lean Democratic, the closest Ohio and Wisconsin; 17 lean Republican, the closest Georgia, Nevada, Florida and Alaska." width="92%"}
-
-<!-- v1: update counts and race names in alt text -->
-
-Polls move most races towards the published ratings. Texas Senate and the Ohio special go from Republican favourites to slight Democratic ones, Alaska and Kansas Senate become close, and Iowa governor goes from 35% to 88% for the Democratic side. Georgia governor moves furthest the other way.
-
-![Competitive races: the chance the Democratic side wins, with the fundamentals alone and with polls.](assets/polls_shift_2026.png){fig-alt="Two dumbbell charts, Senate above with 18 races and governor below with 24, on a scale from safe Republican through even to safe Democratic. Each race has a hollow point for the fundamentals-only forecast and a filled point for the forecast with polls, each blue if it favours the Democratic side and red if it favours the Republican. Senate: Texas and the Ohio special cross from red near 30% to blue near 57%; Alaska moves from 20% to 42%, Kansas from 19% to 37%, Iowa from 34% to 47%; North Carolina rises from 77% to 98%; Montana falls from 12% to under 1%; the Florida special falls from 22% to 9%. Governor: Iowa crosses from 35% to 88%; Ohio crosses from 40% to 67%; Georgia crosses the other way from 62% to 46%; Michigan rises from 63% to 93% and Maine from 81% to 99%; New Hampshire falls from 20% to 5% and South Carolina from 26% to 10%. Florida, Alaska and Colorado governor have no polls and do not move." width="88%"}
-
-<!-- v1: update counts and race names in alt text -->
-
-Fifteen races<!-- v1: update --> have a favourite below 80%. These are the ones the forecast is least sure about.
+Seven Senate races have a favourite below 80%:
 
 | Race | Democratic Side | Republican | Favoured | Chance |
 |---|---|---|---|--:|
-| Iowa Senate | Josh Turek | Ashley Hinson | Republican | 53% |
-| Texas Senate | James Talarico | Ken Paxton | Democrat | 57% |
-| Ohio Senate (special) | Sherrod Brown | Jon Husted | Democrat | 58% |
-| Alaska Senate | Mary Peltola | Dan Sullivan | Republican | 58% |
-| Kansas Senate | Adam Hamilton | Roger Marshall | Republican | 63% |
-| Nebraska Senate | Dan Osborn (independent) | Pete Ricketts | Republican | 73% |
-| Maine Senate | Troy Jackson | Susan Collins | Democrat | 77% |
-| Georgia governor | Keisha Lance Bottoms | Rick Jackson | Republican | 54% |
-| Nevada governor | Aaron Ford | Joe Lombardo | Republican | 64% |
-| Florida governor | David Jolly | Byron Donalds | Republican | 65% |
-| Alaska governor | Jonathan Kreiss-Tomkins | Top-four field | Republican | 66% |
-| Ohio governor | Amy Acton | Vivek Ramaswamy | Democrat | 67% |
-| Wisconsin governor | David Crowley | Tom Tiffany | Democrat | 74% |
-| Kansas governor | Cindy Holscher | Ty Masterson | Republican | 78% |
-| Texas governor | Gina Hinojosa | Greg Abbott | Republican | 79% |
+| Texas | James Talarico | Ken Paxton | Democrat | 55% |
+| Alaska | Mary Peltola | Dan Sullivan | Republican | 56% |
+| Iowa | Josh Turek | Ashley Hinson | Republican | 57% |
+| Ohio (special) | Sherrod Brown | Jon Husted | Democrat | 58% |
+| Kansas | Adam Hamilton | Roger Marshall | Republican | 65% |
+| Nebraska | Dan Osborn (independent) | Pete Ricketts | Republican | 71% |
+| Maine | Troy Jackson | Susan Collins | Democrat | 77% |
 
-<!-- v1: update the whole table -->
+## Governors
 
-A 60% favourite loses four times in ten. Across 15 races at these odds, several upsets are expected even if the model is well calibrated.
+![Distribution of Democratic governorships across 20,000 simulations.](assets/governor_seats_2026.png){fig-alt="Bar chart of the chance of each number of Democratic governors after the election, from 16 to 36. Bars up to 24 are red, 25 (an even split) is grey and bars from 26 are blue, with a dashed line between 25 and 26. The distribution peaks at 26 at about 19%, with 27 at about 17% and 25 at about 17%. Text reads Democrats hold 26 plus: 62%." width="88%"}
+
+Thirty-six governorships are on the ballot. Republicans hold 26 governorships and Democrats 24, counting Virginia's change of party in 2025. Of the 14 not up this year, 6 are held by Democrats and 8 by Republicans. Democrats hold 26 or more in 62% of simulations, the two parties split 25 each in 17%, and Republicans keep a majority in 22%. The median is 26 Democratic governors (80%: 23 to 29).
+
+Polls matter more here than in the Senate. Without them, Democrats reach 26 in 40% of simulations. The largest moves are Iowa (36% to 85% for the Democratic side), Michigan (64% to 92%) and Ohio (42% to 69%), against Georgia, which moves from 63% to 46%. The same caution about narrow intervals applies.
+
+Seven governor races have a favourite below 80%:
+
+| Race | Democratic Side | Republican | Favoured | Chance |
+|---|---|---|---|--:|
+| Georgia | Keisha Lance Bottoms | Rick Jackson | Republican | 54% |
+| Nevada | Aaron Ford | Joe Lombardo | Republican | 63% |
+| Florida | David Jolly | Byron Donalds | Republican | 64% |
+| Alaska | Jonathan Kreiss-Tomkins | Top-four field | Republican | 65% |
+| Ohio | Amy Acton | Vivek Ramaswamy | Democrat | 69% |
+| Wisconsin | David Crowley | Tom Tiffany | Democrat | 76% |
+| Kansas | Cindy Holscher | Ty Masterson | Republican | 76% |
+
+A 60% favourite loses four times in ten. Across these 14 races, several upsets are expected even if the model is well calibrated.
+
+## Every Race, and What Polls Changed
+
+![Every 2026 Senate and governor race by the chance each side wins.](assets/race_probabilities_2026.png){fig-alt="Two lollipop charts, Senate on the left and governor on the right, each race placed on a scale from safe Republican through even to safe Democratic. Points left of even are red and points right of even are blue. Senate: 17 races lean Democratic, the closest being Texas, the Ohio special and Maine; 18 lean Republican, the closest being Alaska, Iowa and Kansas. Nebraska, South Dakota and Idaho are hollow points, where an independent faces the Republican. Governor: 19 races lean Democratic, the closest Ohio and Wisconsin; 17 lean Republican, the closest Georgia, Nevada, Florida and Alaska." width="92%"}
+
+Polls move most races towards the published ratings. Texas Senate and the Ohio special go from Republican favourites to slight Democratic ones, Alaska and Kansas Senate become closer, and Iowa governor goes from 36% to 85% for the Democratic side. Georgia governor moves furthest the other way.
+
+![Competitive races: the chance the Democratic side wins, with the fundamentals alone and with polls.](assets/polls_shift_2026.png){fig-alt="Two dumbbell charts, Senate above with 18 races and governor below with 24, on a scale from safe Republican through even to safe Democratic. Each race has a hollow point for the fundamentals-only forecast and a filled point for the forecast with polls, each blue if it favours the Democratic side and red if it favours the Republican. Senate: Texas crosses from 33% to 55% and the Ohio special from 32% to 58%; Alaska moves from 22% to 44%, Kansas from 20% to 35%, Iowa from 35% to 43% and Nebraska from 18% to 29%; North Carolina rises from 78% to 98%; Montana falls from 13% to under 1%; the Florida special falls from 23% to 8%. Governor: Iowa crosses from 36% to 85%; Ohio crosses from 42% to 69%; Georgia crosses the other way from 63% to 46%; Michigan rises from 64% to 92% and Maine from 81% to 99%; New Hampshire falls from 21% to 4% and South Carolina from 27% to 4%. Florida, Alaska and Colorado governor have no polls and do not move." width="88%"}
 
 # What Turnout Does and Does Not Do
 
-The case for forecasting turnout first was that a different electorate could change state leans. In practice it hardly does. Re-weighting each state's presidential result county by county with forecast turnout moves the lean by about 0.15 points on average across the 71 races<!-- v1: update -->, and by at most half a point<!-- v1: update -->.
+The case for forecasting turnout first was that a different electorate could change state leans. In practice it hardly does. Re-weighting each state's presidential result county by county with forecast turnout moves the lean by about 0.15 points on average across the 71 races, and by at most half a point.
 
 The backtests agree. With the plain presidential lean instead of the turnout-weighted one, the 2022 Brier score of the fundamentals is 0.069 instead of 0.067, and 2018 is slightly better without it (0.147 against 0.149). That is a small edge in one year and none in the other.
 
