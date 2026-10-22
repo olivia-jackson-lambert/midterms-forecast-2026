@@ -249,7 +249,10 @@ def latest_poll_end() -> str | None:
 def manifest(version: str, draft: bool, files: list[Path]) -> dict:
     from . import house, turnout_model, vote_model       # for the simulation counts
 
-    status = _git("status", "--porcelain")
+    # The release's own folder is written before this runs, so leave it out of the check.
+    folder = files[0].parent.resolve() if files else None
+    exclude = [f":(exclude){folder.relative_to(ROOT.resolve())}"] if folder and folder.is_relative_to(ROOT.resolve()) else []
+    status = _git("status", "--porcelain", "--", ".", *exclude)
     pages = [RAW / "races" / f"{FORECAST_YEAR}_United_States_{k}_elections.html"
              for k in ("Senate", "gubernatorial")]
     ev = pd.read_csv(OUT / "turnout_2026_early_vote.csv")

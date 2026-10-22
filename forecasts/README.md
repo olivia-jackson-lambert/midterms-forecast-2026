@@ -35,3 +35,7 @@ To release: refresh the 2026 inputs and run the pipeline (`python -m forecast.pi
 check a draft (`python -m forecast.release v1 --draft`, written to `forecasts/_draft/v1/`,
 which git ignores), then write the real one (`python -m forecast.release v1`), commit it with a
 clean working tree (the manifest records whether it was clean) and tag the commit with the folder name.
+
+v1 records `git_working_tree_clean: false`. Its tree was clean apart from the new
+`forecasts/v1/` folder itself: the check ran after the tables were written, so it counted
+them. From v2 the check leaves the release's own folder out.
