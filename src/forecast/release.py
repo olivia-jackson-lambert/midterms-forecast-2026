@@ -175,21 +175,22 @@ def house_districts() -> pd.DataFrame:
 
 def house_seats() -> pd.DataFrame:
     s = pd.read_csv(OUT / "house_seats_2026.csv")
-    s["probability"] = s["probability"].round(4)
+    s["probability"] = s["probability"].round(5)
     s = s[["dem_seats", "rep_seats", "independent_seats", "probability"]]
     return s.sort_values(["dem_seats", "independent_seats"]).reset_index(drop=True)
 
 
 def senate_seats() -> pd.DataFrame:
     s = pd.read_csv(OUT / "senate_seats_2026.csv")
-    # Four decimals: 20,000 simulations resolve 0.00005, and three would show the tails as 0.
-    s["probability"] = s["probability"].round(4)
+    # Five decimals: each probability is a multiple of 1/20,000 = 0.00005, so five keep it exact.
+    # Four (used in v1) sit on the rounding half, and float error took 0.3% off the House total.
+    s["probability"] = s["probability"].round(5)
     return s.sort_values(["dem_seats", "independent_seats"]).reset_index(drop=True)
 
 
 def governor_seats() -> pd.DataFrame:
     s = pd.read_csv(OUT / "governor_seats_2026.csv")
-    s["probability"] = s["probability"].round(4)
+    s["probability"] = s["probability"].round(5)
     return s.sort_values(["dem_seats", "independent_seats"]).reset_index(drop=True)
 
 

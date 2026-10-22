@@ -29,7 +29,7 @@ a Republican; `stand_in` names the candidate who takes a missing party's place. 
 probabilities sum to one up to rounding. In `backtests.csv` the `model` variant of the races
 backtest is the one with polls. The House rows appear once the House backtest has run.
 Shares are rounded to four decimals and probabilities to three, so the tails of
-`senate_seats.csv` show as 0 (the seat files use four decimals, so their tails show).
+`senate_seats.csv` show as 0 (the seat files use five decimals, so their tails show).
 
 To release: refresh the 2026 inputs and run the pipeline (`python -m forecast.pipeline --refresh`),
 check a draft (`python -m forecast.release v1 --draft`, written to `forecasts/_draft/v1/`,
@@ -39,3 +39,9 @@ clean working tree (the manifest records whether it was clean) and tag the commi
 v1 records `git_working_tree_clean: false`. Its tree was clean apart from the new
 `forecasts/v1/` folder itself: the check ran after the tables were written, so it counted
 them. From v2 the check leaves the release's own folder out.
+
+v1's seat files use four decimals. Every seat probability is a multiple of 0.00005, so four
+decimals sit on the rounding half and float error rounds most of them down: the v1 House file
+sums to 0.9966, the Senate and governor files to just under 1. Divide by the column total
+to correct it (v1 House: Democrats 218+ is 0.927, not the 0.925 the raw sum gives). From v2
+the seat files use five decimals, which is exact.

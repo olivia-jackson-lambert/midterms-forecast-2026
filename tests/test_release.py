@@ -111,7 +111,8 @@ def test_house_seats(folder):
     assert list(s.columns) == ["dem_seats", "rep_seats", "independent_seats", "probability"]
     assert ((s["dem_seats"] + s["rep_seats"] + s["independent_seats"]) == 435).all()
     assert s["probability"].between(0, 1).all() and abs(s["probability"].sum() - 1) < 0.01
-    assert (s["probability"].round(4) == s["probability"]).all()
+    assert (s["probability"].round(5) == s["probability"]).all()
+    assert abs(s["probability"].sum() - 1) < 1e-6         # exact: multiples of 1/20,000
 
 
 def test_senate_seats(folder):
