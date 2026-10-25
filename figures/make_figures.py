@@ -323,7 +323,7 @@ def race_calibration() -> None:
         ax.annotate(f"{int(r['races'])} Races", (r["mean_p"], r["win_rate"]), xytext=(np.sqrt(r["races"] * 9 / np.pi) + 4, -3),
                     textcoords="offset points", fontsize=8.5, color=DIM)
     ax.set_xlim(-0.03, 1.03); ax.set_ylim(-0.03, 1.03); ax.set_aspect("equal")
-    ax.set_xlabel("Forecast Chance the Democratic Side Wins")
+    ax.set_xlabel("Forecast Chance Democrats Win")
     ax.set_ylabel("Share of Races It Won")
     tidy(ax, grid_axis="both")
     note(ax, "Model with polls; 2018 and 2022 backtests pooled, in five bins. Dashed line: perfect calibration.", y=-0.16)
@@ -331,7 +331,7 @@ def race_calibration() -> None:
 
 
 def race_probabilities() -> None:
-    """Every 2026 Senate and governor race by the chance the Democratic side wins (partisan colours)."""
+    """Every 2026 Senate and governor race by the chance Democrats win (partisan colours)."""
     v = pd.read_parquet(DATA / "vote_share_2026.parquet")
     v["label"] = v["state_po"] + np.where(v["special"], " (Special)", "")
     fig, axes = plt.subplots(1, 2, figsize=(8.6, 9.6), sharex=True)
@@ -353,7 +353,7 @@ def race_probabilities() -> None:
     axes[0].set_xlabel("Chance of Winning")
     axes[1].set_xlabel("Chance of Winning")
     fig.tight_layout()
-    note(axes[1], "Hollow points: an independent stands in for the Democratic side (NE, ID, SD Senate).", y=-0.07)
+    note(axes[1], "Hollow points: an independent runs in place of a Democrat (NE, ID, SD Senate).", y=-0.07)
     save(fig, "race_probabilities_2026.png")
 
 
@@ -443,8 +443,8 @@ def polls_shift(fund: pd.DataFrame) -> None:
     handles = [plt.Line2D([], [], marker="o", ls="", ms=6.5, mfc="white", mec=DIM, mew=1.5, label="Fundamentals Only"),
                plt.Line2D([], [], marker="o", ls="", ms=7, color=DIM, label="With Polls")]
     axes[0].legend(handles=handles, loc="lower right", bbox_to_anchor=(1, 1.0), ncol=2)
-    note(axes[1], "Races where either version gives the Democratic side between 5% and 95%. Blue: favours the Democratic\n"
-                  "side; red: favours the Republican. NE and SD Senate: an independent stands in for the Democratic side.",
+    note(axes[1], "Races where either version gives Democrats between 5% and 95%. Blue: favours Democrats;\n"
+                  "red: favours the Republican. NE and SD Senate: an independent runs in place of a Democrat.",
          y=-0.1)
     fig.tight_layout()
     save(fig, "polls_shift_2026.png")

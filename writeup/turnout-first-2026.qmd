@@ -115,7 +115,7 @@ I call this the fundamentals forecast. Around 30 September the generic ballot ha
 
 The errors are shared. Every simulation draws one national error, plus regional and same-state errors, so the model does not treat races as independent. Treating them as independent is the most common way a forecast becomes overconfident.
 
-In Nebraska, Idaho and South Dakota the Senate race has no Democrat, and an independent challenger faces the Republican. The independent stands in for the Democratic side with extra uncertainty, and a seat they win is not counted as Democratic.
+In Nebraska, Idaho and South Dakota the Senate race has no Democrat, and an independent challenger faces the Republican. The model treats the independent as it would a Democrat, with extra uncertainty, and a seat they win is not counted as Democratic.
 
 An earlier version looked better in backtests than it should have: it used the final pre-election generic ballot and set error floors by looking at the 2022 backtest. I rebuilt it on the inputs above.
 
@@ -129,7 +129,7 @@ The fundamentals forecast knows nothing about the candidates beyond incumbency, 
 
 **The gain.** The rule was the same as for every other input: keep polls only if they improve the 2022 backtest on both Brier score and vote-share error. They do, by a lot. The 2022 Brier score falls from 0.067 to 0.031 and vote-share error from 3.6 to 2.7 points. In 2018, on priors alone, Brier falls from 0.149 to 0.062.
 
-**The cost.** The intervals are now too narrow. With polls, the 80% intervals contained 77% of 2022 results and 71% of 2018's. Two elections are not enough to size the national polling error well, and widening the intervals until the backtests look right would be tuning to the test, the mistake that sank the earlier version. So I am leaving it and saying it plainly: the most confident calls are probably overstated. North Carolina's Senate race is the clearest case. The model gives the Democratic side 98%, on a poll average of 55.6% from 18 polls, while the published ratings call it Lean or Likely Democratic. I would read it as a clear favourite, not a near certainty, and the same goes for other races above 90%.
+**The cost.** The intervals are now too narrow. With polls, the 80% intervals contained 77% of 2022 results and 71% of 2018's. Two elections are not enough to size the national polling error well, and widening the intervals until the backtests look right would be tuning to the test, the mistake that sank the earlier version. So I am leaving it and saying it plainly: the most confident calls are probably overstated. North Carolina's Senate race is the clearest case. The model gives Democrats 98%, on a poll average of 55.6% from 18 polls, while the published ratings call it Lean or Likely Democratic. I would read it as a clear favourite, not a near certainty, and the same goes for other races above 90%.
 
 # Backtests
 
@@ -180,9 +180,9 @@ Scored on races with a Democrat against a Republican: 68 in 2018 and 70 in 2022.
 
 The fundamentals alone beat both baselines on Brier score in both years, and on vote share they tie uniform swing in 2018 and beat it in 2022. Polls improve every score, and they are what the forecast uses.
 
-![Calibration of race forecasts with polls, 2018 and 2022 pooled.](assets/race_calibration.png){fig-alt="Calibration plot of forecast chance the Democratic side wins against the share of races it won, in five bins, with a dashed diagonal for perfect calibration. 53 races near 3% won none. 7 races near 30% won 1. 11 races near 51% won 7. 9 races near 71% won 6. 58 races near 96% won 57. The points sit close to the diagonal, with the two middle bins a little above and below it." width="65%"}
+![Calibration of race forecasts with polls, 2018 and 2022 pooled.](assets/race_calibration.png){fig-alt="Calibration plot of forecast chance Democrats win against the share of races it won, in five bins, with a dashed diagonal for perfect calibration. 53 races near 3% won none. 7 races near 30% won 1. 11 races near 51% won 7. 9 races near 71% won 6. 58 races near 96% won 57. The points sit close to the diagonal, with the two middle bins a little above and below it." width="65%"}
 
-The ends of the scale are well calibrated: 111 races forecast below 20% or above 80% went the expected way in all but one. The 20 races between 40% and 80% went to the Democratic side 13 times, against about 12 expected. That is a small sample; the interval coverage above is the more telling number.
+The ends of the scale are well calibrated: 111 races forecast below 20% or above 80% went the expected way in all but one. The 20 races between 40% and 80% went to Democrats 13 times, against about 12 expected. That is a small sample; the interval coverage above is the more telling number.
 
 # The House
 
@@ -206,7 +206,7 @@ In 2022 the model beats both baselines, though only narrowly against uniform swi
 
 ![Distribution of Democratic House seats across 20,000 simulations.](assets/house_seats_2026.png){fig-alt="Bar chart of the chance of each number of Democratic House seats after the election, from about 202 to 287. Bars below 218 seats are red and bars from 218 are blue, with a dashed line between 217 and 218. The distribution peaks around 228 to 236 seats at about 3.5% each, with a long tail towards higher counts. Text reads Democrats win 218 plus: 93%, and median 234 seats, 80% interval 219 to 252." width="88%"}
 
-**2026.** Democrats win a median of 234 seats (80%: 219 to 252) and 218 or more in 93% of simulations; Republicans reach 218 in 7%. Thirteen districts give the Democratic side between a 40% and 60% chance, and 50 between 20% and 80%.
+**2026.** Democrats win a median of 234 seats (80%: 219 to 252) and 218 or more in 93% of simulations; Republicans reach 218 in 7%. Thirteen districts give Democrats between a 40% and 60% chance, and 50 between 20% and 80%.
 
 **Known gaps.** Alaska and Maine are modelled on first-round shares, not the ranked-choice final round. Louisiana's new map holds a first round on 3 November with several candidates per party, modelled as the summed Democratic against Republican vote. Errors are shared only nationally, by region and by state, so districts that move together for other reasons are treated as independent within a state, and the seat interval may be a little narrow. And with 2018 running on priors, one midterm is a thin basis for the fitted slopes.
 
@@ -251,7 +251,7 @@ The most likely outcomes are 51 or 52 Democratic-caucus seats, close enough to t
 
 Seven Senate races have a favourite below 80%:
 
-| Race | Democratic Side | Republican | Favoured | Chance |
+| Race | Democrat | Republican | Favoured | Chance |
 |---|---|---|---|--:|
 | Texas | James Talarico | Ken Paxton | Democrat | 55% |
 | Alaska | Mary Peltola | Dan Sullivan | Republican | 56% |
@@ -267,11 +267,11 @@ Seven Senate races have a favourite below 80%:
 
 Thirty-six governorships are on the ballot. Republicans hold 26 governorships and Democrats 24, counting Virginia's change of party in 2025. Of the 14 not up this year, 6 are held by Democrats and 8 by Republicans. Democrats hold 26 or more in 62% of simulations, the two parties split 25 each in 17%, and Republicans keep a majority in 22%. The median is 26 Democratic governors (80%: 23 to 29).
 
-Polls matter more here than in the Senate. Without them, Democrats reach 26 in 40% of simulations. The largest moves are Iowa (36% to 85% for the Democratic side), Michigan (64% to 92%) and Ohio (42% to 69%), against Georgia, which moves from 63% to 46%. The same caution about narrow intervals applies.
+Polls matter more here than in the Senate. Without them, Democrats reach 26 in 40% of simulations. The largest moves are Iowa (36% to 85% for Democrats), Michigan (64% to 92%) and Ohio (42% to 69%), against Georgia, which moves from 63% to 46%. The same caution about narrow intervals applies.
 
 Seven governor races have a favourite below 80%:
 
-| Race | Democratic Side | Republican | Favoured | Chance |
+| Race | Democrat | Republican | Favoured | Chance |
 |---|---|---|---|--:|
 | Georgia | Keisha Lance Bottoms | Rick Jackson | Republican | 54% |
 | Nevada | Aaron Ford | Joe Lombardo | Republican | 63% |
@@ -287,9 +287,9 @@ A 60% favourite loses four times in ten. Across these 14 races, several upsets a
 
 ![Every 2026 Senate and governor race by the chance each side wins.](assets/race_probabilities_2026.png){fig-alt="Two lollipop charts, Senate on the left and governor on the right, each race placed on a scale from safe Republican through even to safe Democratic. Points left of even are red and points right of even are blue. Senate: 17 races lean Democratic, the closest being Texas, the Ohio special and Maine; 18 lean Republican, the closest being Alaska, Iowa and Kansas. Nebraska, South Dakota and Idaho are hollow points, where an independent faces the Republican. Governor: 19 races lean Democratic, the closest Ohio and Wisconsin; 17 lean Republican, the closest Georgia, Nevada, Florida and Alaska." width="92%"}
 
-Polls move most races towards the published ratings. Texas Senate and the Ohio special go from Republican favourites to slight Democratic ones, Alaska and Kansas Senate become closer, and Iowa governor goes from 36% to 85% for the Democratic side. Georgia governor moves furthest the other way.
+Polls move most races towards the published ratings. Texas Senate and the Ohio special go from Republican favourites to slight Democratic ones, Alaska and Kansas Senate become closer, and Iowa governor goes from 36% to 85% for Democrats. Georgia governor moves furthest the other way.
 
-![Competitive races: the chance the Democratic side wins, with the fundamentals alone and with polls.](assets/polls_shift_2026.png){fig-alt="Two dumbbell charts, Senate above with 18 races and governor below with 24, on a scale from safe Republican through even to safe Democratic. Each race has a hollow point for the fundamentals-only forecast and a filled point for the forecast with polls, each blue if it favours the Democratic side and red if it favours the Republican. Senate: Texas crosses from 33% to 55% and the Ohio special from 32% to 58%; Alaska moves from 22% to 44%, Kansas from 20% to 35%, Iowa from 35% to 43% and Nebraska from 18% to 29%; North Carolina rises from 78% to 98%; Montana falls from 13% to under 1%; the Florida special falls from 23% to 8%. Governor: Iowa crosses from 36% to 85%; Ohio crosses from 42% to 69%; Georgia crosses the other way from 63% to 46%; Michigan rises from 64% to 92% and Maine from 81% to 99%; New Hampshire falls from 21% to 4% and South Carolina from 27% to 4%. Florida, Alaska and Colorado governor have no polls and do not move." width="88%"}
+![Competitive races: the chance Democrats win, with the fundamentals alone and with polls.](assets/polls_shift_2026.png){fig-alt="Two dumbbell charts, Senate above with 18 races and governor below with 24, on a scale from safe Republican through even to safe Democratic. Each race has a hollow point for the fundamentals-only forecast and a filled point for the forecast with polls, each blue if it favours Democrats and red if it favours the Republican. Senate: Texas crosses from 33% to 55% and the Ohio special from 32% to 58%; Alaska moves from 22% to 44%, Kansas from 20% to 35%, Iowa from 35% to 43% and Nebraska from 18% to 29%; North Carolina rises from 78% to 98%; Montana falls from 13% to under 1%; the Florida special falls from 23% to 8%. Governor: Iowa crosses from 36% to 85%; Ohio crosses from 42% to 69%; Georgia crosses the other way from 63% to 46%; Michigan rises from 64% to 92% and Maine from 81% to 99%; New Hampshire falls from 21% to 4% and South Carolina from 27% to 4%. Florida, Alaska and Colorado governor have no polls and do not move." width="88%"}
 
 # What Turnout Does and Does Not Do
 
@@ -307,7 +307,7 @@ The rule for each: keep it only if it improves the 2022 backtest on both Brier s
 
 **Fundraising.** I downloaded each Senate nominee's receipts from the FEC, using the June report, the last public before 1 October. It made both scores worse (Brier 0.069, error 3.7 points), so it is out. Once the state's lean, the national environment and the incumbent's record are in, money adds little. Well-funded challengers mostly run where the race was already close.
 
-**Every nominee's track record.** The incumbent's track record helps: without it, the 2022 Brier score rises to 0.072. So I built the same measure for every nominee who had run statewide before, from their most recent Senate, governor or at-large House race since 2010. It made both scores worse (Brier 0.075, error 3.8 points), so it is out. A challenger's past result seems to be mostly their state's lean and the national mood of that year, which the model already has. It would have mattered: in the fundamentals forecast it moved Alaska Senate (Mary Peltola) from 20% to 35% for the Democratic side, and the Ohio special (Sherrod Brown) from 30% to 40%. Those are exactly the races where I would not want to lean on a feature that failed its test.
+**Every nominee's track record.** The incumbent's track record helps: without it, the 2022 Brier score rises to 0.072. So I built the same measure for every nominee who had run statewide before, from their most recent Senate, governor or at-large House race since 2010. It made both scores worse (Brier 0.075, error 3.8 points), so it is out. A challenger's past result seems to be mostly their state's lean and the national mood of that year, which the model already has. It would have mattered: in the fundamentals forecast it moved Alaska Senate (Mary Peltola) from 20% to 35% for Democrats, and the Ohio special (Sherrod Brown) from 30% to 40%. Those are exactly the races where I would not want to lean on a feature that failed its test.
 
 **Early vote.** The fair test compares each state's early-vote pace with its own pace at the same point in the previous midterm, since comparing states with each other mostly measures voting rules. I could not run it: no state-level figures from three weeks before the 2018 election survive, and only national totals for 2022. So early vote is out. I am now saving the 2026 figures every day to Election Day, so the test will be possible next cycle.
 
@@ -317,9 +317,9 @@ The rule for each: keep it only if it improves the 2022 backtest on both Brier s
 
 **Two backtests.** Everything here is judged on 2018 and 2022, and 2018 ran on priors alone. That is enough to beat a baseline. It is not enough to know whether a 70% forecast wins 70% of the time.
 
-**Intervals that are too narrow.** With polls, the race intervals covered 77% and 71% of results where they should cover 80%. The polling error is shared across races, so when polls miss, they tend to miss in the same direction everywhere. In 2022 they overstated the Democratic side by about 1.4 points on average.
+**Intervals that are too narrow.** With polls, the race intervals covered 77% and 71% of results where they should cover 80%. The polling error is shared across races, so when polls miss, they tend to miss in the same direction everywhere. In 2022 they overstated Democrats by about 1.4 points on average.
 
-**Independent candidates.** In Nebraska, Idaho and South Dakota the model treats the independent as the Democratic side with extra uncertainty, with no history of races like these to test that on. Where an independent runs alongside both nominees, as in Montana's Senate race, the polls' Democrat-against-Republican share ignores them, and the forecast there looks too sure.
+**Independent candidates.** In Nebraska, Idaho and South Dakota the model treats the independent as it would a Democrat, with extra uncertainty, with no history of races like these to test that on. Where an independent runs alongside both nominees, as in Montana's Senate race, the polls' Democrat-against-Republican share ignores them, and the forecast there looks too sure.
 
 **The national level dominates.** Most turnout error is national, and the national band is wide. A year like 2018 can fall outside it.
 
