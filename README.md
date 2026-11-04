@@ -110,3 +110,7 @@ mkdir -p data.nosync/raw data.nosync/processed && ln -s data.nosync data
 ```
 
 To keep data somewhere else entirely, set `TURNOUT_DATA=/path/to/data`.
+
+## Licence
+
+The code is released under the [MIT Licence](LICENSE). The data it downloads remain under their sources' own terms.
