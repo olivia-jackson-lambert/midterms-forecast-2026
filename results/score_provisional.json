@@ -55,7 +55,7 @@
     {
      "id": "IN-05",
      "winner_party": "D",
-     "winner_name": "J.D. Ford",
+     "winner_name": "J. D. Ford",
      "v1_p_winner": 0.076
     },
     {
@@ -139,7 +139,7 @@
     {
      "id": "2026-GA-GOV",
      "winner_party": "D",
-     "winner_name": "Keisha Bottoms",
+     "winner_name": "Keisha Lance Bottoms",
      "v1_p_winner": 0.465
     },
     {
@@ -297,7 +297,7 @@
     {
      "id": "2026-GA-GOV",
      "winner_party": "D",
-     "winner_name": "Keisha Bottoms",
+     "winner_name": "Keisha Lance Bottoms",
      "v1_p_winner": 0.465
     }
    ],
@@ -358,7 +358,7 @@
     {
      "id": "IN-05",
      "winner_party": "D",
-     "winner_name": "J.D. Ford",
+     "winner_name": "J. D. Ford",
      "v1_p_winner": 0.076
     },
     {
@@ -606,7 +606,7 @@
     {
      "id": "IN-05",
      "winner_party": "D",
-     "winner_name": "J.D. Ford",
+     "winner_name": "J. D. Ford",
      "v1_p_winner": 0.076
     },
     {
@@ -763,7 +763,7 @@
     {
      "id": "2026-GA-GOV",
      "winner_party": "D",
-     "winner_name": "Keisha Bottoms",
+     "winner_name": "Keisha Lance Bottoms",
      "v1_p_winner": 0.465
     }
    ],
@@ -858,6 +858,18 @@
    "coverage_80": 0.6667,
    "baseline_lean_mae": 5.7791,
    "baseline_lean_mean_error_toward_dem": 5.7791
+  },
+  "all_excl_outside_top_two": {
+   "n": 303,
+   "mean_error_toward_dem": 3.21,
+   "mae": 3.55,
+   "rmse": 4.36,
+   "below_80": 3,
+   "inside_80": 196,
+   "above_80": 104,
+   "coverage_80": 0.6469,
+   "baseline_lean_mae": 7.5697,
+   "baseline_lean_mean_error_toward_dem": 7.3903
   }
  },
  "chambers": {
@@ -1032,6 +1044,44 @@
   ]
  },
  "turnout": null,
+ "outside_top_two": [
+  {
+   "id": "2026-MT-SEN",
+   "outside_top_two": "Seth Bodnar",
+   "called": true,
+   "dem_share_2p": 0.1983,
+   "v1_median": 0.3423,
+   "pct_counted": 0.834,
+   "in_vote_share_table": false
+  },
+  {
+   "id": "2026-RI-GOV",
+   "outside_top_two": "Kenneth Block",
+   "called": true,
+   "dem_share_2p": 0.8127,
+   "v1_median": 0.7007,
+   "pct_counted": 0.9709,
+   "in_vote_share_table": true
+  },
+  {
+   "id": "2026-WY-GOV",
+   "outside_top_two": "Rebecca Bextel",
+   "called": true,
+   "dem_share_2p": 0.1761,
+   "v1_median": 0.3429,
+   "pct_counted": 0.9697,
+   "in_vote_share_table": true
+  },
+  {
+   "id": "AK-AL",
+   "outside_top_two": "Bill Hill",
+   "called": false,
+   "dem_share_2p": 0.1268,
+   "v1_median": 0.4611,
+   "pct_counted": 0.7295,
+   "in_vote_share_table": false
+  }
+ ],
  "montana": {
   "called": true,
   "winner_name": "Kurt Alme",

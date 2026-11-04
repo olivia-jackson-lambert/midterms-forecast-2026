@@ -19,7 +19,7 @@ The event scored is the one v1 gave a probability for: a win for the Democratic 
 | Race | Winner | v1's chance for the winner |
 |---|---|---|
 | TX-15 | Bobby Pulido (Democrat) | 6% |
-| IN-05 | J.D. Ford (Democrat) | 8% |
+| IN-05 | J. D. Ford (Democrat) | 8% |
 | SC-SEN | Annie Andrews (Democrat) | 14% |
 | TX-GOV | Gina Hinojosa (Democrat) | 18% |
 | OH-07 | Brian Poindexter (Democrat) | 23% |
@@ -33,7 +33,7 @@ The event scored is the one v1 gave a probability for: a win for the Democratic 
 | NV-GOV | Aaron Ford (Democrat) | 37% |
 | WI-03 | Rebecca Cooke (Democrat) | 39% |
 | IA-SEN | Josh Turek (Democrat) | 43% |
-| GA-GOV | Keisha Bottoms (Democrat) | 46% |
+| GA-GOV | Keisha Lance Bottoms (Democrat) | 46% |
 | TX-35 | Johnny Garcia (Democrat) | 47% |
 | FL-22 | Pia Dandiya (Democrat) | 48% |
 | IA-02 | Lindsay James (Democrat) | 49% |
@@ -64,6 +64,8 @@ Called Democrat-against-Republican races with at least 85% of the expected vote 
 | House | 253 | 3.28 | 3.63 | 4.50 | 3 | 163 | 87 | 64% | 7.46 |
 | All three | 305 | 3.17 | 3.62 | 4.49 | 4 | 196 | 105 | 64% | 7.63 |
 | Independent challengers (NE, ID, SD) | 3 | -2.93 | 2.93 | 3.10 | 1 | 2 | 0 | 67% | 5.78 |
+
+In MT-SEN (Seth Bodnar), RI-GOV (Kenneth Block), WY-GOV (Rebecca Bextel), AK-AL (Bill Hill), a candidate outside v1's Democrat-against-Republican pairing placed in the top two. The share is still the Democrat's share of the Democratic-plus-Republican vote, as v1 defined it, so these results say more about the third candidate than about the two parties. In the table: RI-GOV, WY-GOV. Without them, the all-race row is 303 races, mean error 3.21, MAE 3.55, RMSE 4.36, coverage 65% (3 below, 104 above).
 
 The target coverage is 80%, with about 10% of results on each side. For the independent challengers the share is the independent's share of the independent-plus-Republican vote. The baseline is the 2024 presidential two-party share of the state or district.
 

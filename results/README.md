@@ -56,4 +56,15 @@ Follow v1 (see the docstrings of `forecast.results` and `forecast.score`):
 - `pct_counted` is AP's expected vote counted, as a fraction (AP caps it at 0.99 until the count is final).
 - `called` is true only when AP's status is "Called". A race sent to a runoff (Louisiana's House
   races, Georgia's if needed) is not called. `winner_party` is D, R or I (any other party).
+- `winner_name` uses v1's spelling where v1 named the winner ("Keisha Lance Bottoms", "Ben Ray Luján"),
+  so the log, the site and v1 agree; AP's own name (first and last) otherwise.
+- `outside_top_two` names any candidate outside v1's pairing who placed in the top two (write-in
+  totals aside): Montana's independent, Wyoming's Constitution Party nominee, Rhode Island's
+  independent, Alaska's nonpartisan House candidate. `dem_share_2p` there is still v1's Democrat
+  against Republican share, so it is far from the main contest's margin; the score reports the
+  vote-share measures with and without these races.
+- Where an independent stands in for a missing party in the House (PA-03, CA-06, MA-01, NJ-08),
+  `dem_share_2p` is the Democrat's share of the Democrat-plus-stand-in vote, the same definition
+  as v1's median for those districts. These districts are not Democrat against Republican, so they
+  are left out of the vote-share measures, as in the backtests.
 - Blank means unknown. Nothing is interpolated or estimated.
