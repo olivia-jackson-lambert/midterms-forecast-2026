@@ -153,9 +153,56 @@ The generic ballot on the same page at the same time (mean of Decision Desk HQ, 
 
 **Final counts.** This page should be rerun on final counts (`python -m forecast.diagnostics --pull <id>` after a new pull); #24 notes that late mail in the West tends to lean Democratic, so the shift may grow.
 
+## Through Time
+
+**DIAGNOSTIC.** v1's own code rerun as it would have stood on seven dates, each with only what was public that day (issue #29). v1 as published on 22 October remains the forecast of record and its score (#15) is unchanged; none of these reruns is part of it. Scored against AP's pull at 2026-11-04T10:41:53Z (provisional), with the measures used above.
+
+On each date the race polls are the Wikipedia race articles at their last revision on or before 23:59:59 UTC, averaged with v1's rules relative to that date, and the generic ballot is the aggregators' mean on the 2026 House page at the same revision time. Everything else is v1's: the fits, the generic-ballot bias and spread, the candidates and incumbents as of 22 October, and the seeds. The 22 October rerun uses v1's own saved inputs and reproduces `forecasts/v1/` exactly (largest difference 0 in the tables, 0 in the seat distributions).
+
+| Date | Run | Generic ballot (D, 2-party) | House vote centre | Races polled | Senate D | House D | Governors D | House seats (80%) | Brier | Log loss | Upsets (exp.) | Mean error | MAE | 80% coverage |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 Sep | as built | 53.5% | 51.8% | 52 | 45% | 77% | 44% | 225 (212–241) | 0.040 | 0.123 | 26 (19.0) | +4.20 | 4.47 | 57% |
+| 1 Sep | bias 0 | 53.5% | 53.5% | 52 | 67% | 97% | 63% | 239 (224–258) | 0.028 | 0.094 | 16 (20.4) | +2.70 | 3.29 | 71% |
+| 15 Sep | as built | 54.0% | 52.3% | 55 | 52% | 86% | 48% | 229 (215–245) | 0.035 | 0.111 | 24 (19.6) | +3.78 | 4.11 | 60% |
+| 15 Sep | bias 0 | 54.0% | 54.0% | 55 | 73% | 98% | 65% | 243 (227–263) | 0.025 | 0.087 | 13 (21.0) | +2.30 | 3.03 | 77% |
+| 1 Oct | as built | 54.5% | 52.8% | 55 | 60% | 92% | 58% | 233 (219–250) | 0.031 | 0.099 | 21 (20.0) | +3.32 | 3.71 | 65% |
+| 1 Oct | bias 0 | 54.5% | 54.5% | 55 | 77% | 99% | 73% | 248 (231–269) | 0.023 | 0.081 | 10 (21.5) | +1.84 | 2.77 | 82% |
+| 15 Oct | as built | 54.4% | 52.7% | 57 | 64% | 91% | 61% | 232 (218–249) | 0.031 | 0.099 | 22 (19.6) | +3.39 | 3.77 | 64% |
+| 15 Oct | bias 0 | 54.4% | 54.4% | 57 | 79% | 99% | 75% | 247 (230–268) | 0.022 | 0.080 | 12 (21.3) | +1.92 | 2.80 | 81% |
+| 22 Oct (v1) | as built | 54.7% | 52.9% | 59 | 63% | 93% | 62% | 234 (219–252) | 0.030 | 0.096 | 20 (19.8) | +3.17 | 3.62 | 64% |
+| 22 Oct | bias 0 | 54.7% | 54.7% | 59 | 78% | 99% | 75% | 249 (232–271) | 0.022 | 0.079 | 10 (21.4) | +1.71 | 2.73 | 82% |
+| 29 Oct | as built | 54.5% | 52.8% | 59 | 66% | 92% | 65% | 232 (218–250) | 0.030 | 0.096 | 19 (19.6) | +3.27 | 3.70 | 65% |
+| 29 Oct | bias 0 | 54.5% | 54.5% | 59 | 80% | 99% | 77% | 248 (231–269) | 0.022 | 0.078 | 9 (21.1) | +1.82 | 2.75 | 82% |
+| 2 Nov | as built | 54.6% | 52.8% | 61 | 70% | 92% | 74% | 233 (219–251) | 0.029 | 0.093 | 19 (19.5) | +3.21 | 3.63 | 65% |
+| 2 Nov | bias 0 | 54.6% | 54.6% | 61 | 83% | 99% | 84% | 248 (231–269) | 0.021 | 0.076 | 9 (21.0) | +1.76 | 2.70 | 83% |
+
+Scores are over all called races (Senate, governor and House); vote-share measures over races with at least 85% counted. By office, Brier and mean error:
+
+| Date | Run | Senate | Governor | House |
+|---|---|---|---|---|
+| 1 Sep | as built | 0.087; +4.25 | 0.071; +3.16 | 0.033; +4.30 |
+| 1 Sep | bias 0 | 0.069; +3.12 | 0.066; +2.28 | 0.022; +2.70 |
+| 15 Sep | as built | 0.078; +3.90 | 0.061; +2.89 | 0.029; +3.86 |
+| 15 Sep | bias 0 | 0.061; +2.83 | 0.055; +2.11 | 0.019; +2.26 |
+| 1 Oct | as built | 0.069; +3.56 | 0.053; +2.25 | 0.026; +3.40 |
+| 1 Oct | bias 0 | 0.052; +2.55 | 0.049; +1.53 | 0.018; +1.80 |
+| 15 Oct | as built | 0.064; +3.53 | 0.051; +2.07 | 0.027; +3.51 |
+| 15 Oct | bias 0 | 0.049; +2.57 | 0.047; +1.40 | 0.018; +1.91 |
+| 22 Oct | as built | 0.066; +3.47 | 0.051; +1.81 | 0.025; +3.28 |
+| 22 Oct | bias 0 | 0.050; +2.53 | 0.047; +1.25 | 0.017; +1.68 |
+| 29 Oct | as built | 0.063; +3.40 | 0.044; +1.77 | 0.026; +3.41 |
+| 29 Oct | bias 0 | 0.048; +2.48 | 0.041; +1.24 | 0.018; +1.81 |
+| 2 Nov | as built | 0.056; +3.28 | 0.041; +1.45 | 0.026; +3.38 |
+| 2 Nov | bias 0 | 0.043; +2.37 | 0.038; +0.93 | 0.018; +1.78 |
+
+Across the seven dates the generic ballot v1 would have read ranged from 53.5% to 54.7% Democratic, and the as-built rerun's mean error toward Democrats stayed between +3.17 and +4.20 points (Brier 0.029 to 0.040): no lock date from 1 Sep to 2 Nov would have removed the Republican lean of the miss. Setting the generic-ballot bias to 0 lowers the mean error on every date (to between +1.71 and +2.70 points), by more than any change of date does, so the correction matters more than the lock date. What moved was the generic ballot, which carries the House (77% to 92% for Democrats), and, for the Senate (45% to 70%) and governors (44% to 74%), the race polls: more races polled (52 to 61) and averages that, over races polled on both dates, differed from v1's by −0.30 to +0.54 points on average.
+
+**Limits.** Candidates and incumbents are v1's as of 22 October on every date, so on the early dates a race whose primary had not yet been held is modelled with its eventual nominees, and its polls are matched to them: a small look-ahead in the early reruns. The generic ballot is what the House page listed, which can lag the aggregators' own updates. As a check on the method, the 22 October inputs rebuilt from revisions give 59 races with polls against v1's 59, the same number of polls in 60 of 60 races, and poll averages within 0.02 points; the generic ballot 54.66% against v1's 54.66%.
+
 ## Files
 
 - `results/diagnostics.json`: the numbers on this page.
 - `src/forecast/diagnostics.py`: the code (`python -m forecast.diagnostics`); `tests/test_diagnostics.py`.
 - Rerun tables (local, not committed, each marked DIAGNOSTIC): `data/processed/diagnostics_v1/<run>/`.
 - 3 November Wikipedia revisions (local): `data/raw/polls_late_2026/`.
+- `results/through_time.json` and the Through Time section: `src/forecast/through_time.py` (`python -m forecast.through_time`, run after `forecast.diagnostics`, which rewrites this page).

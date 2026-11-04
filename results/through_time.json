@@ -1,0 +1,1965 @@
+{
+ "label": "DIAGNOSTIC. Reruns of v1's code at other dates; not part of v1's score (#15). v1 and the v1 tag are unchanged.",
+ "issue": 29,
+ "relates_to": [
+  24
+ ],
+ "pull_id": "20261104T104153Z",
+ "pulled_at": "2026-11-04T10:41:53Z",
+ "status": "provisional",
+ "min_counted_for_vote_share": 0.85,
+ "as_of_time": "23:59:59Z",
+ "reproduction": {
+  "date": "2026-10-22",
+  "max_abs_difference_tables": 0.0,
+  "max_abs_difference_seats": 0.0
+ },
+ "v1_as_published": {
+  "scores": {
+   "senate": {
+    "called": 30,
+    "upsets": 3,
+    "expected_upsets": 2.64,
+    "brier": 0.066,
+    "log_loss": 0.1976,
+    "vote_n": 26,
+    "mean_error": 3.47,
+    "mae": 3.47,
+    "coverage_80": 0.5769
+   },
+   "governor": {
+    "called": 34,
+    "upsets": 3,
+    "expected_upsets": 3.03,
+    "brier": 0.0512,
+    "log_loss": 0.1685,
+    "vote_n": 26,
+    "mean_error": 1.81,
+    "mae": 3.73,
+    "coverage_80": 0.6923
+   },
+   "house": {
+    "called": 360,
+    "upsets": 14,
+    "expected_upsets": 14.09,
+    "brier": 0.0251,
+    "log_loss": 0.0808,
+    "vote_n": 253,
+    "mean_error": 3.28,
+    "mae": 3.63,
+    "coverage_80": 0.6443
+   },
+   "all": {
+    "called": 424,
+    "upsets": 20,
+    "expected_upsets": 19.75,
+    "brier": 0.0301,
+    "log_loss": 0.0961,
+    "vote_n": 305,
+    "mean_error": 3.17,
+    "mae": 3.62,
+    "coverage_80": 0.6426
+   }
+  },
+  "note": "Control chances and seats for v1 are the 22 October v1_as_built row, which reproduces v1; v1's own seat files are rounded to four decimals, which takes up to 0.2 points off a chance."
+ },
+ "rows": [
+  {
+   "date": "2026-09-01",
+   "variant": "v1_as_built",
+   "description": "v1's code as built, inputs as of the date",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-09-01T23:59:59Z",
+    "poll_cutoff": "2026-09-01",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-09-01T23:59:59Z",
+     "revision": 1372689990,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "RealClearPolitics",
+      "Silver Bulletin",
+      "VoteHub",
+      "Race to the WH"
+     ],
+     "updated": [
+      "August 30, 2026",
+      "August 30, 2026",
+      "August 30, 2026",
+      "August 30, 2026",
+      "August 30, 2026",
+      "August 30, 2026"
+     ],
+     "gb_dem_2p": 0.5354228486646885
+    },
+    "races_with_polls": 52,
+    "polls_used": 195,
+    "races_polled_on_both": 51,
+    "mean_change_vs_v1": -0.19,
+    "mean_abs_change_vs_v1": 1.82
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.51794,
+   "bias": -0.0175,
+   "chances": {
+    "senate": {
+     "dem_control": 0.4458,
+     "rep_control": 0.4933,
+     "dem_seats_median": 50,
+     "dem_seats_lo80": 48,
+     "dem_seats_hi80": 53
+    },
+    "governor": {
+     "dem_control": 0.4424,
+     "rep_control": 0.3716,
+     "dem_seats_median": 25,
+     "dem_seats_lo80": 22,
+     "dem_seats_hi80": 28
+    },
+    "house": {
+     "dem_control": 0.773,
+     "rep_control": 0.2167,
+     "dem_seats_median": 225,
+     "dem_seats_lo80": 212,
+     "dem_seats_hi80": 241
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 4,
+     "expected_upsets": 2.71,
+     "brier": 0.0874,
+     "log_loss": 0.2725,
+     "vote_n": 26,
+     "mean_error": 4.25,
+     "mae": 4.25,
+     "coverage_80": 0.5
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 3,
+     "expected_upsets": 3.35,
+     "brier": 0.0713,
+     "log_loss": 0.2343,
+     "vote_n": 26,
+     "mean_error": 3.16,
+     "mae": 4.65,
+     "coverage_80": 0.6538
+    },
+    "house": {
+     "called": 360,
+     "upsets": 19,
+     "expected_upsets": 12.95,
+     "brier": 0.033,
+     "log_loss": 0.1007,
+     "vote_n": 253,
+     "mean_error": 4.3,
+     "mae": 4.48,
+     "coverage_80": 0.5731
+    },
+    "all": {
+     "called": 424,
+     "upsets": 26,
+     "expected_upsets": 19.01,
+     "brier": 0.0399,
+     "log_loss": 0.1235,
+     "vote_n": 305,
+     "mean_error": 4.2,
+     "mae": 4.47,
+     "coverage_80": 0.5738
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-OH-GOV",
+     "p_dem_win": 0.438,
+     "p_dem_win_v1": 0.687
+    },
+    {
+     "id": "2026-IA-GOV",
+     "p_dem_win": 0.608,
+     "p_dem_win_v1": 0.847
+    },
+    {
+     "id": "2026-NV-GOV",
+     "p_dem_win": 0.16,
+     "p_dem_win_v1": 0.373
+    },
+    {
+     "id": "2026-KS-SEN",
+     "p_dem_win": 0.167,
+     "p_dem_win_v1": 0.351
+    },
+    {
+     "id": "2026-AK-SEN",
+     "p_dem_win": 0.291,
+     "p_dem_win_v1": 0.445
+    }
+   ]
+  },
+  {
+   "date": "2026-09-01",
+   "variant": "bias_0",
+   "description": "generic-ballot bias set to 0 (H1 in #24), spread as v1",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-09-01T23:59:59Z",
+    "poll_cutoff": "2026-09-01",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-09-01T23:59:59Z",
+     "revision": 1372689990,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "RealClearPolitics",
+      "Silver Bulletin",
+      "VoteHub",
+      "Race to the WH"
+     ],
+     "updated": [
+      "August 30, 2026",
+      "August 30, 2026",
+      "August 30, 2026",
+      "August 30, 2026",
+      "August 30, 2026",
+      "August 30, 2026"
+     ],
+     "gb_dem_2p": 0.5354228486646885
+    },
+    "races_with_polls": 52,
+    "polls_used": 195,
+    "races_polled_on_both": 51,
+    "mean_change_vs_v1": -0.19,
+    "mean_abs_change_vs_v1": 1.82
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.53542,
+   "bias": 0.0,
+   "chances": {
+    "senate": {
+     "dem_control": 0.6725,
+     "rep_control": 0.276,
+     "dem_seats_median": 51,
+     "dem_seats_lo80": 49,
+     "dem_seats_hi80": 54
+    },
+    "governor": {
+     "dem_control": 0.6264,
+     "rep_control": 0.2165,
+     "dem_seats_median": 26,
+     "dem_seats_lo80": 23,
+     "dem_seats_hi80": 29
+    },
+    "house": {
+     "dem_control": 0.9665,
+     "rep_control": 0.031,
+     "dem_seats_median": 239,
+     "dem_seats_lo80": 224,
+     "dem_seats_hi80": 258
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 3,
+     "expected_upsets": 2.57,
+     "brier": 0.0686,
+     "log_loss": 0.212,
+     "vote_n": 26,
+     "mean_error": 3.12,
+     "mae": 3.12,
+     "coverage_80": 0.7308
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 3,
+     "expected_upsets": 3.4,
+     "brier": 0.0657,
+     "log_loss": 0.2175,
+     "vote_n": 26,
+     "mean_error": 2.28,
+     "mae": 4.21,
+     "coverage_80": 0.8462
+    },
+    "house": {
+     "called": 360,
+     "upsets": 10,
+     "expected_upsets": 14.45,
+     "brier": 0.0216,
+     "log_loss": 0.073,
+     "vote_n": 253,
+     "mean_error": 2.7,
+     "mae": 3.21,
+     "coverage_80": 0.6917
+    },
+    "all": {
+     "called": 424,
+     "upsets": 16,
+     "expected_upsets": 20.42,
+     "brier": 0.0284,
+     "log_loss": 0.0944,
+     "vote_n": 305,
+     "mean_error": 2.7,
+     "mae": 3.29,
+     "coverage_80": 0.7082
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-GA-GOV",
+     "p_dem_win": 0.656,
+     "p_dem_win_v1": 0.465
+    },
+    {
+     "id": "2026-OH-GOV",
+     "p_dem_win": 0.498,
+     "p_dem_win_v1": 0.687
+    },
+    {
+     "id": "2026-IA-GOV",
+     "p_dem_win": 0.662,
+     "p_dem_win_v1": 0.847
+    },
+    {
+     "id": "2026-NV-GOV",
+     "p_dem_win": 0.192,
+     "p_dem_win_v1": 0.373
+    },
+    {
+     "id": "2026-KS-GOV",
+     "p_dem_win": 0.409,
+     "p_dem_win_v1": 0.236
+    }
+   ]
+  },
+  {
+   "date": "2026-09-15",
+   "variant": "v1_as_built",
+   "description": "v1's code as built, inputs as of the date",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-09-15T23:59:59Z",
+    "poll_cutoff": "2026-09-15",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-09-15T23:59:59Z",
+     "revision": 1375082733,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "RealClearPolitics",
+      "Silver Bulletin",
+      "VoteHub",
+      "Race to the WH"
+     ],
+     "updated": [
+      "September 15, 2026",
+      "September 15, 2026",
+      "September 15, 2026",
+      "September 15, 2026",
+      "September 15, 2026",
+      "September 15, 2026"
+     ],
+     "gb_dem_2p": 0.540204678362573
+    },
+    "races_with_polls": 55,
+    "polls_used": 232,
+    "races_polled_on_both": 55,
+    "mean_change_vs_v1": -0.3,
+    "mean_abs_change_vs_v1": 1.62
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.52272,
+   "bias": -0.0175,
+   "chances": {
+    "senate": {
+     "dem_control": 0.5171,
+     "rep_control": 0.4022,
+     "dem_seats_median": 51,
+     "dem_seats_lo80": 48,
+     "dem_seats_hi80": 53
+    },
+    "governor": {
+     "dem_control": 0.4817,
+     "rep_control": 0.3339,
+     "dem_seats_median": 25,
+     "dem_seats_lo80": 23,
+     "dem_seats_hi80": 28
+    },
+    "house": {
+     "dem_control": 0.8553,
+     "rep_control": 0.1365,
+     "dem_seats_median": 229,
+     "dem_seats_lo80": 215,
+     "dem_seats_hi80": 245
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 3,
+     "expected_upsets": 2.86,
+     "brier": 0.0782,
+     "log_loss": 0.2419,
+     "vote_n": 26,
+     "mean_error": 3.9,
+     "mae": 3.9,
+     "coverage_80": 0.5385
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 3,
+     "expected_upsets": 3.43,
+     "brier": 0.0607,
+     "log_loss": 0.2039,
+     "vote_n": 26,
+     "mean_error": 2.89,
+     "mae": 4.42,
+     "coverage_80": 0.6538
+    },
+    "house": {
+     "called": 360,
+     "upsets": 18,
+     "expected_upsets": 13.36,
+     "brier": 0.0294,
+     "log_loss": 0.0913,
+     "vote_n": 253,
+     "mean_error": 3.86,
+     "mae": 4.1,
+     "coverage_80": 0.6008
+    },
+    "all": {
+     "called": 424,
+     "upsets": 24,
+     "expected_upsets": 19.65,
+     "brier": 0.0354,
+     "log_loss": 0.1109,
+     "vote_n": 305,
+     "mean_error": 3.78,
+     "mae": 4.11,
+     "coverage_80": 0.6
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-OH-GOV",
+     "p_dem_win": 0.445,
+     "p_dem_win_v1": 0.687
+    },
+    {
+     "id": "2026-KS-SEN",
+     "p_dem_win": 0.171,
+     "p_dem_win_v1": 0.351
+    },
+    {
+     "id": "2026-AK-SEN",
+     "p_dem_win": 0.274,
+     "p_dem_win_v1": 0.445
+    },
+    {
+     "id": "2026-GA-GOV",
+     "p_dem_win": 0.619,
+     "p_dem_win_v1": 0.465
+    },
+    {
+     "id": "2026-OR-GOV",
+     "p_dem_win": 0.778,
+     "p_dem_win_v1": 0.913
+    }
+   ]
+  },
+  {
+   "date": "2026-09-15",
+   "variant": "bias_0",
+   "description": "generic-ballot bias set to 0 (H1 in #24), spread as v1",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-09-15T23:59:59Z",
+    "poll_cutoff": "2026-09-15",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-09-15T23:59:59Z",
+     "revision": 1375082733,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "RealClearPolitics",
+      "Silver Bulletin",
+      "VoteHub",
+      "Race to the WH"
+     ],
+     "updated": [
+      "September 15, 2026",
+      "September 15, 2026",
+      "September 15, 2026",
+      "September 15, 2026",
+      "September 15, 2026",
+      "September 15, 2026"
+     ],
+     "gb_dem_2p": 0.540204678362573
+    },
+    "races_with_polls": 55,
+    "polls_used": 232,
+    "races_polled_on_both": 55,
+    "mean_change_vs_v1": -0.3,
+    "mean_abs_change_vs_v1": 1.62
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.5402,
+   "bias": 0.0,
+   "chances": {
+    "senate": {
+     "dem_control": 0.729,
+     "rep_control": 0.2118,
+     "dem_seats_median": 52,
+     "dem_seats_lo80": 49,
+     "dem_seats_hi80": 54
+    },
+    "governor": {
+     "dem_control": 0.6533,
+     "rep_control": 0.1984,
+     "dem_seats_median": 26,
+     "dem_seats_lo80": 24,
+     "dem_seats_hi80": 29
+    },
+    "house": {
+     "dem_control": 0.9816,
+     "rep_control": 0.017,
+     "dem_seats_median": 243,
+     "dem_seats_lo80": 227,
+     "dem_seats_hi80": 263
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.58,
+     "brier": 0.0612,
+     "log_loss": 0.1902,
+     "vote_n": 26,
+     "mean_error": 2.83,
+     "mae": 2.84,
+     "coverage_80": 0.7308
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 2,
+     "expected_upsets": 3.47,
+     "brier": 0.0549,
+     "log_loss": 0.1878,
+     "vote_n": 26,
+     "mean_error": 2.11,
+     "mae": 4.1,
+     "coverage_80": 0.7308
+    },
+    "house": {
+     "called": 360,
+     "upsets": 9,
+     "expected_upsets": 14.96,
+     "brier": 0.0194,
+     "log_loss": 0.0687,
+     "vote_n": 253,
+     "mean_error": 2.26,
+     "mae": 2.94,
+     "coverage_80": 0.7747
+    },
+    "all": {
+     "called": 424,
+     "upsets": 13,
+     "expected_upsets": 21.02,
+     "brier": 0.0252,
+     "log_loss": 0.0869,
+     "vote_n": 305,
+     "mean_error": 2.3,
+     "mae": 3.03,
+     "coverage_80": 0.7672
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-GA-GOV",
+     "p_dem_win": 0.671,
+     "p_dem_win_v1": 0.465
+    },
+    {
+     "id": "2026-FL-SENS",
+     "p_dem_win": 0.27,
+     "p_dem_win_v1": 0.082
+    },
+    {
+     "id": "2026-OH-GOV",
+     "p_dem_win": 0.505,
+     "p_dem_win_v1": 0.687
+    },
+    {
+     "id": "2026-IA-SEN",
+     "p_dem_win": 0.583,
+     "p_dem_win_v1": 0.431
+    },
+    {
+     "id": "2026-NE-SEN",
+     "p_dem_win": 0.425,
+     "p_dem_win_v1": 0.287
+    }
+   ]
+  },
+  {
+   "date": "2026-10-01",
+   "variant": "v1_as_built",
+   "description": "v1's code as built, inputs as of the date",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-10-01T23:59:59Z",
+    "poll_cutoff": "2026-10-01",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-10-01T23:59:59Z",
+     "revision": 1377847389,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "NBC News",
+      "RealClearPolitics",
+      "Silver Bulletin"
+     ],
+     "updated": [
+      "September 30, 2026",
+      "September 30, 2026",
+      "September 30, 2026",
+      "September 30, 2026",
+      "September 30, 2026"
+     ],
+     "gb_dem_2p": 0.5452777177436784
+    },
+    "races_with_polls": 55,
+    "polls_used": 322,
+    "races_polled_on_both": 55,
+    "mean_change_vs_v1": 0.03,
+    "mean_abs_change_vs_v1": 1.04
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.52779,
+   "bias": -0.0175,
+   "chances": {
+    "senate": {
+     "dem_control": 0.5985,
+     "rep_control": 0.3357,
+     "dem_seats_median": 51,
+     "dem_seats_lo80": 48,
+     "dem_seats_hi80": 54
+    },
+    "governor": {
+     "dem_control": 0.5821,
+     "rep_control": 0.2417,
+     "dem_seats_median": 26,
+     "dem_seats_lo80": 23,
+     "dem_seats_hi80": 29
+    },
+    "house": {
+     "dem_control": 0.9165,
+     "rep_control": 0.0786,
+     "dem_seats_median": 233,
+     "dem_seats_lo80": 219,
+     "dem_seats_hi80": 250
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 3,
+     "expected_upsets": 2.79,
+     "brier": 0.0686,
+     "log_loss": 0.2071,
+     "vote_n": 26,
+     "mean_error": 3.56,
+     "mae": 3.56,
+     "coverage_80": 0.5769
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 3,
+     "expected_upsets": 3.22,
+     "brier": 0.0535,
+     "log_loss": 0.1784,
+     "vote_n": 26,
+     "mean_error": 2.25,
+     "mae": 3.8,
+     "coverage_80": 0.7308
+    },
+    "house": {
+     "called": 360,
+     "upsets": 15,
+     "expected_upsets": 13.96,
+     "brier": 0.026,
+     "log_loss": 0.0827,
+     "vote_n": 253,
+     "mean_error": 3.4,
+     "mae": 3.72,
+     "coverage_80": 0.6443
+    },
+    "all": {
+     "called": 424,
+     "upsets": 21,
+     "expected_upsets": 19.97,
+     "brier": 0.0312,
+     "log_loss": 0.0992,
+     "vote_n": 305,
+     "mean_error": 3.32,
+     "mae": 3.71,
+     "coverage_80": 0.6459
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-SC-GOV",
+     "p_dem_win": 0.143,
+     "p_dem_win_v1": 0.04
+    },
+    {
+     "id": "2026-AK-SEN",
+     "p_dem_win": 0.343,
+     "p_dem_win_v1": 0.445
+    },
+    {
+     "id": "2026-SD-SEN",
+     "p_dem_win": 0.101,
+     "p_dem_win_v1": 0.018
+    },
+    {
+     "id": "2026-NE-GOV",
+     "p_dem_win": 0.038,
+     "p_dem_win_v1": 0.121
+    },
+    {
+     "id": "2026-KS-SEN",
+     "p_dem_win": 0.277,
+     "p_dem_win_v1": 0.351
+    }
+   ]
+  },
+  {
+   "date": "2026-10-01",
+   "variant": "bias_0",
+   "description": "generic-ballot bias set to 0 (H1 in #24), spread as v1",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-10-01T23:59:59Z",
+    "poll_cutoff": "2026-10-01",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-10-01T23:59:59Z",
+     "revision": 1377847389,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "NBC News",
+      "RealClearPolitics",
+      "Silver Bulletin"
+     ],
+     "updated": [
+      "September 30, 2026",
+      "September 30, 2026",
+      "September 30, 2026",
+      "September 30, 2026",
+      "September 30, 2026"
+     ],
+     "gb_dem_2p": 0.5452777177436784
+    },
+    "races_with_polls": 55,
+    "polls_used": 322,
+    "races_polled_on_both": 55,
+    "mean_change_vs_v1": 0.03,
+    "mean_abs_change_vs_v1": 1.04
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.54528,
+   "bias": 0.0,
+   "chances": {
+    "senate": {
+     "dem_control": 0.7705,
+     "rep_control": 0.183,
+     "dem_seats_median": 52,
+     "dem_seats_lo80": 49,
+     "dem_seats_hi80": 55
+    },
+    "governor": {
+     "dem_control": 0.7349,
+     "rep_control": 0.1369,
+     "dem_seats_median": 27,
+     "dem_seats_lo80": 24,
+     "dem_seats_hi80": 30
+    },
+    "house": {
+     "dem_control": 0.9908,
+     "rep_control": 0.0084,
+     "dem_seats_median": 248,
+     "dem_seats_lo80": 231,
+     "dem_seats_hi80": 269
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.62,
+     "brier": 0.0523,
+     "log_loss": 0.1642,
+     "vote_n": 26,
+     "mean_error": 2.55,
+     "mae": 2.6,
+     "coverage_80": 0.7692
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 2,
+     "expected_upsets": 3.29,
+     "brier": 0.0492,
+     "log_loss": 0.167,
+     "vote_n": 26,
+     "mean_error": 1.53,
+     "mae": 3.61,
+     "coverage_80": 0.8462
+    },
+    "house": {
+     "called": 360,
+     "upsets": 6,
+     "expected_upsets": 15.59,
+     "brier": 0.0177,
+     "log_loss": 0.0657,
+     "vote_n": 253,
+     "mean_error": 1.8,
+     "mae": 2.71,
+     "coverage_80": 0.8221
+    },
+    "all": {
+     "called": 424,
+     "upsets": 10,
+     "expected_upsets": 21.5,
+     "brier": 0.0227,
+     "log_loss": 0.0808,
+     "vote_n": 305,
+     "mean_error": 1.84,
+     "mae": 2.77,
+     "coverage_80": 0.8197
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-IA-SEN",
+     "p_dem_win": 0.577,
+     "p_dem_win_v1": 0.431
+    },
+    {
+     "id": "2026-SC-GOV",
+     "p_dem_win": 0.184,
+     "p_dem_win_v1": 0.04
+    },
+    {
+     "id": "2026-FL-SENS",
+     "p_dem_win": 0.217,
+     "p_dem_win_v1": 0.082
+    },
+    {
+     "id": "2026-SD-SEN",
+     "p_dem_win": 0.123,
+     "p_dem_win_v1": 0.018
+    },
+    {
+     "id": "2026-AK-GOV",
+     "p_dem_win": 0.451,
+     "p_dem_win_v1": 0.351
+    }
+   ]
+  },
+  {
+   "date": "2026-10-15",
+   "variant": "v1_as_built",
+   "description": "v1's code as built, inputs as of the date",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-10-15T23:59:59Z",
+    "poll_cutoff": "2026-10-15",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-10-15T23:59:59Z",
+     "revision": 1380365077,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "NBC News",
+      "RealClearPolitics",
+      "Silver Bulletin"
+     ],
+     "updated": [
+      "October 14, 2026",
+      "October 14, 2026",
+      "October 14, 2026",
+      "October 14, 2026",
+      "October 14, 2026"
+     ],
+     "gb_dem_2p": 0.5440795159896283
+    },
+    "races_with_polls": 57,
+    "polls_used": 410,
+    "races_polled_on_both": 57,
+    "mean_change_vs_v1": 0.28,
+    "mean_abs_change_vs_v1": 0.57
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.52659,
+   "bias": -0.0175,
+   "chances": {
+    "senate": {
+     "dem_control": 0.6368,
+     "rep_control": 0.3124,
+     "dem_seats_median": 51,
+     "dem_seats_lo80": 48,
+     "dem_seats_hi80": 54
+    },
+    "governor": {
+     "dem_control": 0.6104,
+     "rep_control": 0.224,
+     "dem_seats_median": 26,
+     "dem_seats_lo80": 23,
+     "dem_seats_hi80": 29
+    },
+    "house": {
+     "dem_control": 0.9056,
+     "rep_control": 0.0891,
+     "dem_seats_median": 232,
+     "dem_seats_lo80": 218,
+     "dem_seats_hi80": 249
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 3,
+     "expected_upsets": 2.66,
+     "brier": 0.064,
+     "log_loss": 0.1936,
+     "vote_n": 26,
+     "mean_error": 3.53,
+     "mae": 3.53,
+     "coverage_80": 0.5769
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 3,
+     "expected_upsets": 3.15,
+     "brier": 0.0511,
+     "log_loss": 0.1693,
+     "vote_n": 26,
+     "mean_error": 2.07,
+     "mae": 3.62,
+     "coverage_80": 0.7308
+    },
+    "house": {
+     "called": 360,
+     "upsets": 16,
+     "expected_upsets": 13.84,
+     "brier": 0.0267,
+     "log_loss": 0.0846,
+     "vote_n": 253,
+     "mean_error": 3.51,
+     "mae": 3.81,
+     "coverage_80": 0.6403
+    },
+    "all": {
+     "called": 424,
+     "upsets": 22,
+     "expected_upsets": 19.65,
+     "brier": 0.0313,
+     "log_loss": 0.0991,
+     "vote_n": 305,
+     "mean_error": 3.39,
+     "mae": 3.77,
+     "coverage_80": 0.6426
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-SD-SEN",
+     "p_dem_win": 0.166,
+     "p_dem_win_v1": 0.018
+    },
+    {
+     "id": "2026-SC-GOV",
+     "p_dem_win": 0.11,
+     "p_dem_win_v1": 0.04
+    },
+    {
+     "id": "2026-AR-GOV",
+     "p_dem_win": 0.052,
+     "p_dem_win_v1": 0.005
+    },
+    {
+     "id": "2026-OK-GOV",
+     "p_dem_win": 0.044,
+     "p_dem_win_v1": 0.089
+    },
+    {
+     "id": "2026-NE-GOV",
+     "p_dem_win": 0.083,
+     "p_dem_win_v1": 0.121
+    }
+   ]
+  },
+  {
+   "date": "2026-10-15",
+   "variant": "bias_0",
+   "description": "generic-ballot bias set to 0 (H1 in #24), spread as v1",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-10-15T23:59:59Z",
+    "poll_cutoff": "2026-10-15",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-10-15T23:59:59Z",
+     "revision": 1380365077,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "NBC News",
+      "RealClearPolitics",
+      "Silver Bulletin"
+     ],
+     "updated": [
+      "October 14, 2026",
+      "October 14, 2026",
+      "October 14, 2026",
+      "October 14, 2026",
+      "October 14, 2026"
+     ],
+     "gb_dem_2p": 0.5440795159896283
+    },
+    "races_with_polls": 57,
+    "polls_used": 410,
+    "races_polled_on_both": 57,
+    "mean_change_vs_v1": 0.28,
+    "mean_abs_change_vs_v1": 0.57
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.54408,
+   "bias": 0.0,
+   "chances": {
+    "senate": {
+     "dem_control": 0.7853,
+     "rep_control": 0.1779,
+     "dem_seats_median": 52,
+     "dem_seats_lo80": 49,
+     "dem_seats_hi80": 55
+    },
+    "governor": {
+     "dem_control": 0.7497,
+     "rep_control": 0.1264,
+     "dem_seats_median": 27,
+     "dem_seats_lo80": 24,
+     "dem_seats_hi80": 30
+    },
+    "house": {
+     "dem_control": 0.9889,
+     "rep_control": 0.0105,
+     "dem_seats_median": 247,
+     "dem_seats_lo80": 230,
+     "dem_seats_hi80": 268
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.58,
+     "brier": 0.0487,
+     "log_loss": 0.1543,
+     "vote_n": 26,
+     "mean_error": 2.57,
+     "mae": 2.61,
+     "coverage_80": 0.8462
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 2,
+     "expected_upsets": 3.28,
+     "brier": 0.0468,
+     "log_loss": 0.1592,
+     "vote_n": 26,
+     "mean_error": 1.4,
+     "mae": 3.43,
+     "coverage_80": 0.7692
+    },
+    "house": {
+     "called": 360,
+     "upsets": 8,
+     "expected_upsets": 15.44,
+     "brier": 0.0181,
+     "log_loss": 0.0663,
+     "vote_n": 253,
+     "mean_error": 1.91,
+     "mae": 2.75,
+     "coverage_80": 0.8103
+    },
+    "all": {
+     "called": 424,
+     "upsets": 12,
+     "expected_upsets": 21.3,
+     "brier": 0.0225,
+     "log_loss": 0.0799,
+     "vote_n": 305,
+     "mean_error": 1.92,
+     "mae": 2.8,
+     "coverage_80": 0.8098
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-SD-SEN",
+     "p_dem_win": 0.194,
+     "p_dem_win_v1": 0.018
+    },
+    {
+     "id": "2026-KS-SEN",
+     "p_dem_win": 0.464,
+     "p_dem_win_v1": 0.351
+    },
+    {
+     "id": "2026-IA-SEN",
+     "p_dem_win": 0.54,
+     "p_dem_win_v1": 0.431
+    },
+    {
+     "id": "2026-SC-GOV",
+     "p_dem_win": 0.145,
+     "p_dem_win_v1": 0.04
+    },
+    {
+     "id": "2026-TX-SEN",
+     "p_dem_win": 0.651,
+     "p_dem_win_v1": 0.551
+    }
+   ]
+  },
+  {
+   "date": "2026-10-22",
+   "variant": "v1_as_built",
+   "description": "v1's code as built, inputs as of the date",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "v1's pages, fetched 22 October",
+    "poll_cutoff": "2026-10-22",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-10-22",
+     "revision": null,
+     "sources": "mean of Decision Desk HQ, FiftyPlusOne, NBC News, RealClearPolitics, Silver Bulletin",
+     "updated": null,
+     "gb_dem_2p": 0.5466011115861479
+    },
+    "races_with_polls": 59,
+    "polls_used": 447,
+    "races_polled_on_both": 59,
+    "mean_change_vs_v1": 0.0,
+    "mean_abs_change_vs_v1": 0.0
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.52911,
+   "bias": -0.0175,
+   "chances": {
+    "senate": {
+     "dem_control": 0.629,
+     "rep_control": 0.3337,
+     "dem_seats_median": 51,
+     "dem_seats_lo80": 48,
+     "dem_seats_hi80": 54
+    },
+    "governor": {
+     "dem_control": 0.6168,
+     "rep_control": 0.2175,
+     "dem_seats_median": 26,
+     "dem_seats_lo80": 23,
+     "dem_seats_hi80": 29
+    },
+    "house": {
+     "dem_control": 0.9272,
+     "rep_control": 0.0678,
+     "dem_seats_median": 234,
+     "dem_seats_lo80": 219,
+     "dem_seats_hi80": 252
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 3,
+     "expected_upsets": 2.64,
+     "brier": 0.066,
+     "log_loss": 0.1976,
+     "vote_n": 26,
+     "mean_error": 3.47,
+     "mae": 3.47,
+     "coverage_80": 0.5769
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 3,
+     "expected_upsets": 3.03,
+     "brier": 0.0512,
+     "log_loss": 0.1685,
+     "vote_n": 26,
+     "mean_error": 1.81,
+     "mae": 3.73,
+     "coverage_80": 0.6923
+    },
+    "house": {
+     "called": 360,
+     "upsets": 14,
+     "expected_upsets": 14.09,
+     "brier": 0.0251,
+     "log_loss": 0.0808,
+     "vote_n": 253,
+     "mean_error": 3.28,
+     "mae": 3.63,
+     "coverage_80": 0.6443
+    },
+    "all": {
+     "called": 424,
+     "upsets": 20,
+     "expected_upsets": 19.75,
+     "brier": 0.0301,
+     "log_loss": 0.0961,
+     "vote_n": 305,
+     "mean_error": 3.17,
+     "mae": 3.62,
+     "coverage_80": 0.6426
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-AK-GOV",
+     "p_dem_win": 0.351,
+     "p_dem_win_v1": 0.351
+    },
+    {
+     "id": "2026-NM-SEN",
+     "p_dem_win": 0.996,
+     "p_dem_win_v1": 0.996
+    },
+    {
+     "id": "2026-OK-SEN",
+     "p_dem_win": 0.0,
+     "p_dem_win_v1": 0.0
+    },
+    {
+     "id": "2026-OK-GOV",
+     "p_dem_win": 0.089,
+     "p_dem_win_v1": 0.089
+    },
+    {
+     "id": "2026-OH-SENS",
+     "p_dem_win": 0.582,
+     "p_dem_win_v1": 0.582
+    }
+   ]
+  },
+  {
+   "date": "2026-10-22",
+   "variant": "bias_0",
+   "description": "generic-ballot bias set to 0 (H1 in #24), spread as v1",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "v1's pages, fetched 22 October",
+    "poll_cutoff": "2026-10-22",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-10-22",
+     "revision": null,
+     "sources": "mean of Decision Desk HQ, FiftyPlusOne, NBC News, RealClearPolitics, Silver Bulletin",
+     "updated": null,
+     "gb_dem_2p": 0.5466011115861479
+    },
+    "races_with_polls": 59,
+    "polls_used": 447,
+    "races_polled_on_both": 59,
+    "mean_change_vs_v1": 0.0,
+    "mean_abs_change_vs_v1": 0.0
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.5466,
+   "bias": 0.0,
+   "chances": {
+    "senate": {
+     "dem_control": 0.7801,
+     "rep_control": 0.1932,
+     "dem_seats_median": 52,
+     "dem_seats_lo80": 49,
+     "dem_seats_hi80": 55
+    },
+    "governor": {
+     "dem_control": 0.7473,
+     "rep_control": 0.1276,
+     "dem_seats_median": 27,
+     "dem_seats_lo80": 24,
+     "dem_seats_hi80": 30
+    },
+    "house": {
+     "dem_control": 0.9923,
+     "rep_control": 0.007,
+     "dem_seats_median": 249,
+     "dem_seats_lo80": 232,
+     "dem_seats_hi80": 271
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.59,
+     "brier": 0.0502,
+     "log_loss": 0.1573,
+     "vote_n": 26,
+     "mean_error": 2.53,
+     "mae": 2.59,
+     "coverage_80": 0.7692
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 2,
+     "expected_upsets": 3.11,
+     "brier": 0.0473,
+     "log_loss": 0.1574,
+     "vote_n": 26,
+     "mean_error": 1.25,
+     "mae": 3.55,
+     "coverage_80": 0.7308
+    },
+    "house": {
+     "called": 360,
+     "upsets": 6,
+     "expected_upsets": 15.74,
+     "brier": 0.0174,
+     "log_loss": 0.0652,
+     "vote_n": 253,
+     "mean_error": 1.68,
+     "mae": 2.66,
+     "coverage_80": 0.83
+    },
+    "all": {
+     "called": 424,
+     "upsets": 10,
+     "expected_upsets": 21.44,
+     "brier": 0.0221,
+     "log_loss": 0.0791,
+     "vote_n": 305,
+     "mean_error": 1.71,
+     "mae": 2.73,
+     "coverage_80": 0.8164
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-AK-GOV",
+     "p_dem_win": 0.46,
+     "p_dem_win_v1": 0.351
+    },
+    {
+     "id": "2026-FL-GOV",
+     "p_dem_win": 0.463,
+     "p_dem_win_v1": 0.358
+    },
+    {
+     "id": "2026-AK-SEN",
+     "p_dem_win": 0.543,
+     "p_dem_win_v1": 0.445
+    },
+    {
+     "id": "2026-KS-SEN",
+     "p_dem_win": 0.445,
+     "p_dem_win_v1": 0.351
+    },
+    {
+     "id": "2026-IA-SEN",
+     "p_dem_win": 0.524,
+     "p_dem_win_v1": 0.431
+    }
+   ]
+  },
+  {
+   "date": "2026-10-29",
+   "variant": "v1_as_built",
+   "description": "v1's code as built, inputs as of the date",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-10-29T23:59:59Z",
+    "poll_cutoff": "2026-10-29",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-10-29T23:59:59Z",
+     "revision": 1382635583,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "NBC News",
+      "RealClearPolitics",
+      "Silver Bulletin"
+     ],
+     "updated": [
+      "October 27, 2026",
+      "October 27, 2026",
+      "October 27, 2026",
+      "October 27, 2026",
+      "October 27, 2026"
+     ],
+     "gb_dem_2p": 0.5451851851851852
+    },
+    "races_with_polls": 59,
+    "polls_used": 497,
+    "races_polled_on_both": 59,
+    "mean_change_vs_v1": 0.24,
+    "mean_abs_change_vs_v1": 0.52
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.5277,
+   "bias": -0.0175,
+   "chances": {
+    "senate": {
+     "dem_control": 0.6582,
+     "rep_control": 0.2947,
+     "dem_seats_median": 51,
+     "dem_seats_lo80": 49,
+     "dem_seats_hi80": 54
+    },
+    "governor": {
+     "dem_control": 0.6526,
+     "rep_control": 0.1946,
+     "dem_seats_median": 26,
+     "dem_seats_lo80": 24,
+     "dem_seats_hi80": 29
+    },
+    "house": {
+     "dem_control": 0.9156,
+     "rep_control": 0.0794,
+     "dem_seats_median": 232,
+     "dem_seats_lo80": 218,
+     "dem_seats_hi80": 250
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 3,
+     "expected_upsets": 2.49,
+     "brier": 0.0631,
+     "log_loss": 0.1879,
+     "vote_n": 26,
+     "mean_error": 3.4,
+     "mae": 3.4,
+     "coverage_80": 0.5769
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 1,
+     "expected_upsets": 3.17,
+     "brier": 0.0441,
+     "log_loss": 0.1527,
+     "vote_n": 26,
+     "mean_error": 1.77,
+     "mae": 3.69,
+     "coverage_80": 0.7692
+    },
+    "house": {
+     "called": 360,
+     "upsets": 15,
+     "expected_upsets": 13.95,
+     "brier": 0.026,
+     "log_loss": 0.0828,
+     "vote_n": 253,
+     "mean_error": 3.41,
+     "mae": 3.73,
+     "coverage_80": 0.6443
+    },
+    "all": {
+     "called": 424,
+     "upsets": 19,
+     "expected_upsets": 19.6,
+     "brier": 0.0301,
+     "log_loss": 0.0959,
+     "vote_n": 305,
+     "mean_error": 3.27,
+     "mae": 3.7,
+     "coverage_80": 0.6492
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-NV-GOV",
+     "p_dem_win": 0.513,
+     "p_dem_win_v1": 0.373
+    },
+    {
+     "id": "2026-NE-SEN",
+     "p_dem_win": 0.354,
+     "p_dem_win_v1": 0.287
+    },
+    {
+     "id": "2026-GA-GOV",
+     "p_dem_win": 0.523,
+     "p_dem_win_v1": 0.465
+    },
+    {
+     "id": "2026-TX-SEN",
+     "p_dem_win": 0.604,
+     "p_dem_win_v1": 0.551
+    },
+    {
+     "id": "2026-MI-SEN",
+     "p_dem_win": 0.872,
+     "p_dem_win_v1": 0.823
+    }
+   ]
+  },
+  {
+   "date": "2026-10-29",
+   "variant": "bias_0",
+   "description": "generic-ballot bias set to 0 (H1 in #24), spread as v1",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-10-29T23:59:59Z",
+    "poll_cutoff": "2026-10-29",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-10-29T23:59:59Z",
+     "revision": 1382635583,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "NBC News",
+      "RealClearPolitics",
+      "Silver Bulletin"
+     ],
+     "updated": [
+      "October 27, 2026",
+      "October 27, 2026",
+      "October 27, 2026",
+      "October 27, 2026",
+      "October 27, 2026"
+     ],
+     "gb_dem_2p": 0.5451851851851852
+    },
+    "races_with_polls": 59,
+    "polls_used": 497,
+    "races_polled_on_both": 59,
+    "mean_change_vs_v1": 0.24,
+    "mean_abs_change_vs_v1": 0.52
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.54519,
+   "bias": 0.0,
+   "chances": {
+    "senate": {
+     "dem_control": 0.7985,
+     "rep_control": 0.1716,
+     "dem_seats_median": 52,
+     "dem_seats_lo80": 50,
+     "dem_seats_hi80": 55
+    },
+    "governor": {
+     "dem_control": 0.7742,
+     "rep_control": 0.1131,
+     "dem_seats_median": 27,
+     "dem_seats_lo80": 24,
+     "dem_seats_hi80": 30
+    },
+    "house": {
+     "dem_control": 0.9908,
+     "rep_control": 0.0084,
+     "dem_seats_median": 248,
+     "dem_seats_lo80": 231,
+     "dem_seats_hi80": 269
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.49,
+     "brier": 0.0483,
+     "log_loss": 0.1508,
+     "vote_n": 26,
+     "mean_error": 2.48,
+     "mae": 2.53,
+     "coverage_80": 0.8077
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 1,
+     "expected_upsets": 3.07,
+     "brier": 0.0409,
+     "log_loss": 0.1436,
+     "vote_n": 26,
+     "mean_error": 1.24,
+     "mae": 3.4,
+     "coverage_80": 0.8077
+    },
+    "house": {
+     "called": 360,
+     "upsets": 6,
+     "expected_upsets": 15.58,
+     "brier": 0.0177,
+     "log_loss": 0.0657,
+     "vote_n": 253,
+     "mean_error": 1.81,
+     "mae": 2.71,
+     "coverage_80": 0.8221
+    },
+    "all": {
+     "called": 424,
+     "upsets": 9,
+     "expected_upsets": 21.14,
+     "brier": 0.0218,
+     "log_loss": 0.078,
+     "vote_n": 305,
+     "mean_error": 1.82,
+     "mae": 2.75,
+     "coverage_80": 0.8197
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-NV-GOV",
+     "p_dem_win": 0.566,
+     "p_dem_win_v1": 0.373
+    },
+    {
+     "id": "2026-TX-SEN",
+     "p_dem_win": 0.684,
+     "p_dem_win_v1": 0.551
+    },
+    {
+     "id": "2026-GA-GOV",
+     "p_dem_win": 0.571,
+     "p_dem_win_v1": 0.465
+    },
+    {
+     "id": "2026-AK-GOV",
+     "p_dem_win": 0.451,
+     "p_dem_win_v1": 0.351
+    },
+    {
+     "id": "2026-KS-SEN",
+     "p_dem_win": 0.45,
+     "p_dem_win_v1": 0.351
+    }
+   ]
+  },
+  {
+   "date": "2026-11-02",
+   "variant": "v1_as_built",
+   "description": "v1's code as built, inputs as of the date",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-11-02T23:59:59Z",
+    "poll_cutoff": "2026-11-02",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-11-02T23:59:59Z",
+     "revision": 1383470484,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "NBC News",
+      "RealClearPolitics",
+      "Silver Bulletin"
+     ],
+     "updated": [
+      "November 1, 2026",
+      "November 1, 2026",
+      "November 1, 2026",
+      "November 1, 2026",
+      "November 1, 2026"
+     ],
+     "gb_dem_2p": 0.54551201011378
+    },
+    "races_with_polls": 61,
+    "polls_used": 551,
+    "races_polled_on_both": 59,
+    "mean_change_vs_v1": 0.54,
+    "mean_abs_change_vs_v1": 0.89
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.52803,
+   "bias": -0.0175,
+   "chances": {
+    "senate": {
+     "dem_control": 0.6971,
+     "rep_control": 0.2685,
+     "dem_seats_median": 52,
+     "dem_seats_lo80": 49,
+     "dem_seats_hi80": 54
+    },
+    "governor": {
+     "dem_control": 0.7424,
+     "rep_control": 0.134,
+     "dem_seats_median": 27,
+     "dem_seats_lo80": 24,
+     "dem_seats_hi80": 30
+    },
+    "house": {
+     "dem_control": 0.9184,
+     "rep_control": 0.0771,
+     "dem_seats_median": 233,
+     "dem_seats_lo80": 219,
+     "dem_seats_hi80": 251
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 3,
+     "expected_upsets": 2.56,
+     "brier": 0.0559,
+     "log_loss": 0.1684,
+     "vote_n": 26,
+     "mean_error": 3.28,
+     "mae": 3.28,
+     "coverage_80": 0.5769
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 1,
+     "expected_upsets": 2.92,
+     "brier": 0.0405,
+     "log_loss": 0.1414,
+     "vote_n": 26,
+     "mean_error": 1.45,
+     "mae": 3.26,
+     "coverage_80": 0.7692
+    },
+    "house": {
+     "called": 360,
+     "upsets": 15,
+     "expected_upsets": 13.99,
+     "brier": 0.0258,
+     "log_loss": 0.0823,
+     "vote_n": 253,
+     "mean_error": 3.38,
+     "mae": 3.7,
+     "coverage_80": 0.6443
+    },
+    "all": {
+     "called": 424,
+     "upsets": 19,
+     "expected_upsets": 19.47,
+     "brier": 0.0291,
+     "log_loss": 0.0931,
+     "vote_n": 305,
+     "mean_error": 3.21,
+     "mae": 3.63,
+     "coverage_80": 0.6492
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-NV-GOV",
+     "p_dem_win": 0.517,
+     "p_dem_win_v1": 0.373
+    },
+    {
+     "id": "2026-KS-GOV",
+     "p_dem_win": 0.371,
+     "p_dem_win_v1": 0.236
+    },
+    {
+     "id": "2026-KS-SEN",
+     "p_dem_win": 0.476,
+     "p_dem_win_v1": 0.351
+    },
+    {
+     "id": "2026-CO-GOV",
+     "p_dem_win": 0.99,
+     "p_dem_win_v1": 0.872
+    },
+    {
+     "id": "2026-GA-GOV",
+     "p_dem_win": 0.554,
+     "p_dem_win_v1": 0.465
+    }
+   ]
+  },
+  {
+   "date": "2026-11-02",
+   "variant": "bias_0",
+   "description": "generic-ballot bias set to 0 (H1 in #24), spread as v1",
+   "label": "DIAGNOSTIC",
+   "status": "provisional",
+   "pull_id": "20261104T104153Z",
+   "inputs": {
+    "race_polls": "Wikipedia revisions as of 2026-11-02T23:59:59Z",
+    "poll_cutoff": "2026-11-02",
+    "generic_ballot": {
+     "status": "ok",
+     "as_of": "2026-11-02T23:59:59Z",
+     "revision": 1383470484,
+     "sources": [
+      "Decision Desk HQ",
+      "FiftyPlusOne",
+      "NBC News",
+      "RealClearPolitics",
+      "Silver Bulletin"
+     ],
+     "updated": [
+      "November 1, 2026",
+      "November 1, 2026",
+      "November 1, 2026",
+      "November 1, 2026",
+      "November 1, 2026"
+     ],
+     "gb_dem_2p": 0.54551201011378
+    },
+    "races_with_polls": 61,
+    "polls_used": 551,
+    "races_polled_on_both": 59,
+    "mean_change_vs_v1": 0.54,
+    "mean_abs_change_vs_v1": 0.89
+   },
+   "reconstructed": true,
+   "house_vote_mean": 0.54551,
+   "bias": 0.0,
+   "chances": {
+    "senate": {
+     "dem_control": 0.8294,
+     "rep_control": 0.1496,
+     "dem_seats_median": 52,
+     "dem_seats_lo80": 50,
+     "dem_seats_hi80": 55
+    },
+    "governor": {
+     "dem_control": 0.835,
+     "rep_control": 0.0794,
+     "dem_seats_median": 28,
+     "dem_seats_lo80": 25,
+     "dem_seats_hi80": 30
+    },
+    "house": {
+     "dem_control": 0.9911,
+     "rep_control": 0.0082,
+     "dem_seats_median": 248,
+     "dem_seats_lo80": 231,
+     "dem_seats_hi80": 269
+    }
+   },
+   "scores": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.5,
+     "brier": 0.0426,
+     "log_loss": 0.1363,
+     "vote_n": 26,
+     "mean_error": 2.37,
+     "mae": 2.42,
+     "coverage_80": 0.8462
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 1,
+     "expected_upsets": 2.92,
+     "brier": 0.0382,
+     "log_loss": 0.1358,
+     "vote_n": 26,
+     "mean_error": 0.93,
+     "mae": 2.99,
+     "coverage_80": 0.8462
+    },
+    "house": {
+     "called": 360,
+     "upsets": 6,
+     "expected_upsets": 15.62,
+     "brier": 0.0176,
+     "log_loss": 0.0656,
+     "vote_n": 253,
+     "mean_error": 1.78,
+     "mae": 2.7,
+     "coverage_80": 0.8221
+    },
+    "all": {
+     "called": 424,
+     "upsets": 9,
+     "expected_upsets": 21.03,
+     "brier": 0.0211,
+     "log_loss": 0.0762,
+     "vote_n": 305,
+     "mean_error": 1.76,
+     "mae": 2.7,
+     "coverage_80": 0.8262
+    }
+   },
+   "largest_changes_from_v1": [
+    {
+     "id": "2026-KS-SEN",
+     "p_dem_win": 0.569,
+     "p_dem_win_v1": 0.351
+    },
+    {
+     "id": "2026-NV-GOV",
+     "p_dem_win": 0.57,
+     "p_dem_win_v1": 0.373
+    },
+    {
+     "id": "2026-KS-GOV",
+     "p_dem_win": 0.419,
+     "p_dem_win_v1": 0.236
+    },
+    {
+     "id": "2026-TX-SEN",
+     "p_dem_win": 0.693,
+     "p_dem_win_v1": 0.551
+    },
+    {
+     "id": "2026-GA-GOV",
+     "p_dem_win": 0.602,
+     "p_dem_win_v1": 0.465
+    }
+   ]
+  }
+ ],
+ "revision_check_22_october": {
+  "generic_ballot_revision": 0.5466011115861479,
+  "generic_ballot_v1": 0.5466011115861479,
+  "races_with_polls_revision": 59,
+  "races_with_polls_v1": 59,
+  "races_same_poll_count": 60,
+  "races": 60,
+  "max_abs_poll_avg_difference_points": 0.024
+ }
+}
