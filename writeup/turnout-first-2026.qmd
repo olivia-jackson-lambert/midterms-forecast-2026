@@ -1,5 +1,5 @@
 ---
-title: "Turnout First: Forecasting the 2026 Midterms"
+title: "Forecasting the 2026 Midterms: Method and Backtests"
 description: "A public, pre-registered forecast of the 2026 US midterms that predicts county turnout first and builds Senate, governor and House forecasts on top. Every part had to beat a simple baseline out of sample."
 image: /project/cover_assets/thumbs/turnout-first-2026.png
 date: 2026-10-22
@@ -34,7 +34,7 @@ format:
 :::
 :::
 
-Turnout First is a forecast of the 3 November 2026 US midterms, built entirely from public data. It covers turnout in every county, the chance that each side wins every Senate and governor race (71 in all) and all 435 House seats. The forecast was published as a timestamped, tagged Git commit, so it cannot be revised after the fact, and it will be scored against the certified results.
+This article sets out the method behind a forecast of the 3 November 2026 US midterms, built entirely from public data. It covers turnout in every county, the chance that each side wins every Senate and governor race (71 in all) and all 435 House seats. The forecast was published as a timestamped, tagged Git commit, so it cannot be revised after the fact, and it will be scored against the certified results.
 
 Most public forecasts begin with who wins; this one begins with how many people vote. It expects national turnout of 47.9% of citizens of voting age, a little above the 46.5% of 2022. Democrats reach 51 Senate seats in 63% of simulations, while Republicans keep 50 or more in 33%; Democrats also hold a majority of governorships (26 or more) in 62% and win 218 or more House seats in 93%. The more durable finding, though, concerns the method rather than the result: forecasting turnout first improves the county picture considerably and changes the race forecasts very little.
 
@@ -49,7 +49,7 @@ How many people will vote in each county on 3 November 2026 and, given that, wha
 
 The scope was fixed before any modelling began: county turnout as a share of citizens of voting age, with an 80% interval, and the two-party vote share and win probability for every Senate and governor race. The House began as a stretch goal and was added on 13 October, once the rest was built, under the same backtest rule. Primaries, ballot measures and state legislatures are out of scope.
 
-# Why Turnout First
+# Why Start With Turnout
 
 Midterm turnout moves a great deal. Measured against the voting-eligible population it was about 37% in 2014, 50% in 2018 and 46% in 2022, a far wider swing than presidential years show; a forecast that treats the electorate as fixed is therefore ignoring the most variable part of a midterm.
 
@@ -297,7 +297,7 @@ The case for forecasting turnout first was that a different electorate might cha
 
 The backtests agree. With the plain presidential lean in place of the turnout-weighted one, the 2022 Brier score of the fundamentals is 0.069 rather than 0.067, while 2018 is slightly better without it (0.147 against 0.149): a small edge in one year and none in the other.
 
-Turnout, then, does not decide who is forecast to win. It matters instead in two places: the county forecast itself, which beats its baseline clearly, and the uncertainty, since each race simulation draws a turnout scenario, so that a high- or low-turnout year moves every lean together. It is a useful result to report — and not the one the project's name anticipated.
+Turnout, then, does not decide who is forecast to win. It matters instead in two places: the county forecast itself, which beats its baseline clearly, and the uncertainty, since each race simulation draws a turnout scenario, so that a high- or low-turnout year moves every lean together. It is a useful result to report — and not the one the project set out expecting.
 
 # What Was Tested and Left Out
 
