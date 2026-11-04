@@ -89,9 +89,9 @@ def vote_error(actual, median, lo, hi) -> dict:
     e = 100 * (a - m)
     n = len(e)
     return {"n": n,
-            "mean_error_toward_dem": _r(e.mean()) if n else None,
-            "mae": _r(np.abs(e).mean()) if n else None,
-            "rmse": _r(math.sqrt((e ** 2).mean())) if n else None,
+            "mean_error_toward_dem": _r(e.mean(), 2) if n else None,
+            "mae": _r(np.abs(e).mean(), 2) if n else None,
+            "rmse": _r(math.sqrt((e ** 2).mean()), 2) if n else None,
             "below_80": int((a < np.asarray(lo, float)).sum()),
             "inside_80": int(((a >= np.asarray(lo, float)) & (a <= np.asarray(hi, float))).sum()),
             "above_80": int((a > np.asarray(hi, float)).sum()),

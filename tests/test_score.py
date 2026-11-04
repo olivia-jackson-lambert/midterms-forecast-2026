@@ -72,8 +72,8 @@ def test_vote_error_by_hand():
     out = score.vote_error([0.52, 0.49, 0.60], [0.50, 0.50, 0.55], [0.45, 0.45, 0.50], [0.55, 0.55, 0.58])
     assert out["n"] == 3
     assert out["mean_error_toward_dem"] == pytest.approx(2.0)
-    assert out["mae"] == pytest.approx(8 / 3, abs=1e-4)
-    assert out["rmse"] == pytest.approx(math.sqrt((4 + 1 + 25) / 3), abs=1e-4)
+    assert out["mae"] == pytest.approx(8 / 3, abs=0.005)
+    assert out["rmse"] == pytest.approx(math.sqrt((4 + 1 + 25) / 3), abs=0.005)
     assert (out["below_80"], out["inside_80"], out["above_80"]) == (0, 2, 1)
     assert out["coverage_80"] == pytest.approx(2 / 3, abs=1e-4)
 
