@@ -40,6 +40,18 @@ Most public forecasts begin with who wins; this one begins with how many people 
 
 **Source code**: [github.com/olivia-jackson-lambert/midterms-forecast-2026](https://github.com/olivia-jackson-lambert/midterms-forecast-2026), with the published forecast at the [`v1` tag](https://github.com/olivia-jackson-lambert/midterms-forecast-2026/tree/v1).
 
+```{=html}
+<a class="cs-hub" href="/midterms-2026/">
+  <span class="cs-hub-thumb"><img src="/project/cover_assets/thumbs/web/turnout-first-2026.webp?v=2" alt="" width="900" height="600" loading="lazy" decoding="async"></span>
+  <span class="cs-hub-text">
+    <span class="cs-hub-label">The Interactive Forecast</span>
+    <strong>Every race, the maps and the range of outcomes</strong>
+    <span>The Senate, House, governor and turnout forecasts, race by race, with the results added beside each forecast as states count.</span>
+    <span class="op-btn op-btn-solid cs-hub-btn">Open the Forecast</span>
+  </span>
+</a>
+```
+
 ![Forecast change in turnout by county, 2026 against 2022. Colour fades where the county's own 80% interval is wide.](assets/hero_turnout_change_map.png){fig-alt="Map of the United States by county, coloured by forecast change in turnout from 2022 to 2026 on a scale from minus 10 to plus 10 points, with green for higher and purple for lower, and colours fading towards grey where the forecast is less certain. Green dominates Tennessee, Virginia, North Carolina, Mississippi, Alabama, New Jersey and parts of Montana and Idaho. Purple dominates Oregon, Washington, upstate New York, Pennsylvania, Missouri and much of the interior West. The Plains and Midwest are mostly pale. Alaska and Connecticut are drawn as single units." width="100%"}
 
 
@@ -339,3 +351,16 @@ The forecast will be scored after the election: provisionally on unofficial resu
 - every miss, with its most likely cause.
 
 The full scoring plan is public in the [project's scoring epic](https://github.com/olivia-jackson-lambert/midterms-forecast-2026/issues/23). <!-- scorecard: to come -->
+
+```{=html}
+<a class="cs-hub" href="/midterms-2026/">
+  <span class="cs-hub-thumb"><img src="/project/cover_assets/thumbs/web/turnout-first-2026.webp?v=2" alt="" width="900" height="600" loading="lazy" decoding="async"></span>
+  <span class="cs-hub-text">
+    <span class="cs-hub-label">The Interactive Forecast</span>
+    <strong>See the forecast beside the results</strong>
+    <span>The Senate, House, governor and turnout forecasts, race by race, with the results added beside each forecast as states count.</span>
+    <span class="op-btn op-btn-solid cs-hub-btn">Open the Forecast</span>
+  </span>
+</a>
+```
+
