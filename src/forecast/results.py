@@ -39,6 +39,7 @@ import json
 import os
 import re
 import time
+import unicodedata
 from pathlib import Path
 
 import pandas as pd
@@ -61,7 +62,7 @@ AT_LARGE = {"AK", "DE", "ND", "SD", "VT", "WY"}
 
 LOG_COLUMNS = ["pull_id", "pulled_at", "id", "office", "state", "ap_race_id", "call_status", "called",
                "winner_party", "winner_name", "called_at", "dem_side", "dem_votes", "rep_votes",
-               "total_votes", "dem_share_2p", "pct_counted", "ap_last_updated", "source"]
+               "total_votes", "dem_share_2p", "pct_counted", "outside_top_two", "ap_last_updated", "source"]
 
 
 # --------------------------------------------------------------------------- fetch
@@ -101,13 +102,23 @@ def _surname(name: str) -> str:
     return name.split()[-1].lower() if name else ""
 
 
+def _fold(name) -> str:
+    """Surname without accents, for matching AP's spelling to v1's (Luján, Lujan)."""
+    return unicodedata.normalize("NFKD", _surname(name)).encode("ascii", "ignore").decode()
+
+
+def _names(*cols) -> list[str]:
+    return [n.strip() for c in cols if isinstance(c, str) for n in c.split(";") if n.strip()]
+
+
 def v1_races() -> pd.DataFrame:
     """Every v1 race with the Democratic and Republican side as v1 defined them."""
     r = pd.read_csv(V1 / "races.csv")
     sr = pd.DataFrame({"id": r["race_id"], "office": r["office"], "state": r["state"],
                        "special": r["special"].astype(bool),
                        "d_kind": r["d_side"], "d_name": r["dem_candidate"],
-                       "r_kind": "republican", "r_name": r["rep_candidate"]})
+                       "r_kind": "republican", "r_name": r["rep_candidate"],
+                       "v1_names": [_names(a, b) for a, b in zip(r["dem_candidate"], r["rep_candidate"])]})
     h = pd.read_csv(V1 / "house_districts.csv")
     has_d = h["dem_candidates"].notna()
     has_r = h["rep_candidates"].notna()
@@ -119,7 +130,9 @@ def v1_races() -> pd.DataFrame:
                        "r_kind": ["republican" if rr else ("independent_challenger" if s and d else "none")
                                   for rr, s, d in zip(has_r, stand, has_d)],
                        "r_name": [None if rr else (n if s and d else None)
-                                  for rr, s, d, n in zip(has_r, stand, has_d, h["stand_in"])]})
+                                  for rr, s, d, n in zip(has_r, stand, has_d, h["stand_in"])],
+                       "v1_names": [_names(a, b, c) for a, b, c in
+                                    zip(h["dem_candidates"], h["rep_candidates"], h["stand_in"])]})
     return pd.concat([sr, hr], ignore_index=True)
 
 
@@ -167,16 +180,29 @@ def parse(metadata: dict, progress: dict, pulled_at: str, pull_id: str | None = 
         cands = {c["candidateID"]: dict(m["candidates"].get(c["candidateID"], {}), **c)
                  for c in p.get("candidates", [])}
 
+        paired: set[str] = set()
+
         def side(kind, name, party):
             if kind == "none":
                 return None
             if kind in ("democrat", "republican"):
-                return sum(c["voteCount"] for c in cands.values() if c.get("party") == party)
-            hits = [c for c in cands.values() if c.get("last", "").lower().split()[-1:] == [_surname(name)]]
-            return hits[0]["voteCount"] if len(hits) == 1 else None
+                ids = [i for i, c in cands.items() if c.get("party") == party]
+            else:
+                ids = [i for i, c in cands.items() if _fold(c.get("last", "")) == _fold(name)]
+                if len(ids) != 1:
+                    return None
+            paired.update(ids)
+            return sum(cands[i]["voteCount"] for i in ids)
 
         dv = side(race.d_kind, race.d_name, "Dem")
         rv = side(race.r_kind, race.r_name, "GOP")
+        # A candidate outside v1's pairing who placed in the top two (Montana's independent,
+        # Wyoming's Constitution Party nominee): the two-party share is still v1's definition,
+        # but such races are flagged so the share is not read as the main contest.
+        # AP's "Oth" rows are write-in totals, not candidates.
+        ranked = sorted(((i, c) for i, c in cands.items() if c.get("party") != "Oth"),
+                        key=lambda kv: -kv[1]["voteCount"])
+        outside = [_ap_name(c) for i, c in ranked[:2] if i not in paired and c["voteCount"] > 0]
         status = m.get("raceCallStatus")
         called = status == "Called"
         winners = [c for c in cands.values() if c.get("winner") == "X"] if called else []
@@ -186,12 +212,13 @@ def parse(metadata: dict, progress: dict, pulled_at: str, pull_id: str | None = 
         rows.append(base | {
             "call_status": status, "called": bool(called and w is not None),
             "winner_party": PARTY.get(w.get("party"), "I") if w else None,
-            "winner_name": " ".join(x for x in (w.get("first"), w.get("last")) if x) if w else None,
+            "winner_name": _winner_name(w, race.v1_names) if w else None,
             "called_at": w.get("calledAt") if w else None,
             "dem_side": race.d_name if race.d_kind != "democrat" else "Democrats",
             "dem_votes": dv, "rep_votes": rv, "total_votes": total,
             "dem_share_2p": dv / (dv + rv) if dv and rv and total else None,
             "pct_counted": eevp / 100 if eevp is not None else None,
+            "outside_top_two": "; ".join(outside) or None,
             "ap_last_updated": p.get("lastUpdated"),
         })
     out = pd.DataFrame(rows).reindex(columns=LOG_COLUMNS)
@@ -199,6 +226,17 @@ def parse(metadata: dict, progress: dict, pulled_at: str, pull_id: str | None = 
         out[c] = out[c].astype("Int64")
     out["dem_share_2p"] = out["dem_share_2p"].astype(float).round(5)
     return out
+
+
+def _ap_name(c: dict) -> str:
+    return " ".join(x for x in (c.get("first"), c.get("last")) if x)
+
+
+def _winner_name(w: dict, v1_names: list[str]) -> str:
+    """v1's spelling of the winner's name where v1 named them (so the log, the site and v1 agree:
+    "Keisha Lance Bottoms", not AP's "Keisha Bottoms"); AP's otherwise."""
+    hits = [n for n in v1_names if _fold(n) == _fold(w.get("last", ""))]
+    return hits[0] if len(set(hits)) == 1 else _ap_name(w)
 
 
 def append_log(rows: pd.DataFrame, log: Path = LOG) -> pd.DataFrame:

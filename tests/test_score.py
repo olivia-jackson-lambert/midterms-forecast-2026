@@ -195,3 +195,32 @@ def test_parse_rejects_two_feed_races_for_one_v1_race():
     c, d = _ap("x2", "G", "TX", None, [("1", "A", "B", "Dem", 1)])
     with pytest.raises(ValueError):
         results.parse(a | c, b | d, "t")
+
+
+def test_parse_uses_v1_spelling_of_the_winner():
+    # AP lists "Keisha Bottoms"; v1 (and the site) say "Keisha Lance Bottoms"
+    m, p = _ap("ga", "G", "GA", None, [("1", "Keisha", "Bottoms", "Dem", 55, True), ("2", "Rick", "Jackson", "GOP", 45)])
+    row = results.parse(m, p, "t").set_index("id").loc["2026-GA-GOV"]
+    assert row["winner_name"] == "Keisha Lance Bottoms"
+    # accents and AP's formal first names: Lujan -> Ben Ray Luján
+    m, p = _ap("nm", "S", "NM", "2", [("1", "Ben", "Lujan", "Dem", 60, True), ("2", "Larry", "Marker", "GOP", 40)])
+    assert results.parse(m, p, "t").set_index("id").loc["2026-NM-SEN", "winner_name"] == "Ben Ray Luján"
+
+
+def test_parse_keeps_ap_name_when_v1_did_not_name_the_winner():
+    m, p = _ap("wy", "G", "WY", None, [("1", "Rebecca", "Bextel", "CST", 60, True), ("2", "Eric", "Barlow", "GOP", 40)])
+    assert results.parse(m, p, "t").set_index("id").loc["2026-WY-GOV", "winner_name"] == "Rebecca Bextel"
+
+
+def test_parse_flags_a_candidate_outside_the_pairing_in_the_top_two():
+    # Wyoming: the Constitution Party nominee beat the Democrat for second. The share stays v1's
+    # Democrat-against-Republican share (20 / (20 + 100)), and the race is flagged.
+    m, p = _ap("wy", "G", "WY", None, [("1", "Eric", "Barlow", "GOP", 100, True), ("2", "Rebecca", "Bextel", "CST", 25),
+                                       ("3", "Kenneth", "Casner", "Dem", 20), ("4", "", "Total Write-ins", "Oth", 30)])
+    row = results.parse(m, p, "t").set_index("id").loc["2026-WY-GOV"]
+    assert row["dem_share_2p"] == pytest.approx(20 / 120, abs=1e-5)   # stored to five decimals
+    assert row["outside_top_two"] == "Rebecca Bextel"
+    # write-in totals ("Oth") are not a candidate; a stand-in that v1 paired is not flagged
+    m, p = _ap("pa", "H", "PA", "3", [("1", "Chris", "Rabb", "Dem", 90, True), ("2", "Dennis", "Mahoney", "Ind", 10)])
+    row = results.parse(m, p, "t").set_index("id").loc["PA-03"]
+    assert pd.isna(row["outside_top_two"]) and row["dem_share_2p"] == pytest.approx(0.9)
