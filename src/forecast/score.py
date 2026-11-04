@@ -133,8 +133,10 @@ def frame(results: pd.DataFrame) -> pd.DataFrame:
         "presidential_lean": h["presidential_lean_dem_2p"]})
     f = pd.concat([sw, ho], ignore_index=True)
     f["group"] = np.where(f["d_kind"].eq("independent_challenger"), "independent", f["office"])
+    if "outside_top_two" not in results:
+        results = results.assign(outside_top_two=None)
     res = results.set_index("id")[["called", "winner_party", "winner_name", "dem_share_2p", "pct_counted",
-                                   "source", "pulled_at"]]
+                                   "outside_top_two", "source", "pulled_at"]]
     f = f.join(res, on="id")
     f["called"] = f["called"].fillna(False).astype(bool)
     f["outcome"] = [_outcome(row) for row in f.itertuples(index=False)]
@@ -303,12 +305,22 @@ def score(f: pd.DataFrame) -> dict:
     races = {k: score_group(g) for k, g in groups.items()}
     votes = {k: vote_group(g) for k, g in groups.items() if k not in ("independent", "senate_incl_independents")}
     votes["independent"] = vote_group(groups["independent"], stand_ins=True)
+    # The same, without races where a candidate outside v1's pairing placed in the top two.
+    paired = groups["all"][groups["all"]["outside_top_two"].isna()]
+    votes["all_excl_outside_top_two"] = vote_group(paired)
+    flagged = f[f["outside_top_two"].notna() & f["vote_scored"]]
+    outside = [{"id": r.id, "outside_top_two": r.outside_top_two, "called": bool(r.called),
+                "dem_share_2p": _r(r.dem_share_2p) if pd.notna(r.dem_share_2p) else None,
+                "v1_median": _r(r.median), "pct_counted": _r(r.pct_counted) if pd.notna(r.pct_counted) else None,
+                "in_vote_share_table": bool(r.called and pd.notna(r.dem_share_2p) and r.pct_counted >= MIN_COUNTED)}
+               for r in flagged.itertuples()]
     ch, chance, pct = chambers(f)
     uncalled = f[~f["called"]].sort_values(["office", "id"])
     return {"races": races, "vote_share": votes, "chambers": ch, "chamber_chance": chance,
             "seat_percentiles": pct,
             "uncalled": {o: list(uncalled.loc[uncalled["office"] == o, "id"]) for o in ("senate", "governor", "house")},
             "turnout": None,
+            "outside_top_two": outside,
             "montana": _montana_row(f)}
 
 
@@ -440,6 +452,19 @@ def markdown(s: dict, as_of: str) -> str:
         L.append(f"| {names[k]} | {v['n']} | {_num(v['mean_error_toward_dem'], 2)} | {_num(v['mae'], 2)} | "
                  f"{_num(v['rmse'], 2)} | {v['below_80']} | {v['inside_80']} | {v['above_80']} | "
                  f"{_pct(v['coverage_80'])} | {_num(v['baseline_lean_mae'], 2)} |")
+    ex = V["all_excl_outside_top_two"]
+    ot = [o for o in s.get("outside_top_two", [])]
+    if ot:
+        L += ["", "In " + ", ".join(f"{_label(o['id'])} ({o['outside_top_two']})" for o in ot) +
+              ", a candidate outside v1's Democrat-against-Republican pairing placed in the top two. The share "
+              "is still the Democrat's share of the Democratic-plus-Republican vote, as v1 defined it, so these "
+              "results say more about the third candidate than about the two parties. "
+              + (("In the table: " + ", ".join(_label(o["id"]) for o in ot if o["in_vote_share_table"]) + ". ")
+                 if any(o["in_vote_share_table"] for o in ot) else "None is in the table yet. ")
+              + "Without them, the "
+              f"all-race row is {ex['n']} races, mean error {_num(ex['mean_error_toward_dem'], 2)}, MAE "
+              f"{_num(ex['mae'], 2)}, RMSE {_num(ex['rmse'], 2)}, coverage {_pct(ex['coverage_80'])} "
+              f"({ex['below_80']} below, {ex['above_80']} above)."]
     L += ["", "The target coverage is 80%, with about 10% of results on each side. For the independent "
           "challengers the share is the independent's share of the independent-plus-Republican vote. The "
           "baseline is the 2024 presidential two-party share of the state or district.", "",
