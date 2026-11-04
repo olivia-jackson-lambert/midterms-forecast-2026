@@ -114,8 +114,12 @@ def _r(x, nd: int = 4):
 
 
 # --------------------------------------------------------------------------- frame
-def frame(results: pd.DataFrame) -> pd.DataFrame:
-    """v1's probabilities next to the latest results, one row per v1 race."""
+def frame(results: pd.DataFrame, forecast_dir: Path = V1) -> pd.DataFrame:
+    """v1's probabilities next to the latest results, one row per v1 race.
+
+    forecast_dir: another folder of tables in v1's format (the diagnostic reruns, issue #24);
+    the score itself always uses v1."""
+    V1 = forecast_dir
     r = pd.read_csv(V1 / "races.csv")
     sw = pd.DataFrame({
         "id": r["race_id"], "office": r["office"], "state": r["state"], "d_kind": r["d_side"],

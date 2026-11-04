@@ -1,0 +1,1057 @@
+{
+ "label": "DIAGNOSTIC. Not part of v1's score (#15); v1 and the v1 tag are unchanged.",
+ "issue": 24,
+ "pull_id": "20261104T104153Z",
+ "pulled_at": "2026-11-04T10:41:53Z",
+ "status": "provisional",
+ "min_counted_for_vote_share": 0.85,
+ "reproduction": {
+  "max_abs_difference_from_forecasts_v1": 0.0,
+  "code": "src/ unchanged since tag v1 for every model module"
+ },
+ "variants": {
+  "v1": {
+   "description": "v1 as published (the score in #15)",
+   "metrics": {
+    "senate": {
+     "called": 30,
+     "upsets": 3,
+     "expected_upsets": 2.64,
+     "brier": 0.066,
+     "log_loss": 0.1976,
+     "vote_n": 26,
+     "mean_error": 3.47,
+     "mae": 3.47,
+     "rmse": 3.8,
+     "coverage_80": 0.5769,
+     "below_80": 0,
+     "above_80": 11
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 3,
+     "expected_upsets": 3.03,
+     "brier": 0.0512,
+     "log_loss": 0.1685,
+     "vote_n": 26,
+     "mean_error": 1.81,
+     "mae": 3.73,
+     "rmse": 5.05,
+     "coverage_80": 0.6923,
+     "below_80": 1,
+     "above_80": 7
+    },
+    "house": {
+     "called": 360,
+     "upsets": 14,
+     "expected_upsets": 14.09,
+     "brier": 0.0251,
+     "log_loss": 0.0808,
+     "vote_n": 253,
+     "mean_error": 3.28,
+     "mae": 3.63,
+     "rmse": 4.5,
+     "coverage_80": 0.6443,
+     "below_80": 3,
+     "above_80": 87
+    },
+    "all": {
+     "called": 424,
+     "upsets": 20,
+     "expected_upsets": 19.75,
+     "brier": 0.0301,
+     "log_loss": 0.0961,
+     "vote_n": 305,
+     "mean_error": 3.17,
+     "mae": 3.62,
+     "rmse": 4.49,
+     "coverage_80": 0.6426,
+     "below_80": 4,
+     "above_80": 105
+    }
+   }
+  },
+  "h1a_bias_0": {
+   "description": "H1: generic-ballot bias set to 0, spread as v1",
+   "house_vote_mean": 0.5466,
+   "house_vote_sd": 0.0119,
+   "metrics": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.59,
+     "brier": 0.0502,
+     "log_loss": 0.1573,
+     "vote_n": 26,
+     "mean_error": 2.53,
+     "mae": 2.59,
+     "rmse": 2.98,
+     "coverage_80": 0.7692,
+     "below_80": 0,
+     "above_80": 6
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 2,
+     "expected_upsets": 3.11,
+     "brier": 0.0473,
+     "log_loss": 0.1574,
+     "vote_n": 26,
+     "mean_error": 1.25,
+     "mae": 3.55,
+     "rmse": 5.07,
+     "coverage_80": 0.7308,
+     "below_80": 1,
+     "above_80": 6
+    },
+    "house": {
+     "called": 360,
+     "upsets": 6,
+     "expected_upsets": 15.74,
+     "brier": 0.0174,
+     "log_loss": 0.0652,
+     "vote_n": 253,
+     "mean_error": 1.68,
+     "mae": 2.66,
+     "rmse": 3.52,
+     "coverage_80": 0.83,
+     "below_80": 4,
+     "above_80": 39
+    },
+    "all": {
+     "called": 424,
+     "upsets": 10,
+     "expected_upsets": 21.44,
+     "brier": 0.0221,
+     "log_loss": 0.0791,
+     "vote_n": 305,
+     "mean_error": 1.71,
+     "mae": 2.73,
+     "rmse": 3.63,
+     "coverage_80": 0.8164,
+     "below_80": 5,
+     "above_80": 51
+    }
+   }
+  },
+  "h1b_raw_generic_ballot": {
+   "description": "H1: raw generic ballot as the House vote, no correction and no national spread",
+   "house_vote_mean": 0.5466,
+   "house_vote_sd": 0.0,
+   "metrics": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.51,
+     "brier": 0.0507,
+     "log_loss": 0.1574,
+     "vote_n": 26,
+     "mean_error": 2.51,
+     "mae": 2.57,
+     "rmse": 2.97,
+     "coverage_80": 0.7308,
+     "below_80": 0,
+     "above_80": 7
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 2,
+     "expected_upsets": 3.07,
+     "brier": 0.0473,
+     "log_loss": 0.1567,
+     "vote_n": 26,
+     "mean_error": 1.26,
+     "mae": 3.55,
+     "rmse": 5.07,
+     "coverage_80": 0.7308,
+     "below_80": 1,
+     "above_80": 6
+    },
+    "house": {
+     "called": 360,
+     "upsets": 6,
+     "expected_upsets": 14.62,
+     "brier": 0.0168,
+     "log_loss": 0.0624,
+     "vote_n": 253,
+     "mean_error": 1.67,
+     "mae": 2.65,
+     "rmse": 3.51,
+     "coverage_80": 0.8024,
+     "below_80": 5,
+     "above_80": 45
+    },
+    "all": {
+     "called": 424,
+     "upsets": 10,
+     "expected_upsets": 20.2,
+     "brier": 0.0216,
+     "log_loss": 0.0766,
+     "vote_n": 305,
+     "mean_error": 1.71,
+     "mae": 2.72,
+     "rmse": 3.63,
+     "coverage_80": 0.7902,
+     "below_80": 6,
+     "above_80": 58
+    }
+   }
+  },
+  "h6_late_polls": {
+   "description": "H6: race poll averages as of 3 November (look-ahead past the lock date)",
+   "house_vote_mean": 0.5291,
+   "house_vote_sd": 0.0119,
+   "metrics": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.59,
+     "brier": 0.0522,
+     "log_loss": 0.1606,
+     "vote_n": 26,
+     "mean_error": 3.15,
+     "mae": 3.15,
+     "rmse": 3.51,
+     "coverage_80": 0.5769,
+     "below_80": 0,
+     "above_80": 11
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 1,
+     "expected_upsets": 2.88,
+     "brier": 0.0395,
+     "log_loss": 0.1378,
+     "vote_n": 26,
+     "mean_error": 1.45,
+     "mae": 3.28,
+     "rmse": 4.52,
+     "coverage_80": 0.7308,
+     "below_80": 1,
+     "above_80": 6
+    },
+    "house": {
+     "called": 360,
+     "upsets": 14,
+     "expected_upsets": 14.09,
+     "brier": 0.0251,
+     "log_loss": 0.0808,
+     "vote_n": 253,
+     "mean_error": 3.28,
+     "mae": 3.63,
+     "rmse": 4.5,
+     "coverage_80": 0.6443,
+     "below_80": 3,
+     "above_80": 87
+    },
+    "all": {
+     "called": 424,
+     "upsets": 17,
+     "expected_upsets": 19.56,
+     "brier": 0.0282,
+     "log_loss": 0.091,
+     "vote_n": 305,
+     "mean_error": 3.11,
+     "mae": 3.56,
+     "rmse": 4.42,
+     "coverage_80": 0.6459,
+     "below_80": 4,
+     "above_80": 104
+    }
+   }
+  },
+  "h1a_and_h6": {
+   "description": "H1 and H6 together: bias 0 and 3 November poll averages",
+   "house_vote_mean": 0.5466,
+   "house_vote_sd": 0.0119,
+   "metrics": {
+    "senate": {
+     "called": 30,
+     "upsets": 1,
+     "expected_upsets": 2.42,
+     "brier": 0.0398,
+     "log_loss": 0.1305,
+     "vote_n": 26,
+     "mean_error": 2.26,
+     "mae": 2.32,
+     "rmse": 2.73,
+     "coverage_80": 0.8462,
+     "below_80": 0,
+     "above_80": 4
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 1,
+     "expected_upsets": 2.88,
+     "brier": 0.0374,
+     "log_loss": 0.1324,
+     "vote_n": 26,
+     "mean_error": 0.94,
+     "mae": 3.02,
+     "rmse": 4.59,
+     "coverage_80": 0.8077,
+     "below_80": 1,
+     "above_80": 4
+    },
+    "house": {
+     "called": 360,
+     "upsets": 6,
+     "expected_upsets": 15.74,
+     "brier": 0.0174,
+     "log_loss": 0.0652,
+     "vote_n": 253,
+     "mean_error": 1.68,
+     "mae": 2.66,
+     "rmse": 3.52,
+     "coverage_80": 0.83,
+     "below_80": 4,
+     "above_80": 39
+    },
+    "all": {
+     "called": 424,
+     "upsets": 8,
+     "expected_upsets": 21.04,
+     "brier": 0.0206,
+     "log_loss": 0.0752,
+     "vote_n": 305,
+     "mean_error": 1.66,
+     "mae": 2.66,
+     "rmse": 3.56,
+     "coverage_80": 0.8295,
+     "below_80": 5,
+     "above_80": 47
+    }
+   }
+  }
+ },
+ "h2": {
+  "races": {
+   "n": 45,
+   "mean": 2.45,
+   "sd": 2.92,
+   "mae": 3.34,
+   "rmse": 3.79
+  },
+  "by_office": {
+   "senate": {
+    "n": 21,
+    "mean": 3.21,
+    "sd": 2.12,
+    "mae": 3.36,
+    "rmse": 3.82
+   },
+   "governor": {
+    "n": 24,
+    "mean": 1.79,
+    "sd": 3.38,
+    "mae": 3.32,
+    "rmse": 3.76
+   }
+  },
+  "share_positive": 0.8,
+  "model": {
+   "s_nat_logit": 0.0585,
+   "mean_error_logit": 0.1029,
+   "mean_error_in_s_nat": 1.76,
+   "race_sd_expected_logit": 0.1595,
+   "race_sd_realised_logit": 0.1268
+  },
+  "correlations": {
+   "n_polls": {
+    "n": 45,
+    "pearson_r": 0.128,
+    "pearson_p": 0.404,
+    "spearman_rho": 0.045,
+    "spearman_p": 0.769
+   },
+   "n_eff": {
+    "n": 45,
+    "pearson_r": 0.127,
+    "pearson_p": 0.407,
+    "spearman_rho": 0.061,
+    "spearman_p": 0.69
+   },
+   "mean_age_days": {
+    "n": 45,
+    "pearson_r": -0.02,
+    "pearson_p": 0.897,
+    "spearman_rho": -0.162,
+    "spearman_p": 0.288
+   },
+   "newest_age_days": {
+    "n": 45,
+    "pearson_r": -0.06,
+    "pearson_p": 0.696,
+    "spearman_rho": -0.332,
+    "spearman_p": 0.026
+   },
+   "share_partisan_r": {
+    "n": 45,
+    "pearson_r": 0.273,
+    "pearson_p": 0.069,
+    "spearman_rho": 0.256,
+    "spearman_p": 0.09
+   },
+   "share_partisan_d": {
+    "n": 45,
+    "pearson_r": -0.388,
+    "pearson_p": 0.008,
+    "spearman_rho": -0.488,
+    "spearman_p": 0.001
+   },
+   "share_lv": {
+    "n": 45,
+    "pearson_r": -0.076,
+    "pearson_p": 0.621,
+    "spearman_rho": -0.111,
+    "spearman_p": 0.47
+   }
+  },
+  "by_bucket": {
+   "1-4": {
+    "n": 20,
+    "mean": 2.41,
+    "sd": 3.78,
+    "mae": 3.82,
+    "rmse": 4.4
+   },
+   "5+": {
+    "n": 25,
+    "mean": 2.49,
+    "sd": 2.07,
+    "mae": 2.96,
+    "rmse": 3.21
+   }
+  },
+  "largest": [
+   {
+    "id": "2026-RI-GOV",
+    "err": 7.5,
+    "n_polls": 4
+   },
+   {
+    "id": "2026-AL-SEN",
+    "err": 7.0,
+    "n_polls": 2
+   },
+   {
+    "id": "2026-OK-SEN",
+    "err": 6.85,
+    "n_polls": 1
+   },
+   {
+    "id": "2026-TN-GOV",
+    "err": 6.45,
+    "n_polls": 3
+   },
+   {
+    "id": "2026-TN-SEN",
+    "err": 5.99,
+    "n_polls": 1
+   },
+   {
+    "id": "2026-GA-GOV",
+    "err": 5.23,
+    "n_polls": 7
+   }
+  ],
+  "polls": {
+   "all": {
+    "n": 367,
+    "mean": 2.76,
+    "sd": 2.89,
+    "mae": 3.37,
+    "rmse": 3.99
+   },
+   "age_corr": {
+    "n": 367,
+    "pearson_r": -0.044,
+    "pearson_p": 0.398,
+    "spearman_rho": -0.044,
+    "spearman_p": 0.402
+   },
+   "by_age_days": {
+    "0-14": {
+     "n": 108,
+     "mean": 2.94,
+     "sd": 2.87,
+     "mae": 3.61,
+     "rmse": 4.1
+    },
+    "15-28": {
+     "n": 110,
+     "mean": 2.52,
+     "sd": 2.56,
+     "mae": 2.91,
+     "rmse": 3.59
+    },
+    "29-56": {
+     "n": 108,
+     "mean": 3.0,
+     "sd": 2.95,
+     "mae": 3.54,
+     "rmse": 4.2
+    },
+    "57-90": {
+     "n": 41,
+     "mean": 2.26,
+     "sd": 3.52,
+     "mae": 3.52,
+     "rmse": 4.14
+    }
+   },
+   "by_label": {
+    "unlabelled": {
+     "n": 204,
+     "mean": 2.62,
+     "sd": 2.96,
+     "mae": 3.3,
+     "rmse": 3.94
+    },
+    "Democratic-labelled": {
+     "n": 47,
+     "mean": 1.04,
+     "sd": 2.95,
+     "mae": 2.44,
+     "rmse": 3.09
+    },
+    "Republican-labelled": {
+     "n": 116,
+     "mean": 3.69,
+     "sd": 2.35,
+     "mae": 3.87,
+     "rmse": 4.37
+    }
+   },
+   "by_population": {
+    "A": {
+     "n": 1,
+     "mean": 1.81,
+     "sd": null,
+     "mae": 1.81,
+     "rmse": 1.81
+    },
+    "LV": {
+     "n": 337,
+     "mean": 2.9,
+     "sd": 2.7,
+     "mae": 3.31,
+     "rmse": 3.96
+    },
+    "RV": {
+     "n": 28,
+     "mean": 1.11,
+     "sd": 4.4,
+     "mae": 4.16,
+     "rmse": 4.46
+    },
+    "V": {
+     "n": 1,
+     "mean": 2.08,
+     "sd": null,
+     "mae": 2.08,
+     "rmse": 2.08
+    }
+   },
+   "pollsters_3plus_races": [
+    {
+     "pollster": "yougov",
+     "races": 19,
+     "mean_err": 2.25
+    },
+    {
+     "pollster": "co/efficient",
+     "races": 17,
+     "mean_err": 4.56
+    },
+    {
+     "pollster": "insideradvantage",
+     "races": 13,
+     "mean_err": 3.71
+    },
+    {
+     "pollster": "trafalgar group",
+     "races": 12,
+     "mean_err": 3.78
+    },
+    {
+     "pollster": "beacon research / shaw & co. research",
+     "races": 11,
+     "mean_err": 3.07
+    },
+    {
+     "pollster": "marist university",
+     "races": 11,
+     "mean_err": 2.5
+    },
+    {
+     "pollster": "new york times/siena university",
+     "races": 11,
+     "mean_err": 2.36
+    },
+    {
+     "pollster": "quantus insights",
+     "races": 10,
+     "mean_err": 4.13
+    },
+    {
+     "pollster": "rasmussen reports",
+     "races": 10,
+     "mean_err": 3.25
+    },
+    {
+     "pollster": "activote",
+     "races": 9,
+     "mean_err": 4.17
+    },
+    {
+     "pollster": "big data poll",
+     "races": 9,
+     "mean_err": 3.54
+    },
+    {
+     "pollster": "emerson college",
+     "races": 9,
+     "mean_err": 3.13
+    },
+    {
+     "pollster": "ssrs",
+     "races": 8,
+     "mean_err": 1.28
+    },
+    {
+     "pollster": "suffolk university",
+     "races": 8,
+     "mean_err": 0.07
+    },
+    {
+     "pollster": "university of new hampshire",
+     "races": 8,
+     "mean_err": 2.51
+    },
+    {
+     "pollster": "fabrizio ward / impact research",
+     "races": 7,
+     "mean_err": 3.42
+    },
+    {
+     "pollster": "abacus data",
+     "races": 5,
+     "mean_err": 1.3
+    },
+    {
+     "pollster": "national public affairs",
+     "races": 5,
+     "mean_err": 3.96
+    },
+    {
+     "pollster": "tipp insights",
+     "races": 5,
+     "mean_err": 1.01
+    },
+    {
+     "pollster": "cygnal",
+     "races": 4,
+     "mean_err": 3.65
+    },
+    {
+     "pollster": "gbao",
+     "races": 4,
+     "mean_err": 1.46
+    },
+    {
+     "pollster": "guidant polling & strategy",
+     "races": 4,
+     "mean_err": 3.1
+    },
+    {
+     "pollster": "public policy polling",
+     "races": 4,
+     "mean_err": 1.12
+    },
+    {
+     "pollster": "surveyusa",
+     "races": 4,
+     "mean_err": 2.57
+    },
+    {
+     "pollster": "the washington post/sspg",
+     "races": 4,
+     "mean_err": 1.22
+    },
+    {
+     "pollster": "z to a research",
+     "races": 4,
+     "mean_err": 0.22
+    },
+    {
+     "pollster": "cbs news/yougov",
+     "races": 3,
+     "mean_err": 4.81
+    },
+    {
+     "pollster": "change research",
+     "races": 3,
+     "mean_err": 1.18
+    },
+    {
+     "pollster": "global strategy group",
+     "races": 3,
+     "mean_err": 0.07
+    },
+    {
+     "pollster": "gs strategy group / new river strategies",
+     "races": 3,
+     "mean_err": 1.37
+    },
+    {
+     "pollster": "gs strategy group /new river strategies",
+     "races": 3,
+     "mean_err": 1.79
+    },
+    {
+     "pollster": "mason-dixon",
+     "races": 3,
+     "mean_err": 5.3
+    },
+    {
+     "pollster": "quinnipiac university",
+     "races": 3,
+     "mean_err": -0.35
+    },
+    {
+     "pollster": "socal strategies",
+     "races": 3,
+     "mean_err": 5.04
+    },
+    {
+     "pollster": "targoz market research",
+     "races": 3,
+     "mean_err": 6.74
+    },
+    {
+     "pollster": "univision/yougov",
+     "races": 3,
+     "mean_err": 3.4
+    }
+   ]
+  }
+ },
+ "h3": {
+  "all": {
+   "called": 64,
+   "vote_n": 52,
+   "mean_poll_weight": 0.538,
+   "blend": {
+    "called": 64,
+    "brier": 0.0581,
+    "vote_n": 52,
+    "mean_error": 2.64,
+    "mae": 3.6,
+    "coverage_80": 0.6346
+   },
+   "fundamentals": {
+    "called": 64,
+    "brier": 0.0891,
+    "vote_n": 52,
+    "mean_error": 3.74,
+    "mae": 4.78,
+    "coverage_80": null
+   },
+   "polls_only": {
+    "called": 53,
+    "brier": 0.0655,
+    "vote_n": 45,
+    "mean_error": 2.45,
+    "mae": 3.34,
+    "coverage_80": 0.7778
+   }
+  },
+  "polled": {
+   "called": 53,
+   "vote_n": 45,
+   "mean_poll_weight": 0.649,
+   "blend": {
+    "called": 53,
+    "brier": 0.0674,
+    "vote_n": 45,
+    "mean_error": 3.01,
+    "mae": 3.38,
+    "coverage_80": 0.6444
+   },
+   "fundamentals": {
+    "called": 53,
+    "brier": 0.1048,
+    "vote_n": 45,
+    "mean_error": 4.28,
+    "mae": 4.73,
+    "coverage_80": null
+   },
+   "polls_only": {
+    "called": 53,
+    "brier": 0.0655,
+    "vote_n": 45,
+    "mean_error": 2.45,
+    "mae": 3.34,
+    "coverage_80": 0.7778
+   }
+  },
+  "0": {
+   "called": 11,
+   "vote_n": 7,
+   "mean_poll_weight": 0.0,
+   "blend": {
+    "called": 11,
+    "brier": 0.0132,
+    "vote_n": 7,
+    "mean_error": 0.27,
+    "mae": 5.04,
+    "coverage_80": 0.5714
+   },
+   "fundamentals": {
+    "called": 11,
+    "brier": 0.0132,
+    "vote_n": 7,
+    "mean_error": 0.27,
+    "mae": 5.04,
+    "coverage_80": null
+   },
+   "polls_only": {
+    "called": 0,
+    "brier": null,
+    "vote_n": 0,
+    "mean_error": null,
+    "mae": null,
+    "coverage_80": null
+   }
+  },
+  "1-4": {
+   "called": 25,
+   "vote_n": 20,
+   "mean_poll_weight": 0.549,
+   "blend": {
+    "called": 25,
+    "brier": 0.0175,
+    "vote_n": 20,
+    "mean_error": 3.45,
+    "mae": 3.78,
+    "coverage_80": 0.65
+   },
+   "fundamentals": {
+    "called": 25,
+    "brier": 0.0226,
+    "vote_n": 20,
+    "mean_error": 5.63,
+    "mae": 5.71,
+    "coverage_80": null
+   },
+   "polls_only": {
+    "called": 25,
+    "brier": 0.0373,
+    "vote_n": 20,
+    "mean_error": 2.41,
+    "mae": 3.82,
+    "coverage_80": 0.85
+   }
+  },
+  "5+": {
+   "called": 28,
+   "vote_n": 25,
+   "mean_poll_weight": 0.739,
+   "blend": {
+    "called": 28,
+    "brier": 0.112,
+    "vote_n": 25,
+    "mean_error": 2.65,
+    "mae": 3.06,
+    "coverage_80": 0.64
+   },
+   "fundamentals": {
+    "called": 28,
+    "brier": 0.1783,
+    "vote_n": 25,
+    "mean_error": 3.2,
+    "mae": 3.96,
+    "coverage_80": null
+   },
+   "polls_only": {
+    "called": 28,
+    "brier": 0.0907,
+    "vote_n": 25,
+    "mean_error": 2.49,
+    "mae": 2.96,
+    "coverage_80": 0.72
+   }
+  },
+  "few_polls_worse_for_polls_only": [
+   "2026-VT-GOV",
+   "2026-LA-SEN",
+   "2026-OR-GOV",
+   "2026-OK-GOV"
+  ],
+  "best_weight_in_hindsight": {
+   "n": 45,
+   "w": 0.96,
+   "v1_mean_weight": 0.644
+  }
+ },
+ "h4": {
+  "national_environment": {
+   "mean": 0.5291,
+   "scale": 0.0119,
+   "df": 11,
+   "sd_points": 1.32,
+   "q90_points": 1.62
+  },
+  "house": {
+   "n": 253,
+   "realised_mean_shift_points": 3.28,
+   "sd_simulated": 1.347,
+   "q_simulated": 1.686,
+   "percentile_realised": 0.989,
+   "scale_needed": 1.945,
+   "sd_needed": 2.621
+  },
+  "senate_and_governor": {
+   "n": 52,
+   "realised_mean_shift_points": 2.64,
+   "sd_simulated": 1.114,
+   "q_simulated": 1.397,
+   "percentile_realised": 0.988,
+   "scale_needed": 1.891,
+   "sd_needed": 2.106
+  },
+  "national_term": {
+   "realised_logit_shift": 0.1493,
+   "realised_shift_points_at_mean": 3.72,
+   "percentile_in_v1_t": 0.9952,
+   "scale_needed_points": 2.73,
+   "sd_needed_points": 3.02,
+   "ratio_to_v1": 2.29
+  }
+ },
+ "house_vote_so_far": {
+  "dem_2p": 0.5569,
+  "districts_with_votes": 431,
+  "vote_weighted_pct_counted": 0.905,
+  "districts_below_95pct": 203
+ },
+ "h5": {
+  "status": "waiting",
+  "reason": "counts are not near final",
+  "vote_weighted_pct_counted": 0.905,
+  "districts_below_95pct": 203
+ },
+ "h6": {
+  "as_of": "2026-11-03T12:00:00Z",
+  "cutoff": "2026-11-03",
+  "races_with_polls": {
+   "v1": 59,
+   "final": 61
+  },
+  "polls_ending_after_v1_cutoff": 276,
+  "races_with_new_polls": 50,
+  "movement_toward_dem": {
+   "n": 59,
+   "mean": 0.59,
+   "sd": 1.22,
+   "mae": 0.89,
+   "rmse": 1.34
+  },
+  "share_moving_toward_dem": 0.661,
+  "late_listed_effect": {
+   "n": 59,
+   "mean": 0.15,
+   "sd": 0.67,
+   "mae": 0.35,
+   "rmse": 0.68
+  },
+  "scored": {
+   "n": 45,
+   "error_v1_avg": {
+    "n": 45,
+    "mean": 2.45,
+    "sd": 2.92,
+    "mae": 3.34,
+    "rmse": 3.79
+   },
+   "error_final_avg": {
+    "n": 45,
+    "mean": 1.89,
+    "sd": 2.58,
+    "mae": 2.74,
+    "rmse": 3.17
+   },
+   "share_of_error_closed": 0.231
+  }
+ },
+ "generic_ballot_3_november": {
+  "as_of": "2026-11-03T12:00:00Z",
+  "revision": 1383555060,
+  "sources": [
+   "Decision Desk HQ",
+   "FiftyPlusOne",
+   "NBC News",
+   "RealClearPolitics",
+   "Silver Bulletin"
+  ],
+  "dem": 51.779999999999994,
+  "rep": 43.14,
+  "gb_dem_2p": 0.54551201011378
+ },
+ "checks": {
+  "generic_ballot": {
+   "n_years": 12,
+   "years_used": [
+    1998,
+    2000,
+    2002,
+    2004,
+    2006,
+    2008,
+    2010,
+    2012,
+    2014,
+    2016,
+    2018,
+    2022
+   ],
+   "even_years_not_used": [
+    2020,
+    2024
+   ],
+   "reason_not_used": "no 30 September generic-ballot value is collected for them (generic_ballot() covers 1998-2018 and 2022 only)",
+   "bias": -0.0175,
+   "error_min": -0.0358,
+   "error_max": 0.0067,
+   "years_gb_overstated_dem": 11,
+   "as_of_2026": "2026-10-22",
+   "as_of_history": [
+    "09-18",
+    "09-28",
+    "09-30"
+   ]
+  },
+  "minnesota_first_logged_pull": [
+   {
+    "id": "2026-MN-GOV",
+    "pulled_at": "2026-11-04T06:40:11Z",
+    "pct_counted": 0.9423,
+    "dem_share_2p": 0.57103,
+    "called_at": "2026-11-04T05:07:26.279Z"
+   },
+   {
+    "id": "2026-MN-SEN",
+    "pulled_at": "2026-11-04T06:40:11Z",
+    "pct_counted": 0.9424,
+    "dem_share_2p": 0.55779,
+    "called_at": "2026-11-04T05:07:07.217Z"
+   }
+  ],
+  "ap_pulls_kept_locally": [
+   "20261104T064011Z",
+   "20261104T075718Z",
+   "20261104T104153Z"
+  ]
+ }
+}
