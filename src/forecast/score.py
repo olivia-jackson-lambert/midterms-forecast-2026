@@ -308,7 +308,17 @@ def score(f: pd.DataFrame) -> dict:
     return {"races": races, "vote_share": votes, "chambers": ch, "chamber_chance": chance,
             "seat_percentiles": pct,
             "uncalled": {o: list(uncalled.loc[uncalled["office"] == o, "id"]) for o in ("senate", "governor", "house")},
-            "turnout": None}
+            "turnout": None,
+            "montana": _montana_row(f)}
+
+
+def _montana_row(f: pd.DataFrame) -> dict:
+    r = f[f["id"] == "2026-MT-SEN"].iloc[0]
+    return {"called": bool(r["called"]), "winner_name": r["winner_name"] if r["called"] else None,
+            "winner_party": r["winner_party"] if r["called"] else None, "p_R": _r(r["p_R"], 3),
+            "dem_share_2p": _r(r["dem_share_2p"]) if pd.notna(r["dem_share_2p"]) else None,
+            "pct_counted": _r(r["pct_counted"]) if pd.notna(r["pct_counted"]) else None,
+            "median": r["median"], "lo80": r["lo80"], "hi80": r["hi80"]}
 
 
 # --------------------------------------------------------------------------- outputs
@@ -356,6 +366,21 @@ def _pct(x, nd=0):
 
 def _num(x, nd=3):
     return "–" if x is None else f"{x:.{nd}f}"
+
+
+def _montana(s: dict) -> str:
+    """The stated pre-election weakness: Montana's Senate race, modelled as Democrat against Republican."""
+    m = s.get("montana") or {}
+    head = ("- Montana's Senate race, a weakness stated before the election: v1 modelled it as the Democrat "
+            "against the Republican, though the main challenger is an independent.")
+    if not m.get("called"):
+        return head + " Not yet called."
+    share = "" if m.get("dem_share_2p") is None else (
+        f" The Democrat's share of the Democratic-plus-Republican vote is {100 * m['dem_share_2p']:.1f}% against "
+        f"v1's median of {100 * m['median']:.1f}% (80% interval {100 * m['lo80']:.1f}% to {100 * m['hi80']:.1f}%), "
+        f"with {_pct(m['pct_counted'])} counted" + (", below the threshold for the vote-share table." if
+                                                     m["pct_counted"] < MIN_COUNTED else "."))
+    return head + f" {m['winner_name']} ({m['winner_party']}) won; v1 gave the Republican {_pct(m['p_R'])}." + share
 
 
 def _label(race_id: str) -> str:
@@ -441,9 +466,7 @@ def markdown(s: dict, as_of: str) -> str:
           f"{len(u['house'])} House races. Races in a runoff count as uncalled.",
           "- Turnout: not scored. Counts are far from final, especially where mail ballots arrive late, so "
           "every turnout measure is left null.",
-          "- Montana's Senate race, a stated weakness before the election: v1 modelled it as the Democrat "
-          "against the Republican, though the main challenger is an independent. It is scored as v1 "
-          "defined it once called.", ""]
+          _montana(s), ""]
     return "\n".join(L)
 
 
