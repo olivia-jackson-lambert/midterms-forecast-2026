@@ -1,24 +1,24 @@
 {
- "as_of": "2026-11-04T10:41:53Z",
+ "as_of": "2026-11-04T19:42:55Z",
  "status": "provisional",
- "pull_id": "20261104T104153Z",
+ "pull_id": "20261104T194255Z",
  "min_counted_for_vote_share": 0.85,
  "races": {
   "all": {
    "races": 503,
-   "called": 424,
-   "favourites_won": 404,
-   "upsets": 20,
+   "called": 434,
+   "favourites_won": 412,
+   "upsets": 22,
    "ties": 0,
-   "expected_upsets": 19.75,
-   "brier": 0.0301,
-   "log_loss": 0.0961,
+   "expected_upsets": 21.62,
+   "brier": 0.0327,
+   "log_loss": 0.1042,
    "calibration": [
     {
      "bin": "0.0-0.2",
-     "races": 159,
-     "mean_p": 0.0217,
-     "win_rate": 0.0252
+     "races": 160,
+     "mean_p": 0.0222,
+     "win_rate": 0.0312
     },
     {
      "bin": "0.2-0.4",
@@ -28,20 +28,20 @@
     },
     {
      "bin": "0.4-0.6",
-     "races": 13,
-     "mean_p": 0.5109,
+     "races": 14,
+     "mean_p": 0.5084,
      "win_rate": 1.0
     },
     {
      "bin": "0.6-0.8",
-     "races": 12,
-     "mean_p": 0.7088,
+     "races": 15,
+     "mean_p": 0.6985,
      "win_rate": 1.0
     },
     {
      "bin": "0.8-1.0",
-     "races": 225,
-     "mean_p": 0.9901,
+     "races": 230,
+     "mean_p": 0.9892,
      "win_rate": 1.0
     }
    ],
@@ -57,6 +57,12 @@
      "winner_party": "D",
      "winner_name": "J. D. Ford",
      "v1_p_winner": 0.076
+    },
+    {
+     "id": "TX-09",
+     "winner_party": "D",
+     "winner_name": "Leticia Gutierrez",
+     "v1_p_winner": 0.108
     },
     {
      "id": "2026-SC-SEN",
@@ -149,6 +155,12 @@
      "v1_p_winner": 0.469
     },
     {
+     "id": "MI-04",
+     "winner_party": "D",
+     "winner_name": "Sean McCann",
+     "v1_p_winner": 0.475
+    },
+    {
      "id": "FL-22",
      "winner_party": "D",
      "winner_name": "Pia Dandiya",
@@ -169,8 +181,8 @@
    ],
    "unmodelled_winners": [],
    "baseline_lean": {
-    "brier": 0.1203,
-    "favourites_won": 373
+    "brier": 0.1336,
+    "favourites_won": 376
    }
   },
   "senate": {
@@ -309,19 +321,19 @@
   },
   "house": {
    "races": 435,
-   "called": 360,
-   "favourites_won": 346,
-   "upsets": 14,
+   "called": 370,
+   "favourites_won": 354,
+   "upsets": 16,
    "ties": 0,
-   "expected_upsets": 14.09,
-   "brier": 0.0251,
-   "log_loss": 0.0808,
+   "expected_upsets": 15.96,
+   "brier": 0.0283,
+   "log_loss": 0.0907,
    "calibration": [
     {
      "bin": "0.0-0.2",
-     "races": 136,
-     "mean_p": 0.0186,
-     "win_rate": 0.0147
+     "races": 137,
+     "mean_p": 0.0193,
+     "win_rate": 0.0219
     },
     {
      "bin": "0.2-0.4",
@@ -331,20 +343,20 @@
     },
     {
      "bin": "0.4-0.6",
-     "races": 9,
-     "mean_p": 0.5126,
+     "races": 10,
+     "mean_p": 0.5088,
      "win_rate": 1.0
     },
     {
      "bin": "0.6-0.8",
-     "races": 9,
-     "mean_p": 0.6992,
+     "races": 12,
+     "mean_p": 0.6887,
      "win_rate": 1.0
     },
     {
      "bin": "0.8-1.0",
-     "races": 194,
-     "mean_p": 0.9943,
+     "races": 199,
+     "mean_p": 0.9931,
      "win_rate": 1.0
     }
    ],
@@ -360,6 +372,12 @@
      "winner_party": "D",
      "winner_name": "J. D. Ford",
      "v1_p_winner": 0.076
+    },
+    {
+     "id": "TX-09",
+     "winner_party": "D",
+     "winner_name": "Leticia Gutierrez",
+     "v1_p_winner": 0.108
     },
     {
      "id": "OH-07",
@@ -416,6 +434,12 @@
      "v1_p_winner": 0.469
     },
     {
+     "id": "MI-04",
+     "winner_party": "D",
+     "winner_name": "Sean McCann",
+     "v1_p_winner": 0.475
+    },
+    {
      "id": "FL-22",
      "winner_party": "D",
      "winner_name": "Pia Dandiya",
@@ -436,8 +460,8 @@
    ],
    "unmodelled_winners": [],
    "baseline_lean": {
-    "brier": 0.0889,
-    "favourites_won": 328
+    "brier": 0.1054,
+    "favourites_won": 331
    }
   },
   "independent": {
@@ -557,19 +581,19 @@
   },
   "house_contested": {
    "races": 416,
-   "called": 348,
-   "favourites_won": 334,
-   "upsets": 14,
+   "called": 357,
+   "favourites_won": 341,
+   "upsets": 16,
    "ties": 0,
-   "expected_upsets": 13.85,
-   "brier": 0.0258,
-   "log_loss": 0.0828,
+   "expected_upsets": 15.72,
+   "brier": 0.0292,
+   "log_loss": 0.0933,
    "calibration": [
     {
      "bin": "0.0-0.2",
-     "races": 136,
-     "mean_p": 0.0186,
-     "win_rate": 0.0147
+     "races": 137,
+     "mean_p": 0.0193,
+     "win_rate": 0.0219
     },
     {
      "bin": "0.2-0.4",
@@ -579,20 +603,20 @@
     },
     {
      "bin": "0.4-0.6",
-     "races": 9,
-     "mean_p": 0.5126,
+     "races": 10,
+     "mean_p": 0.5088,
      "win_rate": 1.0
     },
     {
      "bin": "0.6-0.8",
-     "races": 9,
-     "mean_p": 0.6992,
+     "races": 12,
+     "mean_p": 0.6887,
      "win_rate": 1.0
     },
     {
      "bin": "0.8-1.0",
-     "races": 182,
-     "mean_p": 0.9952,
+     "races": 186,
+     "mean_p": 0.9939,
      "win_rate": 1.0
     }
    ],
@@ -608,6 +632,12 @@
      "winner_party": "D",
      "winner_name": "J. D. Ford",
      "v1_p_winner": 0.076
+    },
+    {
+     "id": "TX-09",
+     "winner_party": "D",
+     "winner_name": "Leticia Gutierrez",
+     "v1_p_winner": 0.108
     },
     {
      "id": "OH-07",
@@ -664,6 +694,12 @@
      "v1_p_winner": 0.469
     },
     {
+     "id": "MI-04",
+     "winner_party": "D",
+     "winner_name": "Sean McCann",
+     "v1_p_winner": 0.475
+    },
+    {
      "id": "FL-22",
      "winner_party": "D",
      "winner_name": "Pia Dandiya",
@@ -684,8 +720,8 @@
    ],
    "unmodelled_winners": [],
    "baseline_lean": {
-    "brier": 0.092,
-    "favourites_won": 316
+    "brier": 0.1092,
+    "favourites_won": 318
    }
   },
   "senate_and_governor": {
@@ -776,100 +812,100 @@
  },
  "vote_share": {
   "all": {
-   "n": 305,
-   "mean_error_toward_dem": 3.17,
-   "mae": 3.62,
-   "rmse": 4.49,
+   "n": 332,
+   "mean_error_toward_dem": 3.12,
+   "mae": 3.65,
+   "rmse": 4.57,
    "below_80": 4,
-   "inside_80": 196,
-   "above_80": 105,
-   "coverage_80": 0.6426,
-   "baseline_lean_mae": 7.6286,
-   "baseline_lean_mean_error_toward_dem": 7.392
+   "inside_80": 217,
+   "above_80": 111,
+   "coverage_80": 0.6536,
+   "baseline_lean_mae": 7.6928,
+   "baseline_lean_mean_error_toward_dem": 7.3548
   },
   "senate": {
-   "n": 26,
-   "mean_error_toward_dem": 3.47,
-   "mae": 3.47,
-   "rmse": 3.8,
-   "below_80": 0,
-   "inside_80": 15,
+   "n": 28,
+   "mean_error_toward_dem": 2.71,
+   "mae": 3.74,
+   "rmse": 4.57,
+   "below_80": 1,
+   "inside_80": 16,
    "above_80": 11,
-   "coverage_80": 0.5769,
-   "baseline_lean_mae": 8.5415,
-   "baseline_lean_mean_error_toward_dem": 8.5415
+   "coverage_80": 0.5714,
+   "baseline_lean_mae": 8.7628,
+   "baseline_lean_mean_error_toward_dem": 7.337
   },
   "governor": {
-   "n": 26,
-   "mean_error_toward_dem": 1.81,
+   "n": 29,
+   "mean_error_toward_dem": 2.01,
    "mae": 3.73,
-   "rmse": 5.05,
+   "rmse": 4.99,
    "below_80": 1,
-   "inside_80": 18,
+   "inside_80": 21,
    "above_80": 7,
-   "coverage_80": 0.6923,
-   "baseline_lean_mae": 8.3473,
-   "baseline_lean_mean_error_toward_dem": 5.8684
+   "coverage_80": 0.7241,
+   "baseline_lean_mae": 8.1273,
+   "baseline_lean_mean_error_toward_dem": 5.8985
   },
   "house": {
-   "n": 253,
+   "n": 275,
    "mean_error_toward_dem": 3.28,
    "mae": 3.63,
-   "rmse": 4.5,
-   "below_80": 3,
-   "inside_80": 163,
-   "above_80": 87,
-   "coverage_80": 0.6443,
-   "baseline_lean_mae": 7.4609,
-   "baseline_lean_mean_error_toward_dem": 7.4304
+   "rmse": 4.53,
+   "below_80": 2,
+   "inside_80": 180,
+   "above_80": 93,
+   "coverage_80": 0.6545,
+   "baseline_lean_mae": 7.538,
+   "baseline_lean_mean_error_toward_dem": 7.5101
   },
   "house_contested": {
-   "n": 253,
+   "n": 275,
    "mean_error_toward_dem": 3.28,
    "mae": 3.63,
-   "rmse": 4.5,
-   "below_80": 3,
-   "inside_80": 163,
-   "above_80": 87,
-   "coverage_80": 0.6443,
-   "baseline_lean_mae": 7.4609,
-   "baseline_lean_mean_error_toward_dem": 7.4304
+   "rmse": 4.53,
+   "below_80": 2,
+   "inside_80": 180,
+   "above_80": 93,
+   "coverage_80": 0.6545,
+   "baseline_lean_mae": 7.538,
+   "baseline_lean_mean_error_toward_dem": 7.5101
   },
   "senate_and_governor": {
-   "n": 52,
-   "mean_error_toward_dem": 2.64,
-   "mae": 3.6,
-   "rmse": 4.47,
-   "below_80": 1,
-   "inside_80": 33,
+   "n": 57,
+   "mean_error_toward_dem": 2.36,
+   "mae": 3.74,
+   "rmse": 4.79,
+   "below_80": 2,
+   "inside_80": 37,
    "above_80": 18,
-   "coverage_80": 0.6346,
-   "baseline_lean_mae": 8.4444,
-   "baseline_lean_mean_error_toward_dem": 7.2049
+   "coverage_80": 0.6491,
+   "baseline_lean_mae": 8.4395,
+   "baseline_lean_mean_error_toward_dem": 6.6051
   },
   "independent": {
    "n": 3,
-   "mean_error_toward_dem": -2.93,
-   "mae": 2.93,
+   "mean_error_toward_dem": -2.97,
+   "mae": 2.97,
    "rmse": 3.1,
    "below_80": 1,
    "inside_80": 2,
    "above_80": 0,
    "coverage_80": 0.6667,
-   "baseline_lean_mae": 5.7791,
-   "baseline_lean_mean_error_toward_dem": 5.7791
+   "baseline_lean_mae": 5.7438,
+   "baseline_lean_mean_error_toward_dem": 5.7438
   },
   "all_excl_outside_top_two": {
-   "n": 303,
+   "n": 329,
    "mean_error_toward_dem": 3.21,
    "mae": 3.55,
-   "rmse": 4.36,
-   "below_80": 3,
-   "inside_80": 196,
-   "above_80": 104,
-   "coverage_80": 0.6469,
-   "baseline_lean_mae": 7.5697,
-   "baseline_lean_mean_error_toward_dem": 7.3903
+   "rmse": 4.38,
+   "below_80": 2,
+   "inside_80": 217,
+   "above_80": 110,
+   "coverage_80": 0.6596,
+   "baseline_lean_mae": 7.6015,
+   "baseline_lean_mean_error_toward_dem": 7.4359
   }
  },
  "chambers": {
@@ -881,7 +917,7 @@
    "complete": false
   },
   "house": {
-   "dem_seats": 222,
+   "dem_seats": 232,
    "rep_seats": 138,
    "ind_seats": 0,
    "control": "D",
@@ -933,12 +969,12 @@
    "v1_median": 234.0,
    "v1_lo80": 220.0,
    "v1_hi80": 252.0,
-   "dem_seats_so_far": 222,
+   "dem_seats_so_far": 232,
    "dem_seats_max_possible": 297,
    "percentile": null,
    "inside_80": null,
    "percentile_range": [
-    0.15,
+    0.443,
     1.0
    ]
   },
@@ -976,12 +1012,9 @@
    "CA-04",
    "CA-07",
    "CA-11",
-   "CA-13",
    "CA-14",
-   "CA-22",
    "CA-23",
    "CA-29",
-   "CA-34",
    "CA-40",
    "CA-47",
    "CA-48",
@@ -996,9 +1029,6 @@
    "LA-05",
    "LA-06",
    "ME-02",
-   "MI-04",
-   "MI-07",
-   "MI-10",
    "MN-01",
    "MT-01",
    "NC-01",
@@ -1016,8 +1046,6 @@
    "NV-02",
    "NY-01",
    "NY-02",
-   "NY-03",
-   "NY-04",
    "NY-17",
    "NY-21",
    "OH-10",
@@ -1029,7 +1057,6 @@
    "TN-09",
    "TX-02",
    "TX-05",
-   "TX-09",
    "TX-22",
    "TX-27",
    "TX-32",
@@ -1038,7 +1065,6 @@
    "UT-04",
    "VA-01",
    "VA-05",
-   "WA-03",
    "WA-04",
    "WA-05"
   ]
@@ -1049,18 +1075,18 @@
    "id": "2026-MT-SEN",
    "outside_top_two": "Seth Bodnar",
    "called": true,
-   "dem_share_2p": 0.1983,
+   "dem_share_2p": 0.1975,
    "v1_median": 0.3423,
-   "pct_counted": 0.834,
-   "in_vote_share_table": false
+   "pct_counted": 0.9211,
+   "in_vote_share_table": true
   },
   {
    "id": "2026-RI-GOV",
    "outside_top_two": "Kenneth Block",
    "called": true,
-   "dem_share_2p": 0.8127,
+   "dem_share_2p": 0.8132,
    "v1_median": 0.7007,
-   "pct_counted": 0.9709,
+   "pct_counted": 0.9756,
    "in_vote_share_table": true
   },
   {
@@ -1076,9 +1102,9 @@
    "id": "AK-AL",
    "outside_top_two": "Bill Hill",
    "called": false,
-   "dem_share_2p": 0.1268,
+   "dem_share_2p": 0.1283,
    "v1_median": 0.4611,
-   "pct_counted": 0.7295,
+   "pct_counted": 0.7413,
    "in_vote_share_table": false
   }
  ],
@@ -1087,8 +1113,8 @@
   "winner_name": "Kurt Alme",
   "winner_party": "R",
   "p_R": 1.0,
-  "dem_share_2p": 0.1983,
-  "pct_counted": 0.834,
+  "dem_share_2p": 0.1975,
+  "pct_counted": 0.9211,
   "median": 0.3423,
   "lo80": 0.3126,
   "hi80": 0.3737
