@@ -744,7 +744,8 @@ def markdown(d: dict) -> str:
           "- `results/diagnostics.json`: the numbers on this page.",
           "- `src/forecast/diagnostics.py`: the code (`python -m forecast.diagnostics`); `tests/test_diagnostics.py`.",
           "- Rerun tables (local, not committed, each marked DIAGNOSTIC): `data/processed/diagnostics_v1/<run>/`.",
-          "- 3 November Wikipedia revisions (local): `data/raw/polls_late_2026/`.", ""]
+          "- 3 November Wikipedia revisions (local): `data/raw/polls_late_2026/`.",
+          "- `results/through_time.json` and the Through Time section: `src/forecast/through_time.py` (`python -m forecast.through_time`, run after `forecast.diagnostics`, which rewrites this page).", ""]
     return "\n".join(L)
 
 
