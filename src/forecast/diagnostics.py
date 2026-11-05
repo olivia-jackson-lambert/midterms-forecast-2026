@@ -93,17 +93,23 @@ def polls_only(avg, n_eff, errors: dict) -> pd.DataFrame:
 
 
 @contextlib.contextmanager
-def national_override(bias: float | None = None, sd: float | None = None):
-    """Temporarily replace generic_ballot.national_environment's bias and/or spread (DIAGNOSTIC).
+def national_override(bias: float | None = None, sd: float | None = None, gb: float | None = None):
+    """Temporarily replace generic_ballot.national_environment's bias, spread and/or the generic
+    ballot itself (`gb`, two-party, e.g. its value on an earlier date) (DIAGNOSTIC).
 
     Both vote models look the function up on the module when they simulate, so the change
-    reaches them and nothing else; the random draws are unchanged."""
+    reaches them and nothing else; the random draws are unchanged. The centre is always
+    generic ballot + bias, as in v1."""
     orig = generic_ballot.national_environment
 
     def patched(year, hist=None):
         e = dict(orig(year, hist))
+        if gb is not None:
+            e["gb_dem_2p"] = gb
         if bias is not None:
-            e["bias"], e["mean"] = bias, e["gb_dem_2p"] + bias
+            e["bias"] = bias
+        if gb is not None or bias is not None:
+            e["mean"] = e["gb_dem_2p"] + e["bias"]
         if sd is not None:
             e["sd"] = sd
         return e
@@ -115,52 +121,56 @@ def national_override(bias: float | None = None, sd: float | None = None):
 
 
 # --------------------------------------------------------------------------- late polls (H6)
-def fetch_late(as_of: str = LATE_AS_OF) -> pd.DataFrame:
+def _revision_html(folder: Path, stem: str, page: str, as_of: str) -> tuple[str | None, int | None]:
+    """The article as it stood at `as_of`, cached as <stem>_asof<date>_rev<id>.html in `folder`.
+    A revision already saved for another date is reused rather than fetched again."""
+    hits = sorted(folder.glob(f"{stem}_asof{as_of[:10]}_rev*.html"))
+    if hits:
+        return hits[-1].read_text(), int(hits[-1].stem.split("_rev")[-1])
+    rev = polls.revision_as_of(page, as_of)
+    if rev is None:
+        return None, None
+    same = sorted(folder.glob(f"{stem}_asof*_rev{rev}.html"))
+    html = same[0].read_text() if same else polls._api({"action": "parse", "oldid": rev, "prop": "text"})["parse"]["text"]
+    (folder / f"{stem}_asof{as_of[:10]}_rev{rev}.html").write_text(html)
+    return html, rev
+
+
+def fetch_late(as_of: str = LATE_AS_OF, folder: Path = RAW_LATE) -> pd.DataFrame:
     """Every 2026 race article as it stood at `as_of` (Wikipedia revision), parsed with v1's
-    parser. Saved under data/raw/polls_late_2026/, apart from v1's own poll files."""
-    RAW_LATE.mkdir(parents=True, exist_ok=True)
+    parser. Saved under data/raw/polls_late_2026/ (or `folder`), apart from v1's own poll files."""
+    folder.mkdir(parents=True, exist_ok=True)
     out = []
     for _, r in polls._races()[lambda d: d["year"] == YEAR].iterrows():
         page = polls.title(YEAR, r["office"], r["special"], r["state"])
-        hits = sorted(RAW_LATE.glob(f"{r['race_id']}_asof{as_of[:10]}_rev*.html"))
-        if hits:
-            html = hits[-1].read_text()
-        else:
-            rev = polls.revision_as_of(page, as_of)
-            if rev is None:
-                print(f"{r['race_id']}: no revision", flush=True)
-                continue
-            html = polls._api({"action": "parse", "oldid": rev, "prop": "text"})["parse"]["text"]
-            (RAW_LATE / f"{r['race_id']}_asof{as_of[:10]}_rev{rev}.html").write_text(html)
+        html, _ = _revision_html(folder, r["race_id"], page, as_of)
+        if html is None:
+            print(f"{r['race_id']}: no revision at {as_of}", flush=True)
+            continue
         p = polls.parse_polls(html, r["dem_candidate"], r["rep_candidate"], YEAR)
         out.append(p.assign(race_id=r["race_id"], year=YEAR))
     out = pd.concat(out, ignore_index=True)
     out = out.assign(start=pd.to_datetime(out["start"]), end=pd.to_datetime(out["end"]),
                      n=pd.to_numeric(out["n"]), dem_pct=out["dem_pct"].astype(float),
                      rep_pct=out["rep_pct"].astype(float))
-    out.to_parquet(RAW_LATE / f"polls_asof{as_of[:10]}.parquet", index=False)
+    out.to_parquet(folder / f"polls_asof{as_of[:10]}.parquet", index=False)
     return out
 
 
-def generic_ballot_late(as_of: str = LATE_AS_OF) -> dict | None:
+def generic_ballot_late(as_of: str = LATE_AS_OF, folder: Path = RAW_LATE) -> dict | None:
     """The aggregators' generic ballot on Wikipedia's 2026 House page as it stood at `as_of`."""
-    RAW_LATE.mkdir(parents=True, exist_ok=True)
-    hits = sorted(RAW_LATE.glob(f"house_2026_asof{as_of[:10]}_rev*.html"))
-    if hits:
-        html, rev = hits[-1].read_text(), int(hits[-1].stem.split("_rev")[-1])
-    else:
-        rev = polls.revision_as_of(HOUSE_PAGE_TITLE, as_of)
-        if rev is None:
-            return None
-        html = polls._api({"action": "parse", "oldid": rev, "prop": "text"})["parse"]["text"]
-        (RAW_LATE / f"house_2026_asof{as_of[:10]}_rev{rev}.html").write_text(html)
+    folder.mkdir(parents=True, exist_ok=True)
+    html, rev = _revision_html(folder, "house_2026", HOUSE_PAGE_TITLE, as_of)
+    if html is None:
+        return None
     a = generic_ballot._aggregate_table(html)
-    return {"as_of": as_of, "revision": rev, "sources": list(a["source"]), "dem": float(a["dem"].mean()),
-            "rep": float(a["rep"].mean()), "gb_dem_2p": float(a["dem"].mean() / (a["dem"].mean() + a["rep"].mean()))}
+    return {"as_of": as_of, "revision": rev, "sources": list(a["source"]), "updated": list(a["updated"]),
+            "dem": float(a["dem"].mean()), "rep": float(a["rep"].mean()),
+            "gb_dem_2p": float(a["dem"].mean() / (a["dem"].mean() + a["rep"].mean()))}
 
 
-def load_late(as_of: str = LATE_AS_OF) -> pd.DataFrame | None:
-    path = RAW_LATE / f"polls_asof{as_of[:10]}.parquet"
+def load_late(as_of: str = LATE_AS_OF, folder: Path = RAW_LATE) -> pd.DataFrame | None:
+    path = folder / f"polls_asof{as_of[:10]}.parquet"
     return pd.read_parquet(path) if path.exists() else None
 
 
@@ -179,10 +189,11 @@ def fitted(refit: bool = False) -> dict:
     return fits
 
 
-def rerun(fits: dict, avgs: pd.DataFrame, bias: float | None = None, sd: float | None = None) -> dict:
+def rerun(fits: dict, avgs: pd.DataFrame, bias: float | None = None, sd: float | None = None,
+          gb: float | None = None) -> dict:
     """v1's Stage B (with the poll blend) and House simulations, as vote_model.run and house.run
     do them, with the same seeds; optionally with the national environment changed."""
-    with national_override(bias, sd):
+    with national_override(bias, sd, gb):
         f = vote_model.frame(YEAR)
         s = vote_model.simulate(f, fits["vote"], YEAR)
         fund = vote_model.summarise(f, s)
@@ -194,14 +205,16 @@ def rerun(fits: dict, avgs: pd.DataFrame, bias: float | None = None, sd: float |
         hs = house.simulate(hf, fits["house"], YEAR)
         ho = house.summarise(hf, hs)
         env = generic_ballot.national_environment(YEAR)
-    return {"races": out, "race_sims": b, "blend": info, "house": ho, "house_sims": hs, "house_frame": hf,
-            "env": env}
+    return {"races": out, "race_sims": b, "race_frame": f, "blend": info, "house": ho, "house_sims": hs,
+            "house_frame": hf, "env": env}
 
 
-def write_tables(run: dict, name: str, avgs: pd.DataFrame) -> Path:
+def write_tables(run: dict, name: str, avgs: pd.DataFrame, base: Path = DIAG,
+                 note: str = "Diagnostic rerun for issue #24.") -> Path:
     """The rerun's races.csv and house_districts.csv in v1's published format (release's own
-    functions and rounding), in data/processed/diagnostics_v1/<name>/. DIAGNOSTIC, not a release."""
-    d = DIAG / name
+    functions and rounding), in data/processed/diagnostics_v1/<name>/ (or `base`/<name>/).
+    DIAGNOSTIC, not a release."""
+    d = base / name
     d.mkdir(parents=True, exist_ok=True)
     run["races"].to_parquet(d / "vote_share_2026.parquet", index=False)
     run["house"].to_parquet(d / "house_2026.parquet", index=False)
@@ -213,7 +226,7 @@ def write_tables(run: dict, name: str, avgs: pd.DataFrame) -> Path:
         release.house_districts().to_csv(d / "house_districts.csv", index=False)
     finally:
         release.OUT = orig
-    (d / "DIAGNOSTIC.txt").write_text("Diagnostic rerun for issue #24. Not forecast v1 and not part of its score.\n")
+    (d / "DIAGNOSTIC.txt").write_text(f"{note} Not forecast v1 and not part of its score.\n")
     return d
 
 
@@ -731,7 +744,8 @@ def markdown(d: dict) -> str:
           "- `results/diagnostics.json`: the numbers on this page.",
           "- `src/forecast/diagnostics.py`: the code (`python -m forecast.diagnostics`); `tests/test_diagnostics.py`.",
           "- Rerun tables (local, not committed, each marked DIAGNOSTIC): `data/processed/diagnostics_v1/<run>/`.",
-          "- 3 November Wikipedia revisions (local): `data/raw/polls_late_2026/`.", ""]
+          "- 3 November Wikipedia revisions (local): `data/raw/polls_late_2026/`.",
+          "- `results/through_time.json` and the Through Time section: `src/forecast/through_time.py` (`python -m forecast.through_time`, run after `forecast.diagnostics`, which rewrites this page).", ""]
     return "\n".join(L)
 
 
