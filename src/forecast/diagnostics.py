@@ -655,7 +655,7 @@ def _in_averages(used: pd.DataFrame, est: pd.DataFrame, k: int = 10) -> list[dic
     u = used.assign(he=used["pollster"].map(he_key)).groupby("he").agg(races_2026=("race_id", "nunique"))
     e = est.set_index("he_key").join(u, how="inner")
     e = e.reindex(e["effect"].abs().sort_values(ascending=False).index).head(k)
-    return [{"pollster": x.name, "races": int(x.n_races), "races_2026": int(x.races_2026), "effect_points": round(100 * x.effect, 2),
+    return [{"pollster": x["name"], "races": int(x.n_races), "races_2026": int(x.races_2026), "effect_points": round(100 * x.effect, 2),
              "share_r_labelled": round(x.share_r, 2), "share_d_labelled": round(x.share_d, 2)} for i, x in e.iterrows()]
 
 
@@ -960,6 +960,12 @@ def markdown(d: dict) -> str:
     return "\n".join(L)
 
 
+def _moves(a, b, nd=2, sign=True, unit=" points") -> str:
+    """'moves from +3.15 to +3.12 points', or 'is unchanged at +3.15 points' when the two round alike."""
+    x, y = _f(a, nd, sign), _f(b, nd, sign)
+    return f"is unchanged at {x}{unit}" if x == y else f"moves from {x} to {y}{unit}"
+
+
 def _verdict(m0: dict, m: dict) -> str:
     """A plain verdict on a poll change: the overall Brier and mean error, and the Senate and
     governor Brier (the only races whose forecasts use race polls)."""
@@ -985,11 +991,11 @@ def summary_h7_h8(d: dict) -> list[str]:
     return [
         f"| H7 | Would removing pollster house effects have helped? | House effects for {f7['pollsters_estimated']} pollsters "
         f"({f7['pollsters_3plus_races']} in three or more races) moved the race averages {_f(a7['movement_toward_dem']['mean'], sign=True)} points "
-        f"on average; mean error {_f(M1['all']['mean_error'], sign=True)} to {_f(m7['all']['mean_error'], sign=True)}, Brier "
-        f"{_f(M1['all']['brier'], 3)} to {_f(m7['all']['brier'], 3)} (with H1: {_f(V['h7_and_h1a']['metrics']['all']['brier'], 3)}) | {_verdict(M1, m7)} |",
+        f"on average; the mean error {_moves(M1['all']['mean_error'], m7['all']['mean_error'])} and the Brier score "
+        f"{_moves(M1['all']['brier'], m7['all']['brier'], 3, False, '')} (with H1: {_f(V['h7_and_h1a']['metrics']['all']['brier'], 3)}) | {_verdict(M1, m7)} |",
         f"| H8 | Would leaving out partisan polls have helped? | {len(a8['races_losing_all_polls'])} races lose all their polls; the rest "
-        f"move {_f(a8['movement_toward_dem']['mean'], sign=True)} points on average; mean error {_f(M1['all']['mean_error'], sign=True)} to "
-        f"{_f(m8['all']['mean_error'], sign=True)}, Brier {_f(M1['all']['brier'], 3)} to {_f(m8['all']['brier'], 3)} "
+        f"move {_f(a8['movement_toward_dem']['mean'], sign=True)} points on average; the mean error {_moves(M1['all']['mean_error'], m8['all']['mean_error'])} "
+        f"and the Brier score {_moves(M1['all']['brier'], m8['all']['brier'], 3, False, '')} "
         f"(with H1: {_f(V['h8_and_h1a']['metrics']['all']['brier'], 3)}) | {_verdict(M1, m8)} |"]
 
 
@@ -1138,8 +1144,8 @@ def h8_reading(d: dict) -> str:
     return (f"Leaving out partisan polls moves the remaining averages {_f(a['movement_toward_dem']['mean'], sign=True)} points toward "
             f"Democrats on average, and the scored races' poll error from {_f(sc['error_v1_avg']['mean'], sign=True)} to "
             f"{_f(sc['error_new_avg']['mean'], sign=True)} points ({sc['n']} races with polls under both). The forecast's overall mean error "
-            f"moves from {_f(M1['all']['mean_error'], sign=True)} to {_f(m['all']['mean_error'], sign=True)} points and its Brier score from "
-            f"{_f(M1['all']['brier'], 3)} to {_f(m['all']['brier'], 3)} (Senate {_f(M1['senate']['brier'], 3)} to {_f(m['senate']['brier'], 3)}, "
+            f"{_moves(M1['all']['mean_error'], m['all']['mean_error'])} and its Brier score "
+            f"{_moves(M1['all']['brier'], m['all']['brier'], 3, False, '')} (Senate {_f(M1['senate']['brier'], 3)} to {_f(m['senate']['brier'], 3)}, "
             f"governors {_f(M1['governor']['brier'], 3)} to {_f(m['governor']['brier'], 3)}). The averages move toward Democrats, but with "
             "fewer polls v1's blend puts less weight on them and more on the fundamentals, which understated Democrats by more, so the "
             "two effects roughly cancel. Republican-sponsored polls missed most in H2, but the unlabelled polls that remain also "
