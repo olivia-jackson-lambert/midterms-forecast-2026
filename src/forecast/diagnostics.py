@@ -484,6 +484,214 @@ def h6(sf: pd.DataFrame, late: pd.DataFrame) -> dict:
             "_table": a, "_final": final}
 
 
+# --------------------------------------------------------------------------- H7 and H8: poll adjustments
+# Election days of the earlier cycles: their polls (all public long before 22 October 2026) enter
+# the house-effect estimate if fieldwork ended within WINDOW_DAYS of election day.
+HE_ELECTION_DAY = {2018: "2018-11-06", 2022: "2022-11-08"}
+
+
+def he_key(name: str) -> str:
+    """The pollster's name for house effects: v1's key (sponsors in brackets dropped), with a
+    leading 'the', a trailing 'inc' and the spacing around '/' tidied ('The Trafalgar Group' and
+    'Trafalgar Group' are one firm). Names are not harmonised further (see the write-up)."""
+    k = polls.pollster_key(name)
+    k = re.sub(r"^the\s+", "", k)
+    k = re.sub(r",?\s+inc\.?$", "", k)
+    return re.sub(r"\s*/\s*", "/", k).strip()
+
+
+def display_name(name: str) -> str:
+    """'Cygnal (R)' -> 'Cygnal': the pollster's name as Wikipedia gives it, without sponsor marks."""
+    return re.sub(r"\s+", " ", re.sub(r"\([^)]*\)", "", polls._clean(name))).strip(" .,")
+
+
+def house_effect_rows(poll_rows: pd.DataFrame, cutoff: str = V1_CUTOFF) -> pd.DataFrame:
+    """The polls the house effects are estimated from: 2018 and 2022 polls ending in the 90 days
+    up to election day, and 2026 polls ending in the 90 days up to v1's cut-off (never later)."""
+    out = []
+    for y, g in poll_rows.groupby("year"):
+        when = HE_ELECTION_DAY.get(int(y)) or (cutoff if int(y) == YEAR else None)
+        if when is None:
+            continue
+        out.append(polls.qualifying(g, when))
+    p = pd.concat(out, ignore_index=True)
+    assert not ((p["year"] == YEAR) & (p["end"] > pd.Timestamp(cutoff))).any(), "a 2026 poll after the cut-off"
+    return p.assign(he_key=p["pollster"].map(he_key), share=p["dem_pct"] / (p["dem_pct"] + p["rep_pct"]))
+
+
+def _ridge_fit(y, race, pol, n_p, lam, h=None, sweeps: int = 2000, tol: float = 1e-12):
+    """Minimise sum (y - a_race - h_pollster)^2 + lam * sum h^2 by alternating exact updates.
+    y, race, pol: one entry per pollster-race cell (race and pol as integer codes)."""
+    h = np.zeros(len(n_p)) if h is None else h.copy()
+    n_r = np.bincount(race)
+    for _ in range(sweeps):
+        a = np.bincount(race, y - h[pol]) / n_r
+        h_new = np.bincount(pol, y - a[race], minlength=len(n_p)) / (n_p + lam)
+        done = np.max(np.abs(h_new - h)) < tol
+        h = h_new
+        if done:
+            break
+    return a, h
+
+
+def estimate_house_effects(rows: pd.DataFrame, max_iter: int = 500, tol: float = 1e-10) -> tuple[pd.DataFrame, dict]:
+    """Each pollster's persistent lean relative to other pollsters in the same races (DIAGNOSTIC).
+
+    rows: one per poll, with he_key, race_id and share (Democratic two-party share). Each
+    pollster's polls in a race are first averaged, so that a pollster counts once per race. On
+    those pollster-race cells
+        share = race effect + house effect of the pollster + noise,
+        house effects ~ Normal(0, tau^2), noise ~ Normal(0, sigma^2),
+    with a free effect for each race. Only races polled by two or more pollsters carry
+    information. tau^2 and sigma^2 are estimated from the data by EM; given them, the house effect
+    is the usual shrunken (ridge, or random-effect) estimate,
+        h = sum over the pollster's races of (share - race effect) / (races + sigma^2 / tau^2),
+    so a pollster seen in few races is pulled toward 0. Only differences between pollsters are
+    identified; the zero is the average pollster, each counted once (the effects sum to 0). Returns one row per pollster and the fitted variances (share scale)."""
+    c = rows.groupby(["he_key", "race_id"]).agg(share=("share", "mean"), polls=("share", "size")).reset_index()
+    multi = c.groupby("race_id")["he_key"].transform("nunique") >= 2
+    c = c[multi].reset_index(drop=True)
+    race = pd.factorize(c["race_id"])[0]
+    pol, keys = pd.factorize(c["he_key"])
+    y = c["share"].to_numpy(float)
+    n_p = np.bincount(pol).astype(float)
+    N, R = len(y), race.max() + 1
+    a = np.bincount(race, y) / np.bincount(race)
+    s2 = float(((y - a[race]) ** 2).sum() / max(N - R, 1))
+    t2 = s2 / 4
+    h = None
+    for it in range(max_iter):
+        lam = s2 / t2
+        a, h = _ridge_fit(y, race, pol, n_p, lam, h)
+        v = s2 / (n_p + lam)                                  # posterior variance of each effect
+        t2_new = max(float(np.mean(h ** 2 + v)), 1e-10)
+        e = y - a[race] - h[pol]
+        s2_new = float(((e ** 2).sum() + (n_p * v).sum()) / max(N - R, 1))
+        done = abs(t2_new - t2) < tol and abs(s2_new - s2) < tol
+        t2, s2 = t2_new, s2_new
+        if done:
+            break
+    lam = s2 / t2
+    a, h = _ridge_fit(y, race, pol, n_p, lam, h)
+    raw = np.bincount(pol, y - a[race]) / n_p
+    pp = rows.groupby("he_key").agg(n_polls=("share", "size"),
+                                    name=("pollster", lambda s: s.map(display_name).mode().iloc[0]),
+                                    share_r=("pollster", lambda s: float((s.map(partisan_label) == "R").mean())),
+                                    share_d=("pollster", lambda s: float((s.map(partisan_label) == "D").mean())),
+                                    years=("year", lambda s: ",".join(map(str, sorted(set(s))))))
+    eff = pd.DataFrame({"he_key": keys, "n_races": n_p.astype(int), "raw": raw, "shrink": n_p / (n_p + lam),
+                        "effect": h}).merge(pp, on="he_key", how="left")
+    params = {"sigma": float(np.sqrt(s2)), "tau": float(np.sqrt(t2)), "lambda": float(lam), "iterations": it + 1,
+              "cells": int(N), "races": int(R), "pollsters": int(len(keys))}
+    return eff.sort_values("effect", key=np.abs, ascending=False).reset_index(drop=True), params
+
+
+def adjust_polls(poll_rows: pd.DataFrame, effects: pd.DataFrame, year: int = YEAR) -> pd.DataFrame:
+    """The year's polls with each pollster's house effect removed from its two-party share. The
+    two shares keep their sum, so v1's averaging (weights, one poll per pollster) is unchanged.
+    Pollsters with no estimate (never in a race with another pollster) are left as they are."""
+    p = poll_rows.copy()
+    sel = p["year"] == year
+    h = p.loc[sel, "pollster"].map(he_key).map(effects.set_index("he_key")["effect"]).fillna(0.0)
+    tot = p.loc[sel, "dem_pct"] + p.loc[sel, "rep_pct"]
+    share = p.loc[sel, "dem_pct"] / tot - h
+    p.loc[sel, "dem_pct"] = share * tot
+    p.loc[sel, "rep_pct"] = tot - share * tot
+    return p.assign(house_effect=np.where(sel, h.reindex(p.index).fillna(0.0), 0.0))
+
+
+def drop_partisan(poll_rows: pd.DataFrame) -> pd.DataFrame:
+    """Every poll Wikipedia labels with a Democratic or Republican sponsor left out (H8)."""
+    return poll_rows[poll_rows["pollster"].map(partisan_label) == ""]
+
+
+def compare_averages(sf: pd.DataFrame, before: pd.DataFrame, after: pd.DataFrame) -> dict:
+    """How a change of poll average moved v1's averages, and their error on the scored races."""
+    a = before.merge(after, on="race_id", how="outer", suffixes=("_v1", "_new"))
+    for c in ("n_polls_v1", "n_polls_new"):
+        a[c] = a[c].fillna(0).astype(int)
+    both = a[(a["n_polls_v1"] > 0) & (a["n_polls_new"] > 0)]
+    move = 100 * (both["poll_avg_new"] - both["poll_avg_v1"])
+    r = sf[sf["office"].ne("house") & sf["vote_ok"]].merge(both, left_on="id", right_on="race_id")
+    e_v1, e_new = 100 * (r["dem_share_2p"] - r["poll_avg_v1"]), 100 * (r["dem_share_2p"] - r["poll_avg_new"])
+    lost = a[(a["n_polls_v1"] > 0) & (a["n_polls_new"] == 0)]
+    return {"races_with_polls": {"v1": int((a["n_polls_v1"] > 0).sum()), "new": int((a["n_polls_new"] > 0).sum())},
+            "polls_in_averages": {"v1": int(a["n_polls_v1"].sum()), "new": int(a["n_polls_new"].sum())},
+            "movement_toward_dem": _err_summary(move),
+            "scored": {"n": int(len(r)), "error_v1_avg": _err_summary(e_v1), "error_new_avg": _err_summary(e_new)},
+            "races_losing_all_polls": sorted(lost["race_id"]), "_table": a}
+
+
+def h7(sf: pd.DataFrame, poll_rows: pd.DataFrame, effects: pd.DataFrame, params: dict,
+       avg_v1: pd.DataFrame, avg_h7: pd.DataFrame) -> dict:
+    est = effects
+    used = poll_detail(adjust_polls(poll_rows, effects), V1_CUTOFF)
+    used = used.assign(h=used["pollster"].map(he_key).map(effects.set_index("he_key")["effect"]).fillna(0.0))
+    wmean = float((used["w"] * used["h"]).sum() / used["w"].sum())
+    lab = used.assign(label=used["partisan"].map({"R": "Republican-labelled", "D": "Democratic-labelled"}).fillna("unlabelled"))
+    top = est[est["n_races"] >= 3].head(10)
+    return {"method": {"years": [2018, 2022, 2026], "window_days": polls.WINDOW_DAYS,
+                       "windows": {**HE_ELECTION_DAY, YEAR: V1_CUTOFF}, "scale": "two-party share, points",
+                       "shrinkage": "random-effect (ridge) estimate, sigma and tau by EM"},
+            "fit": {"sigma_points": round(100 * params["sigma"], 2), "tau_points": round(100 * params["tau"], 2),
+                    "lambda_races": round(params["lambda"], 2), "cells": params["cells"], "races": params["races"],
+                    "pollsters_estimated": params["pollsters"], "pollsters_3plus_races": int((est["n_races"] >= 3).sum()),
+                    "iterations": params["iterations"]},
+            "largest_3plus_races": [{"pollster": x.name, "races": int(x.n_races), "effect_points": round(100 * x.effect, 2),
+                                     "raw_points": round(100 * x.raw, 2), "share_r_labelled": round(x.share_r, 2),
+                                     "share_d_labelled": round(x.share_d, 2), "years": x.years} for x in top.itertuples()],
+            "largest_any": [{"pollster": x.name, "races": int(x.n_races), "effect_points": round(100 * x.effect, 2)}
+                            for x in est.head(5).itertuples()],
+            "largest_in_2026_averages": _in_averages(used, est),
+            "applied_2026": {"polls_in_averages": int(len(used)),
+                             "polls_with_an_effect": int((used["h"] != 0).sum()),
+                             "weighted_mean_effect_points": round(100 * wmean, 2),
+                             "by_label_mean_effect_points": {k: round(float(100 * g["h"].mean()), 2) for k, g in lab.groupby("label")}},
+            "averages": compare_averages(sf, avg_v1, avg_h7)}
+
+
+def _in_averages(used: pd.DataFrame, est: pd.DataFrame, k: int = 10) -> list[dict]:
+    """The pollsters behind v1's 2026 averages with the largest estimated effects."""
+    u = used.assign(he=used["pollster"].map(he_key)).groupby("he").agg(races_2026=("race_id", "nunique"))
+    e = est.set_index("he_key").join(u, how="inner")
+    e = e.reindex(e["effect"].abs().sort_values(ascending=False).index).head(k)
+    return [{"pollster": x.name, "races": int(x.n_races), "races_2026": int(x.races_2026), "effect_points": round(100 * x.effect, 2),
+             "share_r_labelled": round(x.share_r, 2), "share_d_labelled": round(x.share_d, 2)} for i, x in e.iterrows()]
+
+
+def h8(sf: pd.DataFrame, poll_rows: pd.DataFrame, avg_v1: pd.DataFrame, avg_h8: pd.DataFrame,
+       run_v1: dict, run_h8: dict) -> dict:
+    detail = poll_detail(poll_rows, V1_CUTOFF)
+    window = polls.qualifying(poll_rows[poll_rows["year"] == YEAR], V1_CUTOFF)
+    cmp = compare_averages(sf, avg_v1, avg_h8)
+    lost = cmp["races_losing_all_polls"]
+    b1 = run_v1["blend"].set_index("race_id")
+    b8 = run_h8["blend"].set_index("race_id")
+    v1 = pd.read_csv(V1 / "races.csv").set_index("race_id")
+    rows = []
+    for rid in lost:
+        s = sf[sf["id"] == rid]
+        rows.append({"id": rid, "v1_polls": int(v1.loc[rid, "n_polls"]), "v1_poll_avg": round(float(v1.loc[rid, "poll_avg"]), 4),
+                     "v1_poll_weight": round(float(b1.loc[rid, "poll_weight"]), 3),
+                     "h8_poll_weight": round(float(b8.loc[rid, "poll_weight"]), 3),
+                     "v1_p_dem_win": round(float(run_v1["races"].set_index("race_id").loc[rid, "p_dem_win"]), 3),
+                     "h8_p_dem_win": round(float(run_h8["races"].set_index("race_id").loc[rid, "p_dem_win"]), 3),
+                     "winner": (s["winner_party"].iloc[0] if len(s) and pd.notna(s["winner_party"].iloc[0]) else None),
+                     "actual": (round(float(s["dem_share_2p"].iloc[0]), 4) if len(s) and pd.notna(s["dem_share_2p"].iloc[0]) else None)})
+    kept = [r for r in run_h8["blend"]["race_id"] if r not in lost]
+    w1 = b1.loc[kept, "poll_weight"]
+    w8 = b8.loc[kept, "poll_weight"]
+    has = (w1 > 0) & (w8 > 0)
+    return {"polls_in_window_2026": int(len(window)),
+            "labelled_in_window": int((window["pollster"].map(partisan_label) != "").sum()),
+            "labelled_in_v1_averages": {"R": int((detail["partisan"] == "R").sum()), "D": int((detail["partisan"] == "D").sum()),
+                                        "all": int(len(detail))},
+            "lost_all_polls": rows,
+            "mean_poll_weight_kept_races": {"v1": round(float(w1[has].mean()), 3), "h8": round(float(w8[has].mean()), 3),
+                                            "n": int(has.sum())},
+            "averages": cmp}
+
+
 # --------------------------------------------------------------------------- checks
 def checks(res: pd.DataFrame) -> dict:
     h = pd.read_csv(OUT / "generic_ballot_history.csv")
@@ -568,6 +776,7 @@ def markdown(d: dict) -> str:
           f"Senate and governor Brier would have been {_f(_sg_brier(V['h6_late_polls']['metrics']), 3)} rather than "
           f"{_f(_sg_brier(M1), 3)} | Some: the lock date cost a little, but most of the poll error was there on election morning |")
          if late_ok else "| H6 | Did the polls move after 22 October? | Not run | Needs the 3 November poll timelines |",
+         *summary_h7_h8(d),
          "",
          "## H1: The National Correction", "",
          f"v1 took the generic ballot on 22 October ({_p(d['variants']['h1a_bias_0']['house_vote_mean'], 1)} Democratic, two-party) and "
@@ -726,6 +935,7 @@ def markdown(d: dict) -> str:
     else:
         L += ["Not run: the 3 November revisions of the race articles are not saved. `python -m forecast.diagnostics --fetch-late` "
               "fetches them.", ""]
+    L += markdown_h7_h8(d)
     L += ["## Checks", "",
           f"**Generic-ballot cycles.** `python -m forecast.generic_ballot` gives `n_years` = {gbk['n_years']} for 2026. The years used are "
           f"{', '.join(map(str, gbk['years_used']))}. The even years {' and '.join(map(str, gbk['even_years_not_used']))} drop out because no "
@@ -745,8 +955,195 @@ def markdown(d: dict) -> str:
           "- `src/forecast/diagnostics.py`: the code (`python -m forecast.diagnostics`); `tests/test_diagnostics.py`.",
           "- Rerun tables (local, not committed, each marked DIAGNOSTIC): `data/processed/diagnostics_v1/<run>/`.",
           "- 3 November Wikipedia revisions (local): `data/raw/polls_late_2026/`.",
+          "- H7's estimated house effects, one row per pollster (local, DIAGNOSTIC): `data/processed/diagnostics_v1/house_effects.csv`.",
           "- `results/through_time.json` and the Through Time section: `src/forecast/through_time.py` (`python -m forecast.through_time`, run after `forecast.diagnostics`, which rewrites this page).", ""]
     return "\n".join(L)
+
+
+def _verdict(m0: dict, m: dict) -> str:
+    """A plain verdict on a poll change: the overall Brier and mean error, and the Senate and
+    governor Brier (the only races whose forecasts use race polls)."""
+    db = m["all"]["brier"] - m0["all"]["brier"]
+    de = abs(m["all"]["mean_error"]) - abs(m0["all"]["mean_error"])
+    dsg = _sg_brier(m) - _sg_brier(m0)
+    sg = f"Senate and governor Brier {_f(_sg_brier(m0), 3)} to {_f(_sg_brier(m), 3)}"
+    if db < -0.003 or de < -0.5:
+        return f"Some: it narrows the miss, but far less than H1 ({sg})"
+    if dsg < -0.003:
+        return f"Little overall, some for the polled races ({sg}); the shared miss remains"
+    if dsg > 0.003:
+        return f"No: slightly worse for the polled races ({sg})"
+    return f"Little: the scores barely move ({sg})"
+
+
+def summary_h7_h8(d: dict) -> list[str]:
+    V, M1 = d["variants"], d["variants"]["v1"]["metrics"]
+    if "h7" not in d:
+        return []
+    f7, a7, a8 = d["h7"]["fit"], d["h7"]["averages"], d["h8"]["averages"]
+    m7, m8 = V["h7_house_effects"]["metrics"], V["h8_no_partisan"]["metrics"]
+    return [
+        f"| H7 | Would removing pollster house effects have helped? | House effects for {f7['pollsters_estimated']} pollsters "
+        f"({f7['pollsters_3plus_races']} in three or more races) moved the race averages {_f(a7['movement_toward_dem']['mean'], sign=True)} points "
+        f"on average; mean error {_f(M1['all']['mean_error'], sign=True)} to {_f(m7['all']['mean_error'], sign=True)}, Brier "
+        f"{_f(M1['all']['brier'], 3)} to {_f(m7['all']['brier'], 3)} (with H1: {_f(V['h7_and_h1a']['metrics']['all']['brier'], 3)}) | {_verdict(M1, m7)} |",
+        f"| H8 | Would leaving out partisan polls have helped? | {len(a8['races_losing_all_polls'])} races lose all their polls; the rest "
+        f"move {_f(a8['movement_toward_dem']['mean'], sign=True)} points on average; mean error {_f(M1['all']['mean_error'], sign=True)} to "
+        f"{_f(m8['all']['mean_error'], sign=True)}, Brier {_f(M1['all']['brier'], 3)} to {_f(m8['all']['brier'], 3)} "
+        f"(with H1: {_f(V['h8_and_h1a']['metrics']['all']['brier'], 3)}) | {_verdict(M1, m8)} |"]
+
+
+def _variant_tables(rows: list[tuple[str, dict]]) -> list[str]:
+    L = ["| Run | Called races | Brier | Log loss | Upsets (expected) | Vote-share races | Mean error | MAE | 80% coverage | Below / above |",
+         "|---|---|---|---|---|---|---|---|---|---|"]
+    for name, m in rows:
+        g = m["all"]
+        L.append(f"| {name} | {g['called']} | {_f(g['brier'], 3)} | {_f(g['log_loss'], 3)} | {g['upsets']} ({_f(g['expected_upsets'], 1)}) | "
+                 f"{g['vote_n']} | {_f(g['mean_error'], sign=True)} | {_f(g['mae'])} | {_p(g['coverage_80'])} | {g['below_80']} / {g['above_80']} |")
+    L += ["", "By office (Brier; mean error; MAE; 80% coverage):", "",
+          "| Run | Senate | Governor | House |", "|---|---|---|---|"]
+    for name, m in rows:
+        L.append(f"| {name} | " + " | ".join(f"{_f(m[o]['brier'], 3)}; {_f(m[o]['mean_error'], sign=True)}; {_f(m[o]['mae'])}; {_p(m[o]['coverage_80'])}"
+                                              for o in ("senate", "governor", "house")) + " |")
+    return L
+
+
+def _avg_lines(a: dict, label: str) -> list[str]:
+    sc, mv = a["scored"], a["movement_toward_dem"]
+    return ["| | Value |", "|---|---|",
+            f"| Races with polls: v1 / {label} | {a['races_with_polls']['v1']} / {a['races_with_polls']['new']} |",
+            f"| Polls in the averages: v1 / {label} | {a['polls_in_averages']['v1']} / {a['polls_in_averages']['new']} |",
+            f"| Change in the average, {label} minus v1 (toward Democrats) | mean {_f(mv['mean'], sign=True)}, SD {_f(mv['sd'])}, "
+            f"mean absolute {_f(mv['mae'])} points over {mv['n']} races |",
+            f"| Scored races: mean error of v1's average / of the {label} average | {_f(sc['error_v1_avg']['mean'], sign=True)} / "
+            f"{_f(sc['error_new_avg']['mean'], sign=True)} points ({sc['n']} races) |",
+            f"| MAE of v1's average / of the {label} average | {_f(sc['error_v1_avg']['mae'])} / {_f(sc['error_new_avg']['mae'])} |"]
+
+
+def markdown_h7_h8(d: dict) -> list[str]:
+    if "h7" not in d:
+        return []
+    V, M1 = d["variants"], d["variants"]["v1"]["metrics"]
+    h7_, h8_ = d["h7"], d["h8"]
+    f7, ap = h7_["fit"], h7_["applied_2026"]
+    base = [("v1 as published", M1), ("DIAGNOSTIC: generic-ballot bias set to 0 (H1)", V["h1a_bias_0"]["metrics"])]
+    L = ["## H7: Pollster House Effects", "",
+         "**DIAGNOSTIC.** A house effect is a pollster's persistent lean relative to other pollsters polling the same race. Forecasters "
+         "such as the Silver Bulletin estimate it and remove it before averaging; its public methodology page describes an iterative "
+         "comparison of each firm with the average, with the share of a firm's gap that is removed growing with how much it has polled. "
+         "This rerun asks whether a simple version of that adjustment would have reduced v1's miss.", "",
+         "Method, fixed before scoring:", "",
+         "- **Polls.** Head-to-head polls from the same Wikipedia race articles v1 used: 2018 and 2022 Senate and governor races "
+         "(fieldwork ending in the 90 days up to election day; all of these were public long before 22 October 2026) and 2026 races "
+         "(fieldwork ending in the 90 days up to v1's 22 October cut-off, never later). Each pollster's polls in a race are averaged "
+         "first, so a pollster counts once per race however often it polled there.",
+         f"- **Model.** On the two-party share, each pollster-race average = a race effect + the pollster's house effect + noise. The race "
+         "effects are free, so a house effect measures only how a pollster differs from the others in the races it shared with them; "
+         "races polled by a single pollster carry no information and are dropped. The house effects are treated as random, "
+         f"Normal(0, τ²), around noise of variance σ², with both variances estimated from the data (EM): σ = {_f(f7['sigma_points'])} and "
+         f"τ = {_f(f7['tau_points'])} points.",
+         f"- **Shrinkage.** Each house effect is then the standard shrunken estimate: the pollster's mean deviation from the race effects, "
+         f"multiplied by n / (n + σ²/τ²), where n is its number of races and σ²/τ² = {_f(f7['lambda_races'])}. A pollster seen in one race keeps "
+         f"about {_p(1 / (1 + f7['lambda_races']))} of its raw deviation, one seen in ten races about {_p(10 / (10 + f7['lambda_races']))}. The "
+         "reference is the average pollster in these data (each pollster counted once; the effects sum to zero), not the result: removing "
+         "house effects cannot correct a miss that all pollsters share.",
+         "- **Rerun.** Each 2026 poll's share has its pollster's house effect subtracted (pollsters with no estimate are left as they are), "
+         "and v1's averages are rebuilt with v1's own code: one poll per pollster, 90-day window, 21-day half-life, sample-size and "
+         "population weights. Everything else is v1's: fits, poll-error model, seeds and generic-ballot correction.",
+         f"- **Pollster names.** v1's pollster key (sponsors in brackets dropped), with a leading \"the\", a trailing \"inc\" and the spacing "
+         "around \"/\" tidied. Names are not otherwise harmonised, so a firm that appears under several names (Siena with different media "
+         "partners, for example) is estimated under each, with fewer races and more shrinkage.", "",
+         f"House effects were estimated for {f7['pollsters_estimated']} pollsters from {f7['cells']} pollster-race averages in {f7['races']} races; "
+         f"{f7['pollsters_3plus_races']} pollsters appear in three or more races. As a check during development, a REML linear mixed model with the same "
+         "structure (statsmodels MixedLM, not a project dependency) gave practically the same effects (correlation 0.9996, largest "
+         "difference 0.5 points); the 2026 polls are those before the cut-off, so a new results pull does not change them. Positive means more Democratic than the other pollsters in the "
+         "same races. The largest among pollsters in three or more races:", "",
+         "| Pollster | Races | House effect (points) | Raw deviation | Share of its polls labelled R / D | Years |", "|---|---|---|---|---|---|"]
+    for x in h7_["largest_3plus_races"]:
+        L.append(f"| {x['pollster']} | {x['races']} | {_f(x['effect_points'], sign=True)} | {_f(x['raw_points'], sign=True)} | "
+                 f"{_p(x['share_r_labelled'])} / {_p(x['share_d_labelled'])} | {x['years'].replace(',', ', ')} |")
+    L += ["", "The largest among the pollsters behind v1's 2026 averages:", "",
+          "| Pollster | Races (all years) | 2026 races | House effect (points) | Share of its polls labelled R / D |", "|---|---|---|---|---|"]
+    for x in h7_["largest_in_2026_averages"]:
+        L.append(f"| {x['pollster']} | {x['races']} | {x['races_2026']} | {_f(x['effect_points'], sign=True)} | "
+                 f"{_p(x['share_r_labelled'])} / {_p(x['share_d_labelled'])} |")
+    lab = ap["by_label_mean_effect_points"]
+    L += ["", f"Of the {ap['polls_in_averages']} polls in v1's 2026 averages, {ap['polls_with_an_effect']} had a house effect to remove; their "
+          f"weighted mean was {_f(ap['weighted_mean_effect_points'], sign=True)} points. Mean effect by Wikipedia's label: "
+          + ", ".join(f"{k} {_f(v, sign=True)}" for k, v in sorted(lab.items())) + " points.", ""]
+    L += _avg_lines(h7_["averages"], "H7") + [""]
+    L += _variant_tables(base + [("DIAGNOSTIC: house effects removed (H7)", V["h7_house_effects"]["metrics"]),
+                                 ("DIAGNOSTIC: house effects removed and bias 0 (H7 and H1)", V["h7_and_h1a"]["metrics"])])
+    L += ["", h7_reading(d), ""]
+    # H8
+    lost = h8_["lost_all_polls"]
+    lv = h8_["labelled_in_v1_averages"]
+    mw = h8_["mean_poll_weight_kept_races"]
+    L += ["## H8: Partisan Polls Left Out", "",
+          "**DIAGNOSTIC.** v1's race averages rebuilt with every poll Wikipedia labels with a Democratic or Republican sponsor left out "
+          "(the labels H2 uses, such as \"(R)\" or \"(D-sponsor)\"), and nothing else changed; where a pollster's latest poll was "
+          "partisan-sponsored, its latest unlabelled poll is used if there is one. The Silver Bulletin's public methodology page says "
+          "that for its generic-ballot average polls with partisan sponsors are excluded from the calculation of the \"true\" average "
+          "against which house effects are measured, and that in its race averages they start from a prior of a lean toward the sponsor. "
+          "Leaving them out of the average altogether, as here, is the simpler and stronger version of that idea, not their method.", "",
+          f"Of the {lv['all']} polls in v1's 2026 averages, {lv['R']} were labelled Republican and {lv['D']} Democratic "
+          f"({h8_['labelled_in_window']} of the {h8_['polls_in_window_2026']} polls in the 90-day window carry a label).", ""]
+    L += _avg_lines(h8_["averages"], "H8") + [""]
+    if lost:
+        L += [f"**Races left without polls: {len(lost)}.** v1's blend treats a race with no qualifying poll exactly as it treats any "
+              "unpolled race: the poll weight is 0 and the forecast is the fundamentals alone. No other source of polls is substituted.", "",
+              "| Race | v1 polls (all labelled) | v1 poll average (D) | v1 poll weight | H8 poll weight | P(D win): v1 | H8 | Winner | Actual (D) |",
+              "|---|---|---|---|---|---|---|---|---|"]
+        for x in lost:
+            L.append(f"| {_label(x['id'])} | {x['v1_polls']} | {_p(x['v1_poll_avg'], 1)} | {_f(x['v1_poll_weight'])} | {_f(x['h8_poll_weight'])} | "
+                     f"{_p(x['v1_p_dem_win'])} | {_p(x['h8_p_dem_win'])} | {x['winner'] or '–'} | {_p(x['actual'], 1) if x['actual'] is not None else '–'} |")
+        L.append("")
+    else:
+        L += ["No race loses all its polls.", ""]
+    L += [f"In the other polled races, fewer polls mean a smaller effective number, a wider poll error in v1's model and so a lower weight "
+          f"on the polls: mean poll weight {_f(mw['v1'])} in v1 against {_f(mw['h8'])} here ({mw['n']} races).", ""]
+    L += _variant_tables(base + [("DIAGNOSTIC: partisan polls left out (H8)", V["h8_no_partisan"]["metrics"]),
+                                 ("DIAGNOSTIC: partisan polls left out and bias 0 (H8 and H1)", V["h8_and_h1a"]["metrics"])])
+    L += ["", h8_reading(d), "",
+          "**Limits of H7 and H8.** Both keep v1's poll-error model as fitted on v1's own 2018 and 2022 averages; a forecaster who "
+          "adjusted or filtered polls would also refit that model on averages built the same way, which is not done here. Wikipedia's "
+          "sponsor labels are incomplete (unlabelled polls include partisan firms that are not marked), and H7's house effects do not "
+          "separate a pollster's lean from differences in timing within a race or in likely-voter screens. Both are DIAGNOSTIC reruns and "
+          "change neither v1 nor its score.", ""]
+    return L
+
+
+def h7_reading(d: dict) -> str:
+    V, M1 = d["variants"], d["variants"]["v1"]["metrics"]
+    a, m = d["h7"]["averages"], V["h7_house_effects"]["metrics"]
+    sc = a["scored"]
+    return (f"Removing house effects moves the averages {_f(a['movement_toward_dem']['mean'], sign=True)} points toward Democrats on average "
+            f"(mean absolute change {_f(a['movement_toward_dem']['mae'])}), and the scored races' poll error from "
+            f"{_f(sc['error_v1_avg']['mean'], sign=True)} to {_f(sc['error_new_avg']['mean'], sign=True)} points (MAE "
+            f"{_f(sc['error_v1_avg']['mae'])} to {_f(sc['error_new_avg']['mae'])}). Because house effects are measured against the "
+            "average pollster, removing them corrects only how far a race's mix of pollsters leaned relative to that average "
+            f"(the weighted mean effect in v1's 2026 averages was {_f(d['h7']['applied_2026']['weighted_mean_effect_points'], sign=True)} "
+            "points), not a miss that every pollster shared, and most of 2026's poll error was shared (H2). So the adjustment "
+            "mainly reduces race-to-race scatter: the overall mean error moves from "
+            f"{_f(M1['all']['mean_error'], sign=True)} to {_f(m['all']['mean_error'], sign=True)} points and the Brier score from "
+            f"{_f(M1['all']['brier'], 3)} to {_f(m['all']['brier'], 3)}, with the Senate Brier {_f(M1['senate']['brier'], 3)} to "
+            f"{_f(m['senate']['brier'], 3)} and the governors' {_f(M1['governor']['brier'], 3)} to {_f(m['governor']['brier'], 3)}. "
+            "The House, whose forecasts use no race polls, is unchanged.")
+
+
+def h8_reading(d: dict) -> str:
+    V, M1 = d["variants"], d["variants"]["v1"]["metrics"]
+    a, m = d["h8"]["averages"], V["h8_no_partisan"]["metrics"]
+    sc = a["scored"]
+    return (f"Leaving out partisan polls moves the remaining averages {_f(a['movement_toward_dem']['mean'], sign=True)} points toward "
+            f"Democrats on average, and the scored races' poll error from {_f(sc['error_v1_avg']['mean'], sign=True)} to "
+            f"{_f(sc['error_new_avg']['mean'], sign=True)} points ({sc['n']} races with polls under both). The forecast's overall mean error "
+            f"moves from {_f(M1['all']['mean_error'], sign=True)} to {_f(m['all']['mean_error'], sign=True)} points and its Brier score from "
+            f"{_f(M1['all']['brier'], 3)} to {_f(m['all']['brier'], 3)} (Senate {_f(M1['senate']['brier'], 3)} to {_f(m['senate']['brier'], 3)}, "
+            f"governors {_f(M1['governor']['brier'], 3)} to {_f(m['governor']['brier'], 3)}). The averages move toward Democrats, but with "
+            "fewer polls v1's blend puts less weight on them and more on the fundamentals, which understated Democrats by more, so the "
+            "two effects roughly cancel. Republican-sponsored polls missed most in H2, but the unlabelled polls that remain also "
+            "understated Democrats, so the exclusion does not remove the shared miss.")
 
 
 def M1_env_mean(d: dict) -> float:
@@ -806,6 +1203,10 @@ VARIANTS = {   # name: (description, bias, sd, poll averages)
     "h1b_raw_generic_ballot": ("H1: raw generic ballot as the House vote, no correction and no national spread", 0.0, 0.0, "v1"),
     "h6_late_polls": ("H6: race poll averages as of 3 November (look-ahead past the lock date)", None, None, "late"),
     "h1a_and_h6": ("H1 and H6 together: bias 0 and 3 November poll averages", 0.0, None, "late"),
+    "h7_house_effects": ("H7: race poll averages with pollster house effects removed", None, None, "h7"),
+    "h8_no_partisan": ("H8: race poll averages without partisan-sponsored polls", None, None, "h8"),
+    "h7_and_h1a": ("H7 and H1 together: bias 0 and house-effect-adjusted poll averages", 0.0, None, "h7"),
+    "h8_and_h1a": ("H8 and H1 together: bias 0 and poll averages without partisan-sponsored polls", 0.0, None, "h8"),
 }
 
 
@@ -822,6 +1223,11 @@ def compute(pull: str | None = None, fetch: bool = False) -> dict:
     gb_late = generic_ballot_late() if fetch else None
     if late is not None:
         avgs["late"] = polls.averages(YEAR, late, when=LATE_CUTOFF)
+    poll_rows = pd.read_parquet(OUT / "polls.parquet")
+    effects, he_params = estimate_house_effects(house_effect_rows(poll_rows, V1_CUTOFF))
+    avgs["h7"] = polls.averages(YEAR, adjust_polls(poll_rows, effects), when=V1_CUTOFF)
+    avgs["h8"] = polls.averages(YEAR, drop_partisan(poll_rows), when=V1_CUTOFF)
+    runs = {}
     out = {"label": "DIAGNOSTIC. Not part of v1's score (#15); v1 and the v1 tag are unchanged.",
            "issue": 24, "pull_id": res["pull_id"].iloc[0], "pulled_at": res["pulled_at"].iloc[0],
            "status": "provisional", "min_counted_for_vote_share": MIN_COUNTED,
@@ -832,6 +1238,8 @@ def compute(pull: str | None = None, fetch: bool = False) -> dict:
             out["variants"][name] = {"description": desc, "metrics": None, "note": "late poll averages not available"}
             continue
         r = rerun(fits, avgs[which], bias, sd)
+        if name == "h8_no_partisan":
+            runs[name] = r
         d = write_tables(r, name, avgs[which])
         out["variants"][name] = {"description": desc, "house_vote_mean": round(r["env"]["mean"], 4),
                                  "house_vote_sd": round(r["env"]["sd"], 4), "metrics": metrics(res, d)}
@@ -843,6 +1251,9 @@ def compute(pull: str | None = None, fetch: bool = False) -> dict:
     out["h5"] = {"status": "waiting", "reason": "counts are not near final",
                  **{k: out["house_vote_so_far"][k] for k in ("vote_weighted_pct_counted", "districts_below_95pct")}}
     out["h6"] = h6(sf, late) if late is not None else {"status": "not run", "reason": "no 3 November revisions saved"}
+    out["h7"] = h7(sf, poll_rows, effects, he_params, avgs["v1"], avgs["h7"])
+    out["h8"] = h8(sf, poll_rows, avgs["v1"], avgs["h8"], base, runs["h8_no_partisan"])
+    effects.assign(label="DIAGNOSTIC").to_csv(DIAG / "house_effects.csv", index=False)
     if gb_late is None and (RAW_LATE).exists() and sorted(RAW_LATE.glob("house_2026_asof*")):
         gb_late = generic_ballot_late()
     out["generic_ballot_3_november"] = gb_late
