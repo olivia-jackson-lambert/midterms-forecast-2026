@@ -1,13 +1,13 @@
 {
  "as_of": "2026-10-22",
- "generated": "2026-11-04T10:53:00Z",
+ "generated": "2026-11-05T01:46:46Z",
  "results": {
-  "source": "results/results.json on branch eval/results-log (commit 253a70c)",
-  "as_of": "2026-11-04T10:41:53Z",
+  "source": "results/results.json",
+  "as_of": "2026-11-05T01:44:21Z",
   "status": "provisional",
   "called": {
    "senate": 33,
-   "house": 360,
+   "house": 380,
    "governor": 34
   }
  },
@@ -2460,8 +2460,8 @@
   ],
   "control_outcome": {
    "control": "D",
-   "dem_seats_called": 222,
-   "uncalled_races": 75,
+   "dem_seats_called": 234,
+   "uncalled_races": 55,
    "complete": false
   },
   "seats": [
@@ -25909,165 +25909,165 @@
   ],
   "score": {
    "probabilities": {
-    "races_common": 359,
+    "races_common": 378,
     "forecasters": {
      "v1": {
-      "covered_called": 360,
-      "brier": 0.0251,
-      "log_loss": 0.0803,
-      "upsets_missed": 14.0,
-      "brier_competitive": 0.2105,
-      "log_loss_competitive": 0.6142,
-      "upsets_missed_competitive": 13.0
+      "covered_called": 380,
+      "brier": 0.0275,
+      "log_loss": 0.0889,
+      "upsets_missed": 16.0,
+      "brier_competitive": 0.2079,
+      "log_loss_competitive": 0.6123,
+      "upsets_missed_competitive": 15.0
      },
      "DDHQ / The Hill": {
-      "covered_called": 360,
-      "brier": 0.0217,
-      "log_loss": 0.0796,
-      "upsets_missed": 12.5,
-      "brier_competitive": 0.1764,
-      "log_loss_competitive": 0.5222,
-      "upsets_missed_competitive": 11.5
+      "covered_called": 380,
+      "brier": 0.0245,
+      "log_loss": 0.0894,
+      "upsets_missed": 14.5,
+      "brier_competitive": 0.1805,
+      "log_loss_competitive": 0.538,
+      "upsets_missed_competitive": 13.5
      },
      "Polymarket": {
-      "covered_called": 359,
-      "brier": 0.0137,
-      "log_loss": 0.0689,
-      "upsets_missed": 8.0,
-      "brier_competitive": 0.0996,
-      "log_loss_competitive": 0.3348,
-      "upsets_missed_competitive": 7.0
+      "covered_called": 378,
+      "brier": 0.016,
+      "log_loss": 0.0764,
+      "upsets_missed": 9.0,
+      "brier_competitive": 0.108,
+      "log_loss_competitive": 0.3595,
+      "upsets_missed_competitive": 8.0
      }
     },
     "head_to_head_only": [
      "Kalshi"
     ],
-    "races_competitive": 38,
-    "democratic_side_won": 221,
-    "democratic_side_won_competitive": 29
+    "races_competitive": 45,
+    "democratic_side_won": 232,
+    "democratic_side_won_competitive": 33
    },
    "ratings": {
-    "races_common": 360,
+    "races_common": 380,
     "forecasters": {
      "v1": {
-      "covered_called": 360,
-      "brier": 0.025,
-      "log_loss": 0.08,
-      "upsets_missed": 14.0,
-      "brier_competitive": 0.2412,
-      "log_loss_competitive": 0.694,
-      "upsets_missed_competitive": 13.0
-     },
-     "Cook Political Report": {
-      "covered_called": 360,
-      "brier": 0.0268,
-      "log_loss": 0.1026,
-      "upsets_missed": 15.0,
-      "brier_competitive": 0.2511,
-      "log_loss_competitive": 0.6966,
+      "covered_called": 380,
+      "brier": 0.0277,
+      "log_loss": 0.0896,
+      "upsets_missed": 16.0,
+      "brier_competitive": 0.206,
+      "log_loss_competitive": 0.6061,
       "upsets_missed_competitive": 14.0
      },
+     "Cook Political Report": {
+      "covered_called": 380,
+      "brier": 0.0311,
+      "log_loss": 0.1149,
+      "upsets_missed": 18.0,
+      "brier_competitive": 0.2304,
+      "log_loss_competitive": 0.6487,
+      "upsets_missed_competitive": 16.0
+     },
      "Split Ticket": {
-      "covered_called": 360,
-      "brier": 0.0153,
-      "log_loss": 0.072,
-      "upsets_missed": 7.0,
-      "brier_competitive": 0.1363,
-      "log_loss_competitive": 0.4266,
-      "upsets_missed_competitive": 6.0
+      "covered_called": 380,
+      "brier": 0.0188,
+      "log_loss": 0.0845,
+      "upsets_missed": 8.5,
+      "brier_competitive": 0.123,
+      "log_loss_competitive": 0.3924,
+      "upsets_missed_competitive": 6.5
      }
     },
     "head_to_head_only": [
      "Sabato's Crystal Ball"
     ],
-    "races_competitive": 33,
-    "democratic_side_won": 222,
-    "democratic_side_won_competitive": 28
+    "races_competitive": 42,
+    "democratic_side_won": 234,
+    "democratic_side_won_competitive": 35
    },
    "head_to_head": [
     {
      "forecaster": "DDHQ / The Hill",
      "kind": "model",
-     "n": 360,
-     "brier": 0.0216,
-     "v1_brier": 0.025,
-     "log_loss": 0.0794,
-     "v1_log_loss": 0.08,
-     "upsets_missed": 12.5,
-     "v1_upsets_missed": 14.0,
-     "n_competitive": 35,
-     "brier_competitive": 0.1909,
-     "v1_brier_competitive": 0.228
+     "n": 380,
+     "brier": 0.0246,
+     "v1_brier": 0.0277,
+     "log_loss": 0.0896,
+     "v1_log_loss": 0.0896,
+     "upsets_missed": 14.5,
+     "v1_upsets_missed": 16.0,
+     "n_competitive": 41,
+     "brier_competitive": 0.1788,
+     "v1_brier_competitive": 0.2113
     },
     {
      "forecaster": "Polymarket",
      "kind": "market",
-     "n": 359,
-     "brier": 0.0137,
-     "v1_brier": 0.0251,
-     "log_loss": 0.0689,
-     "v1_log_loss": 0.0803,
-     "upsets_missed": 8.0,
-     "v1_upsets_missed": 14.0,
-     "n_competitive": 35,
-     "brier_competitive": 0.1074,
-     "v1_brier_competitive": 0.2031
+     "n": 378,
+     "brier": 0.016,
+     "v1_brier": 0.0275,
+     "log_loss": 0.0764,
+     "v1_log_loss": 0.0889,
+     "upsets_missed": 9.0,
+     "v1_upsets_missed": 16.0,
+     "n_competitive": 42,
+     "brier_competitive": 0.1151,
+     "v1_brier_competitive": 0.2016
     },
     {
      "forecaster": "Kalshi",
      "kind": "market",
-     "n": 52,
-     "brier": 0.0223,
-     "v1_brier": 0.0758,
-     "log_loss": 0.1087,
-     "v1_log_loss": 0.238,
-     "upsets_missed": 2.0,
-     "v1_upsets_missed": 6.0,
-     "n_competitive": 15,
-     "brier_competitive": 0.072,
-     "v1_brier_competitive": 0.2018
+     "n": 63,
+     "brier": 0.0349,
+     "v1_brier": 0.0859,
+     "log_loss": 0.1454,
+     "v1_log_loss": 0.2708,
+     "upsets_missed": 3.0,
+     "v1_upsets_missed": 8.0,
+     "n_competitive": 21,
+     "brier_competitive": 0.1,
+     "v1_brier_competitive": 0.2132
     },
     {
      "forecaster": "Cook Political Report",
      "kind": "rating",
-     "n": 360,
-     "brier": 0.0268,
-     "v1_brier": 0.025,
-     "log_loss": 0.1026,
-     "v1_log_loss": 0.08,
-     "upsets_missed": 15.0,
-     "v1_upsets_missed": 14.0,
-     "n_competitive": 33,
-     "brier_competitive": 0.2511,
-     "v1_brier_competitive": 0.2412
+     "n": 380,
+     "brier": 0.0311,
+     "v1_brier": 0.0277,
+     "log_loss": 0.1149,
+     "v1_log_loss": 0.0896,
+     "upsets_missed": 18.0,
+     "v1_upsets_missed": 16.0,
+     "n_competitive": 42,
+     "brier_competitive": 0.2304,
+     "v1_brier_competitive": 0.206
     },
     {
      "forecaster": "Sabato's Crystal Ball",
      "kind": "rating",
-     "n": 54,
-     "brier": 0.1471,
-     "v1_brier": 0.1607,
-     "log_loss": 0.4564,
-     "v1_log_loss": 0.4698,
-     "upsets_missed": 11.5,
-     "v1_upsets_missed": 14.0,
-     "n_competitive": 29,
-     "brier_competitive": 0.2326,
-     "v1_brier_competitive": 0.2683
+     "n": 66,
+     "brier": 0.1496,
+     "v1_brier": 0.1543,
+     "log_loss": 0.4635,
+     "v1_log_loss": 0.4589,
+     "upsets_missed": 14.0,
+     "v1_upsets_missed": 16.0,
+     "n_competitive": 37,
+     "brier_competitive": 0.2131,
+     "v1_brier_competitive": 0.2293
     },
     {
      "forecaster": "Split Ticket",
      "kind": "rating",
-     "n": 360,
-     "brier": 0.0153,
-     "v1_brier": 0.025,
-     "log_loss": 0.072,
-     "v1_log_loss": 0.08,
-     "upsets_missed": 7.0,
-     "v1_upsets_missed": 14.0,
-     "n_competitive": 32,
-     "brier_competitive": 0.1406,
-     "v1_brier_competitive": 0.2486
+     "n": 380,
+     "brier": 0.0188,
+     "v1_brier": 0.0277,
+     "log_loss": 0.0845,
+     "v1_log_loss": 0.0896,
+     "upsets_missed": 8.5,
+     "v1_upsets_missed": 16.0,
+     "n_competitive": 38,
+     "brier_competitive": 0.1352,
+     "v1_brier_competitive": 0.2273
     }
    ]
   }
@@ -29642,8 +29642,8 @@
    ],
    "control_outcome": {
     "control": "D",
-    "dem_seats_called": 222,
-    "uncalled_races": 75,
+    "dem_seats_called": 234,
+    "uncalled_races": 55,
     "complete": false
    },
    "seats": [
@@ -52141,149 +52141,149 @@
    ],
    "score": {
     "probabilities": {
-     "races_common": 359,
+     "races_common": 378,
      "forecasters": {
       "v1": {
-       "covered_called": 360,
-       "brier": 0.0251,
-       "log_loss": 0.0803,
-       "upsets_missed": 14.0,
-       "brier_competitive": 0.2163,
-       "log_loss_competitive": 0.6369,
-       "upsets_missed_competitive": 14.0
+       "covered_called": 380,
+       "brier": 0.0275,
+       "log_loss": 0.0889,
+       "upsets_missed": 16.0,
+       "brier_competitive": 0.2131,
+       "log_loss_competitive": 0.6318,
+       "upsets_missed_competitive": 16.0
       },
       "DDHQ / The Hill": {
-       "covered_called": 360,
-       "brier": 0.0183,
-       "log_loss": 0.0691,
-       "upsets_missed": 10.5,
-       "brier_competitive": 0.1527,
-       "log_loss_competitive": 0.4711,
-       "upsets_missed_competitive": 10.5
+       "covered_called": 380,
+       "brier": 0.021,
+       "log_loss": 0.0783,
+       "upsets_missed": 12.5,
+       "brier_competitive": 0.1574,
+       "log_loss_competitive": 0.4839,
+       "upsets_missed_competitive": 12.5
       },
       "Polymarket": {
-       "covered_called": 359,
-       "brier": 0.0097,
-       "log_loss": 0.0522,
-       "upsets_missed": 5.0,
-       "brier_competitive": 0.0782,
-       "log_loss_competitive": 0.2803,
-       "upsets_missed_competitive": 5.0
+       "covered_called": 378,
+       "brier": 0.0115,
+       "log_loss": 0.0585,
+       "upsets_missed": 6.0,
+       "brier_competitive": 0.0838,
+       "log_loss_competitive": 0.2965,
+       "upsets_missed_competitive": 6.0
       }
      },
      "head_to_head_only": [
       "Kalshi"
      ],
-     "races_competitive": 41,
-     "democratic_side_won": 221,
-     "democratic_side_won_competitive": 30
+     "races_competitive": 48,
+     "democratic_side_won": 232,
+     "democratic_side_won_competitive": 34
     },
     "ratings": {
-     "races_common": 360,
+     "races_common": 380,
      "forecasters": {
       "v1": {
-       "covered_called": 360,
-       "brier": 0.025,
-       "log_loss": 0.08,
-       "upsets_missed": 14.0,
-       "brier_competitive": 0.2592,
-       "log_loss_competitive": 0.7494,
-       "upsets_missed_competitive": 14.0
+       "covered_called": 380,
+       "brier": 0.0277,
+       "log_loss": 0.0896,
+       "upsets_missed": 16.0,
+       "brier_competitive": 0.2263,
+       "log_loss_competitive": 0.6666,
+       "upsets_missed_competitive": 15.0
       },
       "Cook Political Report": {
-       "covered_called": 360,
-       "brier": 0.0201,
-       "log_loss": 0.0867,
-       "upsets_missed": 10.0,
-       "brier_competitive": 0.1947,
-       "log_loss_competitive": 0.5677,
-       "upsets_missed_competitive": 10.0
+       "covered_called": 380,
+       "brier": 0.0245,
+       "log_loss": 0.0991,
+       "upsets_missed": 13.0,
+       "brier_competitive": 0.1878,
+       "log_loss_competitive": 0.5507,
+       "upsets_missed_competitive": 12.0
       },
       "Split Ticket": {
-       "covered_called": 360,
-       "brier": 0.0136,
-       "log_loss": 0.0693,
-       "upsets_missed": 5.0,
-       "brier_competitive": 0.1327,
-       "log_loss_competitive": 0.4257,
-       "upsets_missed_competitive": 5.0
+       "covered_called": 380,
+       "brier": 0.0178,
+       "log_loss": 0.0844,
+       "upsets_missed": 6.5,
+       "brier_competitive": 0.1285,
+       "log_loss_competitive": 0.417,
+       "upsets_missed_competitive": 5.5
       }
      },
      "head_to_head_only": [],
-     "races_competitive": 34,
-     "democratic_side_won": 222,
-     "democratic_side_won_competitive": 29
+     "races_competitive": 42,
+     "democratic_side_won": 234,
+     "democratic_side_won_competitive": 35
     },
     "head_to_head": [
      {
       "forecaster": "DDHQ / The Hill",
       "kind": "model",
-      "n": 360,
-      "brier": 0.0182,
-      "v1_brier": 0.025,
-      "log_loss": 0.0689,
-      "v1_log_loss": 0.08,
-      "upsets_missed": 10.5,
-      "v1_upsets_missed": 14.0,
-      "n_competitive": 40,
-      "brier_competitive": 0.156,
-      "v1_brier_competitive": 0.2217
+      "n": 380,
+      "brier": 0.0209,
+      "v1_brier": 0.0277,
+      "log_loss": 0.0784,
+      "v1_log_loss": 0.0896,
+      "upsets_missed": 12.5,
+      "v1_upsets_missed": 16.0,
+      "n_competitive": 46,
+      "brier_competitive": 0.1479,
+      "v1_brier_competitive": 0.2076
      },
      {
       "forecaster": "Polymarket",
       "kind": "market",
-      "n": 359,
-      "brier": 0.0097,
-      "v1_brier": 0.0251,
-      "log_loss": 0.0522,
-      "v1_log_loss": 0.0803,
-      "upsets_missed": 5.0,
-      "v1_upsets_missed": 14.0,
-      "n_competitive": 33,
-      "brier_competitive": 0.0949,
-      "v1_brier_competitive": 0.2403
+      "n": 378,
+      "brier": 0.0115,
+      "v1_brier": 0.0275,
+      "log_loss": 0.0585,
+      "v1_log_loss": 0.0889,
+      "upsets_missed": 6.0,
+      "v1_upsets_missed": 16.0,
+      "n_competitive": 40,
+      "brier_competitive": 0.0987,
+      "v1_brier_competitive": 0.2322
      },
      {
       "forecaster": "Kalshi",
       "kind": "market",
-      "n": 52,
-      "brier": 0.0129,
-      "v1_brier": 0.0758,
-      "log_loss": 0.0814,
-      "v1_log_loss": 0.238,
-      "upsets_missed": 0.0,
-      "v1_upsets_missed": 6.0,
-      "n_competitive": 15,
-      "brier_competitive": 0.0407,
-      "v1_brier_competitive": 0.2018
+      "n": 63,
+      "brier": 0.0228,
+      "v1_brier": 0.0859,
+      "log_loss": 0.1109,
+      "v1_log_loss": 0.2708,
+      "upsets_missed": 1.0,
+      "v1_upsets_missed": 8.0,
+      "n_competitive": 21,
+      "brier_competitive": 0.0636,
+      "v1_brier_competitive": 0.2132
      },
      {
       "forecaster": "Cook Political Report",
       "kind": "rating",
-      "n": 360,
-      "brier": 0.0201,
-      "v1_brier": 0.025,
-      "log_loss": 0.0867,
-      "v1_log_loss": 0.08,
-      "upsets_missed": 10.0,
-      "v1_upsets_missed": 14.0,
-      "n_competitive": 34,
-      "brier_competitive": 0.1947,
-      "v1_brier_competitive": 0.2592
+      "n": 380,
+      "brier": 0.0245,
+      "v1_brier": 0.0277,
+      "log_loss": 0.0991,
+      "v1_log_loss": 0.0896,
+      "upsets_missed": 13.0,
+      "v1_upsets_missed": 16.0,
+      "n_competitive": 42,
+      "brier_competitive": 0.1878,
+      "v1_brier_competitive": 0.2263
      },
      {
       "forecaster": "Split Ticket",
       "kind": "rating",
-      "n": 360,
-      "brier": 0.0136,
-      "v1_brier": 0.025,
-      "log_loss": 0.0693,
-      "v1_log_loss": 0.08,
-      "upsets_missed": 5.0,
-      "v1_upsets_missed": 14.0,
-      "n_competitive": 33,
-      "brier_competitive": 0.136,
-      "v1_brier_competitive": 0.2669
+      "n": 380,
+      "brier": 0.0178,
+      "v1_brier": 0.0277,
+      "log_loss": 0.0844,
+      "v1_log_loss": 0.0896,
+      "upsets_missed": 6.5,
+      "v1_upsets_missed": 16.0,
+      "n_competitive": 40,
+      "brier_competitive": 0.1338,
+      "v1_brier_competitive": 0.2375
      }
     ]
    }

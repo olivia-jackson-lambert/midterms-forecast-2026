@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "as_of": "2026-11-04T19:42:55Z",
+ "as_of": "2026-11-05T01:44:21Z",
  "status": "provisional",
- "note": "Race calls and vote counts from the Associated Press public results feed, pulled 2026-11-04T19:42:55Z; Senate and governor calls cross-checked against Wikipedia. Counts are incomplete.",
+ "note": "Race calls and vote counts from the Associated Press public results feed, pulled 2026-11-05T01:44:21Z; Senate and governor calls cross-checked against Wikipedia. Counts are incomplete.",
  "races": [
   {
    "id": "2026-AK-GOV",
@@ -10,10 +10,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4915,
-   "pct_counted": 0.7389,
+   "dem_share_2p": 0.4913,
+   "pct_counted": 0.7522,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-AK-SEN",
@@ -22,9 +22,9 @@
    "winner_party": null,
    "winner_name": null,
    "dem_share_2p": 0.49,
-   "pct_counted": 0.7429,
+   "pct_counted": 0.7549,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-AL-GOV",
@@ -35,7 +35,7 @@
    "dem_share_2p": 0.4794,
    "pct_counted": 0.9872,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-AL-SEN",
@@ -44,9 +44,9 @@
    "winner_party": "R",
    "winner_name": "Barry Moore",
    "dem_share_2p": 0.4529,
-   "pct_counted": 0.9866,
+   "pct_counted": 0.9897,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-AR-GOV",
@@ -57,7 +57,7 @@
    "dem_share_2p": 0.4173,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-AR-SEN",
@@ -68,7 +68,7 @@
    "dem_share_2p": 0.4387,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-AZ-GOV",
@@ -76,10 +76,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Katie Hobbs",
-   "dem_share_2p": 0.5658,
-   "pct_counted": 0.8348,
+   "dem_share_2p": 0.5655,
+   "pct_counted": 0.8551,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-CA-GOV",
@@ -87,10 +87,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Xavier Becerra",
-   "dem_share_2p": 0.6398,
-   "pct_counted": 0.5927,
+   "dem_share_2p": 0.6419,
+   "pct_counted": 0.6093,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-CO-GOV",
@@ -98,10 +98,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Phil Weiser",
-   "dem_share_2p": 0.6443,
-   "pct_counted": 0.7684,
+   "dem_share_2p": 0.6423,
+   "pct_counted": 0.8325,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-CO-SEN",
@@ -109,10 +109,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "John Hickenlooper",
-   "dem_share_2p": 0.6288,
-   "pct_counted": 0.7721,
+   "dem_share_2p": 0.6271,
+   "pct_counted": 0.8357,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-CT-GOV",
@@ -120,10 +120,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Ned Lamont",
-   "dem_share_2p": 0.5879,
-   "pct_counted": 0.9441,
+   "dem_share_2p": 0.5889,
+   "pct_counted": 0.9544,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-DE-SEN",
@@ -134,7 +134,7 @@
    "dem_share_2p": 0.6357,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-FL-GOV",
@@ -145,7 +145,7 @@
    "dem_share_2p": 0.4934,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-FL-SENS",
@@ -156,7 +156,7 @@
    "dem_share_2p": 0.4854,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-GA-GOV",
@@ -167,7 +167,7 @@
    "dem_share_2p": 0.5434,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-GA-SEN",
@@ -178,7 +178,7 @@
    "dem_share_2p": 0.5903,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-HI-GOV",
@@ -187,9 +187,9 @@
    "winner_party": "D",
    "winner_name": "Josh Green",
    "dem_share_2p": 0.7338,
-   "pct_counted": 0.8931,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-IA-GOV",
@@ -200,7 +200,7 @@
    "dem_share_2p": 0.5549,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-IA-SEN",
@@ -209,9 +209,9 @@
    "winner_party": "D",
    "winner_name": "Josh Turek",
    "dem_share_2p": 0.5212,
-   "pct_counted": 0.987,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-ID-GOV",
@@ -222,7 +222,7 @@
    "dem_share_2p": 0.3617,
    "pct_counted": 0.9895,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-ID-SEN",
@@ -233,7 +233,7 @@
    "dem_share_2p": 0.3724,
    "pct_counted": 0.9894,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-IL-GOV",
@@ -241,10 +241,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "JB Pritzker",
-   "dem_share_2p": 0.6191,
-   "pct_counted": 0.9091,
+   "dem_share_2p": 0.6176,
+   "pct_counted": 0.9146,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-IL-SEN",
@@ -252,10 +252,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Juliana Stratton",
-   "dem_share_2p": 0.6196,
-   "pct_counted": 0.9263,
+   "dem_share_2p": 0.6182,
+   "pct_counted": 0.9317,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-KS-GOV",
@@ -263,10 +263,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5026,
-   "pct_counted": 0.9832,
+   "dem_share_2p": 0.5032,
+   "pct_counted": 0.9878,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-KS-SEN",
@@ -274,10 +274,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Adam Hamilton",
-   "dem_share_2p": 0.5251,
-   "pct_counted": 0.9831,
+   "dem_share_2p": 0.5258,
+   "pct_counted": 0.9878,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-KY-SEN",
@@ -288,7 +288,7 @@
    "dem_share_2p": 0.4383,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-LA-SEN",
@@ -299,7 +299,7 @@
    "dem_share_2p": 0.4912,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-MA-GOV",
@@ -307,10 +307,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Maura Healey",
-   "dem_share_2p": 0.642,
-   "pct_counted": 0.9514,
+   "dem_share_2p": 0.6411,
+   "pct_counted": 0.9532,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-MA-SEN",
@@ -319,9 +319,9 @@
    "winner_party": "D",
    "winner_name": "Ed Markey",
    "dem_share_2p": 0.6622,
-   "pct_counted": 0.9509,
+   "pct_counted": 0.953,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-MD-GOV",
@@ -330,9 +330,9 @@
    "winner_party": "D",
    "winner_name": "Wes Moore",
    "dem_share_2p": 0.6536,
-   "pct_counted": 0.7838,
+   "pct_counted": 0.7809,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-ME-GOV",
@@ -340,10 +340,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Hannah Pingree",
-   "dem_share_2p": 0.5976,
-   "pct_counted": 0.9232,
+   "dem_share_2p": 0.5955,
+   "pct_counted": 0.9102,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-ME-SEN",
@@ -351,10 +351,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Troy Jackson",
-   "dem_share_2p": 0.5365,
-   "pct_counted": 0.922,
+   "dem_share_2p": 0.5345,
+   "pct_counted": 0.9101,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-MI-GOV",
@@ -363,9 +363,9 @@
    "winner_party": "D",
    "winner_name": "Jocelyn Benson",
    "dem_share_2p": 0.5548,
-   "pct_counted": 0.9736,
+   "pct_counted": 0.9756,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-MI-SEN",
@@ -374,9 +374,9 @@
    "winner_party": "D",
    "winner_name": "Abdul El-Sayed",
    "dem_share_2p": 0.5358,
-   "pct_counted": 0.9736,
+   "pct_counted": 0.9754,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-MN-GOV",
@@ -387,7 +387,7 @@
    "dem_share_2p": 0.5654,
    "pct_counted": 0.9884,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-MN-SEN",
@@ -398,7 +398,7 @@
    "dem_share_2p": 0.5522,
    "pct_counted": 0.9885,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-MS-SEN",
@@ -406,10 +406,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5,
-   "pct_counted": 0.9561,
+   "dem_share_2p": 0.5006,
+   "pct_counted": 0.9556,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-MT-SEN",
@@ -417,10 +417,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Kurt Alme",
-   "dem_share_2p": 0.1975,
-   "pct_counted": 0.9211,
+   "dem_share_2p": 0.1988,
+   "pct_counted": 0.9497,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-NC-SEN",
@@ -431,7 +431,7 @@
    "dem_share_2p": 0.6003,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-NE-GOV",
@@ -440,9 +440,9 @@
    "winner_party": "R",
    "winner_name": "Jim Pillen",
    "dem_share_2p": 0.4538,
-   "pct_counted": 0.9179,
+   "pct_counted": 0.9421,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-NE-SEN",
@@ -451,9 +451,9 @@
    "winner_party": "R",
    "winner_name": "Pete Ricketts",
    "dem_share_2p": 0.4637,
-   "pct_counted": 0.9156,
+   "pct_counted": 0.941,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-NH-GOV",
@@ -461,10 +461,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Kelly Ayotte",
-   "dem_share_2p": 0.4792,
-   "pct_counted": 0.9206,
+   "dem_share_2p": 0.4781,
+   "pct_counted": 0.9392,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-NH-SEN",
@@ -472,10 +472,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Chris Pappas",
-   "dem_share_2p": 0.5715,
-   "pct_counted": 0.9202,
+   "dem_share_2p": 0.5703,
+   "pct_counted": 0.9395,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-NJ-SEN",
@@ -483,10 +483,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Cory Booker",
-   "dem_share_2p": 0.6374,
-   "pct_counted": 0.9419,
+   "dem_share_2p": 0.6376,
+   "pct_counted": 0.9439,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-NM-GOV",
@@ -497,7 +497,7 @@
    "dem_share_2p": 0.5725,
    "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-NM-SEN",
@@ -508,7 +508,7 @@
    "dem_share_2p": 0.6315,
    "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-NV-GOV",
@@ -516,10 +516,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Aaron Ford",
-   "dem_share_2p": 0.5393,
-   "pct_counted": 0.8785,
+   "dem_share_2p": 0.5373,
+   "pct_counted": 0.8661,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-NY-GOV",
@@ -527,10 +527,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Kathy Hochul",
-   "dem_share_2p": 0.6013,
-   "pct_counted": 0.8925,
+   "dem_share_2p": 0.6012,
+   "pct_counted": 0.9258,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-OH-GOV",
@@ -541,7 +541,7 @@
    "dem_share_2p": 0.541,
    "pct_counted": 0.9801,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-OH-SENS",
@@ -552,7 +552,7 @@
    "dem_share_2p": 0.5255,
    "pct_counted": 0.9801,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-OK-GOV",
@@ -563,7 +563,7 @@
    "dem_share_2p": 0.4693,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-OK-SEN",
@@ -574,7 +574,7 @@
    "dem_share_2p": 0.4071,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-OR-GOV",
@@ -582,10 +582,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Tina Kotek",
-   "dem_share_2p": 0.5322,
-   "pct_counted": 0.7505,
+   "dem_share_2p": 0.5364,
+   "pct_counted": 0.7746,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-OR-SEN",
@@ -593,10 +593,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Jeff Merkley",
-   "dem_share_2p": 0.5826,
-   "pct_counted": 0.7526,
+   "dem_share_2p": 0.5868,
+   "pct_counted": 0.7768,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-PA-GOV",
@@ -604,10 +604,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Josh Shapiro",
-   "dem_share_2p": 0.6117,
-   "pct_counted": 0.9856,
+   "dem_share_2p": 0.6118,
+   "pct_counted": 0.9868,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-RI-GOV",
@@ -615,10 +615,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Helena Foulkes",
-   "dem_share_2p": 0.8132,
-   "pct_counted": 0.9756,
+   "dem_share_2p": 0.8141,
+   "pct_counted": 0.9803,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-RI-SEN",
@@ -626,10 +626,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Jack Reed",
-   "dem_share_2p": 0.6939,
-   "pct_counted": 0.9755,
+   "dem_share_2p": 0.6951,
+   "pct_counted": 0.9803,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-SC-GOV",
@@ -640,7 +640,7 @@
    "dem_share_2p": 0.4773,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-SC-SEN",
@@ -651,7 +651,7 @@
    "dem_share_2p": 0.5229,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-SD-GOV",
@@ -662,7 +662,7 @@
    "dem_share_2p": 0.365,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-SD-SEN",
@@ -673,7 +673,7 @@
    "dem_share_2p": 0.395,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-TN-GOV",
@@ -684,7 +684,7 @@
    "dem_share_2p": 0.4858,
    "pct_counted": 0.9891,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-TN-SEN",
@@ -695,7 +695,7 @@
    "dem_share_2p": 0.4379,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-TX-GOV",
@@ -706,7 +706,7 @@
    "dem_share_2p": 0.5362,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-TX-SEN",
@@ -717,7 +717,7 @@
    "dem_share_2p": 0.5616,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-VA-SEN",
@@ -725,10 +725,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Mark Warner",
-   "dem_share_2p": 0.6123,
-   "pct_counted": 0.9699,
+   "dem_share_2p": 0.6133,
+   "pct_counted": 0.975,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-VT-GOV",
@@ -737,9 +737,9 @@
    "winner_party": "R",
    "winner_name": "Phil Scott",
    "dem_share_2p": 0.4646,
-   "pct_counted": 0.99,
+   "pct_counted": 0.9899,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-WI-GOV",
@@ -750,7 +750,7 @@
    "dem_share_2p": 0.5408,
    "pct_counted": 0.985,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-WV-SEN",
@@ -761,7 +761,7 @@
    "dem_share_2p": 0.3939,
    "pct_counted": 0.9891,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-WY-GOV",
@@ -772,7 +772,7 @@
    "dem_share_2p": 0.1761,
    "pct_counted": 0.9697,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "2026-WY-SEN",
@@ -783,7 +783,7 @@
    "dem_share_2p": 0.3476,
    "pct_counted": 0.9695,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AK-AL",
@@ -792,9 +792,9 @@
    "winner_party": null,
    "winner_name": null,
    "dem_share_2p": 0.1283,
-   "pct_counted": 0.7413,
+   "pct_counted": 0.7538,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AL-01",
@@ -805,7 +805,7 @@
    "dem_share_2p": 0.4093,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AL-02",
@@ -816,7 +816,7 @@
    "dem_share_2p": 0.5375,
    "pct_counted": 0.9895,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AL-03",
@@ -825,9 +825,9 @@
    "winner_party": "R",
    "winner_name": "Mike Rogers",
    "dem_share_2p": 0.3605,
-   "pct_counted": 0.9669,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AL-04",
@@ -838,7 +838,7 @@
    "dem_share_2p": 0.251,
    "pct_counted": 0.9891,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AL-05",
@@ -849,7 +849,7 @@
    "dem_share_2p": 0.4676,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AL-06",
@@ -860,7 +860,7 @@
    "dem_share_2p": 0.4253,
    "pct_counted": 0.9831,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AL-07",
@@ -871,7 +871,7 @@
    "dem_share_2p": 0.694,
    "pct_counted": 0.9895,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AR-01",
@@ -882,7 +882,7 @@
    "dem_share_2p": 0.3212,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AR-02",
@@ -893,7 +893,7 @@
    "dem_share_2p": 0.4912,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AR-03",
@@ -904,7 +904,7 @@
    "dem_share_2p": 0.4304,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AR-04",
@@ -915,7 +915,7 @@
    "dem_share_2p": 0.3451,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AZ-01",
@@ -923,10 +923,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5367,
-   "pct_counted": 0.852,
+   "dem_share_2p": 0.5359,
+   "pct_counted": 0.864,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AZ-02",
@@ -934,10 +934,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5002,
-   "pct_counted": 0.8353,
+   "dem_share_2p": 0.4961,
+   "pct_counted": 0.8643,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AZ-03",
@@ -946,9 +946,9 @@
    "winner_party": "D",
    "winner_name": "Yassamin Ansari",
    "dem_share_2p": null,
-   "pct_counted": 0.8494,
+   "pct_counted": 0.8724,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AZ-04",
@@ -956,10 +956,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Greg Stanton",
-   "dem_share_2p": 0.6377,
-   "pct_counted": 0.8511,
+   "dem_share_2p": 0.6374,
+   "pct_counted": 0.8665,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AZ-05",
@@ -967,10 +967,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4888,
-   "pct_counted": 0.8391,
+   "dem_share_2p": 0.4884,
+   "pct_counted": 0.8608,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AZ-06",
@@ -978,10 +978,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5409,
-   "pct_counted": 0.7953,
+   "dem_share_2p": 0.5414,
+   "pct_counted": 0.8362,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AZ-07",
@@ -989,10 +989,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Adelita Grijalva",
-   "dem_share_2p": 0.7151,
-   "pct_counted": 0.8146,
+   "dem_share_2p": 0.7164,
+   "pct_counted": 0.8244,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AZ-08",
@@ -1000,10 +1000,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4888,
-   "pct_counted": 0.8517,
+   "dem_share_2p": 0.4861,
+   "pct_counted": 0.8644,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "AZ-09",
@@ -1011,10 +1011,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Paul Gosar",
-   "dem_share_2p": 0.4218,
-   "pct_counted": 0.8322,
+   "dem_share_2p": 0.4232,
+   "pct_counted": 0.8434,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-01",
@@ -1025,7 +1025,7 @@
    "dem_share_2p": 0.5703,
    "pct_counted": 0.5006,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-02",
@@ -1033,10 +1033,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Jared Huffman",
-   "dem_share_2p": 0.6782,
-   "pct_counted": 0.4853,
+   "dem_share_2p": 0.6654,
+   "pct_counted": 0.4987,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-03",
@@ -1047,7 +1047,7 @@
    "dem_share_2p": 0.5706,
    "pct_counted": 0.4944,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-04",
@@ -1058,7 +1058,7 @@
    "dem_share_2p": null,
    "pct_counted": 0.4068,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-05",
@@ -1066,10 +1066,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Tom McClintock",
-   "dem_share_2p": 0.4379,
-   "pct_counted": 0.6117,
+   "dem_share_2p": 0.4397,
+   "pct_counted": 0.6163,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-06",
@@ -1080,7 +1080,7 @@
    "dem_share_2p": 0.5749,
    "pct_counted": 0.5012,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-07",
@@ -1091,7 +1091,7 @@
    "dem_share_2p": null,
    "pct_counted": 0.4107,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-08",
@@ -1102,7 +1102,7 @@
    "dem_share_2p": 0.7234,
    "pct_counted": 0.6445,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-09",
@@ -1113,7 +1113,7 @@
    "dem_share_2p": 0.658,
    "pct_counted": 0.5557,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-10",
@@ -1124,7 +1124,7 @@
    "dem_share_2p": 0.6906,
    "pct_counted": 0.6208,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-11",
@@ -1133,9 +1133,9 @@
    "winner_party": null,
    "winner_name": null,
    "dem_share_2p": null,
-   "pct_counted": 0.5142,
+   "pct_counted": 0.5738,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-12",
@@ -1146,7 +1146,7 @@
    "dem_share_2p": null,
    "pct_counted": 0.52,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-13",
@@ -1157,7 +1157,7 @@
    "dem_share_2p": 0.6132,
    "pct_counted": 0.5723,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-14",
@@ -1168,7 +1168,7 @@
    "dem_share_2p": null,
    "pct_counted": 0.5252,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-15",
@@ -1176,10 +1176,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Kevin Mullin",
-   "dem_share_2p": 0.7738,
-   "pct_counted": 0.5114,
+   "dem_share_2p": 0.7747,
+   "pct_counted": 0.5187,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-16",
@@ -1187,10 +1187,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Sam Liccardo",
-   "dem_share_2p": 0.7589,
-   "pct_counted": 0.4685,
+   "dem_share_2p": 0.7598,
+   "pct_counted": 0.4817,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-17",
@@ -1198,10 +1198,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Ro Khanna",
-   "dem_share_2p": 0.7052,
-   "pct_counted": 0.4611,
+   "dem_share_2p": 0.7061,
+   "pct_counted": 0.4835,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-18",
@@ -1209,10 +1209,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Zoe Lofgren",
-   "dem_share_2p": 0.7166,
-   "pct_counted": 0.5437,
+   "dem_share_2p": 0.7172,
+   "pct_counted": 0.5513,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-19",
@@ -1220,10 +1220,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Jimmy Panetta",
-   "dem_share_2p": 0.7198,
-   "pct_counted": 0.5662,
+   "dem_share_2p": 0.7194,
+   "pct_counted": 0.575,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-20",
@@ -1234,7 +1234,7 @@
    "dem_share_2p": 0.3738,
    "pct_counted": 0.5711,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-21",
@@ -1245,7 +1245,7 @@
    "dem_share_2p": 0.6221,
    "pct_counted": 0.5354,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-22",
@@ -1256,7 +1256,7 @@
    "dem_share_2p": 0.6641,
    "pct_counted": 0.5706,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-23",
@@ -1264,10 +1264,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4867,
-   "pct_counted": 0.57,
+   "dem_share_2p": 0.4864,
+   "pct_counted": 0.5739,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-24",
@@ -1275,10 +1275,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Salud Carbajal",
-   "dem_share_2p": 0.6588,
-   "pct_counted": 0.5935,
+   "dem_share_2p": 0.6583,
+   "pct_counted": 0.5986,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-25",
@@ -1286,10 +1286,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Raul Ruiz",
-   "dem_share_2p": 0.6441,
-   "pct_counted": 0.4568,
+   "dem_share_2p": 0.6451,
+   "pct_counted": 0.4879,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-26",
@@ -1297,10 +1297,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Jacqui Irwin",
-   "dem_share_2p": 0.6166,
-   "pct_counted": 0.7072,
+   "dem_share_2p": 0.6173,
+   "pct_counted": 0.7576,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-27",
@@ -1308,10 +1308,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "George Whitesides",
-   "dem_share_2p": 0.617,
-   "pct_counted": 0.6871,
+   "dem_share_2p": 0.6212,
+   "pct_counted": 0.72,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-28",
@@ -1319,10 +1319,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Judy Chu",
-   "dem_share_2p": 0.6837,
-   "pct_counted": 0.6261,
+   "dem_share_2p": 0.6895,
+   "pct_counted": 0.6871,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-29",
@@ -1331,9 +1331,9 @@
    "winner_party": null,
    "winner_name": null,
    "dem_share_2p": null,
-   "pct_counted": 0.6432,
+   "pct_counted": 0.72,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-30",
@@ -1341,10 +1341,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Laura Friedman",
-   "dem_share_2p": 0.7548,
-   "pct_counted": 0.6433,
+   "dem_share_2p": 0.7589,
+   "pct_counted": 0.72,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-31",
@@ -1352,10 +1352,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Gil Cisneros",
-   "dem_share_2p": 0.6384,
-   "pct_counted": 0.6952,
+   "dem_share_2p": 0.6421,
+   "pct_counted": 0.7089,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-32",
@@ -1363,10 +1363,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Brad Sherman",
-   "dem_share_2p": 0.6621,
-   "pct_counted": 0.6447,
+   "dem_share_2p": 0.6637,
+   "pct_counted": 0.7113,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-33",
@@ -1374,10 +1374,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Pete Aguilar",
-   "dem_share_2p": 0.6766,
-   "pct_counted": 0.5849,
+   "dem_share_2p": 0.6764,
+   "pct_counted": 0.5866,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-34",
@@ -1386,9 +1386,9 @@
    "winner_party": "D",
    "winner_name": "Angela Gonzales-Torres",
    "dem_share_2p": null,
-   "pct_counted": 0.7311,
+   "pct_counted": 0.72,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-35",
@@ -1396,10 +1396,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Norma Torres",
-   "dem_share_2p": 0.6562,
-   "pct_counted": 0.5652,
+   "dem_share_2p": 0.6544,
+   "pct_counted": 0.5881,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-36",
@@ -1407,10 +1407,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Ted Lieu",
-   "dem_share_2p": 0.7066,
-   "pct_counted": 0.6121,
+   "dem_share_2p": 0.7129,
+   "pct_counted": 0.72,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-37",
@@ -1419,9 +1419,9 @@
    "winner_party": "D",
    "winner_name": "Sydney Kamlager-Dove",
    "dem_share_2p": null,
-   "pct_counted": 0.6724,
+   "pct_counted": 0.72,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-38",
@@ -1429,10 +1429,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Hilda Solis",
-   "dem_share_2p": 0.6501,
-   "pct_counted": 0.6942,
+   "dem_share_2p": 0.655,
+   "pct_counted": 0.7104,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-39",
@@ -1440,10 +1440,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Mark Takano",
-   "dem_share_2p": 0.6535,
-   "pct_counted": 0.4397,
+   "dem_share_2p": 0.6595,
+   "pct_counted": 0.4946,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-40",
@@ -1452,9 +1452,9 @@
    "winner_party": null,
    "winner_name": null,
    "dem_share_2p": null,
-   "pct_counted": 0.4181,
+   "pct_counted": 0.4516,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-41",
@@ -1462,10 +1462,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Linda S\u00e1nchez",
-   "dem_share_2p": 0.6494,
-   "pct_counted": 0.6909,
+   "dem_share_2p": 0.6551,
+   "pct_counted": 0.7336,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-42",
@@ -1473,10 +1473,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Robert Garcia",
-   "dem_share_2p": 0.5965,
-   "pct_counted": 0.6117,
+   "dem_share_2p": 0.5989,
+   "pct_counted": 0.6944,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-43",
@@ -1484,10 +1484,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Maxine Waters",
-   "dem_share_2p": 0.8125,
-   "pct_counted": 0.7546,
+   "dem_share_2p": 0.8157,
+   "pct_counted": 0.72,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-44",
@@ -1495,10 +1495,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Nanette Barrag\u00e1n",
-   "dem_share_2p": 0.7981,
-   "pct_counted": 0.7393,
+   "dem_share_2p": 0.8027,
+   "pct_counted": 0.72,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-45",
@@ -1506,10 +1506,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Derek Tran",
-   "dem_share_2p": 0.5874,
-   "pct_counted": 0.6235,
+   "dem_share_2p": 0.5902,
+   "pct_counted": 0.6858,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-46",
@@ -1517,32 +1517,32 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Lou Correa",
-   "dem_share_2p": 0.6806,
-   "pct_counted": 0.6603,
+   "dem_share_2p": 0.685,
+   "pct_counted": 0.7143,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-47",
    "office": "house",
-   "called": false,
-   "winner_party": null,
-   "winner_name": null,
-   "dem_share_2p": 0.5674,
-   "pct_counted": 0.591,
+   "called": true,
+   "winner_party": "D",
+   "winner_name": "Dave Min",
+   "dem_share_2p": 0.569,
+   "pct_counted": 0.623,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-48",
    "office": "house",
-   "called": false,
-   "winner_party": null,
-   "winner_name": null,
-   "dem_share_2p": 0.5959,
-   "pct_counted": 0.5217,
+   "called": true,
+   "winner_party": "D",
+   "winner_name": "Marni von Wilpert",
+   "dem_share_2p": 0.595,
+   "pct_counted": 0.5372,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-49",
@@ -1550,10 +1550,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Mike Levin",
-   "dem_share_2p": 0.5749,
-   "pct_counted": 0.5928,
+   "dem_share_2p": 0.5737,
+   "pct_counted": 0.5991,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-50",
@@ -1564,7 +1564,7 @@
    "dem_share_2p": 0.6102,
    "pct_counted": 0.6008,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-51",
@@ -1575,7 +1575,7 @@
    "dem_share_2p": 0.6315,
    "pct_counted": 0.6021,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CA-52",
@@ -1586,7 +1586,7 @@
    "dem_share_2p": 0.6893,
    "pct_counted": 0.6367,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CO-01",
@@ -1594,10 +1594,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Melat Kiros",
-   "dem_share_2p": 0.8492,
-   "pct_counted": 0.6864,
+   "dem_share_2p": 0.8484,
+   "pct_counted": 0.7811,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CO-02",
@@ -1605,10 +1605,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Joe Neguse",
-   "dem_share_2p": 0.7616,
-   "pct_counted": 0.7282,
+   "dem_share_2p": 0.7592,
+   "pct_counted": 0.7861,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CO-03",
@@ -1616,10 +1616,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4979,
-   "pct_counted": 0.8037,
+   "dem_share_2p": 0.4914,
+   "pct_counted": 0.8663,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CO-04",
@@ -1627,10 +1627,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5074,
-   "pct_counted": 0.8305,
+   "dem_share_2p": 0.5049,
+   "pct_counted": 0.861,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CO-05",
@@ -1638,10 +1638,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5324,
-   "pct_counted": 0.7213,
+   "dem_share_2p": 0.5255,
+   "pct_counted": 0.85,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CO-06",
@@ -1649,10 +1649,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Jason Crow",
-   "dem_share_2p": 0.6772,
-   "pct_counted": 0.7167,
+   "dem_share_2p": 0.6771,
+   "pct_counted": 0.7709,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CO-07",
@@ -1660,10 +1660,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Brittany Pettersen",
-   "dem_share_2p": 0.6255,
-   "pct_counted": 0.8366,
+   "dem_share_2p": 0.6256,
+   "pct_counted": 0.8632,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CO-08",
@@ -1671,10 +1671,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Manny Rutinel",
-   "dem_share_2p": 0.5761,
-   "pct_counted": 0.7845,
+   "dem_share_2p": 0.5719,
+   "pct_counted": 0.8563,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CT-01",
@@ -1682,10 +1682,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Luke Bronin",
-   "dem_share_2p": 0.6622,
-   "pct_counted": 0.9163,
+   "dem_share_2p": 0.6671,
+   "pct_counted": 0.918,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CT-02",
@@ -1693,10 +1693,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Joe Courtney",
-   "dem_share_2p": 0.6234,
-   "pct_counted": 0.952,
+   "dem_share_2p": 0.6244,
+   "pct_counted": 0.9506,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CT-03",
@@ -1707,7 +1707,7 @@
    "dem_share_2p": 0.6237,
    "pct_counted": 0.9767,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CT-04",
@@ -1715,10 +1715,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Jim Himes",
-   "dem_share_2p": 0.6674,
-   "pct_counted": 0.9798,
+   "dem_share_2p": 0.6681,
+   "pct_counted": 0.9827,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "CT-05",
@@ -1726,10 +1726,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Jahana Hayes",
-   "dem_share_2p": 0.5821,
-   "pct_counted": 0.8808,
+   "dem_share_2p": 0.5805,
+   "pct_counted": 0.9421,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "DE-AL",
@@ -1740,7 +1740,7 @@
    "dem_share_2p": 0.6434,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-01",
@@ -1751,7 +1751,7 @@
    "dem_share_2p": 0.3627,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-02",
@@ -1762,7 +1762,7 @@
    "dem_share_2p": 0.4787,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-03",
@@ -1773,7 +1773,7 @@
    "dem_share_2p": 0.438,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-04",
@@ -1784,7 +1784,7 @@
    "dem_share_2p": 0.4893,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-05",
@@ -1795,7 +1795,7 @@
    "dem_share_2p": 0.4358,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-06",
@@ -1806,7 +1806,7 @@
    "dem_share_2p": 0.4038,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-07",
@@ -1817,7 +1817,7 @@
    "dem_share_2p": 0.4974,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-08",
@@ -1828,7 +1828,7 @@
    "dem_share_2p": 0.4683,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-09",
@@ -1839,7 +1839,7 @@
    "dem_share_2p": 0.5026,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-10",
@@ -1850,7 +1850,7 @@
    "dem_share_2p": null,
    "pct_counted": 0.0,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-11",
@@ -1861,7 +1861,7 @@
    "dem_share_2p": 0.4649,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-12",
@@ -1872,7 +1872,7 @@
    "dem_share_2p": 0.4655,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-13",
@@ -1883,7 +1883,7 @@
    "dem_share_2p": 0.4959,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-14",
@@ -1894,7 +1894,7 @@
    "dem_share_2p": 0.5274,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-15",
@@ -1905,7 +1905,7 @@
    "dem_share_2p": 0.457,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-16",
@@ -1916,7 +1916,7 @@
    "dem_share_2p": 0.4783,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-17",
@@ -1927,7 +1927,7 @@
    "dem_share_2p": 0.4072,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-18",
@@ -1938,7 +1938,7 @@
    "dem_share_2p": 0.4811,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-19",
@@ -1949,7 +1949,7 @@
    "dem_share_2p": 0.3811,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-20",
@@ -1960,7 +1960,7 @@
    "dem_share_2p": 0.7738,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-21",
@@ -1971,7 +1971,7 @@
    "dem_share_2p": 0.4534,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-22",
@@ -1982,7 +1982,7 @@
    "dem_share_2p": 0.5189,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-23",
@@ -1993,7 +1993,7 @@
    "dem_share_2p": 0.6565,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-24",
@@ -2004,7 +2004,7 @@
    "dem_share_2p": 0.8065,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-25",
@@ -2015,7 +2015,7 @@
    "dem_share_2p": 0.5236,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-26",
@@ -2026,7 +2026,7 @@
    "dem_share_2p": 0.4961,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-27",
@@ -2037,7 +2037,7 @@
    "dem_share_2p": 0.4978,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "FL-28",
@@ -2048,7 +2048,7 @@
    "dem_share_2p": 0.4632,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-01",
@@ -2059,7 +2059,7 @@
    "dem_share_2p": 0.4858,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-02",
@@ -2070,7 +2070,7 @@
    "dem_share_2p": 0.6087,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-03",
@@ -2081,7 +2081,7 @@
    "dem_share_2p": 0.4138,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-04",
@@ -2092,7 +2092,7 @@
    "dem_share_2p": 0.8264,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-05",
@@ -2103,7 +2103,7 @@
    "dem_share_2p": 0.902,
    "pct_counted": 0.9893,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-06",
@@ -2114,7 +2114,7 @@
    "dem_share_2p": 0.8089,
    "pct_counted": 0.9873,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-07",
@@ -2125,7 +2125,7 @@
    "dem_share_2p": 0.4381,
    "pct_counted": 0.9839,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-08",
@@ -2136,7 +2136,7 @@
    "dem_share_2p": 0.3962,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-09",
@@ -2147,7 +2147,7 @@
    "dem_share_2p": 0.407,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-10",
@@ -2158,7 +2158,7 @@
    "dem_share_2p": 0.4641,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-11",
@@ -2169,7 +2169,7 @@
    "dem_share_2p": 0.4464,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-12",
@@ -2180,7 +2180,7 @@
    "dem_share_2p": 0.479,
    "pct_counted": 0.9829,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-13",
@@ -2191,7 +2191,7 @@
    "dem_share_2p": 0.7983,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "GA-14",
@@ -2202,7 +2202,7 @@
    "dem_share_2p": 0.4122,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "HI-01",
@@ -2211,9 +2211,9 @@
    "winner_party": "D",
    "winner_name": "Ed Case",
    "dem_share_2p": 0.7672,
-   "pct_counted": 0.8874,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "HI-02",
@@ -2222,9 +2222,9 @@
    "winner_party": "D",
    "winner_name": "Jill Tokuda",
    "dem_share_2p": 0.6711,
-   "pct_counted": 0.8408,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IA-01",
@@ -2235,7 +2235,7 @@
    "dem_share_2p": 0.548,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IA-02",
@@ -2246,7 +2246,7 @@
    "dem_share_2p": 0.5209,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IA-03",
@@ -2257,7 +2257,7 @@
    "dem_share_2p": 0.5365,
    "pct_counted": 0.9884,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IA-04",
@@ -2268,7 +2268,7 @@
    "dem_share_2p": 0.4093,
    "pct_counted": 0.987,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "ID-01",
@@ -2279,7 +2279,7 @@
    "dem_share_2p": 0.3091,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "ID-02",
@@ -2290,7 +2290,7 @@
    "dem_share_2p": 0.438,
    "pct_counted": 0.9875,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-01",
@@ -2298,10 +2298,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Jonathan Jackson",
-   "dem_share_2p": 0.7031,
-   "pct_counted": 0.8155,
+   "dem_share_2p": 0.7032,
+   "pct_counted": 0.8161,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-02",
@@ -2309,10 +2309,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Donna Miller",
-   "dem_share_2p": 0.727,
-   "pct_counted": 0.847,
+   "dem_share_2p": 0.7276,
+   "pct_counted": 0.8493,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-03",
@@ -2320,10 +2320,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Delia Ramirez",
-   "dem_share_2p": 0.7583,
-   "pct_counted": 0.8068,
+   "dem_share_2p": 0.7584,
+   "pct_counted": 0.8072,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-04",
@@ -2331,10 +2331,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Patty Garcia",
-   "dem_share_2p": 0.8133,
-   "pct_counted": 0.822,
+   "dem_share_2p": 0.8135,
+   "pct_counted": 0.8231,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-05",
@@ -2342,10 +2342,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Mike Quigley",
-   "dem_share_2p": 0.7555,
-   "pct_counted": 0.9219,
+   "dem_share_2p": 0.7554,
+   "pct_counted": 0.9235,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-06",
@@ -2353,10 +2353,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Sean Casten",
-   "dem_share_2p": 0.6248,
-   "pct_counted": 0.9186,
+   "dem_share_2p": 0.625,
+   "pct_counted": 0.9212,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-07",
@@ -2364,10 +2364,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "La Shawn Ford",
-   "dem_share_2p": 0.8902,
-   "pct_counted": 0.7447,
+   "dem_share_2p": 0.8903,
+   "pct_counted": 0.746,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-08",
@@ -2375,10 +2375,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Melissa Bean",
-   "dem_share_2p": 0.6479,
-   "pct_counted": 0.7613,
+   "dem_share_2p": 0.6482,
+   "pct_counted": 0.763,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-09",
@@ -2386,10 +2386,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Daniel Biss",
-   "dem_share_2p": 0.7583,
-   "pct_counted": 0.9385,
+   "dem_share_2p": 0.7584,
+   "pct_counted": 0.9417,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-10",
@@ -2397,10 +2397,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Brad Schneider",
-   "dem_share_2p": 0.6964,
-   "pct_counted": 0.9484,
+   "dem_share_2p": 0.698,
+   "pct_counted": 0.9621,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-11",
@@ -2409,9 +2409,9 @@
    "winner_party": "D",
    "winner_name": "Bill Foster",
    "dem_share_2p": 0.6537,
-   "pct_counted": 0.8307,
+   "pct_counted": 0.8311,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-12",
@@ -2419,10 +2419,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Mike Bost",
-   "dem_share_2p": 0.3054,
-   "pct_counted": 0.9582,
+   "dem_share_2p": 0.3034,
+   "pct_counted": 0.9818,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-13",
@@ -2433,7 +2433,7 @@
    "dem_share_2p": 0.6263,
    "pct_counted": 0.9847,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-14",
@@ -2444,7 +2444,7 @@
    "dem_share_2p": 0.6253,
    "pct_counted": 0.9316,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-15",
@@ -2452,10 +2452,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Mary Miller",
-   "dem_share_2p": 0.336,
-   "pct_counted": 0.9435,
+   "dem_share_2p": 0.331,
+   "pct_counted": 0.9758,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-16",
@@ -2466,7 +2466,7 @@
    "dem_share_2p": 0.414,
    "pct_counted": 0.9287,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IL-17",
@@ -2474,10 +2474,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Eric Sorensen",
-   "dem_share_2p": 0.6002,
-   "pct_counted": 0.9236,
+   "dem_share_2p": 0.6011,
+   "pct_counted": 0.9503,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IN-01",
@@ -2488,7 +2488,7 @@
    "dem_share_2p": 0.6301,
    "pct_counted": 0.9605,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IN-02",
@@ -2499,7 +2499,7 @@
    "dem_share_2p": 0.4735,
    "pct_counted": 0.9714,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IN-03",
@@ -2510,7 +2510,7 @@
    "dem_share_2p": 0.4512,
    "pct_counted": 0.9831,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IN-04",
@@ -2518,10 +2518,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Jim Baird",
-   "dem_share_2p": 0.4583,
-   "pct_counted": 0.9676,
+   "dem_share_2p": 0.4579,
+   "pct_counted": 0.9892,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IN-05",
@@ -2532,7 +2532,7 @@
    "dem_share_2p": 0.5166,
    "pct_counted": 0.9898,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IN-06",
@@ -2540,10 +2540,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Jefferson Shreve",
-   "dem_share_2p": 0.4489,
-   "pct_counted": 0.984,
+   "dem_share_2p": 0.4491,
+   "pct_counted": 0.9852,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IN-07",
@@ -2551,10 +2551,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Andr\u00e9 Carson",
-   "dem_share_2p": 0.7919,
+   "dem_share_2p": 0.7904,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IN-08",
@@ -2563,9 +2563,9 @@
    "winner_party": "R",
    "winner_name": "Mark Messmer",
    "dem_share_2p": 0.4476,
-   "pct_counted": 0.9737,
+   "pct_counted": 0.9797,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "IN-09",
@@ -2576,7 +2576,7 @@
    "dem_share_2p": 0.446,
    "pct_counted": 0.9864,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "KS-01",
@@ -2584,10 +2584,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Tracey Mann",
-   "dem_share_2p": 0.3873,
-   "pct_counted": 0.9851,
+   "dem_share_2p": 0.3891,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "KS-02",
@@ -2595,10 +2595,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Derek Schmidt",
-   "dem_share_2p": 0.466,
-   "pct_counted": 0.9769,
+   "dem_share_2p": 0.4674,
+   "pct_counted": 0.9841,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "KS-03",
@@ -2606,10 +2606,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Sharice Davids",
-   "dem_share_2p": 0.608,
-   "pct_counted": 0.9848,
+   "dem_share_2p": 0.6079,
+   "pct_counted": 0.986,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "KS-04",
@@ -2617,10 +2617,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Ron Estes",
-   "dem_share_2p": 0.4506,
-   "pct_counted": 0.9851,
+   "dem_share_2p": 0.4513,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "KY-01",
@@ -2631,7 +2631,7 @@
    "dem_share_2p": 0.324,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "KY-02",
@@ -2642,7 +2642,7 @@
    "dem_share_2p": 0.3585,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "KY-03",
@@ -2653,7 +2653,7 @@
    "dem_share_2p": 0.7033,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "KY-04",
@@ -2664,7 +2664,7 @@
    "dem_share_2p": 0.4298,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "KY-05",
@@ -2675,7 +2675,7 @@
    "dem_share_2p": 0.2627,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "KY-06",
@@ -2686,7 +2686,7 @@
    "dem_share_2p": 0.5489,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "LA-01",
@@ -2694,10 +2694,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Steve Scalise",
-   "dem_share_2p": 0.3449,
+   "dem_share_2p": 0.3452,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "LA-02",
@@ -2708,7 +2708,7 @@
    "dem_share_2p": 0.8409,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "LA-03",
@@ -2719,7 +2719,7 @@
    "dem_share_2p": 0.3723,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "LA-04",
@@ -2730,7 +2730,7 @@
    "dem_share_2p": 0.3723,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "LA-05",
@@ -2741,7 +2741,7 @@
    "dem_share_2p": 0.3694,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "LA-06",
@@ -2752,7 +2752,7 @@
    "dem_share_2p": 0.4188,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MA-01",
@@ -2761,9 +2761,9 @@
    "winner_party": "D",
    "winner_name": "Richard Neal",
    "dem_share_2p": 0.6515,
-   "pct_counted": 0.9281,
+   "pct_counted": 0.9394,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MA-02",
@@ -2774,7 +2774,7 @@
    "dem_share_2p": null,
    "pct_counted": 0.0,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MA-03",
@@ -2782,10 +2782,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Lori Trahan",
-   "dem_share_2p": 0.6797,
-   "pct_counted": 0.916,
+   "dem_share_2p": 0.6799,
+   "pct_counted": 0.9167,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MA-04",
@@ -2794,9 +2794,9 @@
    "winner_party": "D",
    "winner_name": "Jake Auchincloss",
    "dem_share_2p": 0.6432,
-   "pct_counted": 0.861,
+   "pct_counted": 0.8621,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MA-05",
@@ -2807,7 +2807,7 @@
    "dem_share_2p": null,
    "pct_counted": 0.0,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MA-06",
@@ -2816,9 +2816,9 @@
    "winner_party": "D",
    "winner_name": "Dan Koh",
    "dem_share_2p": 0.6339,
-   "pct_counted": 0.9886,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MA-07",
@@ -2829,7 +2829,7 @@
    "dem_share_2p": null,
    "pct_counted": 0.0,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MA-08",
@@ -2838,9 +2838,9 @@
    "winner_party": "D",
    "winner_name": "Stephen Lynch",
    "dem_share_2p": 0.7207,
-   "pct_counted": 0.9761,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MA-09",
@@ -2849,9 +2849,9 @@
    "winner_party": "D",
    "winner_name": "Bill Keating",
    "dem_share_2p": 0.6113,
-   "pct_counted": 0.941,
+   "pct_counted": 0.9414,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MD-01",
@@ -2859,10 +2859,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Andy Harris",
-   "dem_share_2p": 0.4415,
-   "pct_counted": 0.8335,
+   "dem_share_2p": 0.4416,
+   "pct_counted": 0.83,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MD-02",
@@ -2871,9 +2871,9 @@
    "winner_party": "D",
    "winner_name": "Johnny Olszewski",
    "dem_share_2p": 0.6156,
-   "pct_counted": 0.7985,
+   "pct_counted": 0.7756,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MD-03",
@@ -2881,10 +2881,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Sarah Elfreth",
-   "dem_share_2p": 0.6541,
-   "pct_counted": 0.824,
+   "dem_share_2p": 0.6542,
+   "pct_counted": 0.8149,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MD-04",
@@ -2893,9 +2893,9 @@
    "winner_party": "D",
    "winner_name": "Glenn Ivey",
    "dem_share_2p": 0.9334,
-   "pct_counted": 0.7318,
+   "pct_counted": 0.7369,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MD-05",
@@ -2904,9 +2904,9 @@
    "winner_party": "D",
    "winner_name": "Adrian Boafo",
    "dem_share_2p": 0.6894,
-   "pct_counted": 0.8592,
+   "pct_counted": 0.812,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MD-06",
@@ -2915,9 +2915,9 @@
    "winner_party": "D",
    "winner_name": "April McClain Delaney",
    "dem_share_2p": 0.5793,
-   "pct_counted": 0.8079,
+   "pct_counted": 0.8204,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MD-07",
@@ -2925,10 +2925,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Kweisi Mfume",
-   "dem_share_2p": 0.8343,
-   "pct_counted": 0.6726,
+   "dem_share_2p": 0.8344,
+   "pct_counted": 0.6819,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MD-08",
@@ -2937,9 +2937,9 @@
    "winner_party": "D",
    "winner_name": "Jamie Raskin",
    "dem_share_2p": 0.8408,
-   "pct_counted": 0.8049,
+   "pct_counted": 0.7526,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "ME-01",
@@ -2948,9 +2948,9 @@
    "winner_party": "D",
    "winner_name": "Chellie Pingree",
    "dem_share_2p": 0.662,
-   "pct_counted": 0.956,
+   "pct_counted": 0.9037,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "ME-02",
@@ -2958,10 +2958,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4991,
-   "pct_counted": 0.8846,
+   "dem_share_2p": 0.4971,
+   "pct_counted": 0.9175,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-01",
@@ -2970,9 +2970,9 @@
    "winner_party": "R",
    "winner_name": "Jack Bergman",
    "dem_share_2p": 0.4512,
-   "pct_counted": 0.9681,
+   "pct_counted": 0.9699,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-02",
@@ -2980,10 +2980,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "John Moolenaar",
-   "dem_share_2p": 0.3757,
-   "pct_counted": 0.9772,
+   "dem_share_2p": 0.3755,
+   "pct_counted": 0.9368,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-03",
@@ -2992,9 +2992,9 @@
    "winner_party": "D",
    "winner_name": "Hillary Scholten",
    "dem_share_2p": 0.5798,
-   "pct_counted": 0.9821,
+   "pct_counted": 0.9895,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-04",
@@ -3003,9 +3003,9 @@
    "winner_party": "D",
    "winner_name": "Sean McCann",
    "dem_share_2p": 0.5092,
-   "pct_counted": 0.9666,
+   "pct_counted": 0.969,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-05",
@@ -3014,9 +3014,9 @@
    "winner_party": "R",
    "winner_name": "Tim Walberg",
    "dem_share_2p": 0.3951,
-   "pct_counted": 0.9514,
+   "pct_counted": 0.9397,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-06",
@@ -3025,9 +3025,9 @@
    "winner_party": "D",
    "winner_name": "Debbie Dingell",
    "dem_share_2p": 0.6895,
-   "pct_counted": 0.9445,
+   "pct_counted": 0.9473,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-07",
@@ -3036,9 +3036,9 @@
    "winner_party": "D",
    "winner_name": "William Lawrence",
    "dem_share_2p": 0.5168,
-   "pct_counted": 0.9733,
+   "pct_counted": 0.9793,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-08",
@@ -3046,10 +3046,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Kristen McDonald Rivet",
-   "dem_share_2p": 0.5697,
-   "pct_counted": 0.99,
+   "dem_share_2p": 0.5698,
+   "pct_counted": 0.9816,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-09",
@@ -3057,10 +3057,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Lisa McClain",
-   "dem_share_2p": 0.3568,
-   "pct_counted": 0.9718,
+   "dem_share_2p": 0.3565,
+   "pct_counted": 0.9789,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-10",
@@ -3071,7 +3071,7 @@
    "dem_share_2p": 0.5367,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-11",
@@ -3082,7 +3082,7 @@
    "dem_share_2p": 0.6229,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-12",
@@ -3091,9 +3091,9 @@
    "winner_party": "D",
    "winner_name": "Rashida Tlaib",
    "dem_share_2p": 0.7819,
-   "pct_counted": 0.99,
+   "pct_counted": 0.9846,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MI-13",
@@ -3104,7 +3104,7 @@
    "dem_share_2p": 0.7939,
    "pct_counted": 0.6944,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MN-01",
@@ -3115,7 +3115,7 @@
    "dem_share_2p": 0.5005,
    "pct_counted": 0.9879,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MN-02",
@@ -3126,7 +3126,7 @@
    "dem_share_2p": 0.5715,
    "pct_counted": 0.9893,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MN-03",
@@ -3137,7 +3137,7 @@
    "dem_share_2p": 0.6411,
    "pct_counted": 0.9868,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MN-04",
@@ -3148,7 +3148,7 @@
    "dem_share_2p": 0.7318,
    "pct_counted": 0.9863,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MN-05",
@@ -3156,10 +3156,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Ilhan Omar",
-   "dem_share_2p": 0.825,
-   "pct_counted": 0.99,
+   "dem_share_2p": 0.8249,
+   "pct_counted": 0.9897,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MN-06",
@@ -3170,7 +3170,7 @@
    "dem_share_2p": 0.4421,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MN-07",
@@ -3181,7 +3181,7 @@
    "dem_share_2p": 0.3506,
    "pct_counted": 0.9875,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MN-08",
@@ -3192,7 +3192,7 @@
    "dem_share_2p": 0.4688,
    "pct_counted": 0.9881,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MO-01",
@@ -3203,7 +3203,7 @@
    "dem_share_2p": 0.8539,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MO-02",
@@ -3214,7 +3214,7 @@
    "dem_share_2p": 0.5253,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MO-03",
@@ -3225,7 +3225,7 @@
    "dem_share_2p": 0.4563,
    "pct_counted": 0.9885,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MO-04",
@@ -3236,7 +3236,7 @@
    "dem_share_2p": 0.3694,
    "pct_counted": 0.9692,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MO-05",
@@ -3247,7 +3247,7 @@
    "dem_share_2p": 0.7118,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MO-06",
@@ -3258,7 +3258,7 @@
    "dem_share_2p": 0.3991,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MO-07",
@@ -3269,7 +3269,7 @@
    "dem_share_2p": 0.3627,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MO-08",
@@ -3280,7 +3280,7 @@
    "dem_share_2p": 0.301,
    "pct_counted": 0.983,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MS-01",
@@ -3288,10 +3288,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Trent Kelly",
-   "dem_share_2p": 0.4046,
-   "pct_counted": 0.9601,
+   "dem_share_2p": 0.4082,
+   "pct_counted": 0.9572,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MS-02",
@@ -3299,10 +3299,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Bennie Thompson",
-   "dem_share_2p": 0.6923,
-   "pct_counted": 0.9484,
+   "dem_share_2p": 0.6926,
+   "pct_counted": 0.9499,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MS-03",
@@ -3311,9 +3311,9 @@
    "winner_party": "R",
    "winner_name": "Michael Guest",
    "dem_share_2p": 0.4151,
-   "pct_counted": 0.9512,
+   "pct_counted": 0.9506,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MS-04",
@@ -3322,9 +3322,9 @@
    "winner_party": "R",
    "winner_name": "Mike Ezell",
    "dem_share_2p": 0.3696,
-   "pct_counted": 0.9636,
+   "pct_counted": 0.9653,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MT-01",
@@ -3332,10 +3332,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5138,
-   "pct_counted": 0.8999,
+   "dem_share_2p": 0.5145,
+   "pct_counted": 0.9452,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "MT-02",
@@ -3344,9 +3344,9 @@
    "winner_party": "R",
    "winner_name": "Troy Downing",
    "dem_share_2p": 0.3563,
-   "pct_counted": 0.9655,
+   "pct_counted": 0.9702,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-01",
@@ -3355,9 +3355,9 @@
    "winner_party": null,
    "winner_name": null,
    "dem_share_2p": 0.517,
-   "pct_counted": 0.9881,
+   "pct_counted": 0.9868,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-02",
@@ -3368,7 +3368,7 @@
    "dem_share_2p": 0.7617,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-03",
@@ -3377,9 +3377,9 @@
    "winner_party": null,
    "winner_name": null,
    "dem_share_2p": 0.4995,
-   "pct_counted": 0.99,
+   "pct_counted": 0.988,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-04",
@@ -3388,9 +3388,9 @@
    "winner_party": "D",
    "winner_name": "Valerie Foushee",
    "dem_share_2p": 0.8069,
-   "pct_counted": 0.99,
+   "pct_counted": 0.989,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-05",
@@ -3401,7 +3401,7 @@
    "dem_share_2p": 0.5002,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-06",
@@ -3412,7 +3412,7 @@
    "dem_share_2p": 0.5114,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-07",
@@ -3423,7 +3423,7 @@
    "dem_share_2p": 0.4962,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-08",
@@ -3432,9 +3432,9 @@
    "winner_party": null,
    "winner_name": null,
    "dem_share_2p": 0.491,
-   "pct_counted": 0.99,
+   "pct_counted": 0.9897,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-09",
@@ -3445,7 +3445,7 @@
    "dem_share_2p": 0.5111,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-10",
@@ -3456,7 +3456,7 @@
    "dem_share_2p": 0.4948,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-11",
@@ -3467,7 +3467,7 @@
    "dem_share_2p": 0.5804,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-12",
@@ -3478,7 +3478,7 @@
    "dem_share_2p": 0.812,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-13",
@@ -3489,7 +3489,7 @@
    "dem_share_2p": 0.5122,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NC-14",
@@ -3500,7 +3500,7 @@
    "dem_share_2p": 0.5111,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "ND-AL",
@@ -3511,18 +3511,18 @@
    "dem_share_2p": 0.3898,
    "pct_counted": 0.9725,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NE-01",
    "office": "house",
-   "called": false,
-   "winner_party": null,
-   "winner_name": null,
+   "called": true,
+   "winner_party": "R",
+   "winner_name": "Mike Flood",
    "dem_share_2p": 0.4787,
-   "pct_counted": 0.9184,
+   "pct_counted": 0.922,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NE-02",
@@ -3531,9 +3531,9 @@
    "winner_party": "D",
    "winner_name": "Denise Powell",
    "dem_share_2p": 0.5789,
-   "pct_counted": 0.8733,
+   "pct_counted": 0.921,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NE-03",
@@ -3541,10 +3541,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Adrian Smith",
-   "dem_share_2p": 0.22,
-   "pct_counted": 0.9594,
+   "dem_share_2p": 0.2199,
+   "pct_counted": 0.9835,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NH-01",
@@ -3552,10 +3552,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Stefany Shaheen",
-   "dem_share_2p": 0.5717,
-   "pct_counted": 0.9557,
+   "dem_share_2p": 0.5728,
+   "pct_counted": 0.9584,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NH-02",
@@ -3563,10 +3563,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Maggie Goodlander",
-   "dem_share_2p": 0.6057,
-   "pct_counted": 0.8802,
+   "dem_share_2p": 0.6029,
+   "pct_counted": 0.9155,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-01",
@@ -3574,10 +3574,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Donald Norcross",
-   "dem_share_2p": 0.7022,
-   "pct_counted": 0.9269,
+   "dem_share_2p": 0.7016,
+   "pct_counted": 0.9316,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-02",
@@ -3585,10 +3585,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5132,
-   "pct_counted": 0.9537,
+   "dem_share_2p": 0.5133,
+   "pct_counted": 0.9545,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-03",
@@ -3596,10 +3596,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Herb Conaway",
-   "dem_share_2p": 0.6365,
-   "pct_counted": 0.9309,
+   "dem_share_2p": 0.637,
+   "pct_counted": 0.9336,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-04",
@@ -3610,7 +3610,7 @@
    "dem_share_2p": 0.4088,
    "pct_counted": 0.9657,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-05",
@@ -3621,7 +3621,7 @@
    "dem_share_2p": 0.6428,
    "pct_counted": 0.9606,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-06",
@@ -3632,7 +3632,7 @@
    "dem_share_2p": 0.6905,
    "pct_counted": 0.9474,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-07",
@@ -3641,9 +3641,9 @@
    "winner_party": "D",
    "winner_name": "Rebecca Bennett",
    "dem_share_2p": 0.5799,
-   "pct_counted": 0.9431,
+   "pct_counted": 0.9455,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-08",
@@ -3651,10 +3651,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Rob Menendez",
-   "dem_share_2p": 0.9547,
-   "pct_counted": 0.7984,
+   "dem_share_2p": 0.9543,
+   "pct_counted": 0.8097,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-09",
@@ -3665,7 +3665,7 @@
    "dem_share_2p": 0.6772,
    "pct_counted": 0.9433,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-10",
@@ -3673,10 +3673,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "LaMonica McIver",
-   "dem_share_2p": 0.8436,
-   "pct_counted": 0.8891,
+   "dem_share_2p": 0.8439,
+   "pct_counted": 0.8933,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-11",
@@ -3687,7 +3687,7 @@
    "dem_share_2p": 0.6071,
    "pct_counted": 0.9244,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NJ-12",
@@ -3698,7 +3698,7 @@
    "dem_share_2p": 0.7125,
    "pct_counted": 0.9308,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NM-01",
@@ -3709,7 +3709,7 @@
    "dem_share_2p": 0.6354,
    "pct_counted": 0.9794,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NM-02",
@@ -3720,7 +3720,7 @@
    "dem_share_2p": 0.5869,
    "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NM-03",
@@ -3731,7 +3731,7 @@
    "dem_share_2p": 0.6149,
    "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NV-01",
@@ -3740,9 +3740,9 @@
    "winner_party": "D",
    "winner_name": "Dina Titus",
    "dem_share_2p": 0.6082,
-   "pct_counted": 0.8818,
+   "pct_counted": 0.85,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NV-02",
@@ -3750,10 +3750,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5348,
-   "pct_counted": 0.8886,
+   "dem_share_2p": 0.5303,
+   "pct_counted": 0.9148,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NV-03",
@@ -3762,9 +3762,9 @@
    "winner_party": "D",
    "winner_name": "Susie Lee",
    "dem_share_2p": 0.6051,
-   "pct_counted": 0.8552,
+   "pct_counted": 0.85,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NV-04",
@@ -3772,10 +3772,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Steven Horsford",
-   "dem_share_2p": 0.6164,
-   "pct_counted": 0.8696,
+   "dem_share_2p": 0.6163,
+   "pct_counted": 0.8398,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-01",
@@ -3786,7 +3786,7 @@
    "dem_share_2p": 0.4888,
    "pct_counted": 0.97,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-02",
@@ -3797,7 +3797,7 @@
    "dem_share_2p": 0.484,
    "pct_counted": 0.9714,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-03",
@@ -3808,7 +3808,7 @@
    "dem_share_2p": 0.5493,
    "pct_counted": 0.9701,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-04",
@@ -3819,7 +3819,7 @@
    "dem_share_2p": 0.5632,
    "pct_counted": 0.97,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-05",
@@ -3830,7 +3830,7 @@
    "dem_share_2p": 0.807,
    "pct_counted": 0.9113,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-06",
@@ -3841,7 +3841,7 @@
    "dem_share_2p": 0.6917,
    "pct_counted": 0.8719,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-07",
@@ -3850,9 +3850,9 @@
    "winner_party": "D",
    "winner_name": "Claire Valdez",
    "dem_share_2p": 0.8473,
-   "pct_counted": 0.8495,
+   "pct_counted": 0.974,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-08",
@@ -3861,9 +3861,9 @@
    "winner_party": "D",
    "winner_name": "Hakeem Jeffries",
    "dem_share_2p": 0.8004,
-   "pct_counted": 0.8728,
+   "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-09",
@@ -3872,9 +3872,9 @@
    "winner_party": "D",
    "winner_name": "Yvette Clarke",
    "dem_share_2p": 0.8283,
-   "pct_counted": 0.9556,
+   "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-10",
@@ -3883,9 +3883,9 @@
    "winner_party": "D",
    "winner_name": "Brad Lander",
    "dem_share_2p": 0.8398,
-   "pct_counted": 0.909,
+   "pct_counted": 0.9191,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-11",
@@ -3894,9 +3894,9 @@
    "winner_party": "R",
    "winner_name": "Nicole Malliotakis",
    "dem_share_2p": 0.4383,
-   "pct_counted": 0.943,
+   "pct_counted": 0.9677,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-12",
@@ -3907,7 +3907,7 @@
    "dem_share_2p": 0.7941,
    "pct_counted": 0.8811,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-13",
@@ -3918,7 +3918,7 @@
    "dem_share_2p": 0.8851,
    "pct_counted": 0.7977,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-14",
@@ -3929,7 +3929,7 @@
    "dem_share_2p": 0.7841,
    "pct_counted": 0.9559,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-15",
@@ -3940,7 +3940,7 @@
    "dem_share_2p": 0.8783,
    "pct_counted": 0.938,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-16",
@@ -3948,10 +3948,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "George Latimer",
-   "dem_share_2p": 0.8229,
-   "pct_counted": 0.3208,
+   "dem_share_2p": 0.8197,
+   "pct_counted": 0.346,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-17",
@@ -3959,10 +3959,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.5222,
-   "pct_counted": 0.6146,
+   "dem_share_2p": 0.5217,
+   "pct_counted": 0.841,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-18",
@@ -3970,10 +3970,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Pat Ryan",
-   "dem_share_2p": 0.6292,
-   "pct_counted": 0.8954,
+   "dem_share_2p": 0.6291,
+   "pct_counted": 0.889,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-19",
@@ -3981,10 +3981,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Josh Riley",
-   "dem_share_2p": 0.5728,
-   "pct_counted": 0.9615,
+   "dem_share_2p": 0.5733,
+   "pct_counted": 0.9699,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-20",
@@ -3992,10 +3992,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Paul Tonko",
-   "dem_share_2p": 0.6354,
-   "pct_counted": 0.9571,
+   "dem_share_2p": 0.6358,
+   "pct_counted": 0.9598,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-21",
@@ -4003,10 +4003,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4894,
-   "pct_counted": 0.8144,
+   "dem_share_2p": 0.4896,
+   "pct_counted": 0.9563,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-22",
@@ -4015,9 +4015,9 @@
    "winner_party": "D",
    "winner_name": "John Mannion",
    "dem_share_2p": 0.5838,
-   "pct_counted": 0.7282,
+   "pct_counted": 0.939,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-23",
@@ -4028,7 +4028,7 @@
    "dem_share_2p": 0.3971,
    "pct_counted": 0.9728,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-24",
@@ -4037,9 +4037,9 @@
    "winner_party": "R",
    "winner_name": "Claudia Tenney",
    "dem_share_2p": 0.3957,
-   "pct_counted": 0.9587,
+   "pct_counted": 0.9596,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-25",
@@ -4047,10 +4047,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Joseph Morelle",
-   "dem_share_2p": 0.6303,
-   "pct_counted": 0.9797,
+   "dem_share_2p": 0.6304,
+   "pct_counted": 0.9801,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "NY-26",
@@ -4061,7 +4061,7 @@
    "dem_share_2p": 0.6552,
    "pct_counted": 0.8365,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-01",
@@ -4072,7 +4072,7 @@
    "dem_share_2p": 0.5588,
    "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-02",
@@ -4083,7 +4083,7 @@
    "dem_share_2p": 0.3576,
    "pct_counted": 0.9803,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-03",
@@ -4094,7 +4094,7 @@
    "dem_share_2p": 0.7722,
    "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-04",
@@ -4105,7 +4105,7 @@
    "dem_share_2p": 0.3264,
    "pct_counted": 0.981,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-05",
@@ -4116,7 +4116,7 @@
    "dem_share_2p": 0.4396,
    "pct_counted": 0.9815,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-06",
@@ -4127,7 +4127,7 @@
    "dem_share_2p": 0.396,
    "pct_counted": 0.9806,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-07",
@@ -4138,7 +4138,7 @@
    "dem_share_2p": 0.5493,
    "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-08",
@@ -4149,7 +4149,7 @@
    "dem_share_2p": 0.4786,
    "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-09",
@@ -4160,7 +4160,7 @@
    "dem_share_2p": 0.5273,
    "pct_counted": 0.9807,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-10",
@@ -4171,7 +4171,7 @@
    "dem_share_2p": 0.5084,
    "pct_counted": 0.978,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-11",
@@ -4182,7 +4182,7 @@
    "dem_share_2p": 0.8353,
    "pct_counted": 0.98,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-12",
@@ -4193,7 +4193,7 @@
    "dem_share_2p": 0.4061,
    "pct_counted": 0.9801,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-13",
@@ -4204,7 +4204,7 @@
    "dem_share_2p": 0.6096,
    "pct_counted": 0.9786,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-14",
@@ -4215,7 +4215,7 @@
    "dem_share_2p": 0.4497,
    "pct_counted": 0.9809,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OH-15",
@@ -4226,7 +4226,7 @@
    "dem_share_2p": 0.5341,
    "pct_counted": 0.9798,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OK-01",
@@ -4237,7 +4237,7 @@
    "dem_share_2p": 0.4768,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OK-02",
@@ -4248,7 +4248,7 @@
    "dem_share_2p": 0.2989,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OK-03",
@@ -4259,7 +4259,7 @@
    "dem_share_2p": 0.3603,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OK-04",
@@ -4268,20 +4268,20 @@
    "winner_party": "R",
    "winner_name": "Tom Cole",
    "dem_share_2p": 0.4066,
-   "pct_counted": 0.9803,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OK-05",
    "office": "house",
-   "called": false,
-   "winner_party": null,
-   "winner_name": null,
+   "called": true,
+   "winner_party": "R",
+   "winner_name": "Stephanie Bice",
    "dem_share_2p": 0.4935,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OR-01",
@@ -4289,10 +4289,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Suzanne Bonamici",
-   "dem_share_2p": 0.6967,
-   "pct_counted": 0.683,
+   "dem_share_2p": 0.6998,
+   "pct_counted": 0.7387,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OR-02",
@@ -4303,7 +4303,7 @@
    "dem_share_2p": 0.384,
    "pct_counted": 0.9257,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OR-03",
@@ -4311,10 +4311,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Maxine Dexter",
-   "dem_share_2p": 0.7629,
-   "pct_counted": 0.6554,
+   "dem_share_2p": 0.7671,
+   "pct_counted": 0.6999,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OR-04",
@@ -4322,10 +4322,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Val Hoyle",
-   "dem_share_2p": 0.5576,
-   "pct_counted": 0.8229,
+   "dem_share_2p": 0.557,
+   "pct_counted": 0.832,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OR-05",
@@ -4333,10 +4333,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Janelle Bynum",
-   "dem_share_2p": 0.5527,
-   "pct_counted": 0.7976,
+   "dem_share_2p": 0.5535,
+   "pct_counted": 0.8,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "OR-06",
@@ -4344,10 +4344,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Andrea Salinas",
-   "dem_share_2p": 0.5798,
-   "pct_counted": 0.6309,
+   "dem_share_2p": 0.5808,
+   "pct_counted": 0.6689,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-01",
@@ -4356,9 +4356,9 @@
    "winner_party": "D",
    "winner_name": "Bob Harvie",
    "dem_share_2p": 0.5274,
-   "pct_counted": 0.9843,
+   "pct_counted": 0.9847,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-02",
@@ -4366,10 +4366,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Brendan Boyle",
-   "dem_share_2p": 0.8073,
-   "pct_counted": 0.9786,
+   "dem_share_2p": 0.8078,
+   "pct_counted": 0.9856,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-03",
@@ -4377,10 +4377,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Chris Rabb",
-   "dem_share_2p": 0.936,
-   "pct_counted": 0.9769,
+   "dem_share_2p": 0.9359,
+   "pct_counted": 0.979,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-04",
@@ -4391,7 +4391,7 @@
    "dem_share_2p": 0.671,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-05",
@@ -4402,7 +4402,7 @@
    "dem_share_2p": 0.7207,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-06",
@@ -4413,7 +4413,7 @@
    "dem_share_2p": 0.6431,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-07",
@@ -4422,9 +4422,9 @@
    "winner_party": "D",
    "winner_name": "Bob Brooks",
    "dem_share_2p": 0.561,
-   "pct_counted": 0.9812,
+   "pct_counted": 0.9886,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-08",
@@ -4435,7 +4435,7 @@
    "dem_share_2p": 0.5436,
    "pct_counted": 0.9819,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-09",
@@ -4443,10 +4443,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Dan Meuser",
-   "dem_share_2p": 0.3828,
-   "pct_counted": 0.9706,
+   "dem_share_2p": 0.3843,
+   "pct_counted": 0.9757,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-10",
@@ -4457,7 +4457,7 @@
    "dem_share_2p": 0.5503,
    "pct_counted": 0.9893,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-11",
@@ -4468,7 +4468,7 @@
    "dem_share_2p": 0.4444,
    "pct_counted": 0.9862,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-12",
@@ -4479,7 +4479,7 @@
    "dem_share_2p": 0.6539,
    "pct_counted": 0.987,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-13",
@@ -4487,10 +4487,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "John Joyce",
-   "dem_share_2p": 0.3243,
+   "dem_share_2p": 0.3246,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-14",
@@ -4501,7 +4501,7 @@
    "dem_share_2p": 0.4243,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-15",
@@ -4509,10 +4509,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Glenn Thompson",
-   "dem_share_2p": 0.3607,
+   "dem_share_2p": 0.3608,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-16",
@@ -4523,7 +4523,7 @@
    "dem_share_2p": 0.4606,
    "pct_counted": 0.9808,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "PA-17",
@@ -4534,7 +4534,7 @@
    "dem_share_2p": 0.6282,
    "pct_counted": 0.9898,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "RI-01",
@@ -4542,10 +4542,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Gabe Amo",
-   "dem_share_2p": 0.7124,
-   "pct_counted": 0.9778,
+   "dem_share_2p": 0.7137,
+   "pct_counted": 0.9831,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "RI-02",
@@ -4553,10 +4553,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Seth Magaziner",
-   "dem_share_2p": 0.6196,
-   "pct_counted": 0.9719,
+   "dem_share_2p": 0.6208,
+   "pct_counted": 0.9776,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "SC-01",
@@ -4567,7 +4567,7 @@
    "dem_share_2p": 0.5052,
    "pct_counted": 0.9891,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "SC-02",
@@ -4578,7 +4578,7 @@
    "dem_share_2p": 0.4948,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "SC-03",
@@ -4589,7 +4589,7 @@
    "dem_share_2p": 0.3506,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "SC-04",
@@ -4600,7 +4600,7 @@
    "dem_share_2p": 0.4688,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "SC-05",
@@ -4611,7 +4611,7 @@
    "dem_share_2p": 0.4714,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "SC-06",
@@ -4622,7 +4622,7 @@
    "dem_share_2p": 0.6943,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "SC-07",
@@ -4633,7 +4633,7 @@
    "dem_share_2p": 0.4325,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "SD-AL",
@@ -4644,7 +4644,7 @@
    "dem_share_2p": 0.3599,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TN-01",
@@ -4655,7 +4655,7 @@
    "dem_share_2p": 0.3041,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TN-02",
@@ -4666,7 +4666,7 @@
    "dem_share_2p": 0.4162,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TN-03",
@@ -4677,7 +4677,7 @@
    "dem_share_2p": 0.4112,
    "pct_counted": 0.9825,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TN-04",
@@ -4688,7 +4688,7 @@
    "dem_share_2p": 0.5007,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TN-05",
@@ -4699,7 +4699,7 @@
    "dem_share_2p": 0.4749,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TN-06",
@@ -4710,7 +4710,7 @@
    "dem_share_2p": 0.4834,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TN-07",
@@ -4721,7 +4721,7 @@
    "dem_share_2p": 0.489,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TN-08",
@@ -4732,7 +4732,7 @@
    "dem_share_2p": 0.4731,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TN-09",
@@ -4740,10 +4740,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4942,
+   "dem_share_2p": 0.4943,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-01",
@@ -4754,18 +4754,18 @@
    "dem_share_2p": 0.3096,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-02",
    "office": "house",
-   "called": false,
-   "winner_party": null,
-   "winner_name": null,
+   "called": true,
+   "winner_party": "R",
+   "winner_name": "Steve Toth",
    "dem_share_2p": 0.4902,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-03",
@@ -4776,7 +4776,7 @@
    "dem_share_2p": 0.4726,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-04",
@@ -4787,18 +4787,18 @@
    "dem_share_2p": 0.4394,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-05",
    "office": "house",
-   "called": false,
-   "winner_party": null,
-   "winner_name": null,
+   "called": true,
+   "winner_party": "R",
+   "winner_name": "Lance Gooden",
    "dem_share_2p": 0.4853,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-06",
@@ -4809,7 +4809,7 @@
    "dem_share_2p": 0.4783,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-07",
@@ -4820,7 +4820,7 @@
    "dem_share_2p": 0.72,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-08",
@@ -4831,7 +4831,7 @@
    "dem_share_2p": 0.4679,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-09",
@@ -4842,7 +4842,7 @@
    "dem_share_2p": 0.5755,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-10",
@@ -4853,7 +4853,7 @@
    "dem_share_2p": 0.4624,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-11",
@@ -4862,9 +4862,9 @@
    "winner_party": "R",
    "winner_name": "August Pfluger",
    "dem_share_2p": 0.405,
-   "pct_counted": 0.986,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-12",
@@ -4875,7 +4875,7 @@
    "dem_share_2p": 0.4688,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-13",
@@ -4886,7 +4886,7 @@
    "dem_share_2p": 0.3474,
    "pct_counted": 0.9888,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-14",
@@ -4897,7 +4897,7 @@
    "dem_share_2p": 0.4598,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-15",
@@ -4908,7 +4908,7 @@
    "dem_share_2p": 0.6232,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-16",
@@ -4919,7 +4919,7 @@
    "dem_share_2p": 0.7076,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-17",
@@ -4928,9 +4928,9 @@
    "winner_party": "R",
    "winner_name": "Pete Sessions",
    "dem_share_2p": 0.4645,
-   "pct_counted": 0.9386,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-18",
@@ -4941,7 +4941,7 @@
    "dem_share_2p": 0.8604,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-19",
@@ -4952,7 +4952,7 @@
    "dem_share_2p": 0.3052,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-20",
@@ -4963,7 +4963,7 @@
    "dem_share_2p": 0.7761,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-21",
@@ -4974,18 +4974,18 @@
    "dem_share_2p": 0.4548,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-22",
    "office": "house",
-   "called": false,
-   "winner_party": null,
-   "winner_name": null,
+   "called": true,
+   "winner_party": "R",
+   "winner_name": "Trever Nehls",
    "dem_share_2p": 0.4818,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-23",
@@ -4996,7 +4996,7 @@
    "dem_share_2p": 0.5425,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-24",
@@ -5007,7 +5007,7 @@
    "dem_share_2p": 0.4657,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-25",
@@ -5018,7 +5018,7 @@
    "dem_share_2p": 0.4626,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-26",
@@ -5029,18 +5029,18 @@
    "dem_share_2p": 0.4475,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-27",
    "office": "house",
-   "called": false,
-   "winner_party": null,
-   "winner_name": null,
+   "called": true,
+   "winner_party": "R",
+   "winner_name": "Michael Cloud",
    "dem_share_2p": 0.4884,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-28",
@@ -5051,7 +5051,7 @@
    "dem_share_2p": 0.6894,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-29",
@@ -5062,7 +5062,7 @@
    "dem_share_2p": 0.7994,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-30",
@@ -5073,7 +5073,7 @@
    "dem_share_2p": 0.8264,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-31",
@@ -5082,20 +5082,20 @@
    "winner_party": "R",
    "winner_name": "John Carter",
    "dem_share_2p": 0.4546,
-   "pct_counted": 0.98,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-32",
    "office": "house",
-   "called": false,
-   "winner_party": null,
-   "winner_name": null,
+   "called": true,
+   "winner_party": "R",
+   "winner_name": "Jace Yarbrough",
    "dem_share_2p": 0.4855,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-33",
@@ -5106,7 +5106,7 @@
    "dem_share_2p": 0.7857,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-34",
@@ -5117,7 +5117,7 @@
    "dem_share_2p": 0.583,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-35",
@@ -5126,9 +5126,9 @@
    "winner_party": "D",
    "winner_name": "Johnny Garcia",
    "dem_share_2p": 0.5543,
-   "pct_counted": 0.9721,
+   "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-36",
@@ -5139,7 +5139,7 @@
    "dem_share_2p": 0.4644,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-37",
@@ -5150,18 +5150,18 @@
    "dem_share_2p": 0.8375,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "TX-38",
    "office": "house",
-   "called": false,
-   "winner_party": null,
-   "winner_name": null,
+   "called": true,
+   "winner_party": "R",
+   "winner_name": "Jon Bonck",
    "dem_share_2p": 0.4787,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "UT-01",
@@ -5172,7 +5172,7 @@
    "dem_share_2p": 0.743,
    "pct_counted": 0.5995,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "UT-02",
@@ -5180,10 +5180,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4645,
-   "pct_counted": 0.6782,
+   "dem_share_2p": 0.4607,
+   "pct_counted": 0.7293,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "UT-03",
@@ -5191,10 +5191,10 @@
    "called": true,
    "winner_party": "R",
    "winner_name": "Celeste Maloy",
-   "dem_share_2p": 0.3794,
-   "pct_counted": 0.5616,
+   "dem_share_2p": 0.3787,
+   "pct_counted": 0.6063,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "UT-04",
@@ -5202,10 +5202,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4449,
-   "pct_counted": 0.5646,
+   "dem_share_2p": 0.4364,
+   "pct_counted": 0.6046,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-01",
@@ -5216,7 +5216,7 @@
    "dem_share_2p": 0.5116,
    "pct_counted": 0.9849,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-02",
@@ -5224,10 +5224,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Elaine Luria",
-   "dem_share_2p": 0.5435,
+   "dem_share_2p": 0.5436,
    "pct_counted": 0.9766,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-03",
@@ -5235,10 +5235,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Bobby Scott",
-   "dem_share_2p": 0.7512,
-   "pct_counted": 0.976,
+   "dem_share_2p": 0.7511,
+   "pct_counted": 0.9764,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-04",
@@ -5249,7 +5249,7 @@
    "dem_share_2p": 0.7331,
    "pct_counted": 0.9766,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-05",
@@ -5257,10 +5257,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4886,
-   "pct_counted": 0.9775,
+   "dem_share_2p": 0.4889,
+   "pct_counted": 0.9783,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-06",
@@ -5269,9 +5269,9 @@
    "winner_party": "R",
    "winner_name": "Ben Cline",
    "dem_share_2p": 0.4437,
-   "pct_counted": 0.9812,
+   "pct_counted": 0.9823,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-07",
@@ -5282,7 +5282,7 @@
    "dem_share_2p": 0.6126,
    "pct_counted": 0.979,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-08",
@@ -5291,9 +5291,9 @@
    "winner_party": "D",
    "winner_name": "Don Beyer",
    "dem_share_2p": 0.815,
-   "pct_counted": 0.9516,
+   "pct_counted": 0.9527,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-09",
@@ -5302,9 +5302,9 @@
    "winner_party": "R",
    "winner_name": "Morgan Griffith",
    "dem_share_2p": 0.3391,
-   "pct_counted": 0.9801,
+   "pct_counted": 0.9812,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-10",
@@ -5313,9 +5313,9 @@
    "winner_party": "D",
    "winner_name": "Suhas Subramanyam",
    "dem_share_2p": 0.6263,
-   "pct_counted": 0.9574,
+   "pct_counted": 0.9739,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VA-11",
@@ -5323,10 +5323,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "James Walkinshaw",
-   "dem_share_2p": 0.7487,
-   "pct_counted": 0.9122,
+   "dem_share_2p": 0.7524,
+   "pct_counted": 0.957,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "VT-AL",
@@ -5337,7 +5337,7 @@
    "dem_share_2p": 0.6788,
    "pct_counted": 0.9899,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WA-01",
@@ -5345,10 +5345,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Suzan DelBene",
-   "dem_share_2p": 0.6814,
-   "pct_counted": 0.5671,
+   "dem_share_2p": 0.6803,
+   "pct_counted": 0.6399,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WA-02",
@@ -5356,10 +5356,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Rick Larsen",
-   "dem_share_2p": 0.6815,
-   "pct_counted": 0.6406,
+   "dem_share_2p": 0.679,
+   "pct_counted": 0.7404,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WA-03",
@@ -5367,10 +5367,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Marie Gluesenkamp Perez",
-   "dem_share_2p": 0.5544,
-   "pct_counted": 0.6671,
+   "dem_share_2p": 0.5474,
+   "pct_counted": 0.7398,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WA-04",
@@ -5378,10 +5378,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4577,
-   "pct_counted": 0.5775,
+   "dem_share_2p": 0.4563,
+   "pct_counted": 0.6236,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WA-05",
@@ -5389,10 +5389,10 @@
    "called": false,
    "winner_party": null,
    "winner_name": null,
-   "dem_share_2p": 0.4951,
-   "pct_counted": 0.574,
+   "dem_share_2p": 0.4941,
+   "pct_counted": 0.6154,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WA-06",
@@ -5400,10 +5400,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Emily Randall",
-   "dem_share_2p": 0.6479,
-   "pct_counted": 0.6952,
+   "dem_share_2p": 0.6454,
+   "pct_counted": 0.7605,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WA-07",
@@ -5411,10 +5411,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Pramila Jayapal",
-   "dem_share_2p": 0.8782,
-   "pct_counted": 0.5345,
+   "dem_share_2p": 0.8795,
+   "pct_counted": 0.6035,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WA-08",
@@ -5422,10 +5422,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Kim Schrier",
-   "dem_share_2p": 0.5762,
-   "pct_counted": 0.6034,
+   "dem_share_2p": 0.5698,
+   "pct_counted": 0.6739,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WA-09",
@@ -5433,10 +5433,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Adam Smith",
-   "dem_share_2p": 0.7562,
-   "pct_counted": 0.5465,
+   "dem_share_2p": 0.7575,
+   "pct_counted": 0.6149,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WA-10",
@@ -5444,10 +5444,10 @@
    "called": true,
    "winner_party": "D",
    "winner_name": "Marilyn Strickland",
-   "dem_share_2p": 0.6474,
-   "pct_counted": 0.615,
+   "dem_share_2p": 0.6419,
+   "pct_counted": 0.6967,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WI-01",
@@ -5458,7 +5458,7 @@
    "dem_share_2p": 0.5195,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WI-02",
@@ -5469,7 +5469,7 @@
    "dem_share_2p": null,
    "pct_counted": 0.8818,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WI-03",
@@ -5480,7 +5480,7 @@
    "dem_share_2p": 0.5338,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WI-04",
@@ -5491,7 +5491,7 @@
    "dem_share_2p": 0.8207,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WI-05",
@@ -5502,7 +5502,7 @@
    "dem_share_2p": 0.4095,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WI-06",
@@ -5513,7 +5513,7 @@
    "dem_share_2p": 0.4509,
    "pct_counted": 0.9779,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WI-07",
@@ -5524,7 +5524,7 @@
    "dem_share_2p": 0.4392,
    "pct_counted": 0.9632,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WI-08",
@@ -5535,7 +5535,7 @@
    "dem_share_2p": 0.4608,
    "pct_counted": 0.9898,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WV-01",
@@ -5546,7 +5546,7 @@
    "dem_share_2p": 0.4095,
    "pct_counted": 0.99,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WV-02",
@@ -5557,7 +5557,7 @@
    "dem_share_2p": 0.4059,
    "pct_counted": 0.9879,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   },
   {
    "id": "WY-AL",
@@ -5568,7 +5568,7 @@
    "dem_share_2p": 0.3818,
    "pct_counted": 0.9659,
    "source": "https://interactives.apelections.org/election-results/data-live/2026-11-03/results/national/progress.json",
-   "pulled_at": "2026-11-04T19:42:55Z"
+   "pulled_at": "2026-11-05T01:44:21Z"
   }
  ],
  "chambers": {
@@ -5580,8 +5580,8 @@
    "complete": false
   },
   "house": {
-   "dem_seats": 232,
-   "rep_seats": 138,
+   "dem_seats": 234,
+   "rep_seats": 146,
    "ind_seats": 0,
    "control": "D",
    "complete": false
@@ -5652,12 +5652,12 @@
  },
  "score": {
   "all": {
-   "called": 434,
-   "favourites_won": 412,
+   "called": 444,
+   "favourites_won": 422,
    "upsets": 22,
-   "expected_upsets": 21.62,
-   "brier": 0.0327,
-   "log_loss": 0.1042
+   "expected_upsets": 22.31,
+   "brier": 0.0322,
+   "log_loss": 0.1035
   },
   "senate": {
    "called": 30,
@@ -5668,12 +5668,12 @@
    "log_loss": 0.1976
   },
   "house": {
-   "called": 370,
-   "favourites_won": 354,
+   "called": 380,
+   "favourites_won": 364,
    "upsets": 16,
-   "expected_upsets": 15.96,
-   "brier": 0.0283,
-   "log_loss": 0.0907
+   "expected_upsets": 16.64,
+   "brier": 0.0278,
+   "log_loss": 0.0903
   },
   "governor": {
    "called": 34,
@@ -5684,11 +5684,11 @@
    "log_loss": 0.1685
   },
   "vote_share": {
-   "n": 332,
-   "mean_error_toward_dem": 3.12,
-   "mae": 3.65,
-   "above_80": 111,
-   "inside_80": 217,
+   "n": 344,
+   "mean_error_toward_dem": 3.15,
+   "mae": 3.67,
+   "above_80": 117,
+   "inside_80": 223,
    "below_80": 4
   },
   "seat_percentiles": {

@@ -1,24 +1,24 @@
 {
- "as_of": "2026-11-04T19:42:55Z",
+ "as_of": "2026-11-05T01:44:21Z",
  "status": "provisional",
- "pull_id": "20261104T194255Z",
+ "pull_id": "20261105T014421Z",
  "min_counted_for_vote_share": 0.85,
  "races": {
   "all": {
    "races": 503,
-   "called": 434,
-   "favourites_won": 412,
+   "called": 444,
+   "favourites_won": 422,
    "upsets": 22,
    "ties": 0,
-   "expected_upsets": 21.62,
-   "brier": 0.0327,
-   "log_loss": 0.1042,
+   "expected_upsets": 22.31,
+   "brier": 0.0322,
+   "log_loss": 0.1035,
    "calibration": [
     {
      "bin": "0.0-0.2",
-     "races": 160,
-     "mean_p": 0.0222,
-     "win_rate": 0.0312
+     "races": 168,
+     "mean_p": 0.0249,
+     "win_rate": 0.0298
     },
     {
      "bin": "0.2-0.4",
@@ -40,8 +40,8 @@
     },
     {
      "bin": "0.8-1.0",
-     "races": 230,
-     "mean_p": 0.9892,
+     "races": 232,
+     "mean_p": 0.989,
      "win_rate": 1.0
     }
    ],
@@ -181,8 +181,8 @@
    ],
    "unmodelled_winners": [],
    "baseline_lean": {
-    "brier": 0.1336,
-    "favourites_won": 376
+    "brier": 0.1306,
+    "favourites_won": 386
    }
   },
   "senate": {
@@ -321,19 +321,19 @@
   },
   "house": {
    "races": 435,
-   "called": 370,
-   "favourites_won": 354,
+   "called": 380,
+   "favourites_won": 364,
    "upsets": 16,
    "ties": 0,
-   "expected_upsets": 15.96,
-   "brier": 0.0283,
-   "log_loss": 0.0907,
+   "expected_upsets": 16.64,
+   "brier": 0.0278,
+   "log_loss": 0.0903,
    "calibration": [
     {
      "bin": "0.0-0.2",
-     "races": 137,
-     "mean_p": 0.0193,
-     "win_rate": 0.0219
+     "races": 145,
+     "mean_p": 0.0225,
+     "win_rate": 0.0207
     },
     {
      "bin": "0.2-0.4",
@@ -355,8 +355,8 @@
     },
     {
      "bin": "0.8-1.0",
-     "races": 199,
-     "mean_p": 0.9931,
+     "races": 201,
+     "mean_p": 0.9929,
      "win_rate": 1.0
     }
    ],
@@ -460,8 +460,8 @@
    ],
    "unmodelled_winners": [],
    "baseline_lean": {
-    "brier": 0.1054,
-    "favourites_won": 331
+    "brier": 0.1026,
+    "favourites_won": 341
    }
   },
   "independent": {
@@ -581,19 +581,19 @@
   },
   "house_contested": {
    "races": 416,
-   "called": 357,
-   "favourites_won": 341,
+   "called": 367,
+   "favourites_won": 351,
    "upsets": 16,
    "ties": 0,
-   "expected_upsets": 15.72,
-   "brier": 0.0292,
-   "log_loss": 0.0933,
+   "expected_upsets": 16.41,
+   "brier": 0.0287,
+   "log_loss": 0.0927,
    "calibration": [
     {
      "bin": "0.0-0.2",
-     "races": 137,
-     "mean_p": 0.0193,
-     "win_rate": 0.0219
+     "races": 145,
+     "mean_p": 0.0225,
+     "win_rate": 0.0207
     },
     {
      "bin": "0.2-0.4",
@@ -615,8 +615,8 @@
     },
     {
      "bin": "0.8-1.0",
-     "races": 186,
-     "mean_p": 0.9939,
+     "races": 188,
+     "mean_p": 0.9937,
      "win_rate": 1.0
     }
    ],
@@ -720,8 +720,8 @@
    ],
    "unmodelled_winners": [],
    "baseline_lean": {
-    "brier": 0.1092,
-    "favourites_won": 318
+    "brier": 0.1063,
+    "favourites_won": 328
    }
   },
   "senate_and_governor": {
@@ -812,76 +812,76 @@
  },
  "vote_share": {
   "all": {
-   "n": 332,
-   "mean_error_toward_dem": 3.12,
-   "mae": 3.65,
-   "rmse": 4.57,
+   "n": 344,
+   "mean_error_toward_dem": 3.15,
+   "mae": 3.67,
+   "rmse": 4.58,
    "below_80": 4,
-   "inside_80": 217,
-   "above_80": 111,
-   "coverage_80": 0.6536,
-   "baseline_lean_mae": 7.6928,
-   "baseline_lean_mean_error_toward_dem": 7.3548
+   "inside_80": 223,
+   "above_80": 117,
+   "coverage_80": 0.6483,
+   "baseline_lean_mae": 7.7175,
+   "baseline_lean_mean_error_toward_dem": 7.3909
   },
   "senate": {
    "n": 28,
    "mean_error_toward_dem": 2.71,
    "mae": 3.74,
-   "rmse": 4.57,
+   "rmse": 4.56,
    "below_80": 1,
    "inside_80": 16,
    "above_80": 11,
    "coverage_80": 0.5714,
-   "baseline_lean_mae": 8.7628,
-   "baseline_lean_mean_error_toward_dem": 7.337
+   "baseline_lean_mae": 8.7598,
+   "baseline_lean_mean_error_toward_dem": 7.3366
   },
   "governor": {
-   "n": 29,
-   "mean_error_toward_dem": 2.01,
-   "mae": 3.73,
-   "rmse": 4.99,
+   "n": 30,
+   "mean_error_toward_dem": 1.97,
+   "mae": 3.64,
+   "rmse": 4.9,
    "below_80": 1,
-   "inside_80": 21,
+   "inside_80": 22,
    "above_80": 7,
-   "coverage_80": 0.7241,
-   "baseline_lean_mae": 8.1273,
-   "baseline_lean_mean_error_toward_dem": 5.8985
+   "coverage_80": 0.7333,
+   "baseline_lean_mae": 8.1558,
+   "baseline_lean_mean_error_toward_dem": 5.9938
   },
   "house": {
-   "n": 275,
-   "mean_error_toward_dem": 3.28,
-   "mae": 3.63,
-   "rmse": 4.53,
+   "n": 286,
+   "mean_error_toward_dem": 3.32,
+   "mae": 3.66,
+   "rmse": 4.55,
    "below_80": 2,
-   "inside_80": 180,
-   "above_80": 93,
-   "coverage_80": 0.6545,
-   "baseline_lean_mae": 7.538,
-   "baseline_lean_mean_error_toward_dem": 7.5101
+   "inside_80": 185,
+   "above_80": 99,
+   "coverage_80": 0.6469,
+   "baseline_lean_mae": 7.5695,
+   "baseline_lean_mean_error_toward_dem": 7.5428
   },
   "house_contested": {
-   "n": 275,
-   "mean_error_toward_dem": 3.28,
-   "mae": 3.63,
-   "rmse": 4.53,
+   "n": 286,
+   "mean_error_toward_dem": 3.32,
+   "mae": 3.66,
+   "rmse": 4.55,
    "below_80": 2,
-   "inside_80": 180,
-   "above_80": 93,
-   "coverage_80": 0.6545,
-   "baseline_lean_mae": 7.538,
-   "baseline_lean_mean_error_toward_dem": 7.5101
+   "inside_80": 185,
+   "above_80": 99,
+   "coverage_80": 0.6469,
+   "baseline_lean_mae": 7.5695,
+   "baseline_lean_mean_error_toward_dem": 7.5428
   },
   "senate_and_governor": {
-   "n": 57,
-   "mean_error_toward_dem": 2.36,
-   "mae": 3.74,
-   "rmse": 4.79,
+   "n": 58,
+   "mean_error_toward_dem": 2.33,
+   "mae": 3.68,
+   "rmse": 4.74,
    "below_80": 2,
-   "inside_80": 37,
+   "inside_80": 38,
    "above_80": 18,
-   "coverage_80": 0.6491,
-   "baseline_lean_mae": 8.4395,
-   "baseline_lean_mean_error_toward_dem": 6.6051
+   "coverage_80": 0.6552,
+   "baseline_lean_mae": 8.4474,
+   "baseline_lean_mean_error_toward_dem": 6.642
   },
   "independent": {
    "n": 3,
@@ -892,20 +892,20 @@
    "inside_80": 2,
    "above_80": 0,
    "coverage_80": 0.6667,
-   "baseline_lean_mae": 5.7438,
-   "baseline_lean_mean_error_toward_dem": 5.7438
+   "baseline_lean_mae": 5.7441,
+   "baseline_lean_mean_error_toward_dem": 5.7441
   },
   "all_excl_outside_top_two": {
-   "n": 329,
-   "mean_error_toward_dem": 3.21,
-   "mae": 3.55,
-   "rmse": 4.38,
+   "n": 341,
+   "mean_error_toward_dem": 3.24,
+   "mae": 3.58,
+   "rmse": 4.41,
    "below_80": 2,
-   "inside_80": 217,
-   "above_80": 110,
-   "coverage_80": 0.6596,
-   "baseline_lean_mae": 7.6015,
-   "baseline_lean_mean_error_toward_dem": 7.4359
+   "inside_80": 223,
+   "above_80": 116,
+   "coverage_80": 0.654,
+   "baseline_lean_mae": 7.6298,
+   "baseline_lean_mean_error_toward_dem": 7.4689
   }
  },
  "chambers": {
@@ -917,8 +917,8 @@
    "complete": false
   },
   "house": {
-   "dem_seats": 232,
-   "rep_seats": 138,
+   "dem_seats": 234,
+   "rep_seats": 146,
    "ind_seats": 0,
    "control": "D",
    "complete": false
@@ -969,13 +969,13 @@
    "v1_median": 234.0,
    "v1_lo80": 220.0,
    "v1_hi80": 252.0,
-   "dem_seats_so_far": 232,
-   "dem_seats_max_possible": 297,
+   "dem_seats_so_far": 234,
+   "dem_seats_max_possible": 289,
    "percentile": null,
    "inside_80": null,
    "percentile_range": [
-    0.443,
-    1.0
+    0.512,
+    0.999
    ]
   },
   "governor": {
@@ -1016,8 +1016,6 @@
    "CA-23",
    "CA-29",
    "CA-40",
-   "CA-47",
-   "CA-48",
    "CO-03",
    "CO-04",
    "CO-05",
@@ -1041,7 +1039,6 @@
    "NC-10",
    "NC-13",
    "NC-14",
-   "NE-01",
    "NJ-02",
    "NV-02",
    "NY-01",
@@ -1049,18 +1046,11 @@
    "NY-17",
    "NY-21",
    "OH-10",
-   "OK-05",
    "SC-01",
    "SC-02",
    "TN-04",
    "TN-07",
    "TN-09",
-   "TX-02",
-   "TX-05",
-   "TX-22",
-   "TX-27",
-   "TX-32",
-   "TX-38",
    "UT-02",
    "UT-04",
    "VA-01",
@@ -1075,18 +1065,18 @@
    "id": "2026-MT-SEN",
    "outside_top_two": "Seth Bodnar",
    "called": true,
-   "dem_share_2p": 0.1975,
+   "dem_share_2p": 0.1988,
    "v1_median": 0.3423,
-   "pct_counted": 0.9211,
+   "pct_counted": 0.9497,
    "in_vote_share_table": true
   },
   {
    "id": "2026-RI-GOV",
    "outside_top_two": "Kenneth Block",
    "called": true,
-   "dem_share_2p": 0.8132,
+   "dem_share_2p": 0.8141,
    "v1_median": 0.7007,
-   "pct_counted": 0.9756,
+   "pct_counted": 0.9803,
    "in_vote_share_table": true
   },
   {
@@ -1104,7 +1094,7 @@
    "called": false,
    "dem_share_2p": 0.1283,
    "v1_median": 0.4611,
-   "pct_counted": 0.7413,
+   "pct_counted": 0.7538,
    "in_vote_share_table": false
   }
  ],
@@ -1113,8 +1103,8 @@
   "winner_name": "Kurt Alme",
   "winner_party": "R",
   "p_R": 1.0,
-  "dem_share_2p": 0.1975,
-  "pct_counted": 0.9211,
+  "dem_share_2p": 0.1988,
+  "pct_counted": 0.9497,
   "median": 0.3423,
   "lo80": 0.3126,
   "hi80": 0.3737
