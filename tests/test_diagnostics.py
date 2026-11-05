@@ -143,3 +143,100 @@ def test_through_time_file():
             assert c["house"]["dem_seats_lo80"] <= c["house"]["dem_seats_median"] <= c["house"]["dem_seats_hi80"]
         else:
             assert r["chances"] is None and r["note"]
+
+
+# --------------------------------------------------------------------------- H7 and H8: poll adjustments
+def test_he_key_tidies_only_the_obvious():
+    assert dg.he_key("The Trafalgar Group (R)") == dg.he_key("Trafalgar Group") == "trafalgar group"
+    assert dg.he_key("The Glengariff Group, Inc.") == "glengariff group"
+    assert dg.he_key("Siena College / NYT") == "siena college/nyt"
+    assert dg.he_key("Marist College") != dg.he_key("Marist University")          # not harmonised further
+    assert dg.display_name("Cygnal (R)") == "Cygnal"
+
+
+def test_ridge_fit_by_hand():
+    # Two races, each polled by A and B; A is 2 points above B in both. By symmetry h_A = -h_B and
+    # each race effect is the race mean, so h_A = (0.01 + 0.01) / (2 + lambda).
+    y = np.array([0.52, 0.50, 0.56, 0.54])
+    race, pol = np.array([0, 0, 1, 1]), np.array([0, 1, 0, 1])
+    for lam in (0.0, 1.0, 4.0):
+        a, h = dg._ridge_fit(y, race, pol, np.array([2.0, 2.0]), lam)
+        assert h[0] == pytest.approx(0.02 / (2 + lam)) and h[1] == pytest.approx(-0.02 / (2 + lam))
+        assert a == pytest.approx([0.51, 0.55])
+
+
+def _synthetic(n_races=40, seed=0):
+    rng = np.random.default_rng(seed)
+    lean = {"lefty": 0.03, "middle": 0.0, "righty": -0.03, "rare": 0.03}
+    rows = []
+    for r in range(n_races):
+        truth = rng.uniform(0.4, 0.6)
+        for p in ("lefty", "middle", "righty") + (("rare",) if r == 0 else ()):
+            rows.append({"he_key": p, "race_id": f"R{r}", "share": truth + lean[p] + rng.normal(0, 0.005),
+                         "pollster": p, "year": 2026})
+    rows.append({"he_key": "alone", "race_id": "SOLO", "share": 0.7, "pollster": "alone", "year": 2026})
+    return pd.DataFrame(rows)
+
+
+def test_house_effects_recover_leans_and_shrink_small_samples():
+    eff, par = dg.estimate_house_effects(_synthetic())
+    e = eff.set_index("he_key")
+    assert "alone" not in e.index                       # a race polled by one pollster says nothing
+    # Only differences between pollsters are identified; the zero is the average pollster, each
+    # pollster counted once, so the effects sum to 0.
+    assert e["effect"].sum() == pytest.approx(0, abs=1e-6)
+    assert e.loc["lefty", "effect"] - e.loc["middle", "effect"] == pytest.approx(0.03, abs=0.003)
+    assert e.loc["middle", "effect"] - e.loc["righty", "effect"] == pytest.approx(0.03, abs=0.003)
+    # Same true lean, one race: pulled toward 0 by n / (n + lambda).
+    assert 0 < e.loc["rare", "effect"] < e.loc["rare", "raw"]
+    assert e.loc["rare", "shrink"] == pytest.approx(1 / (1 + par["lambda"]))
+    assert e.loc["lefty", "shrink"] > e.loc["rare", "shrink"]
+
+
+def test_house_effect_rows_never_use_polls_after_the_cutoff():
+    p = pd.DataFrame({"pollster": ["A", "A", "B"], "race_id": ["X", "X", "Y"], "year": [2026, 2026, 2022],
+                      "end": pd.to_datetime(["2026-10-21", "2026-10-23", "2022-11-01"]),
+                      "dem_pct": [50.0, 52.0, 45.0], "rep_pct": [50.0, 48.0, 55.0]})
+    r = dg.house_effect_rows(p, "2026-10-22")
+    assert list(r["end"].dt.strftime("%Y-%m-%d")) == ["2022-11-01", "2026-10-21"]
+    assert r["share"].tolist() == pytest.approx([0.45, 0.5])
+
+
+def test_adjust_polls_shifts_the_share_and_keeps_the_total():
+    p = pd.DataFrame({"pollster": ["Cygnal (R)", "Unknown", "Cygnal"], "year": [2026, 2026, 2022],
+                      "dem_pct": [45.0, 50.0, 40.0], "rep_pct": [45.0, 40.0, 50.0]})
+    eff = pd.DataFrame({"he_key": ["cygnal"], "effect": [-0.02]})
+    a = dg.adjust_polls(p, eff)
+    assert a.loc[0, "dem_pct"] / 90 == pytest.approx(0.52) and a.loc[0, "dem_pct"] + a.loc[0, "rep_pct"] == pytest.approx(90)
+    assert (a.loc[1, "dem_pct"], a.loc[1, "rep_pct"]) == (50.0, 40.0)        # no estimate: unchanged
+    assert (a.loc[2, "dem_pct"], a.loc[2, "rep_pct"]) == (40.0, 50.0)        # other years untouched
+    assert a["house_effect"].tolist() == pytest.approx([-0.02, 0.0, 0.0])
+
+
+def test_drop_partisan_and_races_losing_all_polls():
+    p = pd.DataFrame({"pollster": ["Cygnal (R)", "PPP (D-End Citizens United)", "Emerson College", "Marist (Dartmouth)"]})
+    assert dg.drop_partisan(p)["pollster"].tolist() == ["Emerson College", "Marist (Dartmouth)"]
+    before = pd.DataFrame({"race_id": ["A", "B"], "poll_avg": [0.5, 0.6], "n_polls": [2, 1], "n_eff": [2.0, 1.0]})
+    after = pd.DataFrame({"race_id": ["A"], "poll_avg": [0.51], "n_polls": [1], "n_eff": [1.0]})
+    sf = pd.DataFrame({"id": ["A", "B"], "office": ["senate", "senate"], "vote_ok": [True, True], "dem_share_2p": [0.53, 0.6]})
+    c = dg.compare_averages(sf, before, after)
+    assert c["races_losing_all_polls"] == ["B"] and c["races_with_polls"] == {"v1": 2, "new": 1}
+    assert c["movement_toward_dem"]["mean"] == pytest.approx(1.0)
+    assert c["scored"]["error_v1_avg"]["mean"] == pytest.approx(3.0) and c["scored"]["error_new_avg"]["mean"] == pytest.approx(2.0)
+
+
+DIAGNOSTICS = Path(__file__).resolve().parents[1] / "results" / "diagnostics.json"
+
+
+@pytest.mark.skipif(not DIAGNOSTICS.exists(), reason="diagnostics.json not written yet")
+def test_diagnostics_file_has_the_poll_variants():
+    d = json.loads(DIAGNOSTICS.read_text())
+    if "h7" not in d:
+        pytest.skip("diagnostics.json predates H7 and H8")
+    v = d["variants"]
+    for k in ("h7_house_effects", "h8_no_partisan", "h7_and_h1a", "h8_and_h1a"):
+        assert set(v[k]["metrics"]) == set(v["v1"]["metrics"])
+        assert set(v[k]["metrics"]["all"]) == set(v["v1"]["metrics"]["all"])
+    assert v["h7_and_h1a"]["house_vote_mean"] == v["h1a_bias_0"]["house_vote_mean"]
+    assert v["h7_house_effects"]["metrics"]["house"] == v["v1"]["metrics"]["house"]       # race polls do not reach the House
+    assert d["h8"]["averages"]["races_with_polls"]["new"] + len(d["h8"]["lost_all_polls"]) == d["h8"]["averages"]["races_with_polls"]["v1"]

@@ -322,6 +322,258 @@
      "above_80": 53
     }
    }
+  },
+  "h7_house_effects": {
+   "description": "H7: race poll averages with pollster house effects removed",
+   "house_vote_mean": 0.5291,
+   "house_vote_sd": 0.0119,
+   "metrics": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.58,
+     "brier": 0.0535,
+     "log_loss": 0.1645,
+     "vote_n": 28,
+     "mean_error": 2.51,
+     "mae": 3.63,
+     "rmse": 4.6,
+     "coverage_80": 0.6429,
+     "below_80": 1,
+     "above_80": 9
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 2,
+     "expected_upsets": 3.02,
+     "brier": 0.0501,
+     "log_loss": 0.1671,
+     "vote_n": 30,
+     "mean_error": 2.06,
+     "mae": 3.69,
+     "rmse": 4.95,
+     "coverage_80": 0.7333,
+     "below_80": 1,
+     "above_80": 7
+    },
+    "house": {
+     "called": 380,
+     "upsets": 16,
+     "expected_upsets": 16.64,
+     "brier": 0.0278,
+     "log_loss": 0.0903,
+     "vote_n": 286,
+     "mean_error": 3.32,
+     "mae": 3.66,
+     "rmse": 4.55,
+     "coverage_80": 0.6469,
+     "below_80": 2,
+     "above_80": 99
+    },
+    "all": {
+     "called": 444,
+     "upsets": 20,
+     "expected_upsets": 22.24,
+     "brier": 0.0312,
+     "log_loss": 0.1012,
+     "vote_n": 344,
+     "mean_error": 3.14,
+     "mae": 3.66,
+     "rmse": 4.59,
+     "coverage_80": 0.6541,
+     "below_80": 4,
+     "above_80": 115
+    }
+   }
+  },
+  "h8_no_partisan": {
+   "description": "H8: race poll averages without partisan-sponsored polls",
+   "house_vote_mean": 0.5291,
+   "house_vote_sd": 0.0119,
+   "metrics": {
+    "senate": {
+     "called": 30,
+     "upsets": 3,
+     "expected_upsets": 2.52,
+     "brier": 0.0714,
+     "log_loss": 0.2265,
+     "vote_n": 28,
+     "mean_error": 2.77,
+     "mae": 3.87,
+     "rmse": 4.81,
+     "coverage_80": 0.6071,
+     "below_80": 1,
+     "above_80": 10
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 3,
+     "expected_upsets": 3.32,
+     "brier": 0.0503,
+     "log_loss": 0.1714,
+     "vote_n": 30,
+     "mean_error": 1.86,
+     "mae": 3.56,
+     "rmse": 4.87,
+     "coverage_80": 0.8667,
+     "below_80": 1,
+     "above_80": 3
+    },
+    "house": {
+     "called": 380,
+     "upsets": 16,
+     "expected_upsets": 16.64,
+     "brier": 0.0278,
+     "log_loss": 0.0903,
+     "vote_n": 286,
+     "mean_error": 3.32,
+     "mae": 3.66,
+     "rmse": 4.55,
+     "coverage_80": 0.6469,
+     "below_80": 2,
+     "above_80": 99
+    },
+    "all": {
+     "called": 444,
+     "upsets": 22,
+     "expected_upsets": 22.48,
+     "brier": 0.0324,
+     "log_loss": 0.1057,
+     "vote_n": 344,
+     "mean_error": 3.15,
+     "mae": 3.67,
+     "rmse": 4.6,
+     "coverage_80": 0.6628,
+     "below_80": 4,
+     "above_80": 112
+    }
+   }
+  },
+  "h7_and_h1a": {
+   "description": "H7 and H1 together: bias 0 and house-effect-adjusted poll averages",
+   "house_vote_mean": 0.5466,
+   "house_vote_sd": 0.0119,
+   "metrics": {
+    "senate": {
+     "called": 30,
+     "upsets": 1,
+     "expected_upsets": 2.47,
+     "brier": 0.0393,
+     "log_loss": 0.1302,
+     "vote_n": 28,
+     "mean_error": 1.59,
+     "mae": 2.81,
+     "rmse": 4.11,
+     "coverage_80": 0.7857,
+     "below_80": 1,
+     "above_80": 5
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 2,
+     "expected_upsets": 3.06,
+     "brier": 0.0467,
+     "log_loss": 0.1574,
+     "vote_n": 30,
+     "mean_error": 1.49,
+     "mae": 3.39,
+     "rmse": 4.88,
+     "coverage_80": 0.8333,
+     "below_80": 1,
+     "above_80": 4
+    },
+    "house": {
+     "called": 380,
+     "upsets": 7,
+     "expected_upsets": 18.3,
+     "brier": 0.0194,
+     "log_loss": 0.0727,
+     "vote_n": 286,
+     "mean_error": 1.71,
+     "mae": 2.71,
+     "rmse": 3.57,
+     "coverage_80": 0.8322,
+     "below_80": 4,
+     "above_80": 44
+    },
+    "all": {
+     "called": 444,
+     "upsets": 10,
+     "expected_upsets": 23.83,
+     "brier": 0.0228,
+     "log_loss": 0.0831,
+     "vote_n": 344,
+     "mean_error": 1.68,
+     "mae": 2.78,
+     "rmse": 3.75,
+     "coverage_80": 0.8285,
+     "below_80": 6,
+     "above_80": 53
+    }
+   }
+  },
+  "h8_and_h1a": {
+   "description": "H8 and H1 together: bias 0 and poll averages without partisan-sponsored polls",
+   "house_vote_mean": 0.5466,
+   "house_vote_sd": 0.0119,
+   "metrics": {
+    "senate": {
+     "called": 30,
+     "upsets": 2,
+     "expected_upsets": 2.48,
+     "brier": 0.0552,
+     "log_loss": 0.1768,
+     "vote_n": 28,
+     "mean_error": 1.72,
+     "mae": 2.96,
+     "rmse": 4.22,
+     "coverage_80": 0.8214,
+     "below_80": 1,
+     "above_80": 4
+    },
+    "governor": {
+     "called": 34,
+     "upsets": 2,
+     "expected_upsets": 3.35,
+     "brier": 0.0462,
+     "log_loss": 0.1604,
+     "vote_n": 30,
+     "mean_error": 1.17,
+     "mae": 3.31,
+     "rmse": 4.8,
+     "coverage_80": 0.8667,
+     "below_80": 1,
+     "above_80": 3
+    },
+    "house": {
+     "called": 380,
+     "upsets": 7,
+     "expected_upsets": 18.3,
+     "brier": 0.0194,
+     "log_loss": 0.0727,
+     "vote_n": 286,
+     "mean_error": 1.71,
+     "mae": 2.71,
+     "rmse": 3.57,
+     "coverage_80": 0.8322,
+     "below_80": 4,
+     "above_80": 44
+    },
+    "all": {
+     "called": 444,
+     "upsets": 11,
+     "expected_upsets": 24.14,
+     "brier": 0.0239,
+     "log_loss": 0.0865,
+     "vote_n": 344,
+     "mean_error": 1.66,
+     "mae": 2.78,
+     "rmse": 3.75,
+     "coverage_80": 0.8343,
+     "below_80": 6,
+     "above_80": 51
+    }
+   }
   }
  },
  "h2": {
@@ -998,6 +1250,379 @@
     "rmse": 3.27
    },
    "share_of_error_closed": 0.244
+  }
+ },
+ "h7": {
+  "method": {
+   "years": [
+    2018,
+    2022,
+    2026
+   ],
+   "window_days": 90,
+   "windows": {
+    "2018": "2018-11-06",
+    "2022": "2022-11-08",
+    "2026": "2026-10-22"
+   },
+   "scale": "two-party share, points",
+   "shrinkage": "random-effect (ridge) estimate, sigma and tau by EM"
+  },
+  "fit": {
+   "sigma_points": 2.07,
+   "tau_points": 2.02,
+   "lambda_races": 1.05,
+   "cells": 1563,
+   "races": 169,
+   "pollsters_estimated": 337,
+   "pollsters_3plus_races": 127,
+   "iterations": 46
+  },
+  "largest_3plus_races": [
+   {
+    "pollster": "Long Island University",
+    "races": 3,
+    "effect_points": 6.87,
+    "raw_points": 9.28,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.0,
+    "years": "2022"
+   },
+   {
+    "pollster": "Kurt Jetta",
+    "races": 6,
+    "effect_points": 3.89,
+    "raw_points": 4.57,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.78,
+    "years": "2022"
+   },
+   {
+    "pollster": "Lake Research Partners",
+    "races": 3,
+    "effect_points": 3.65,
+    "raw_points": 4.93,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 1.0,
+    "years": "2022,2026"
+   },
+   {
+    "pollster": "SoonerPoll",
+    "races": 4,
+    "effect_points": 3.23,
+    "raw_points": 4.08,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.0,
+    "years": "2018,2022"
+   },
+   {
+    "pollster": "St. Cloud State University",
+    "races": 4,
+    "effect_points": 3.19,
+    "raw_points": 4.03,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.0,
+    "years": "2018,2022"
+   },
+   {
+    "pollster": "Franklin & Marshall College",
+    "races": 5,
+    "effect_points": 3.05,
+    "raw_points": 3.69,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.0,
+    "years": "2018,2022,2026"
+   },
+   {
+    "pollster": "Survey Monkey",
+    "races": 5,
+    "effect_points": 2.94,
+    "raw_points": 3.56,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 1.0,
+    "years": "2022"
+   },
+   {
+    "pollster": "McLaughlin & Associates",
+    "races": 3,
+    "effect_points": -2.87,
+    "raw_points": -3.88,
+    "share_r_labelled": 1.0,
+    "share_d_labelled": 0.0,
+    "years": "2022,2026"
+   },
+   {
+    "pollster": "GQR",
+    "races": 3,
+    "effect_points": 2.61,
+    "raw_points": 3.53,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 1.0,
+    "years": "2026"
+   },
+   {
+    "pollster": "Patriot Polling",
+    "races": 6,
+    "effect_points": -2.59,
+    "raw_points": -3.04,
+    "share_r_labelled": 0.5,
+    "share_d_labelled": 0.0,
+    "years": "2022"
+   }
+  ],
+  "largest_any": [
+   {
+    "pollster": "Long Island University",
+    "races": 3,
+    "effect_points": 6.87
+   },
+   {
+    "pollster": "Advanced Targeting Research",
+    "races": 2,
+    "effect_points": 6.73
+   },
+   {
+    "pollster": "Peak Insights",
+    "races": 2,
+    "effect_points": -5.69
+   },
+   {
+    "pollster": "In Lux Research",
+    "races": 1,
+    "effect_points": 5.32
+   },
+   {
+    "pollster": "Liberty Opinion Research",
+    "races": 2,
+    "effect_points": -5.01
+   }
+  ],
+  "largest_in_2026_averages": [
+   {
+    "pollster": "Advanced Targeting Research",
+    "races": 2,
+    "races_2026": 2,
+    "effect_points": 6.73,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.0
+   },
+   {
+    "pollster": "Peak Insights",
+    "races": 2,
+    "races_2026": 2,
+    "effect_points": -5.69,
+    "share_r_labelled": 1.0,
+    "share_d_labelled": 0.0
+   },
+   {
+    "pollster": "The Bullfinch Group",
+    "races": 1,
+    "races_2026": 1,
+    "effect_points": 4.88,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.0
+   },
+   {
+    "pollster": "Emerson College/WPRI-TV",
+    "races": 2,
+    "races_2026": 2,
+    "effect_points": 4.19,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.0
+   },
+   {
+    "pollster": "Aspect Strategic",
+    "races": 1,
+    "races_2026": 1,
+    "effect_points": -3.95,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.0
+   },
+   {
+    "pollster": "Lake Research Partners",
+    "races": 3,
+    "races_2026": 2,
+    "effect_points": 3.65,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 1.0
+   },
+   {
+    "pollster": "BSP Research",
+    "races": 1,
+    "races_2026": 1,
+    "effect_points": 3.59,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 1.0
+   },
+   {
+    "pollster": "PennLive",
+    "races": 1,
+    "races_2026": 1,
+    "effect_points": 3.05,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.0
+   },
+   {
+    "pollster": "Franklin & Marshall College",
+    "races": 5,
+    "races_2026": 1,
+    "effect_points": 3.05,
+    "share_r_labelled": 0.0,
+    "share_d_labelled": 0.0
+   },
+   {
+    "pollster": "Public Opinon Strategies",
+    "races": 1,
+    "races_2026": 1,
+    "effect_points": -2.94,
+    "share_r_labelled": 1.0,
+    "share_d_labelled": 0.0
+   }
+  ],
+  "applied_2026": {
+   "polls_in_averages": 447,
+   "polls_with_an_effect": 445,
+   "weighted_mean_effect_points": -0.38,
+   "by_label_mean_effect_points": {
+    "Democratic-labelled": 0.74,
+    "Republican-labelled": -1.32,
+    "unlabelled": 0.12
+   }
+  },
+  "averages": {
+   "races_with_polls": {
+    "v1": 59,
+    "new": 59
+   },
+   "polls_in_averages": {
+    "v1": 447,
+    "new": 447
+   },
+   "movement_toward_dem": {
+    "n": 59,
+    "mean": 0.12,
+    "sd": 1.05,
+    "mae": 0.73,
+    "rmse": 1.04
+   },
+   "scored": {
+    "n": 50,
+    "error_v1_avg": {
+     "n": 50,
+     "mean": 2.23,
+     "sd": 3.14,
+     "mae": 3.33,
+     "rmse": 3.82
+    },
+    "error_new_avg": {
+     "n": 50,
+     "mean": 2.17,
+     "sd": 3.1,
+     "mae": 3.11,
+     "rmse": 3.76
+    }
+   },
+   "races_losing_all_polls": []
+  }
+ },
+ "h8": {
+  "polls_in_window_2026": 732,
+  "labelled_in_window": 329,
+  "labelled_in_v1_averages": {
+   "R": 139,
+   "D": 64,
+   "all": 447
+  },
+  "lost_all_polls": [
+   {
+    "id": "2026-IL-GOV",
+    "v1_polls": 1,
+    "v1_poll_avg": 0.6136,
+    "v1_poll_weight": 0.504,
+    "h8_poll_weight": 0.0,
+    "v1_p_dem_win": 0.996,
+    "h8_p_dem_win": 0.976,
+    "winner": "D",
+    "actual": 0.6176
+   },
+   {
+    "id": "2026-KY-SEN",
+    "v1_polls": 1,
+    "v1_poll_avg": 0.4494,
+    "v1_poll_weight": 0.3,
+    "h8_poll_weight": 0.0,
+    "v1_p_dem_win": 0.01,
+    "h8_p_dem_win": 0.013,
+    "winner": "R",
+    "actual": 0.4383
+   },
+   {
+    "id": "2026-LA-SEN",
+    "v1_polls": 1,
+    "v1_poll_avg": 0.4783,
+    "v1_poll_weight": 0.304,
+    "h8_poll_weight": 0.0,
+    "v1_p_dem_win": 0.105,
+    "h8_p_dem_win": 0.1,
+    "winner": "R",
+    "actual": 0.4912
+   },
+   {
+    "id": "2026-MS-SEN",
+    "v1_polls": 1,
+    "v1_poll_avg": 0.4634,
+    "v1_poll_weight": 0.305,
+    "h8_poll_weight": 0.0,
+    "v1_p_dem_win": 0.07,
+    "h8_p_dem_win": 0.081,
+    "winner": null,
+    "actual": 0.5006
+   }
+  ],
+  "mean_poll_weight_kept_races": {
+   "v1": 0.675,
+   "h8": 0.605,
+   "n": 55
+  },
+  "averages": {
+   "races_with_polls": {
+    "v1": 59,
+    "new": 55
+   },
+   "polls_in_averages": {
+    "v1": 447,
+    "new": 245
+   },
+   "movement_toward_dem": {
+    "n": 55,
+    "mean": 0.31,
+    "sd": 1.53,
+    "mae": 0.66,
+    "rmse": 1.54
+   },
+   "scored": {
+    "n": 47,
+    "error_v1_avg": {
+     "n": 47,
+     "mean": 2.36,
+     "sd": 3.19,
+     "mae": 3.48,
+     "rmse": 3.94
+    },
+    "error_new_avg": {
+     "n": 47,
+     "mean": 2.25,
+     "sd": 3.29,
+     "mae": 3.4,
+     "rmse": 3.95
+    }
+   },
+   "races_losing_all_polls": [
+    "2026-IL-GOV",
+    "2026-KY-SEN",
+    "2026-LA-SEN",
+    "2026-MS-SEN"
+   ]
   }
  },
  "generic_ballot_3_november": {
