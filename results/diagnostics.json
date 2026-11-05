@@ -1,8 +1,8 @@
 {
  "label": "DIAGNOSTIC. Not part of v1's score (#15); v1 and the v1 tag are unchanged.",
  "issue": 24,
- "pull_id": "20261104T104153Z",
- "pulled_at": "2026-11-04T10:41:53Z",
+ "pull_id": "20261105T014421Z",
+ "pulled_at": "2026-11-05T01:44:21Z",
  "status": "provisional",
  "min_counted_for_vote_share": 0.85,
  "reproduction": {
@@ -19,12 +19,12 @@
      "expected_upsets": 2.64,
      "brier": 0.066,
      "log_loss": 0.1976,
-     "vote_n": 26,
-     "mean_error": 3.47,
-     "mae": 3.47,
-     "rmse": 3.8,
-     "coverage_80": 0.5769,
-     "below_80": 0,
+     "vote_n": 28,
+     "mean_error": 2.71,
+     "mae": 3.74,
+     "rmse": 4.56,
+     "coverage_80": 0.5714,
+     "below_80": 1,
      "above_80": 11
     },
     "governor": {
@@ -33,41 +33,41 @@
      "expected_upsets": 3.03,
      "brier": 0.0512,
      "log_loss": 0.1685,
-     "vote_n": 26,
-     "mean_error": 1.81,
-     "mae": 3.73,
-     "rmse": 5.05,
-     "coverage_80": 0.6923,
+     "vote_n": 30,
+     "mean_error": 1.97,
+     "mae": 3.64,
+     "rmse": 4.9,
+     "coverage_80": 0.7333,
      "below_80": 1,
      "above_80": 7
     },
     "house": {
-     "called": 360,
-     "upsets": 14,
-     "expected_upsets": 14.09,
-     "brier": 0.0251,
-     "log_loss": 0.0808,
-     "vote_n": 253,
-     "mean_error": 3.28,
-     "mae": 3.63,
-     "rmse": 4.5,
-     "coverage_80": 0.6443,
-     "below_80": 3,
-     "above_80": 87
+     "called": 380,
+     "upsets": 16,
+     "expected_upsets": 16.64,
+     "brier": 0.0278,
+     "log_loss": 0.0903,
+     "vote_n": 286,
+     "mean_error": 3.32,
+     "mae": 3.66,
+     "rmse": 4.55,
+     "coverage_80": 0.6469,
+     "below_80": 2,
+     "above_80": 99
     },
     "all": {
-     "called": 424,
-     "upsets": 20,
-     "expected_upsets": 19.75,
-     "brier": 0.0301,
-     "log_loss": 0.0961,
-     "vote_n": 305,
-     "mean_error": 3.17,
-     "mae": 3.62,
-     "rmse": 4.49,
-     "coverage_80": 0.6426,
+     "called": 444,
+     "upsets": 22,
+     "expected_upsets": 22.31,
+     "brier": 0.0322,
+     "log_loss": 0.1035,
+     "vote_n": 344,
+     "mean_error": 3.15,
+     "mae": 3.67,
+     "rmse": 4.58,
+     "coverage_80": 0.6483,
      "below_80": 4,
-     "above_80": 105
+     "above_80": 117
     }
    }
   },
@@ -82,12 +82,12 @@
      "expected_upsets": 2.59,
      "brier": 0.0502,
      "log_loss": 0.1573,
-     "vote_n": 26,
-     "mean_error": 2.53,
-     "mae": 2.59,
-     "rmse": 2.98,
-     "coverage_80": 0.7692,
-     "below_80": 0,
+     "vote_n": 28,
+     "mean_error": 1.79,
+     "mae": 2.96,
+     "rmse": 4.04,
+     "coverage_80": 0.75,
+     "below_80": 1,
      "above_80": 6
     },
     "governor": {
@@ -96,41 +96,41 @@
      "expected_upsets": 3.11,
      "brier": 0.0473,
      "log_loss": 0.1574,
-     "vote_n": 26,
-     "mean_error": 1.25,
-     "mae": 3.55,
-     "rmse": 5.07,
-     "coverage_80": 0.7308,
+     "vote_n": 30,
+     "mean_error": 1.4,
+     "mae": 3.39,
+     "rmse": 4.85,
+     "coverage_80": 0.8,
      "below_80": 1,
-     "above_80": 6
+     "above_80": 5
     },
     "house": {
-     "called": 360,
-     "upsets": 6,
-     "expected_upsets": 15.74,
-     "brier": 0.0174,
-     "log_loss": 0.0652,
-     "vote_n": 253,
-     "mean_error": 1.68,
-     "mae": 2.66,
-     "rmse": 3.52,
-     "coverage_80": 0.83,
+     "called": 380,
+     "upsets": 7,
+     "expected_upsets": 18.3,
+     "brier": 0.0194,
+     "log_loss": 0.0727,
+     "vote_n": 286,
+     "mean_error": 1.71,
+     "mae": 2.71,
+     "rmse": 3.57,
+     "coverage_80": 0.8322,
      "below_80": 4,
-     "above_80": 39
+     "above_80": 44
     },
     "all": {
-     "called": 424,
-     "upsets": 10,
-     "expected_upsets": 21.44,
-     "brier": 0.0221,
-     "log_loss": 0.0791,
-     "vote_n": 305,
-     "mean_error": 1.71,
-     "mae": 2.73,
-     "rmse": 3.63,
-     "coverage_80": 0.8164,
-     "below_80": 5,
-     "above_80": 51
+     "called": 444,
+     "upsets": 11,
+     "expected_upsets": 24.0,
+     "brier": 0.0236,
+     "log_loss": 0.0849,
+     "vote_n": 344,
+     "mean_error": 1.69,
+     "mae": 2.79,
+     "rmse": 3.74,
+     "coverage_80": 0.8227,
+     "below_80": 6,
+     "above_80": 55
     }
    }
   },
@@ -145,12 +145,12 @@
      "expected_upsets": 2.51,
      "brier": 0.0507,
      "log_loss": 0.1574,
-     "vote_n": 26,
-     "mean_error": 2.51,
-     "mae": 2.57,
-     "rmse": 2.97,
-     "coverage_80": 0.7308,
-     "below_80": 0,
+     "vote_n": 28,
+     "mean_error": 1.75,
+     "mae": 2.96,
+     "rmse": 4.09,
+     "coverage_80": 0.7143,
+     "below_80": 1,
      "above_80": 7
     },
     "governor": {
@@ -159,41 +159,41 @@
      "expected_upsets": 3.07,
      "brier": 0.0473,
      "log_loss": 0.1567,
-     "vote_n": 26,
-     "mean_error": 1.26,
-     "mae": 3.55,
-     "rmse": 5.07,
-     "coverage_80": 0.7308,
+     "vote_n": 30,
+     "mean_error": 1.4,
+     "mae": 3.39,
+     "rmse": 4.85,
+     "coverage_80": 0.8,
      "below_80": 1,
-     "above_80": 6
+     "above_80": 5
     },
     "house": {
-     "called": 360,
-     "upsets": 6,
-     "expected_upsets": 14.62,
-     "brier": 0.0168,
-     "log_loss": 0.0624,
-     "vote_n": 253,
-     "mean_error": 1.67,
-     "mae": 2.65,
-     "rmse": 3.51,
-     "coverage_80": 0.8024,
+     "called": 380,
+     "upsets": 7,
+     "expected_upsets": 16.97,
+     "brier": 0.0188,
+     "log_loss": 0.0696,
+     "vote_n": 286,
+     "mean_error": 1.71,
+     "mae": 2.71,
+     "rmse": 3.57,
+     "coverage_80": 0.8007,
      "below_80": 5,
-     "above_80": 45
+     "above_80": 52
     },
     "all": {
-     "called": 424,
-     "upsets": 10,
-     "expected_upsets": 20.2,
-     "brier": 0.0216,
-     "log_loss": 0.0766,
-     "vote_n": 305,
-     "mean_error": 1.71,
-     "mae": 2.72,
-     "rmse": 3.63,
-     "coverage_80": 0.7902,
-     "below_80": 6,
-     "above_80": 58
+     "called": 444,
+     "upsets": 11,
+     "expected_upsets": 22.55,
+     "brier": 0.0231,
+     "log_loss": 0.0822,
+     "vote_n": 344,
+     "mean_error": 1.68,
+     "mae": 2.79,
+     "rmse": 3.74,
+     "coverage_80": 0.7936,
+     "below_80": 7,
+     "above_80": 64
     }
    }
   },
@@ -208,12 +208,12 @@
      "expected_upsets": 2.59,
      "brier": 0.0522,
      "log_loss": 0.1606,
-     "vote_n": 26,
-     "mean_error": 3.15,
-     "mae": 3.15,
-     "rmse": 3.51,
-     "coverage_80": 0.5769,
-     "below_80": 0,
+     "vote_n": 28,
+     "mean_error": 2.42,
+     "mae": 3.45,
+     "rmse": 4.35,
+     "coverage_80": 0.5714,
+     "below_80": 1,
      "above_80": 11
     },
     "governor": {
@@ -222,41 +222,41 @@
      "expected_upsets": 2.88,
      "brier": 0.0395,
      "log_loss": 0.1378,
-     "vote_n": 26,
-     "mean_error": 1.45,
-     "mae": 3.28,
-     "rmse": 4.52,
-     "coverage_80": 0.7308,
+     "vote_n": 30,
+     "mean_error": 1.62,
+     "mae": 3.2,
+     "rmse": 4.39,
+     "coverage_80": 0.8,
      "below_80": 1,
-     "above_80": 6
+     "above_80": 5
     },
     "house": {
-     "called": 360,
-     "upsets": 14,
-     "expected_upsets": 14.09,
-     "brier": 0.0251,
-     "log_loss": 0.0808,
-     "vote_n": 253,
-     "mean_error": 3.28,
-     "mae": 3.63,
-     "rmse": 4.5,
-     "coverage_80": 0.6443,
-     "below_80": 3,
-     "above_80": 87
+     "called": 380,
+     "upsets": 16,
+     "expected_upsets": 16.64,
+     "brier": 0.0278,
+     "log_loss": 0.0903,
+     "vote_n": 286,
+     "mean_error": 3.32,
+     "mae": 3.66,
+     "rmse": 4.55,
+     "coverage_80": 0.6469,
+     "below_80": 2,
+     "above_80": 99
     },
     "all": {
-     "called": 424,
-     "upsets": 17,
-     "expected_upsets": 19.56,
-     "brier": 0.0282,
-     "log_loss": 0.091,
-     "vote_n": 305,
-     "mean_error": 3.11,
-     "mae": 3.56,
-     "rmse": 4.42,
-     "coverage_80": 0.6459,
+     "called": 444,
+     "upsets": 19,
+     "expected_upsets": 22.11,
+     "brier": 0.0303,
+     "log_loss": 0.0987,
+     "vote_n": 344,
+     "mean_error": 3.1,
+     "mae": 3.61,
+     "rmse": 4.52,
+     "coverage_80": 0.6541,
      "below_80": 4,
-     "above_80": 104
+     "above_80": 115
     }
    }
   },
@@ -271,13 +271,13 @@
      "expected_upsets": 2.42,
      "brier": 0.0398,
      "log_loss": 0.1305,
-     "vote_n": 26,
-     "mean_error": 2.26,
-     "mae": 2.32,
-     "rmse": 2.73,
-     "coverage_80": 0.8462,
-     "below_80": 0,
-     "above_80": 4
+     "vote_n": 28,
+     "mean_error": 1.54,
+     "mae": 2.7,
+     "rmse": 3.88,
+     "coverage_80": 0.7857,
+     "below_80": 1,
+     "above_80": 5
     },
     "governor": {
      "called": 34,
@@ -285,148 +285,153 @@
      "expected_upsets": 2.88,
      "brier": 0.0374,
      "log_loss": 0.1324,
-     "vote_n": 26,
-     "mean_error": 0.94,
-     "mae": 3.02,
-     "rmse": 4.59,
-     "coverage_80": 0.8077,
+     "vote_n": 30,
+     "mean_error": 1.09,
+     "mae": 2.91,
+     "rmse": 4.38,
+     "coverage_80": 0.8333,
      "below_80": 1,
      "above_80": 4
     },
     "house": {
-     "called": 360,
-     "upsets": 6,
-     "expected_upsets": 15.74,
-     "brier": 0.0174,
-     "log_loss": 0.0652,
-     "vote_n": 253,
-     "mean_error": 1.68,
-     "mae": 2.66,
-     "rmse": 3.52,
-     "coverage_80": 0.83,
+     "called": 380,
+     "upsets": 7,
+     "expected_upsets": 18.3,
+     "brier": 0.0194,
+     "log_loss": 0.0727,
+     "vote_n": 286,
+     "mean_error": 1.71,
+     "mae": 2.71,
+     "rmse": 3.57,
+     "coverage_80": 0.8322,
      "below_80": 4,
-     "above_80": 39
+     "above_80": 44
     },
     "all": {
-     "called": 424,
-     "upsets": 8,
-     "expected_upsets": 21.04,
-     "brier": 0.0206,
-     "log_loss": 0.0752,
-     "vote_n": 305,
-     "mean_error": 1.66,
-     "mae": 2.66,
-     "rmse": 3.56,
-     "coverage_80": 0.8295,
-     "below_80": 5,
-     "above_80": 47
+     "called": 444,
+     "upsets": 9,
+     "expected_upsets": 23.6,
+     "brier": 0.0222,
+     "log_loss": 0.0812,
+     "vote_n": 344,
+     "mean_error": 1.64,
+     "mae": 2.73,
+     "rmse": 3.67,
+     "coverage_80": 0.8285,
+     "below_80": 6,
+     "above_80": 53
     }
    }
   }
  },
  "h2": {
   "races": {
-   "n": 45,
-   "mean": 2.45,
-   "sd": 2.92,
-   "mae": 3.34,
-   "rmse": 3.79
+   "n": 50,
+   "mean": 2.23,
+   "sd": 3.14,
+   "mae": 3.33,
+   "rmse": 3.83
   },
   "by_office": {
    "senate": {
-    "n": 21,
-    "mean": 3.21,
-    "sd": 2.12,
-    "mae": 3.36,
-    "rmse": 3.82
+    "n": 23,
+    "mean": 2.62,
+    "sd": 3.1,
+    "mae": 3.45,
+    "rmse": 4.01
    },
    "governor": {
-    "n": 24,
-    "mean": 1.79,
-    "sd": 3.38,
-    "mae": 3.32,
-    "rmse": 3.76
+    "n": 27,
+    "mean": 1.89,
+    "sd": 3.19,
+    "mae": 3.23,
+    "rmse": 3.66
    }
   },
   "share_positive": 0.8,
   "model": {
    "s_nat_logit": 0.0585,
-   "mean_error_logit": 0.1029,
-   "mean_error_in_s_nat": 1.76,
-   "race_sd_expected_logit": 0.1595,
-   "race_sd_realised_logit": 0.1268
+   "mean_error_logit": 0.0913,
+   "mean_error_in_s_nat": 1.56,
+   "race_sd_expected_logit": 0.1576,
+   "race_sd_realised_logit": 0.143
   },
   "correlations": {
    "n_polls": {
-    "n": 45,
-    "pearson_r": 0.128,
-    "pearson_p": 0.404,
-    "spearman_rho": 0.045,
-    "spearman_p": 0.769
+    "n": 50,
+    "pearson_r": 0.102,
+    "pearson_p": 0.479,
+    "spearman_rho": 0.033,
+    "spearman_p": 0.819
    },
    "n_eff": {
-    "n": 45,
-    "pearson_r": 0.127,
-    "pearson_p": 0.407,
-    "spearman_rho": 0.061,
-    "spearman_p": 0.69
+    "n": 50,
+    "pearson_r": 0.118,
+    "pearson_p": 0.414,
+    "spearman_rho": 0.048,
+    "spearman_p": 0.741
    },
    "mean_age_days": {
-    "n": 45,
-    "pearson_r": -0.02,
-    "pearson_p": 0.897,
-    "spearman_rho": -0.162,
-    "spearman_p": 0.288
+    "n": 50,
+    "pearson_r": -0.001,
+    "pearson_p": 0.997,
+    "spearman_rho": -0.121,
+    "spearman_p": 0.401
    },
    "newest_age_days": {
-    "n": 45,
-    "pearson_r": -0.06,
-    "pearson_p": 0.696,
-    "spearman_rho": -0.332,
-    "spearman_p": 0.026
+    "n": 50,
+    "pearson_r": -0.009,
+    "pearson_p": 0.948,
+    "spearman_rho": -0.268,
+    "spearman_p": 0.06
    },
    "share_partisan_r": {
-    "n": 45,
-    "pearson_r": 0.273,
-    "pearson_p": 0.069,
-    "spearman_rho": 0.256,
-    "spearman_p": 0.09
+    "n": 50,
+    "pearson_r": 0.149,
+    "pearson_p": 0.301,
+    "spearman_rho": 0.224,
+    "spearman_p": 0.118
    },
    "share_partisan_d": {
-    "n": 45,
-    "pearson_r": -0.388,
-    "pearson_p": 0.008,
-    "spearman_rho": -0.488,
-    "spearman_p": 0.001
+    "n": 50,
+    "pearson_r": -0.282,
+    "pearson_p": 0.047,
+    "spearman_rho": -0.384,
+    "spearman_p": 0.006
    },
    "share_lv": {
-    "n": 45,
-    "pearson_r": -0.076,
-    "pearson_p": 0.621,
-    "spearman_rho": -0.111,
-    "spearman_p": 0.47
+    "n": 50,
+    "pearson_r": -0.069,
+    "pearson_p": 0.636,
+    "spearman_rho": -0.016,
+    "spearman_p": 0.913
    }
   },
   "by_bucket": {
    "1-4": {
-    "n": 20,
-    "mean": 2.41,
-    "sd": 3.78,
-    "mae": 3.82,
-    "rmse": 4.4
+    "n": 23,
+    "mean": 2.42,
+    "sd": 3.55,
+    "mae": 3.62,
+    "rmse": 4.23
    },
    "5+": {
-    "n": 25,
-    "mean": 2.49,
-    "sd": 2.07,
-    "mae": 2.96,
-    "rmse": 3.21
+    "n": 27,
+    "mean": 2.07,
+    "sd": 2.81,
+    "mae": 3.09,
+    "rmse": 3.45
    }
   },
   "largest": [
    {
+    "id": "2026-MT-SEN",
+    "err": -7.91,
+    "n_polls": 9
+   },
+   {
     "id": "2026-RI-GOV",
-    "err": 7.5,
+    "err": 7.64,
     "n_polls": 4
    },
    {
@@ -436,7 +441,7 @@
    },
    {
     "id": "2026-OK-SEN",
-    "err": 6.85,
+    "err": 6.93,
     "n_polls": 1
    },
    {
@@ -448,79 +453,74 @@
     "id": "2026-TN-SEN",
     "err": 5.99,
     "n_polls": 1
-   },
-   {
-    "id": "2026-GA-GOV",
-    "err": 5.23,
-    "n_polls": 7
    }
   ],
   "polls": {
    "all": {
-    "n": 367,
-    "mean": 2.76,
-    "sd": 2.89,
-    "mae": 3.37,
-    "rmse": 3.99
+    "n": 401,
+    "mean": 2.48,
+    "sd": 3.36,
+    "mae": 3.46,
+    "rmse": 4.17
    },
    "age_corr": {
-    "n": 367,
-    "pearson_r": -0.044,
-    "pearson_p": 0.398,
-    "spearman_rho": -0.044,
-    "spearman_p": 0.402
+    "n": 401,
+    "pearson_r": -0.084,
+    "pearson_p": 0.094,
+    "spearman_rho": -0.037,
+    "spearman_p": 0.454
    },
    "by_age_days": {
     "0-14": {
-     "n": 108,
-     "mean": 2.94,
-     "sd": 2.87,
-     "mae": 3.61,
-     "rmse": 4.1
-    },
-    "15-28": {
-     "n": 110,
-     "mean": 2.52,
-     "sd": 2.56,
-     "mae": 2.91,
-     "rmse": 3.59
-    },
-    "29-56": {
-     "n": 108,
-     "mean": 3.0,
-     "sd": 2.95,
-     "mae": 3.54,
+     "n": 118,
+     "mean": 2.58,
+     "sd": 3.32,
+     "mae": 3.6,
      "rmse": 4.2
     },
+    "15-28": {
+     "n": 114,
+     "mean": 2.44,
+     "sd": 2.79,
+     "mae": 2.99,
+     "rmse": 3.7
+    },
+    "29-56": {
+     "n": 117,
+     "mean": 2.74,
+     "sd": 3.18,
+     "mae": 3.5,
+     "rmse": 4.19
+    },
     "57-90": {
-     "n": 41,
-     "mean": 2.26,
-     "sd": 3.52,
-     "mae": 3.52,
-     "rmse": 4.14
+     "n": 52,
+     "mean": 1.73,
+     "sd": 4.71,
+     "mae": 4.04,
+     "rmse": 4.97
     }
    },
    "by_label": {
     "unlabelled": {
-     "n": 204,
-     "mean": 2.62,
-     "sd": 2.96,
-     "mae": 3.3,
-     "rmse": 3.94
+     "n": 223,
+     "mean": 2.35,
+     "sd": 3.23,
+     "mae": 3.29,
+     "rmse": 3.99
     },
     "Democratic-labelled": {
-     "n": 47,
-     "mean": 1.04,
-     "sd": 2.95,
-     "mae": 2.44,
-     "rmse": 3.09
+     "n": 52,
+     "mean": 0.46,
+     "sd": 4.19,
+     "mae": 3.0,
+     "rmse": 4.18
     },
     "Republican-labelled": {
-     "n": 116,
-     "mean": 3.69,
-     "sd": 2.35,
-     "mae": 3.87,
-     "rmse": 4.37
+     "n": 126,
+     "mean": 3.55,
+     "sd": 2.74,
+     "mae": 3.93,
+     "rmse": 4.48
     }
    },
    "by_population": {
@@ -532,18 +532,18 @@
      "rmse": 1.81
     },
     "LV": {
-     "n": 337,
-     "mean": 2.9,
-     "sd": 2.7,
-     "mae": 3.31,
-     "rmse": 3.96
+     "n": 366,
+     "mean": 2.64,
+     "sd": 3.21,
+     "mae": 3.42,
+     "rmse": 4.15
     },
     "RV": {
-     "n": 28,
-     "mean": 1.11,
-     "sd": 4.4,
-     "mae": 4.16,
-     "rmse": 4.46
+     "n": 33,
+     "mean": 0.68,
+     "sd": 4.48,
+     "mae": 3.96,
+     "rmse": 4.47
     },
     "V": {
      "n": 1,
@@ -557,152 +557,162 @@
     {
      "pollster": "yougov",
      "races": 19,
-     "mean_err": 2.25
+     "mean_err": 2.2
     },
     {
      "pollster": "co/efficient",
      "races": 17,
-     "mean_err": 4.56
+     "mean_err": 4.49
     },
     {
      "pollster": "insideradvantage",
      "races": 13,
-     "mean_err": 3.71
+     "mean_err": 3.69
+    },
+    {
+     "pollster": "quantus insights",
+     "races": 12,
+     "mean_err": 2.68
     },
     {
      "pollster": "trafalgar group",
      "races": 12,
-     "mean_err": 3.78
+     "mean_err": 3.76
     },
     {
      "pollster": "beacon research / shaw & co. research",
      "races": 11,
-     "mean_err": 3.07
+     "mean_err": 3.04
     },
     {
      "pollster": "marist university",
      "races": 11,
-     "mean_err": 2.5
+     "mean_err": 2.47
     },
     {
      "pollster": "new york times/siena university",
      "races": 11,
-     "mean_err": 2.36
+     "mean_err": 2.35
     },
     {
-     "pollster": "quantus insights",
+     "pollster": "emerson college",
      "races": 10,
-     "mean_err": 4.13
+     "mean_err": 3.13
     },
     {
      "pollster": "rasmussen reports",
      "races": 10,
-     "mean_err": 3.25
+     "mean_err": 3.22
+    },
+    {
+     "pollster": "suffolk university",
+     "races": 10,
+     "mean_err": 0.31
+    },
+    {
+     "pollster": "university of new hampshire",
+     "races": 10,
+     "mean_err": 2.7
     },
     {
      "pollster": "activote",
      "races": 9,
-     "mean_err": 4.17
+     "mean_err": 4.19
     },
     {
      "pollster": "big data poll",
      "races": 9,
-     "mean_err": 3.54
+     "mean_err": 3.58
     },
     {
-     "pollster": "emerson college",
-     "races": 9,
-     "mean_err": 3.13
+     "pollster": "fabrizio ward / impact research",
+     "races": 8,
+     "mean_err": 3.25
     },
     {
      "pollster": "ssrs",
      "races": 8,
-     "mean_err": 1.28
-    },
-    {
-     "pollster": "suffolk university",
-     "races": 8,
-     "mean_err": 0.07
-    },
-    {
-     "pollster": "university of new hampshire",
-     "races": 8,
-     "mean_err": 2.51
-    },
-    {
-     "pollster": "fabrizio ward / impact research",
-     "races": 7,
-     "mean_err": 3.42
+     "mean_err": 1.21
     },
     {
      "pollster": "abacus data",
      "races": 5,
-     "mean_err": 1.3
+     "mean_err": 1.24
     },
     {
      "pollster": "national public affairs",
      "races": 5,
-     "mean_err": 3.96
+     "mean_err": 3.85
     },
     {
      "pollster": "tipp insights",
      "races": 5,
-     "mean_err": 1.01
+     "mean_err": 1.07
     },
     {
      "pollster": "cygnal",
      "races": 4,
-     "mean_err": 3.65
+     "mean_err": 3.66
     },
     {
      "pollster": "gbao",
      "races": 4,
-     "mean_err": 1.46
+     "mean_err": 1.52
+    },
+    {
+     "pollster": "global strategy group",
+     "races": 4,
+     "mean_err": 1.13
     },
     {
      "pollster": "guidant polling & strategy",
      "races": 4,
-     "mean_err": 3.1
+     "mean_err": 3.23
     },
     {
      "pollster": "public policy polling",
      "races": 4,
-     "mean_err": 1.12
+     "mean_err": 1.04
     },
     {
      "pollster": "surveyusa",
      "races": 4,
-     "mean_err": 2.57
+     "mean_err": 2.52
     },
     {
      "pollster": "the washington post/sspg",
      "races": 4,
-     "mean_err": 1.22
+     "mean_err": 1.08
     },
     {
      "pollster": "z to a research",
      "races": 4,
-     "mean_err": 0.22
+     "mean_err": 0.33
     },
     {
      "pollster": "cbs news/yougov",
      "races": 3,
-     "mean_err": 4.81
+     "mean_err": 4.75
     },
     {
      "pollster": "change research",
      "races": 3,
-     "mean_err": 1.18
+     "mean_err": 1.24
     },
     {
-     "pollster": "global strategy group",
+     "pollster": "concord public opinion partners",
      "races": 3,
-     "mean_err": 0.07
+     "mean_err": -4.76
+    },
+    {
+     "pollster": "gqr",
+     "races": 3,
+     "mean_err": -3.35
     },
     {
      "pollster": "gs strategy group / new river strategies",
      "races": 3,
-     "mean_err": 1.37
+     "mean_err": 1.44
     },
     {
      "pollster": "gs strategy group /new river strategies",
@@ -710,19 +720,24 @@
      "mean_err": 1.79
     },
     {
+     "pollster": "hart research",
+     "races": 3,
+     "mean_err": -0.57
+    },
+    {
      "pollster": "mason-dixon",
      "races": 3,
-     "mean_err": 5.3
+     "mean_err": 5.38
     },
     {
      "pollster": "quinnipiac university",
      "races": 3,
-     "mean_err": -0.35
+     "mean_err": -0.32
     },
     {
      "pollster": "socal strategies",
      "races": 3,
-     "mean_err": 5.04
+     "mean_err": 5.17
     },
     {
      "pollster": "targoz market research",
@@ -732,7 +747,7 @@
     {
      "pollster": "univision/yougov",
      "races": 3,
-     "mean_err": 3.4
+     "mean_err": 3.47
     }
    ]
   }
@@ -740,80 +755,80 @@
  "h3": {
   "all": {
    "called": 64,
-   "vote_n": 52,
+   "vote_n": 58,
    "mean_poll_weight": 0.538,
    "blend": {
     "called": 64,
     "brier": 0.0581,
-    "vote_n": 52,
-    "mean_error": 2.64,
-    "mae": 3.6,
-    "coverage_80": 0.6346
+    "vote_n": 58,
+    "mean_error": 2.33,
+    "mae": 3.68,
+    "coverage_80": 0.6552
    },
    "fundamentals": {
     "called": 64,
     "brier": 0.0891,
-    "vote_n": 52,
-    "mean_error": 3.74,
-    "mae": 4.78,
+    "vote_n": 58,
+    "mean_error": 3.0,
+    "mae": 5.04,
     "coverage_80": null
    },
    "polls_only": {
     "called": 53,
     "brier": 0.0655,
-    "vote_n": 45,
-    "mean_error": 2.45,
-    "mae": 3.34,
-    "coverage_80": 0.7778
+    "vote_n": 50,
+    "mean_error": 2.23,
+    "mae": 3.33,
+    "coverage_80": 0.82
    }
   },
   "polled": {
    "called": 53,
-   "vote_n": 45,
+   "vote_n": 50,
    "mean_poll_weight": 0.649,
    "blend": {
     "called": 53,
     "brier": 0.0674,
-    "vote_n": 45,
-    "mean_error": 3.01,
-    "mae": 3.38,
-    "coverage_80": 0.6444
+    "vote_n": 50,
+    "mean_error": 2.55,
+    "mae": 3.45,
+    "coverage_80": 0.66
    },
    "fundamentals": {
     "called": 53,
     "brier": 0.1048,
-    "vote_n": 45,
-    "mean_error": 4.28,
-    "mae": 4.73,
+    "vote_n": 50,
+    "mean_error": 3.33,
+    "mae": 5.03,
     "coverage_80": null
    },
    "polls_only": {
     "called": 53,
     "brier": 0.0655,
-    "vote_n": 45,
-    "mean_error": 2.45,
-    "mae": 3.34,
-    "coverage_80": 0.7778
+    "vote_n": 50,
+    "mean_error": 2.23,
+    "mae": 3.33,
+    "coverage_80": 0.82
    }
   },
   "0": {
    "called": 11,
-   "vote_n": 7,
+   "vote_n": 8,
    "mean_poll_weight": 0.0,
    "blend": {
     "called": 11,
     "brier": 0.0132,
-    "vote_n": 7,
-    "mean_error": 0.27,
-    "mae": 5.04,
-    "coverage_80": 0.5714
+    "vote_n": 8,
+    "mean_error": 0.97,
+    "mae": 5.14,
+    "coverage_80": 0.625
    },
    "fundamentals": {
     "called": 11,
     "brier": 0.0132,
-    "vote_n": 7,
-    "mean_error": 0.27,
-    "mae": 5.04,
+    "vote_n": 8,
+    "mean_error": 0.97,
+    "mae": 5.14,
     "coverage_80": null
    },
    "polls_only": {
@@ -827,60 +842,60 @@
   },
   "1-4": {
    "called": 25,
-   "vote_n": 20,
+   "vote_n": 23,
    "mean_poll_weight": 0.549,
    "blend": {
     "called": 25,
     "brier": 0.0175,
-    "vote_n": 20,
-    "mean_error": 3.45,
-    "mae": 3.78,
-    "coverage_80": 0.65
+    "vote_n": 23,
+    "mean_error": 3.25,
+    "mae": 3.53,
+    "coverage_80": 0.6522
    },
    "fundamentals": {
     "called": 25,
     "brier": 0.0226,
-    "vote_n": 20,
-    "mean_error": 5.63,
-    "mae": 5.71,
+    "vote_n": 23,
+    "mean_error": 4.98,
+    "mae": 5.47,
     "coverage_80": null
    },
    "polls_only": {
     "called": 25,
     "brier": 0.0373,
-    "vote_n": 20,
-    "mean_error": 2.41,
-    "mae": 3.82,
-    "coverage_80": 0.85
+    "vote_n": 23,
+    "mean_error": 2.42,
+    "mae": 3.62,
+    "coverage_80": 0.8696
    }
   },
   "5+": {
    "called": 28,
-   "vote_n": 25,
+   "vote_n": 27,
    "mean_poll_weight": 0.739,
    "blend": {
     "called": 28,
     "brier": 0.112,
-    "vote_n": 25,
-    "mean_error": 2.65,
-    "mae": 3.06,
-    "coverage_80": 0.64
+    "vote_n": 27,
+    "mean_error": 1.95,
+    "mae": 3.39,
+    "coverage_80": 0.6667
    },
    "fundamentals": {
     "called": 28,
     "brier": 0.1783,
-    "vote_n": 25,
-    "mean_error": 3.2,
-    "mae": 3.96,
+    "vote_n": 27,
+    "mean_error": 1.92,
+    "mae": 4.65,
     "coverage_80": null
    },
    "polls_only": {
     "called": 28,
     "brier": 0.0907,
-    "vote_n": 25,
-    "mean_error": 2.49,
-    "mae": 2.96,
-    "coverage_80": 0.72
+    "vote_n": 27,
+    "mean_error": 2.07,
+    "mae": 3.09,
+    "coverage_80": 0.7778
    }
   },
   "few_polls_worse_for_polls_only": [
@@ -890,9 +905,9 @@
    "2026-OK-GOV"
   ],
   "best_weight_in_hindsight": {
-   "n": 45,
-   "w": 0.96,
-   "v1_mean_weight": 0.644
+   "n": 50,
+   "w": 1.051,
+   "v1_mean_weight": 0.648
   }
  },
  "h4": {
@@ -904,43 +919,43 @@
    "q90_points": 1.62
   },
   "house": {
-   "n": 253,
-   "realised_mean_shift_points": 3.28,
-   "sd_simulated": 1.347,
-   "q_simulated": 1.686,
-   "percentile_realised": 0.989,
-   "scale_needed": 1.945,
-   "sd_needed": 2.621
+   "n": 286,
+   "realised_mean_shift_points": 3.32,
+   "sd_simulated": 1.351,
+   "q_simulated": 1.695,
+   "percentile_realised": 0.99,
+   "scale_needed": 1.957,
+   "sd_needed": 2.644
   },
   "senate_and_governor": {
-   "n": 52,
-   "realised_mean_shift_points": 2.64,
-   "sd_simulated": 1.114,
-   "q_simulated": 1.397,
-   "percentile_realised": 0.988,
-   "scale_needed": 1.891,
-   "sd_needed": 2.106
+   "n": 58,
+   "realised_mean_shift_points": 2.33,
+   "sd_simulated": 1.096,
+   "q_simulated": 1.363,
+   "percentile_realised": 0.981,
+   "scale_needed": 1.71,
+   "sd_needed": 1.875
   },
   "national_term": {
-   "realised_logit_shift": 0.1493,
-   "realised_shift_points_at_mean": 3.72,
-   "percentile_in_v1_t": 0.9952,
-   "scale_needed_points": 2.73,
-   "sd_needed_points": 3.02,
-   "ratio_to_v1": 2.29
+   "realised_logit_shift": 0.1514,
+   "realised_shift_points_at_mean": 3.77,
+   "percentile_in_v1_t": 0.9955,
+   "scale_needed_points": 2.77,
+   "sd_needed_points": 3.06,
+   "ratio_to_v1": 2.32
   }
  },
  "house_vote_so_far": {
-  "dem_2p": 0.5569,
+  "dem_2p": 0.5577,
   "districts_with_votes": 431,
-  "vote_weighted_pct_counted": 0.905,
-  "districts_below_95pct": 203
+  "vote_weighted_pct_counted": 0.926,
+  "districts_below_95pct": 156
  },
  "h5": {
   "status": "waiting",
   "reason": "counts are not near final",
-  "vote_weighted_pct_counted": 0.905,
-  "districts_below_95pct": 203
+  "vote_weighted_pct_counted": 0.926,
+  "districts_below_95pct": 156
  },
  "h6": {
   "as_of": "2026-11-03T12:00:00Z",
@@ -967,22 +982,22 @@
    "rmse": 0.68
   },
   "scored": {
-   "n": 45,
+   "n": 50,
    "error_v1_avg": {
-    "n": 45,
-    "mean": 2.45,
-    "sd": 2.92,
-    "mae": 3.34,
-    "rmse": 3.79
+    "n": 50,
+    "mean": 2.23,
+    "sd": 3.14,
+    "mae": 3.33,
+    "rmse": 3.82
    },
    "error_final_avg": {
-    "n": 45,
-    "mean": 1.89,
-    "sd": 2.58,
-    "mae": 2.74,
-    "rmse": 3.17
+    "n": 50,
+    "mean": 1.68,
+    "sd": 2.83,
+    "mae": 2.77,
+    "rmse": 3.27
    },
-   "share_of_error_closed": 0.231
+   "share_of_error_closed": 0.244
   }
  },
  "generic_ballot_3_november": {
@@ -994,6 +1009,13 @@
    "NBC News",
    "RealClearPolitics",
    "Silver Bulletin"
+  ],
+  "updated": [
+   "November 1, 2026",
+   "November 1, 2026",
+   "November 1, 2026",
+   "November 1, 2026",
+   "November 1, 2026"
   ],
   "dem": 51.779999999999994,
   "rep": 43.14,
@@ -1051,7 +1073,9 @@
   "ap_pulls_kept_locally": [
    "20261104T064011Z",
    "20261104T075718Z",
-   "20261104T104153Z"
+   "20261104T104153Z",
+   "20261104T194255Z",
+   "20261105T014421Z"
   ]
  }
 }
