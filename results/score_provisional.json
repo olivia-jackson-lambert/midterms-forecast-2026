@@ -1114,15 +1114,15 @@
  "chamber_chance": {
   "senate": {
    "p_dem_control": 0.629,
-   "p_rep_control": 0.333,
+   "p_rep_control": 0.334,
    "winner": "D",
    "v1_p_winner": 0.629
   },
   "house": {
-   "p_dem_control": 0.925,
+   "p_dem_control": 0.928,
    "p_rep_control": 0.067,
    "winner": "D",
-   "v1_p_winner": 0.925
+   "v1_p_winner": 0.928
   },
   "governor": {
    "p_dem_control": 0.617,

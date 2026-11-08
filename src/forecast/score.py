@@ -240,6 +240,7 @@ def chambers(f: pd.DataFrame) -> tuple[dict, dict, dict]:
     i = int((((sc["outcome"] == "D") & (sc["group"] == "independent")) | (sc["outcome"] == "other")).sum())
     r = hold_r + int((sc["outcome"] == "R").sum())
     seats = pd.read_csv(V1 / "senate_seats.csv")
+    seats["probability"] /= seats["probability"].sum()   # v1's four-decimal files sum to just under 1 (forecasts/README.md)
     seats["rep_seats"] = 100 - seats["dem_seats"] - seats["independent_seats"]
     control = "D" if d >= 51 else "R" if r >= 50 else None
     ch["senate"] = {"dem_seats": d, "rep_seats": r, "ind_seats": i, "control": control,
@@ -255,6 +256,7 @@ def chambers(f: pd.DataFrame) -> tuple[dict, dict, dict]:
     hd, hr, hi = (int((hc["outcome"] == o).sum()) for o in ("D", "R", "I"))
     hi += int((hc["outcome"] == "other").sum())
     hs = pd.read_csv(V1 / "house_seats.csv")
+    hs["probability"] /= hs["probability"].sum()
     control = "D" if hd >= 218 else "R" if hr >= 218 else None
     complete = bool(len(hc) == HOUSE_SEATS)
     ch["house"] = {"dem_seats": hd, "rep_seats": hr, "ind_seats": hi,
@@ -271,6 +273,7 @@ def chambers(f: pd.DataFrame) -> tuple[dict, dict, dict]:
     gi = int((((gc["outcome"] == "D") & (gc["group"] == "independent")) | (gc["outcome"] == "other")).sum())
     gr = GOVERNORS_NOT_UP["R"] + int((gc["outcome"] == "R").sum())
     gs = pd.read_csv(V1 / "governor_seats.csv")
+    gs["probability"] /= gs["probability"].sum()
     gs["rep_seats"] = 50 - gs["dem_seats"] - gs["independent_seats"]
     control = "D" if gd >= 26 else "R" if gr >= 26 else None
     ch["governor"] = {"dem_seats": gd, "rep_seats": gr, "ind_seats": gi, "control": control,

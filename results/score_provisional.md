@@ -86,7 +86,7 @@ The target coverage is 80%, with about 10% of results on each side. For the inde
 | | Democrats | Republicans | Other | Complete | Control | v1's chance for that party | v1 median (80% range) | Percentile |
 |---|---|---|---|---|---|---|---|---|
 | Senate | 54 | 44 | 0 | no | Democrats | 63% | 51 (48 to 54) | not final; between 92% and 99% |
-| House | 252 | 161 | 0 | no | Democrats | 92% | 234 (220 to 252) | not final; between 90% and 99% |
+| House | 252 | 161 | 0 | no | Democrats | 93% | 234 (220 to 252) | not final; between 90% and 99% |
 | Governor | 28 | 20 | 0 | no | Democrats | 62% | 26 (23 to 29) | not final; between 81% and 96% |
 
 Seats include those not up in 2026 (Senate: Democratic caucus, with independents who caucus with Democrats). Senate control needs 51 Democratic-caucus seats or 50 Republican; a governor majority is 26.
