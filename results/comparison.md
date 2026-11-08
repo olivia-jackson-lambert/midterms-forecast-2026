@@ -89,7 +89,7 @@ Each forecast against v1 on every called race both cover:
 
 ### House
 
-Outcome so far: control D; 234 Democratic seats among called races, 55 races uncalled.
+Outcome so far: control D; 252 Democratic seats among called races, 22 races uncalled.
 
 | Forecast | Chance of Democratic control | Brier | Democratic seats (median or projection, 80% range) | Source, date |
 |---|---|---|---|---|
@@ -99,36 +99,36 @@ Outcome so far: control D; 234 Democratic seats among called races, 55 races unc
 | Kalshi (market price) | 91% | 0.01 | – | [link](https://kalshi.com/markets/controlh), 2026-10-23T03:00:00Z |
 | DDHQ / The Hill | 78% | 0.05 | 236 | [link](https://elections2026.thehill.com/api/forecast/2026), 2026-10-22 |
 
-Probabilities and market prices: 378 called races covered by every forecast in this table (45 competitive; the Democratic side won 232 of all and 33 of the competitive).
+Probabilities and market prices: 411 called races covered by every forecast in this table (67 competitive; the Democratic side won 250 of all and 47 of the competitive).
 
 Not in this table because they cover under 90% of called races: Kalshi (see the head-to-head table).
 
 | Forecast | Brier | Log loss | Upsets missed | Brier, competitive | Log loss, competitive | Upsets missed, competitive | Called races covered |
 |---|---|---|---|---|---|---|---|
-| Polymarket | 0.016 | 0.076 | 9 | 0.108 | 0.359 | 8 | 378 |
-| DDHQ / The Hill | 0.025 | 0.089 | 14.5 | 0.180 | 0.538 | 13.5 | 380 |
-| v1 | 0.028 | 0.089 | 16 | 0.208 | 0.612 | 15 | 380 |
+| Polymarket | 0.031 | 0.117 | 19 | 0.157 | 0.479 | 17 | 411 |
+| DDHQ / The Hill | 0.041 | 0.135 | 25.5 | 0.225 | 0.645 | 23.5 | 413 |
+| v1 | 0.042 | 0.132 | 26 | 0.230 | 0.672 | 24 | 413 |
 
-Ratings (mapped to probabilities): 380 called races covered by every forecast in this table (42 competitive; the Democratic side won 234 of all and 35 of the competitive).
+Ratings (mapped to probabilities): 413 called races covered by every forecast in this table (58 competitive; the Democratic side won 252 of all and 46 of the competitive).
 
 Not in this table because they cover under 90% of called races: Sabato's Crystal Ball (see the head-to-head table).
 
 | Forecast | Brier | Log loss | Upsets missed | Brier, competitive | Log loss, competitive | Upsets missed, competitive | Called races covered |
 |---|---|---|---|---|---|---|---|
-| Split Ticket | 0.019 | 0.085 | 8.5 | 0.123 | 0.392 | 6.5 | 380 |
-| v1 | 0.028 | 0.090 | 16 | 0.206 | 0.606 | 14 | 380 |
-| Cook Political Report | 0.031 | 0.115 | 18 | 0.230 | 0.649 | 16 | 380 |
+| Split Ticket | 0.037 | 0.145 | 19 | 0.168 | 0.541 | 13 | 413 |
+| v1 | 0.042 | 0.132 | 26 | 0.211 | 0.615 | 20 | 413 |
+| Cook Political Report | 0.049 | 0.174 | 29.5 | 0.246 | 0.705 | 23.5 | 413 |
 
 Each forecast against v1 on every called race both cover:
 
 | Forecast | Races | Brier | v1 Brier | Log loss | v1 log loss | Competitive races | Brier, competitive | v1 Brier, competitive |
 |---|---|---|---|---|---|---|---|---|
-| Cook Political Report | 380 | 0.031 | 0.028 | 0.115 | 0.090 | 42 | 0.230 | 0.206 |
-| DDHQ / The Hill | 380 | 0.025 | 0.028 | 0.090 | 0.090 | 41 | 0.179 | 0.211 |
-| Kalshi | 63 | 0.035 | 0.086 | 0.145 | 0.271 | 21 | 0.100 | 0.213 |
-| Polymarket | 378 | 0.016 | 0.028 | 0.076 | 0.089 | 42 | 0.115 | 0.202 |
-| Sabato's Crystal Ball | 66 | 0.150 | 0.154 | 0.464 | 0.459 | 37 | 0.213 | 0.229 |
-| Split Ticket | 380 | 0.019 | 0.028 | 0.085 | 0.090 | 38 | 0.135 | 0.227 |
+| Cook Political Report | 413 | 0.049 | 0.042 | 0.174 | 0.132 | 58 | 0.246 | 0.211 |
+| DDHQ / The Hill | 413 | 0.041 | 0.042 | 0.135 | 0.132 | 61 | 0.221 | 0.228 |
+| Kalshi | 72 | 0.043 | 0.089 | 0.170 | 0.284 | 29 | 0.102 | 0.190 |
+| Polymarket | 411 | 0.031 | 0.042 | 0.117 | 0.132 | 63 | 0.153 | 0.218 |
+| Sabato's Crystal Ball | 84 | 0.169 | 0.164 | 0.510 | 0.484 | 53 | 0.230 | 0.228 |
+| Split Ticket | 413 | 0.037 | 0.042 | 0.145 | 0.132 | 53 | 0.183 | 0.231 |
 
 ### Governor
 
@@ -206,7 +206,7 @@ Each forecast against v1 on every called race both cover:
 
 ### House
 
-Outcome so far: control D; 234 Democratic seats among called races, 55 races uncalled.
+Outcome so far: control D; 252 Democratic seats among called races, 22 races uncalled.
 
 | Forecast | Chance of Democratic control | Brier | Democratic seats (median or projection, 80% range) | Source, date |
 |---|---|---|---|---|
@@ -215,33 +215,33 @@ Outcome so far: control D; 234 Democratic seats among called races, 55 races unc
 | v1 | 92% | 0.01 | 234 (220 to 252) | forecasts/v1, 2026-10-22T23:25:15Z |
 | DDHQ / The Hill | 84% | 0.03 | 239 (211 to 274) | [link](https://elections2026.thehill.com/api/forecast/2026), 2026-11-03 |
 
-Probabilities and market prices: 378 called races covered by every forecast in this table (48 competitive; the Democratic side won 232 of all and 34 of the competitive).
+Probabilities and market prices: 411 called races covered by every forecast in this table (71 competitive; the Democratic side won 250 of all and 48 of the competitive).
 
 Not in this table because they cover under 90% of called races: Kalshi (see the head-to-head table).
 
 | Forecast | Brier | Log loss | Upsets missed | Brier, competitive | Log loss, competitive | Upsets missed, competitive | Called races covered |
 |---|---|---|---|---|---|---|---|
-| Polymarket | 0.011 | 0.059 | 6 | 0.084 | 0.296 | 6 | 378 |
-| DDHQ / The Hill | 0.021 | 0.078 | 12.5 | 0.157 | 0.484 | 12.5 | 380 |
-| v1 | 0.028 | 0.089 | 16 | 0.213 | 0.632 | 16 | 380 |
+| Polymarket | 0.024 | 0.092 | 15 | 0.123 | 0.390 | 14 | 411 |
+| DDHQ / The Hill | 0.036 | 0.120 | 23.5 | 0.195 | 0.572 | 22.5 | 413 |
+| v1 | 0.042 | 0.132 | 26 | 0.230 | 0.674 | 25 | 413 |
 
-Ratings (mapped to probabilities): 380 called races covered by every forecast in this table (42 competitive; the Democratic side won 234 of all and 35 of the competitive).
+Ratings (mapped to probabilities): 413 called races covered by every forecast in this table (58 competitive; the Democratic side won 252 of all and 46 of the competitive).
 
 | Forecast | Brier | Log loss | Upsets missed | Brier, competitive | Log loss, competitive | Upsets missed, competitive | Called races covered |
 |---|---|---|---|---|---|---|---|
-| Split Ticket | 0.018 | 0.084 | 6.5 | 0.129 | 0.417 | 5.5 | 380 |
-| Cook Political Report | 0.025 | 0.099 | 13 | 0.188 | 0.551 | 12 | 380 |
-| v1 | 0.028 | 0.090 | 16 | 0.226 | 0.667 | 15 | 380 |
+| Split Ticket | 0.035 | 0.137 | 17.5 | 0.165 | 0.521 | 12.5 | 413 |
+| Cook Political Report | 0.039 | 0.141 | 23 | 0.200 | 0.580 | 18 | 413 |
+| v1 | 0.042 | 0.132 | 26 | 0.226 | 0.658 | 21 | 413 |
 
 Each forecast against v1 on every called race both cover:
 
 | Forecast | Races | Brier | v1 Brier | Log loss | v1 log loss | Competitive races | Brier, competitive | v1 Brier, competitive |
 |---|---|---|---|---|---|---|---|---|
-| Cook Political Report | 380 | 0.025 | 0.028 | 0.099 | 0.090 | 42 | 0.188 | 0.226 |
-| DDHQ / The Hill | 380 | 0.021 | 0.028 | 0.078 | 0.090 | 46 | 0.148 | 0.208 |
-| Kalshi | 63 | 0.023 | 0.086 | 0.111 | 0.271 | 21 | 0.064 | 0.213 |
-| Polymarket | 378 | 0.011 | 0.028 | 0.059 | 0.089 | 40 | 0.099 | 0.232 |
-| Split Ticket | 380 | 0.018 | 0.028 | 0.084 | 0.090 | 40 | 0.134 | 0.237 |
+| Cook Political Report | 413 | 0.039 | 0.042 | 0.141 | 0.132 | 58 | 0.200 | 0.226 |
+| DDHQ / The Hill | 413 | 0.036 | 0.042 | 0.120 | 0.132 | 68 | 0.192 | 0.230 |
+| Kalshi | 72 | 0.031 | 0.089 | 0.138 | 0.284 | 29 | 0.074 | 0.190 |
+| Polymarket | 411 | 0.024 | 0.042 | 0.092 | 0.132 | 61 | 0.141 | 0.252 |
+| Split Ticket | 413 | 0.035 | 0.042 | 0.137 | 0.132 | 56 | 0.170 | 0.234 |
 
 ### Governor
 
@@ -286,5 +286,5 @@ Each forecast against v1 on every called race both cover:
 | Sabato's Crystal Ball | governor ratings; final (2 November) ratings | no 2026 governor page in the Archive; the final-ratings page was archived only as Cloudflare 403 challenges, and the live page returns the same challenge |
 | Kalshi | most House districts | Kalshi listed markets for about 76 districts |
 
-Calls: results/results.json, pulled 2026-11-05T01:44:21Z (provisional).
-Generated by `python -m forecast.compare` at 2026-11-05T01:46:46Z.
+Calls: results/results.json, pulled 2026-11-08T22:59:13Z (provisional).
+Generated by `python -m forecast.compare` at 2026-11-08T22:59:37Z.

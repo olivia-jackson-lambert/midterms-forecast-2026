@@ -1,47 +1,47 @@
 {
- "as_of": "2026-11-05T01:44:21Z",
+ "as_of": "2026-11-08T22:59:13Z",
  "status": "provisional",
- "pull_id": "20261105T014421Z",
+ "pull_id": "20261108T225913Z",
  "min_counted_for_vote_share": 0.85,
  "races": {
   "all": {
    "races": 503,
-   "called": 444,
-   "favourites_won": 422,
-   "upsets": 22,
+   "called": 477,
+   "favourites_won": 445,
+   "upsets": 32,
    "ties": 0,
-   "expected_upsets": 22.31,
-   "brier": 0.0322,
-   "log_loss": 0.1035,
+   "expected_upsets": 27.86,
+   "brier": 0.0445,
+   "log_loss": 0.1393,
    "calibration": [
     {
      "bin": "0.0-0.2",
-     "races": 168,
-     "mean_p": 0.0249,
-     "win_rate": 0.0298
+     "races": 186,
+     "mean_p": 0.0314,
+     "win_rate": 0.0538
     },
     {
      "bin": "0.2-0.4",
-     "races": 15,
-     "mean_p": 0.3041,
+     "races": 21,
+     "mean_p": 0.307,
      "win_rate": 0.6667
     },
     {
      "bin": "0.4-0.6",
-     "races": 14,
-     "mean_p": 0.5084,
+     "races": 16,
+     "mean_p": 0.5016,
      "win_rate": 1.0
     },
     {
      "bin": "0.6-0.8",
-     "races": 15,
-     "mean_p": 0.6985,
+     "races": 19,
+     "mean_p": 0.7034,
      "win_rate": 1.0
     },
     {
      "bin": "0.8-1.0",
-     "races": 232,
-     "mean_p": 0.989,
+     "races": 235,
+     "mean_p": 0.9891,
      "win_rate": 1.0
     }
    ],
@@ -53,16 +53,40 @@
      "v1_p_winner": 0.062
     },
     {
+     "id": "NC-06",
+     "winner_party": "D",
+     "winner_name": "Cyril Jefferson",
+     "v1_p_winner": 0.069
+    },
+    {
      "id": "IN-05",
      "winner_party": "D",
      "winner_name": "J. D. Ford",
      "v1_p_winner": 0.076
     },
     {
+     "id": "NC-13",
+     "winner_party": "D",
+     "winner_name": "Paul Barringer",
+     "v1_p_winner": 0.083
+    },
+    {
+     "id": "NC-09",
+     "winner_party": "D",
+     "winner_name": "Richard Ojeda",
+     "v1_p_winner": 0.099
+    },
+    {
      "id": "TX-09",
      "winner_party": "D",
      "winner_name": "Leticia Gutierrez",
      "v1_p_winner": 0.108
+    },
+    {
+     "id": "NC-14",
+     "winner_party": "D",
+     "winner_name": "Lakesha Womack",
+     "v1_p_winner": 0.118
     },
     {
      "id": "2026-SC-SEN",
@@ -75,6 +99,12 @@
      "winner_party": "D",
      "winner_name": "Gina Hinojosa",
      "v1_p_winner": 0.179
+    },
+    {
+     "id": "NJ-02",
+     "winner_party": "D",
+     "winner_name": "Zack Mullock",
+     "v1_p_winner": 0.183
     },
     {
      "id": "OH-07",
@@ -101,6 +131,18 @@
      "v1_p_winner": 0.276
     },
     {
+     "id": "NV-02",
+     "winner_party": "D",
+     "winner_name": "Teresa Benitez-Thompson",
+     "v1_p_winner": 0.301
+    },
+    {
+     "id": "CO-05",
+     "winner_party": "D",
+     "winner_name": "Jessica Killin",
+     "v1_p_winner": 0.305
+    },
+    {
      "id": "IA-01",
      "winner_party": "D",
      "winner_name": "Christina Bohannan",
@@ -111,6 +153,12 @@
      "winner_party": "D",
      "winner_name": "Paige Cognetti",
      "v1_p_winner": 0.345
+    },
+    {
+     "id": "SC-01",
+     "winner_party": "D",
+     "winner_name": "Nancy Lacore",
+     "v1_p_winner": 0.347
     },
     {
      "id": "2026-KS-SEN",
@@ -131,10 +179,22 @@
      "v1_p_winner": 0.373
     },
     {
+     "id": "OH-10",
+     "winner_party": "D",
+     "winner_name": "Kristina Knickerbocker",
+     "v1_p_winner": 0.373
+    },
+    {
      "id": "WI-03",
      "winner_party": "D",
      "winner_name": "Rebecca Cooke",
      "v1_p_winner": 0.393
+    },
+    {
+     "id": "MT-01",
+     "winner_party": "D",
+     "winner_name": "Sam Forstag",
+     "v1_p_winner": 0.402
     },
     {
      "id": "2026-IA-SEN",
@@ -181,8 +241,8 @@
    ],
    "unmodelled_winners": [],
    "baseline_lean": {
-    "brier": 0.1306,
-    "favourites_won": 386
+    "brier": 0.1509,
+    "favourites_won": 405
    }
   },
   "senate": {
@@ -321,42 +381,42 @@
   },
   "house": {
    "races": 435,
-   "called": 380,
-   "favourites_won": 364,
-   "upsets": 16,
+   "called": 413,
+   "favourites_won": 387,
+   "upsets": 26,
    "ties": 0,
-   "expected_upsets": 16.64,
-   "brier": 0.0278,
-   "log_loss": 0.0903,
+   "expected_upsets": 22.2,
+   "brier": 0.0424,
+   "log_loss": 0.1327,
    "calibration": [
     {
      "bin": "0.0-0.2",
-     "races": 145,
-     "mean_p": 0.0225,
-     "win_rate": 0.0207
+     "races": 163,
+     "mean_p": 0.0302,
+     "win_rate": 0.0491
     },
     {
      "bin": "0.2-0.4",
-     "races": 12,
-     "mean_p": 0.29,
+     "races": 18,
+     "mean_p": 0.2981,
      "win_rate": 0.6667
     },
     {
      "bin": "0.4-0.6",
-     "races": 10,
-     "mean_p": 0.5088,
+     "races": 12,
+     "mean_p": 0.4997,
      "win_rate": 1.0
     },
     {
      "bin": "0.6-0.8",
-     "races": 12,
-     "mean_p": 0.6887,
+     "races": 16,
+     "mean_p": 0.697,
      "win_rate": 1.0
     },
     {
      "bin": "0.8-1.0",
-     "races": 201,
-     "mean_p": 0.9929,
+     "races": 204,
+     "mean_p": 0.993,
      "win_rate": 1.0
     }
    ],
@@ -368,16 +428,46 @@
      "v1_p_winner": 0.062
     },
     {
+     "id": "NC-06",
+     "winner_party": "D",
+     "winner_name": "Cyril Jefferson",
+     "v1_p_winner": 0.069
+    },
+    {
      "id": "IN-05",
      "winner_party": "D",
      "winner_name": "J. D. Ford",
      "v1_p_winner": 0.076
     },
     {
+     "id": "NC-13",
+     "winner_party": "D",
+     "winner_name": "Paul Barringer",
+     "v1_p_winner": 0.083
+    },
+    {
+     "id": "NC-09",
+     "winner_party": "D",
+     "winner_name": "Richard Ojeda",
+     "v1_p_winner": 0.099
+    },
+    {
      "id": "TX-09",
      "winner_party": "D",
      "winner_name": "Leticia Gutierrez",
      "v1_p_winner": 0.108
+    },
+    {
+     "id": "NC-14",
+     "winner_party": "D",
+     "winner_name": "Lakesha Womack",
+     "v1_p_winner": 0.118
+    },
+    {
+     "id": "NJ-02",
+     "winner_party": "D",
+     "winner_name": "Zack Mullock",
+     "v1_p_winner": 0.183
     },
     {
      "id": "OH-07",
@@ -404,6 +494,18 @@
      "v1_p_winner": 0.276
     },
     {
+     "id": "NV-02",
+     "winner_party": "D",
+     "winner_name": "Teresa Benitez-Thompson",
+     "v1_p_winner": 0.301
+    },
+    {
+     "id": "CO-05",
+     "winner_party": "D",
+     "winner_name": "Jessica Killin",
+     "v1_p_winner": 0.305
+    },
+    {
      "id": "IA-01",
      "winner_party": "D",
      "winner_name": "Christina Bohannan",
@@ -416,16 +518,34 @@
      "v1_p_winner": 0.345
     },
     {
+     "id": "SC-01",
+     "winner_party": "D",
+     "winner_name": "Nancy Lacore",
+     "v1_p_winner": 0.347
+    },
+    {
      "id": "MO-02",
      "winner_party": "D",
      "winner_name": "Fred Wellman",
      "v1_p_winner": 0.365
     },
     {
+     "id": "OH-10",
+     "winner_party": "D",
+     "winner_name": "Kristina Knickerbocker",
+     "v1_p_winner": 0.373
+    },
+    {
      "id": "WI-03",
      "winner_party": "D",
      "winner_name": "Rebecca Cooke",
      "v1_p_winner": 0.393
+    },
+    {
+     "id": "MT-01",
+     "winner_party": "D",
+     "winner_name": "Sam Forstag",
+     "v1_p_winner": 0.402
     },
     {
      "id": "TX-35",
@@ -460,8 +580,8 @@
    ],
    "unmodelled_winners": [],
    "baseline_lean": {
-    "brier": 0.1026,
-    "favourites_won": 341
+    "brier": 0.1283,
+    "favourites_won": 360
    }
   },
   "independent": {
@@ -581,36 +701,36 @@
   },
   "house_contested": {
    "races": 416,
-   "called": 367,
-   "favourites_won": 351,
-   "upsets": 16,
+   "called": 397,
+   "favourites_won": 371,
+   "upsets": 26,
    "ties": 0,
-   "expected_upsets": 16.41,
-   "brier": 0.0287,
-   "log_loss": 0.0927,
+   "expected_upsets": 21.96,
+   "brier": 0.0441,
+   "log_loss": 0.1373,
    "calibration": [
     {
      "bin": "0.0-0.2",
-     "races": 145,
-     "mean_p": 0.0225,
-     "win_rate": 0.0207
+     "races": 163,
+     "mean_p": 0.0302,
+     "win_rate": 0.0491
     },
     {
      "bin": "0.2-0.4",
-     "races": 12,
-     "mean_p": 0.29,
+     "races": 18,
+     "mean_p": 0.2981,
      "win_rate": 0.6667
     },
     {
      "bin": "0.4-0.6",
-     "races": 10,
-     "mean_p": 0.5088,
+     "races": 12,
+     "mean_p": 0.4997,
      "win_rate": 1.0
     },
     {
      "bin": "0.6-0.8",
-     "races": 12,
-     "mean_p": 0.6887,
+     "races": 16,
+     "mean_p": 0.697,
      "win_rate": 1.0
     },
     {
@@ -628,16 +748,46 @@
      "v1_p_winner": 0.062
     },
     {
+     "id": "NC-06",
+     "winner_party": "D",
+     "winner_name": "Cyril Jefferson",
+     "v1_p_winner": 0.069
+    },
+    {
      "id": "IN-05",
      "winner_party": "D",
      "winner_name": "J. D. Ford",
      "v1_p_winner": 0.076
     },
     {
+     "id": "NC-13",
+     "winner_party": "D",
+     "winner_name": "Paul Barringer",
+     "v1_p_winner": 0.083
+    },
+    {
+     "id": "NC-09",
+     "winner_party": "D",
+     "winner_name": "Richard Ojeda",
+     "v1_p_winner": 0.099
+    },
+    {
      "id": "TX-09",
      "winner_party": "D",
      "winner_name": "Leticia Gutierrez",
      "v1_p_winner": 0.108
+    },
+    {
+     "id": "NC-14",
+     "winner_party": "D",
+     "winner_name": "Lakesha Womack",
+     "v1_p_winner": 0.118
+    },
+    {
+     "id": "NJ-02",
+     "winner_party": "D",
+     "winner_name": "Zack Mullock",
+     "v1_p_winner": 0.183
     },
     {
      "id": "OH-07",
@@ -664,6 +814,18 @@
      "v1_p_winner": 0.276
     },
     {
+     "id": "NV-02",
+     "winner_party": "D",
+     "winner_name": "Teresa Benitez-Thompson",
+     "v1_p_winner": 0.301
+    },
+    {
+     "id": "CO-05",
+     "winner_party": "D",
+     "winner_name": "Jessica Killin",
+     "v1_p_winner": 0.305
+    },
+    {
      "id": "IA-01",
      "winner_party": "D",
      "winner_name": "Christina Bohannan",
@@ -676,16 +838,34 @@
      "v1_p_winner": 0.345
     },
     {
+     "id": "SC-01",
+     "winner_party": "D",
+     "winner_name": "Nancy Lacore",
+     "v1_p_winner": 0.347
+    },
+    {
      "id": "MO-02",
      "winner_party": "D",
      "winner_name": "Fred Wellman",
      "v1_p_winner": 0.365
     },
     {
+     "id": "OH-10",
+     "winner_party": "D",
+     "winner_name": "Kristina Knickerbocker",
+     "v1_p_winner": 0.373
+    },
+    {
      "id": "WI-03",
      "winner_party": "D",
      "winner_name": "Rebecca Cooke",
      "v1_p_winner": 0.393
+    },
+    {
+     "id": "MT-01",
+     "winner_party": "D",
+     "winner_name": "Sam Forstag",
+     "v1_p_winner": 0.402
     },
     {
      "id": "TX-35",
@@ -720,8 +900,8 @@
    ],
    "unmodelled_winners": [],
    "baseline_lean": {
-    "brier": 0.1063,
-    "favourites_won": 328
+    "brier": 0.1335,
+    "favourites_won": 344
    }
   },
   "senate_and_governor": {
@@ -812,100 +992,100 @@
  },
  "vote_share": {
   "all": {
-   "n": 344,
-   "mean_error_toward_dem": 3.15,
-   "mae": 3.67,
-   "rmse": 4.58,
-   "below_80": 4,
-   "inside_80": 223,
-   "above_80": 117,
-   "coverage_80": 0.6483,
-   "baseline_lean_mae": 7.7175,
-   "baseline_lean_mean_error_toward_dem": 7.3909
+   "n": 424,
+   "mean_error_toward_dem": 3.12,
+   "mae": 3.68,
+   "rmse": 4.57,
+   "below_80": 6,
+   "inside_80": 278,
+   "above_80": 140,
+   "coverage_80": 0.6557,
+   "baseline_lean_mae": 7.6215,
+   "baseline_lean_mean_error_toward_dem": 7.3424
   },
   "senate": {
-   "n": 28,
-   "mean_error_toward_dem": 2.71,
-   "mae": 3.74,
-   "rmse": 4.56,
+   "n": 30,
+   "mean_error_toward_dem": 2.56,
+   "mae": 3.69,
+   "rmse": 4.47,
    "below_80": 1,
-   "inside_80": 16,
+   "inside_80": 18,
    "above_80": 11,
-   "coverage_80": 0.5714,
-   "baseline_lean_mae": 8.7598,
-   "baseline_lean_mean_error_toward_dem": 7.3366
+   "coverage_80": 0.6,
+   "baseline_lean_mae": 8.5568,
+   "baseline_lean_mean_error_toward_dem": 7.2231
   },
   "governor": {
-   "n": 30,
+   "n": 33,
    "mean_error_toward_dem": 1.97,
-   "mae": 3.64,
-   "rmse": 4.9,
+   "mae": 3.56,
+   "rmse": 4.83,
    "below_80": 1,
-   "inside_80": 22,
-   "above_80": 7,
-   "coverage_80": 0.7333,
-   "baseline_lean_mae": 8.1558,
-   "baseline_lean_mean_error_toward_dem": 5.9938
+   "inside_80": 26,
+   "above_80": 6,
+   "coverage_80": 0.7879,
+   "baseline_lean_mae": 7.839,
+   "baseline_lean_mean_error_toward_dem": 5.7356
   },
   "house": {
-   "n": 286,
-   "mean_error_toward_dem": 3.32,
-   "mae": 3.66,
-   "rmse": 4.55,
-   "below_80": 2,
-   "inside_80": 185,
-   "above_80": 99,
-   "coverage_80": 0.6469,
-   "baseline_lean_mae": 7.5695,
-   "baseline_lean_mean_error_toward_dem": 7.5428
+   "n": 361,
+   "mean_error_toward_dem": 3.27,
+   "mae": 3.69,
+   "rmse": 4.56,
+   "below_80": 4,
+   "inside_80": 234,
+   "above_80": 123,
+   "coverage_80": 0.6482,
+   "baseline_lean_mae": 7.5239,
+   "baseline_lean_mean_error_toward_dem": 7.4992
   },
   "house_contested": {
-   "n": 286,
-   "mean_error_toward_dem": 3.32,
-   "mae": 3.66,
-   "rmse": 4.55,
-   "below_80": 2,
-   "inside_80": 185,
-   "above_80": 99,
-   "coverage_80": 0.6469,
-   "baseline_lean_mae": 7.5695,
-   "baseline_lean_mean_error_toward_dem": 7.5428
+   "n": 361,
+   "mean_error_toward_dem": 3.27,
+   "mae": 3.69,
+   "rmse": 4.56,
+   "below_80": 4,
+   "inside_80": 234,
+   "above_80": 123,
+   "coverage_80": 0.6482,
+   "baseline_lean_mae": 7.5239,
+   "baseline_lean_mean_error_toward_dem": 7.4992
   },
   "senate_and_governor": {
-   "n": 58,
-   "mean_error_toward_dem": 2.33,
-   "mae": 3.68,
-   "rmse": 4.74,
+   "n": 63,
+   "mean_error_toward_dem": 2.25,
+   "mae": 3.62,
+   "rmse": 4.66,
    "below_80": 2,
-   "inside_80": 38,
-   "above_80": 18,
-   "coverage_80": 0.6552,
-   "baseline_lean_mae": 8.4474,
-   "baseline_lean_mean_error_toward_dem": 6.642
+   "inside_80": 44,
+   "above_80": 17,
+   "coverage_80": 0.6984,
+   "baseline_lean_mae": 8.1808,
+   "baseline_lean_mean_error_toward_dem": 6.444
   },
   "independent": {
    "n": 3,
-   "mean_error_toward_dem": -2.97,
-   "mae": 2.97,
-   "rmse": 3.1,
+   "mean_error_toward_dem": -2.86,
+   "mae": 2.86,
+   "rmse": 3.04,
    "below_80": 1,
    "inside_80": 2,
    "above_80": 0,
    "coverage_80": 0.6667,
-   "baseline_lean_mae": 5.7441,
-   "baseline_lean_mean_error_toward_dem": 5.7441
+   "baseline_lean_mae": 5.8485,
+   "baseline_lean_mean_error_toward_dem": 5.8485
   },
   "all_excl_outside_top_two": {
-   "n": 341,
-   "mean_error_toward_dem": 3.24,
-   "mae": 3.58,
-   "rmse": 4.41,
-   "below_80": 2,
-   "inside_80": 223,
-   "above_80": 116,
-   "coverage_80": 0.654,
-   "baseline_lean_mae": 7.6298,
-   "baseline_lean_mean_error_toward_dem": 7.4689
+   "n": 421,
+   "mean_error_toward_dem": 3.19,
+   "mae": 3.61,
+   "rmse": 4.43,
+   "below_80": 4,
+   "inside_80": 278,
+   "above_80": 139,
+   "coverage_80": 0.6603,
+   "baseline_lean_mae": 7.5503,
+   "baseline_lean_mean_error_toward_dem": 7.4047
   }
  },
  "chambers": {
@@ -917,8 +1097,8 @@
    "complete": false
   },
   "house": {
-   "dem_seats": 234,
-   "rep_seats": 146,
+   "dem_seats": 252,
+   "rep_seats": 161,
    "ind_seats": 0,
    "control": "D",
    "complete": false
@@ -969,13 +1149,13 @@
    "v1_median": 234.0,
    "v1_lo80": 220.0,
    "v1_hi80": 252.0,
-   "dem_seats_so_far": 234,
-   "dem_seats_max_possible": 289,
+   "dem_seats_so_far": 252,
+   "dem_seats_max_possible": 274,
    "percentile": null,
    "inside_80": null,
    "percentile_range": [
-    0.512,
-    0.999
+    0.904,
+    0.994
    ]
   },
   "governor": {
@@ -1003,59 +1183,26 @@
   ],
   "house": [
    "AK-AL",
-   "AR-02",
-   "AZ-01",
    "AZ-02",
-   "AZ-05",
-   "AZ-06",
-   "AZ-08",
    "CA-04",
    "CA-07",
-   "CA-11",
-   "CA-14",
    "CA-23",
-   "CA-29",
    "CA-40",
-   "CO-03",
    "CO-04",
-   "CO-05",
    "FL-07",
    "FL-09",
-   "FL-13",
    "FL-26",
    "FL-27",
    "LA-05",
    "LA-06",
    "ME-02",
    "MN-01",
-   "MT-01",
-   "NC-01",
    "NC-03",
    "NC-05",
-   "NC-06",
    "NC-07",
-   "NC-08",
-   "NC-09",
    "NC-10",
-   "NC-13",
-   "NC-14",
-   "NJ-02",
-   "NV-02",
-   "NY-01",
-   "NY-02",
-   "NY-17",
-   "NY-21",
-   "OH-10",
-   "SC-01",
    "SC-02",
    "TN-04",
-   "TN-07",
-   "TN-09",
-   "UT-02",
-   "UT-04",
-   "VA-01",
-   "VA-05",
-   "WA-04",
    "WA-05"
   ]
  },
@@ -1065,18 +1212,18 @@
    "id": "2026-MT-SEN",
    "outside_top_two": "Seth Bodnar",
    "called": true,
-   "dem_share_2p": 0.1988,
+   "dem_share_2p": 0.2009,
    "v1_median": 0.3423,
-   "pct_counted": 0.9497,
+   "pct_counted": 0.9765,
    "in_vote_share_table": true
   },
   {
    "id": "2026-RI-GOV",
    "outside_top_two": "Kenneth Block",
    "called": true,
-   "dem_share_2p": 0.8141,
+   "dem_share_2p": 0.814,
    "v1_median": 0.7007,
-   "pct_counted": 0.9803,
+   "pct_counted": 0.9819,
    "in_vote_share_table": true
   },
   {
@@ -1085,7 +1232,7 @@
    "called": true,
    "dem_share_2p": 0.1761,
    "v1_median": 0.3429,
-   "pct_counted": 0.9697,
+   "pct_counted": 0.9698,
    "in_vote_share_table": true
   },
   {
@@ -1094,7 +1241,7 @@
    "called": false,
    "dem_share_2p": 0.1283,
    "v1_median": 0.4611,
-   "pct_counted": 0.7538,
+   "pct_counted": 0.7398,
    "in_vote_share_table": false
   }
  ],
@@ -1103,8 +1250,8 @@
   "winner_name": "Kurt Alme",
   "winner_party": "R",
   "p_R": 1.0,
-  "dem_share_2p": 0.1988,
-  "pct_counted": 0.9497,
+  "dem_share_2p": 0.2009,
+  "pct_counted": 0.9765,
   "median": 0.3423,
   "lo80": 0.3126,
   "hi80": 0.3737
