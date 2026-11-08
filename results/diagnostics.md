@@ -14,8 +14,8 @@ Every rerun uses v1's code as tagged, v1's inputs and v1's random seeds, and cha
 | H4 | Were the intervals too narrow? | The realised House shift (+3.27 points) sat at the 99.0th percentile of v1's simulations; the 90th percentile would need the shared spread about 2.0 times as wide | Yes, but mostly as a consequence of H1 |
 | H5 | Did turnout error explain the residual? | Not tested | Waits for near-final counts |
 | H6 | Did the polls move after 22 October? | Race averages moved +0.59 points on average toward Democrats by 3 November; the late averages close 24% of the mean poll error, and Senate and governor Brier would have been 0.045 rather than 0.058 | Some: the lock date cost a little, but most of the poll error was there on election morning |
-| H7 | Would removing pollster house effects have helped? | House effects for 337 pollsters (127 in three or more races) moved the race averages +0.12 points on average; the mean error moves from +3.15 to +3.14 points and the Brier score moves from 0.032 to 0.031 (with H1: 0.023) | Little overall, some for the polled races (Senate and governor Brier 0.058 to 0.052); the shared miss remains |
-| H8 | Would leaving out partisan polls have helped? | 4 races lose all their polls; the rest move +0.31 points on average; the mean error is unchanged at +3.15 points and the Brier score is unchanged at 0.032 (with H1: 0.024) | Little: the scores barely move (Senate and governor Brier 0.058 to 0.060) |
+| H7 | Would removing pollster house effects have helped? | House effects for 337 pollsters (127 in three or more races) moved the race averages +0.12 points on average; the mean error is unchanged at +3.12 points and the Brier score is unchanged at 0.044 (with H1: 0.032) | Little overall, some for the polled races (Senate and governor Brier 0.058 to 0.052); the shared miss remains |
+| H8 | Would leaving out partisan polls have helped? | 4 races lose all their polls; the rest move +0.31 points on average; the mean error is unchanged at +3.12 points and the Brier score moves from 0.044 to 0.045 (with H1: 0.033) | Little: the scores barely move (Senate and governor Brier 0.058 to 0.060) |
 
 ## H1: The National Correction
 
@@ -194,26 +194,26 @@ Of the 447 polls in v1's 2026 averages, 445 had a house effect to remove; their 
 | Races with polls: v1 / H7 | 59 / 59 |
 | Polls in the averages: v1 / H7 | 447 / 447 |
 | Change in the average, H7 minus v1 (toward Democrats) | mean +0.12, SD 1.05, mean absolute 0.73 points over 59 races |
-| Scored races: mean error of v1's average / of the H7 average | +2.23 / +2.17 points (50 races) |
-| MAE of v1's average / of the H7 average | 3.33 / 3.11 |
+| Scored races: mean error of v1's average / of the H7 average | +2.23 / +2.19 points (52 races) |
+| MAE of v1's average / of the H7 average | 3.27 / 3.04 |
 
 | Run | Called races | Brier | Log loss | Upsets (expected) | Vote-share races | Mean error | MAE | 80% coverage | Below / above |
 |---|---|---|---|---|---|---|---|---|---|
-| v1 as published | 444 | 0.032 | 0.103 | 22 (22.3) | 344 | +3.15 | 3.67 | 65% | 4 / 117 |
-| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 444 | 0.024 | 0.085 | 11 (24.0) | 344 | +1.69 | 2.79 | 82% | 6 / 55 |
-| DIAGNOSTIC: house effects removed (H7) | 444 | 0.031 | 0.101 | 20 (22.2) | 344 | +3.14 | 3.66 | 65% | 4 / 115 |
-| DIAGNOSTIC: house effects removed and bias 0 (H7 and H1) | 444 | 0.023 | 0.083 | 10 (23.8) | 344 | +1.68 | 2.78 | 83% | 6 / 53 |
+| v1 as published | 477 | 0.044 | 0.139 | 32 (27.9) | 424 | +3.12 | 3.68 | 66% | 6 / 140 |
+| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 477 | 0.033 | 0.112 | 18 (31.4) | 424 | +1.64 | 2.82 | 81% | 8 / 71 |
+| DIAGNOSTIC: house effects removed (H7) | 477 | 0.044 | 0.137 | 30 (27.8) | 424 | +3.12 | 3.68 | 66% | 6 / 138 |
+| DIAGNOSTIC: house effects removed and bias 0 (H7 and H1) | 477 | 0.032 | 0.110 | 17 (31.2) | 424 | +1.63 | 2.81 | 82% | 8 / 69 |
 
 By office (Brier; mean error; MAE; 80% coverage):
 
 | Run | Senate | Governor | House |
 |---|---|---|---|
-| v1 as published | 0.066; +2.71; 3.74; 57% | 0.051; +1.97; 3.64; 73% | 0.028; +3.32; 3.66; 65% |
-| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 0.050; +1.79; 2.96; 75% | 0.047; +1.40; 3.39; 80% | 0.019; +1.71; 2.71; 83% |
-| DIAGNOSTIC: house effects removed (H7) | 0.053; +2.51; 3.63; 64% | 0.050; +2.06; 3.69; 73% | 0.028; +3.32; 3.66; 65% |
-| DIAGNOSTIC: house effects removed and bias 0 (H7 and H1) | 0.039; +1.59; 2.81; 79% | 0.047; +1.49; 3.39; 83% | 0.019; +1.71; 2.71; 83% |
+| v1 as published | 0.066; +2.56; 3.69; 60% | 0.051; +1.97; 3.56; 79% | 0.042; +3.27; 3.69; 65% |
+| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 0.050; +1.60; 2.96; 77% | 0.047; +1.35; 3.31; 82% | 0.031; +1.67; 2.76; 82% |
+| DIAGNOSTIC: house effects removed (H7) | 0.053; +2.37; 3.60; 67% | 0.050; +2.06; 3.60; 79% | 0.042; +3.27; 3.69; 65% |
+| DIAGNOSTIC: house effects removed and bias 0 (H7 and H1) | 0.039; +1.41; 2.83; 80% | 0.047; +1.45; 3.29; 85% | 0.031; +1.67; 2.76; 82% |
 
-Removing house effects moves the averages +0.12 points toward Democrats on average (mean absolute change 0.73), and the scored races' poll error from +2.23 to +2.17 points (MAE 3.33 to 3.11). Because house effects are measured against the average pollster, removing them corrects only how far a race's mix of pollsters leaned relative to that average (the weighted mean effect in v1's 2026 averages was −0.38 points), not a miss that every pollster shared, and most of 2026's poll error was shared (H2). So the adjustment mainly reduces race-to-race scatter: the overall mean error moves from +3.15 to +3.14 points and the Brier score from 0.032 to 0.031, with the Senate Brier 0.066 to 0.053 and the governors' 0.051 to 0.050. The House, whose forecasts use no race polls, is unchanged.
+Removing house effects moves the averages +0.12 points toward Democrats on average (mean absolute change 0.73), and the scored races' poll error from +2.23 to +2.19 points (MAE 3.27 to 3.04). Because house effects are measured against the average pollster, removing them corrects only how far a race's mix of pollsters leaned relative to that average (the weighted mean effect in v1's 2026 averages was −0.38 points), not a miss that every pollster shared, and most of 2026's poll error was shared (H2). So the adjustment mainly reduces race-to-race scatter: the overall mean error moves from +3.12 to +3.12 points and the Brier score from 0.044 to 0.044, with the Senate Brier 0.066 to 0.053 and the governors' 0.051 to 0.050. The House, whose forecasts use no race polls, is unchanged.
 
 ## H8: Partisan Polls Left Out
 
@@ -226,14 +226,14 @@ Of the 447 polls in v1's 2026 averages, 139 were labelled Republican and 64 Demo
 | Races with polls: v1 / H8 | 59 / 55 |
 | Polls in the averages: v1 / H8 | 447 / 245 |
 | Change in the average, H8 minus v1 (toward Democrats) | mean +0.31, SD 1.53, mean absolute 0.66 points over 55 races |
-| Scored races: mean error of v1's average / of the H8 average | +2.36 / +2.25 points (47 races) |
-| MAE of v1's average / of the H8 average | 3.48 / 3.40 |
+| Scored races: mean error of v1's average / of the H8 average | +2.35 / +2.25 points (49 races) |
+| MAE of v1's average / of the H8 average | 3.40 / 3.33 |
 
 **Races left without polls: 4.** v1's blend treats a race with no qualifying poll exactly as it treats any unpolled race: the poll weight is 0 and the forecast is the fundamentals alone. No other source of polls is substituted.
 
 | Race | v1 polls (all labelled) | v1 poll average (D) | v1 poll weight | H8 poll weight | P(D win): v1 | H8 | Winner | Actual (D) |
 |---|---|---|---|---|---|---|---|---|
-| IL-GOV | 1 | 61.4% | 0.50 | 0.00 | 100% | 98% | D | 61.8% |
+| IL-GOV | 1 | 61.4% | 0.50 | 0.00 | 100% | 98% | D | 62.2% |
 | KY-SEN | 1 | 44.9% | 0.30 | 0.00 | 1% | 1% | R | 43.8% |
 | LA-SEN | 1 | 47.8% | 0.30 | 0.00 | 10% | 10% | R | 49.1% |
 | MS-SEN | 1 | 46.3% | 0.30 | 0.00 | 7% | 8% | – | 50.1% |
@@ -242,21 +242,21 @@ In the other polled races, fewer polls mean a smaller effective number, a wider 
 
 | Run | Called races | Brier | Log loss | Upsets (expected) | Vote-share races | Mean error | MAE | 80% coverage | Below / above |
 |---|---|---|---|---|---|---|---|---|---|
-| v1 as published | 444 | 0.032 | 0.103 | 22 (22.3) | 344 | +3.15 | 3.67 | 65% | 4 / 117 |
-| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 444 | 0.024 | 0.085 | 11 (24.0) | 344 | +1.69 | 2.79 | 82% | 6 / 55 |
-| DIAGNOSTIC: partisan polls left out (H8) | 444 | 0.032 | 0.106 | 22 (22.5) | 344 | +3.15 | 3.67 | 66% | 4 / 112 |
-| DIAGNOSTIC: partisan polls left out and bias 0 (H8 and H1) | 444 | 0.024 | 0.086 | 11 (24.1) | 344 | +1.66 | 2.78 | 83% | 6 / 51 |
+| v1 as published | 477 | 0.044 | 0.139 | 32 (27.9) | 424 | +3.12 | 3.68 | 66% | 6 / 140 |
+| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 477 | 0.033 | 0.112 | 18 (31.4) | 424 | +1.64 | 2.82 | 81% | 8 / 71 |
+| DIAGNOSTIC: partisan polls left out (H8) | 477 | 0.045 | 0.141 | 32 (28.0) | 424 | +3.12 | 3.69 | 67% | 6 / 136 |
+| DIAGNOSTIC: partisan polls left out and bias 0 (H8 and H1) | 477 | 0.033 | 0.114 | 18 (31.5) | 424 | +1.61 | 2.81 | 82% | 8 / 67 |
 
 By office (Brier; mean error; MAE; 80% coverage):
 
 | Run | Senate | Governor | House |
 |---|---|---|---|
-| v1 as published | 0.066; +2.71; 3.74; 57% | 0.051; +1.97; 3.64; 73% | 0.028; +3.32; 3.66; 65% |
-| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 0.050; +1.79; 2.96; 75% | 0.047; +1.40; 3.39; 80% | 0.019; +1.71; 2.71; 83% |
-| DIAGNOSTIC: partisan polls left out (H8) | 0.071; +2.77; 3.87; 61% | 0.050; +1.86; 3.56; 87% | 0.028; +3.32; 3.66; 65% |
-| DIAGNOSTIC: partisan polls left out and bias 0 (H8 and H1) | 0.055; +1.72; 2.96; 82% | 0.046; +1.17; 3.31; 87% | 0.019; +1.71; 2.71; 83% |
+| v1 as published | 0.066; +2.56; 3.69; 60% | 0.051; +1.97; 3.56; 79% | 0.042; +3.27; 3.69; 65% |
+| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 0.050; +1.60; 2.96; 77% | 0.047; +1.35; 3.31; 82% | 0.031; +1.67; 2.76; 82% |
+| DIAGNOSTIC: partisan polls left out (H8) | 0.071; +2.62; 3.82; 63% | 0.050; +1.83; 3.51; 88% | 0.042; +3.27; 3.69; 65% |
+| DIAGNOSTIC: partisan polls left out and bias 0 (H8 and H1) | 0.055; +1.53; 2.96; 83% | 0.046; +1.11; 3.27; 88% | 0.031; +1.67; 2.76; 82% |
 
-Leaving out partisan polls moves the remaining averages +0.31 points toward Democrats on average, and the scored races' poll error from +2.36 to +2.25 points (47 races with polls under both). The forecast's overall mean error is unchanged at +3.15 points and its Brier score is unchanged at 0.032 (Senate 0.066 to 0.071, governors 0.051 to 0.050). The averages move toward Democrats, but with fewer polls v1's blend puts less weight on them and more on the fundamentals, which understated Democrats by more, so the two effects roughly cancel. Republican-sponsored polls missed most in H2, but the unlabelled polls that remain also understated Democrats, so the exclusion does not remove the shared miss.
+Leaving out partisan polls moves the remaining averages +0.31 points toward Democrats on average, and the scored races' poll error from +2.35 to +2.25 points (49 races with polls under both). The forecast's overall mean error is unchanged at +3.12 points and its Brier score moves from 0.044 to 0.045 (Senate 0.066 to 0.071, governors 0.051 to 0.050). The averages move toward Democrats, but with fewer polls v1's blend puts less weight on them and more on the fundamentals, which understated Democrats by more, so the two effects roughly cancel. Republican-sponsored polls missed most in H2, but the unlabelled polls that remain also understated Democrats, so the exclusion does not remove the shared miss.
 
 **Limits of H7 and H8.** Both keep v1's poll-error model as fitted on v1's own 2018 and 2022 averages; a forecaster who adjusted or filtered polls would also refit that model on averages built the same way, which is not done here. Wikipedia's sponsor labels are incomplete (unlabelled polls include partisan firms that are not marked), and H7's house effects do not separate a pollster's lean from differences in timing within a race or in likely-voter screens. Both are DIAGNOSTIC reruns and change neither v1 nor its score.
 
