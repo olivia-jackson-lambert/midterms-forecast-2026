@@ -1,6 +1,6 @@
 {
  "as_of": "2026-10-22",
- "generated": "2026-11-08T22:59:37Z",
+ "generated": "2026-11-08T23:47:58Z",
  "results": {
   "source": "results/results.json",
   "as_of": "2026-11-08T22:59:13Z",
@@ -2410,13 +2410,13 @@
   "control": [
    {
     "name": "v1",
-    "p_dem": 0.925,
+    "p_dem": 0.928,
     "kind": "model",
     "source": "forecasts/v1",
     "captured": "2026-10-22T23:25:15Z",
     "news_report": false,
     "definition": "P(218+ Democratic seats)",
-    "brier": 0.0056
+    "brier": 0.0052
    },
    {
     "name": "DDHQ / The Hill",
@@ -29602,13 +29602,13 @@
    "control": [
     {
      "name": "v1",
-     "p_dem": 0.925,
+     "p_dem": 0.928,
      "kind": "model",
      "source": "forecasts/v1",
      "captured": "2026-10-22T23:25:15Z",
      "news_report": false,
      "definition": "P(218+ Democratic seats)",
-     "brier": 0.0056
+     "brier": 0.0052
     },
     {
      "name": "DDHQ / The Hill",

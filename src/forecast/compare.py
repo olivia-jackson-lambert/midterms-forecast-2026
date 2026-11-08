@@ -294,6 +294,8 @@ def v1_control_and_seats() -> dict:
     s = pd.read_csv(V1 / "senate_seats.csv")
     h = pd.read_csv(V1 / "house_seats.csv")
     gv = pd.read_csv(V1 / "governor_seats.csv")
+    for t in (s, h, gv):    # v1's four-decimal seat files sum to just under 1 (forecasts/README.md)
+        t["probability"] /= t["probability"].sum()
     s["caucus"] = s.dem_seats + s.independent_seats
     return {
         "senate": {"p_dem": round(float(s.loc[s.dem_seats >= 51, "probability"].sum()), 3),

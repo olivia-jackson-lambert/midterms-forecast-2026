@@ -2,7 +2,7 @@
 
 A transparent, pre-registered forecast of the 3 November 2026 US midterms, built entirely from public data. Most forecasts begin with who wins; this one begins with **turnout**, estimated for every county, and builds the vote share for every Senate, governor and House race on top of it.
 
-**[Interactive forecast](https://oliviajacksonlambert.com/midterms-2026/)** · **[Full write-up: method, backtests and limits](https://oliviajacksonlambert.com/project/projects_files/turnout-first-2026/turnout-first-2026.html)** · **[Forecast v1 tables](forecasts/v1/)**
+**[Interactive forecast and results](https://oliviajacksonlambert.com/midterms-2026/)** · **[Full write-up: method, backtests and limits](https://oliviajacksonlambert.com/project/projects_files/turnout-first-2026/turnout-first-2026.html)** · **[The provisional scorecard](https://oliviajacksonlambert.com/project/projects_files/scorecard-2026/scorecard-2026.html)** · **[Forecast v1 tables](forecasts/v1/)**
 
 ![County turnout change forecast for 2026 against 2022](docs/img/hero_turnout_change_map.png)
 
