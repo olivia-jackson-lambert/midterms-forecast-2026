@@ -14,6 +14,8 @@ Every rerun uses v1's code as tagged, v1's inputs and v1's random seeds, and cha
 | H4 | Were the intervals too narrow? | The realised House shift (+3.27 points) sat at the 99.0th percentile of v1's simulations; the 90th percentile would need the shared spread about 2.0 times as wide | Yes, but mostly as a consequence of H1 |
 | H5 | Did turnout error explain the residual? | Not tested | Waits for near-final counts |
 | H6 | Did the polls move after 22 October? | Race averages moved +0.59 points on average toward Democrats by 3 November; the late averages close 24% of the mean poll error, and Senate and governor Brier would have been 0.045 rather than 0.058 | Some: the lock date cost a little, but most of the poll error was there on election morning |
+| H7 | Would removing pollster house effects have helped? | House effects for 337 pollsters (127 in three or more races) moved the race averages +0.12 points on average; the mean error is unchanged at +3.12 points and the Brier score is unchanged at 0.044 (with H1: 0.032) | Little overall, some for the polled races (Senate and governor Brier 0.058 to 0.052); the shared miss remains |
+| H8 | Would leaving out partisan polls have helped? | 4 races lose all their polls; the rest move +0.31 points on average; the mean error is unchanged at +3.12 points and the Brier score moves from 0.044 to 0.045 (with H1: 0.033) | Little: the scores barely move (Senate and governor Brier 0.058 to 0.060) |
 
 ## H1: The National Correction
 
@@ -143,6 +145,121 @@ Averages moved +0.59 points on average. Over the scored races the 3 November ave
 
 The generic ballot on the same page at the same time (mean of Decision Desk HQ, FiftyPlusOne, NBC News, RealClearPolitics, Silver Bulletin; revision 1383555060) was 54.6% Democratic, two-party, against 54.7% on 22 October.
 
+## H7: Pollster House Effects
+
+**DIAGNOSTIC.** A house effect is a pollster's persistent lean relative to other pollsters polling the same race. Forecasters such as the Silver Bulletin estimate it and remove it before averaging; its public methodology page describes an iterative comparison of each firm with the average, with the share of a firm's gap that is removed growing with how much it has polled. This rerun asks whether a simple version of that adjustment would have reduced v1's miss.
+
+Method, fixed before scoring:
+
+- **Polls.** Head-to-head polls from the same Wikipedia race articles v1 used: 2018 and 2022 Senate and governor races (fieldwork ending in the 90 days up to election day; all of these were public long before 22 October 2026) and 2026 races (fieldwork ending in the 90 days up to v1's 22 October cut-off, never later). Each pollster's polls in a race are averaged first, so a pollster counts once per race however often it polled there.
+- **Model.** On the two-party share, each pollster-race average = a race effect + the pollster's house effect + noise. The race effects are free, so a house effect measures only how a pollster differs from the others in the races it shared with them; races polled by a single pollster carry no information and are dropped. The house effects are treated as random, Normal(0, τ²), around noise of variance σ², with both variances estimated from the data (EM): σ = 2.07 and τ = 2.02 points.
+- **Shrinkage.** Each house effect is then the standard shrunken estimate: the pollster's mean deviation from the race effects, multiplied by n / (n + σ²/τ²), where n is its number of races and σ²/τ² = 1.05. A pollster seen in one race keeps about 49% of its raw deviation, one seen in ten races about 90%. The reference is the average pollster in these data (each pollster counted once; the effects sum to zero), not the result: removing house effects cannot correct a miss that all pollsters share.
+- **Rerun.** Each 2026 poll's share has its pollster's house effect subtracted (pollsters with no estimate are left as they are), and v1's averages are rebuilt with v1's own code: one poll per pollster, 90-day window, 21-day half-life, sample-size and population weights. Everything else is v1's: fits, poll-error model, seeds and generic-ballot correction.
+- **Pollster names.** v1's pollster key (sponsors in brackets dropped), with a leading "the", a trailing "inc" and the spacing around "/" tidied. Names are not otherwise harmonised, so a firm that appears under several names (Siena with different media partners, for example) is estimated under each, with fewer races and more shrinkage.
+
+House effects were estimated for 337 pollsters from 1563 pollster-race averages in 169 races; 127 pollsters appear in three or more races. As a check during development, a REML linear mixed model with the same structure (statsmodels MixedLM, not a project dependency) gave practically the same effects (correlation 0.9996, largest difference 0.5 points); the 2026 polls are those before the cut-off, so a new results pull does not change them. Positive means more Democratic than the other pollsters in the same races. The largest among pollsters in three or more races:
+
+| Pollster | Races | House effect (points) | Raw deviation | Share of its polls labelled R / D | Years |
+|---|---|---|---|---|---|
+| Long Island University | 3 | +6.87 | +9.28 | 0% / 0% | 2022 |
+| Kurt Jetta | 6 | +3.89 | +4.57 | 0% / 78% | 2022 |
+| Lake Research Partners | 3 | +3.65 | +4.93 | 0% / 100% | 2022, 2026 |
+| SoonerPoll | 4 | +3.23 | +4.08 | 0% / 0% | 2018, 2022 |
+| St. Cloud State University | 4 | +3.19 | +4.03 | 0% / 0% | 2018, 2022 |
+| Franklin & Marshall College | 5 | +3.05 | +3.69 | 0% / 0% | 2018, 2022, 2026 |
+| Survey Monkey | 5 | +2.94 | +3.56 | 0% / 100% | 2022 |
+| McLaughlin & Associates | 3 | −2.87 | −3.88 | 100% / 0% | 2022, 2026 |
+| GQR | 3 | +2.61 | +3.53 | 0% / 100% | 2026 |
+| Patriot Polling | 6 | −2.59 | −3.04 | 50% / 0% | 2022 |
+
+The largest among the pollsters behind v1's 2026 averages:
+
+| Pollster | Races (all years) | 2026 races | House effect (points) | Share of its polls labelled R / D |
+|---|---|---|---|---|
+| Advanced Targeting Research | 2 | 2 | +6.73 | 0% / 0% |
+| Peak Insights | 2 | 2 | −5.69 | 100% / 0% |
+| The Bullfinch Group | 1 | 1 | +4.88 | 0% / 0% |
+| Emerson College/WPRI-TV | 2 | 2 | +4.19 | 0% / 0% |
+| Aspect Strategic | 1 | 1 | −3.95 | 0% / 0% |
+| Lake Research Partners | 3 | 2 | +3.65 | 0% / 100% |
+| BSP Research | 1 | 1 | +3.59 | 0% / 100% |
+| PennLive | 1 | 1 | +3.05 | 0% / 0% |
+| Franklin & Marshall College | 5 | 1 | +3.05 | 0% / 0% |
+| Public Opinon Strategies | 1 | 1 | −2.94 | 100% / 0% |
+
+Of the 447 polls in v1's 2026 averages, 445 had a house effect to remove; their weighted mean was −0.38 points. Mean effect by Wikipedia's label: Democratic-labelled +0.74, Republican-labelled −1.32, unlabelled +0.12 points.
+
+| | Value |
+|---|---|
+| Races with polls: v1 / H7 | 59 / 59 |
+| Polls in the averages: v1 / H7 | 447 / 447 |
+| Change in the average, H7 minus v1 (toward Democrats) | mean +0.12, SD 1.05, mean absolute 0.73 points over 59 races |
+| Scored races: mean error of v1's average / of the H7 average | +2.23 / +2.19 points (52 races) |
+| MAE of v1's average / of the H7 average | 3.27 / 3.04 |
+
+| Run | Called races | Brier | Log loss | Upsets (expected) | Vote-share races | Mean error | MAE | 80% coverage | Below / above |
+|---|---|---|---|---|---|---|---|---|---|
+| v1 as published | 477 | 0.044 | 0.139 | 32 (27.9) | 424 | +3.12 | 3.68 | 66% | 6 / 140 |
+| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 477 | 0.033 | 0.112 | 18 (31.4) | 424 | +1.64 | 2.82 | 81% | 8 / 71 |
+| DIAGNOSTIC: house effects removed (H7) | 477 | 0.044 | 0.137 | 30 (27.8) | 424 | +3.12 | 3.68 | 66% | 6 / 138 |
+| DIAGNOSTIC: house effects removed and bias 0 (H7 and H1) | 477 | 0.032 | 0.110 | 17 (31.2) | 424 | +1.63 | 2.81 | 82% | 8 / 69 |
+
+By office (Brier; mean error; MAE; 80% coverage):
+
+| Run | Senate | Governor | House |
+|---|---|---|---|
+| v1 as published | 0.066; +2.56; 3.69; 60% | 0.051; +1.97; 3.56; 79% | 0.042; +3.27; 3.69; 65% |
+| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 0.050; +1.60; 2.96; 77% | 0.047; +1.35; 3.31; 82% | 0.031; +1.67; 2.76; 82% |
+| DIAGNOSTIC: house effects removed (H7) | 0.053; +2.37; 3.60; 67% | 0.050; +2.06; 3.60; 79% | 0.042; +3.27; 3.69; 65% |
+| DIAGNOSTIC: house effects removed and bias 0 (H7 and H1) | 0.039; +1.41; 2.83; 80% | 0.047; +1.45; 3.29; 85% | 0.031; +1.67; 2.76; 82% |
+
+Removing house effects moves the averages +0.12 points toward Democrats on average (mean absolute change 0.73), and the scored races' poll error from +2.23 to +2.19 points (MAE 3.27 to 3.04). Because house effects are measured against the average pollster, removing them corrects only how far a race's mix of pollsters leaned relative to that average (the weighted mean effect in v1's 2026 averages was −0.38 points), not a miss that every pollster shared, and most of 2026's poll error was shared (H2). So the adjustment mainly reduces race-to-race scatter: the overall mean error moves from +3.12 to +3.12 points and the Brier score from 0.044 to 0.044, with the Senate Brier 0.066 to 0.053 and the governors' 0.051 to 0.050. The House, whose forecasts use no race polls, is unchanged.
+
+## H8: Partisan Polls Left Out
+
+**DIAGNOSTIC.** v1's race averages rebuilt with every poll Wikipedia labels with a Democratic or Republican sponsor left out (the labels H2 uses, such as "(R)" or "(D-sponsor)"), and nothing else changed; where a pollster's latest poll was partisan-sponsored, its latest unlabelled poll is used if there is one. The Silver Bulletin's public methodology page says that for its generic-ballot average polls with partisan sponsors are excluded from the calculation of the "true" average against which house effects are measured, and that in its race averages they start from a prior of a lean toward the sponsor. Leaving them out of the average altogether, as here, is the simpler and stronger version of that idea, not their method.
+
+Of the 447 polls in v1's 2026 averages, 139 were labelled Republican and 64 Democratic (329 of the 732 polls in the 90-day window carry a label).
+
+| | Value |
+|---|---|
+| Races with polls: v1 / H8 | 59 / 55 |
+| Polls in the averages: v1 / H8 | 447 / 245 |
+| Change in the average, H8 minus v1 (toward Democrats) | mean +0.31, SD 1.53, mean absolute 0.66 points over 55 races |
+| Scored races: mean error of v1's average / of the H8 average | +2.35 / +2.25 points (49 races) |
+| MAE of v1's average / of the H8 average | 3.40 / 3.33 |
+
+**Races left without polls: 4.** v1's blend treats a race with no qualifying poll exactly as it treats any unpolled race: the poll weight is 0 and the forecast is the fundamentals alone. No other source of polls is substituted.
+
+| Race | v1 polls (all labelled) | v1 poll average (D) | v1 poll weight | H8 poll weight | P(D win): v1 | H8 | Winner | Actual (D) |
+|---|---|---|---|---|---|---|---|---|
+| IL-GOV | 1 | 61.4% | 0.50 | 0.00 | 100% | 98% | D | 62.2% |
+| KY-SEN | 1 | 44.9% | 0.30 | 0.00 | 1% | 1% | R | 43.8% |
+| LA-SEN | 1 | 47.8% | 0.30 | 0.00 | 10% | 10% | R | 49.1% |
+| MS-SEN | 1 | 46.3% | 0.30 | 0.00 | 7% | 8% | – | 50.1% |
+
+In the other polled races, fewer polls mean a smaller effective number, a wider poll error in v1's model and so a lower weight on the polls: mean poll weight 0.68 in v1 against 0.60 here (55 races).
+
+| Run | Called races | Brier | Log loss | Upsets (expected) | Vote-share races | Mean error | MAE | 80% coverage | Below / above |
+|---|---|---|---|---|---|---|---|---|---|
+| v1 as published | 477 | 0.044 | 0.139 | 32 (27.9) | 424 | +3.12 | 3.68 | 66% | 6 / 140 |
+| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 477 | 0.033 | 0.112 | 18 (31.4) | 424 | +1.64 | 2.82 | 81% | 8 / 71 |
+| DIAGNOSTIC: partisan polls left out (H8) | 477 | 0.045 | 0.141 | 32 (28.0) | 424 | +3.12 | 3.69 | 67% | 6 / 136 |
+| DIAGNOSTIC: partisan polls left out and bias 0 (H8 and H1) | 477 | 0.033 | 0.114 | 18 (31.5) | 424 | +1.61 | 2.81 | 82% | 8 / 67 |
+
+By office (Brier; mean error; MAE; 80% coverage):
+
+| Run | Senate | Governor | House |
+|---|---|---|---|
+| v1 as published | 0.066; +2.56; 3.69; 60% | 0.051; +1.97; 3.56; 79% | 0.042; +3.27; 3.69; 65% |
+| DIAGNOSTIC: generic-ballot bias set to 0 (H1) | 0.050; +1.60; 2.96; 77% | 0.047; +1.35; 3.31; 82% | 0.031; +1.67; 2.76; 82% |
+| DIAGNOSTIC: partisan polls left out (H8) | 0.071; +2.62; 3.82; 63% | 0.050; +1.83; 3.51; 88% | 0.042; +3.27; 3.69; 65% |
+| DIAGNOSTIC: partisan polls left out and bias 0 (H8 and H1) | 0.055; +1.53; 2.96; 83% | 0.046; +1.11; 3.27; 88% | 0.031; +1.67; 2.76; 82% |
+
+Leaving out partisan polls moves the remaining averages +0.31 points toward Democrats on average, and the scored races' poll error from +2.35 to +2.25 points (49 races with polls under both). The forecast's overall mean error is unchanged at +3.12 points and its Brier score moves from 0.044 to 0.045 (Senate 0.066 to 0.071, governors 0.051 to 0.050). The averages move toward Democrats, but with fewer polls v1's blend puts less weight on them and more on the fundamentals, which understated Democrats by more, so the two effects roughly cancel. Republican-sponsored polls missed most in H2, but the unlabelled polls that remain also understated Democrats, so the exclusion does not remove the shared miss.
+
+**Limits of H7 and H8.** Both keep v1's poll-error model as fitted on v1's own 2018 and 2022 averages; a forecaster who adjusted or filtered polls would also refit that model on averages built the same way, which is not done here. Wikipedia's sponsor labels are incomplete (unlabelled polls include partisan firms that are not marked), and H7's house effects do not separate a pollster's lean from differences in timing within a race or in likely-voter screens. Both are DIAGNOSTIC reruns and change neither v1 nor its score.
+
 ## Checks
 
 **Generic-ballot cycles.** `python -m forecast.generic_ballot` gives `n_years` = 12 for 2026. The years used are 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2022. The even years 2020 and 2024 drop out because no 30 September generic-ballot value is collected for them (`generic_ballot()` reads 1998 to 2016 from FiveThirtyEight's history, 2018 from its archived file and 2022 from Wikipedia), although their House votes are read. The write-up's "11 of the 12 cycles since 1998" is therefore right in count, and #24's concern that the code averages 14 cycles does not hold; the wording would be clearer as "12 of the 14 cycles from 1998 to 2024 (2020 and 2024 lack a 30 September value)". The docstring's "every even year before `year` with both numbers" is accurate. One related point: the bias is estimated from end-of-September values (18 to 30 September), but 2026 used the value on 22 October, about three weeks later and closer to the election, when the generic ballot's historical overstatement may be smaller. That mismatch is untested.
@@ -205,4 +322,5 @@ Across the seven dates the generic ballot v1 would have read ranged from 53.5% t
 - `src/forecast/diagnostics.py`: the code (`python -m forecast.diagnostics`); `tests/test_diagnostics.py`.
 - Rerun tables (local, not committed, each marked DIAGNOSTIC): `data/processed/diagnostics_v1/<run>/`.
 - 3 November Wikipedia revisions (local): `data/raw/polls_late_2026/`.
+- H7's estimated house effects, one row per pollster (local, DIAGNOSTIC): `data/processed/diagnostics_v1/house_effects.csv`.
 - `results/through_time.json` and the Through Time section: `src/forecast/through_time.py` (`python -m forecast.through_time`, run after `forecast.diagnostics`, which rewrites this page).
