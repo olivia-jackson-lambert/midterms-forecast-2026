@@ -2,7 +2,7 @@
 
 The 2026 results that forecast v1 is scored against, and the provisional score. Everything here
 describes what happened; nothing in it changes v1 (`forecasts/v1/`, tag `v1`).
-The provisional score is written up in [The Provisional Scorecard](https://oliviajacksonlambert.com/project/projects_files/scorecard-2026/scorecard-2026.html) and shown race by race in the [results view](https://oliviajacksonlambert.com/midterms-2026/#results).
+The provisional score is written up in [The Provisional Scorecard](https://oliviajacksonlambert.com/work/scorecard-2026/) and shown race by race in the [results view](https://oliviajacksonlambert.com/midterms-2026/#results).
 
 | File | What it holds | Written by |
 |---|---|---|
